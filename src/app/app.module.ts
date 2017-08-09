@@ -30,6 +30,7 @@ import { DatePersonaleComponent } from './membri/date-personale/date-personale.c
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
 import { CppComponent } from './membri/cpp/cpp.component';
+import { CppsComponent } from './membri/cpps/cpps.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CppComponent } from './membri/cpp/cpp.component';
     DatePersonaleComponent,
     TestComponent,
     Test2Component,
-    CppComponent
+    CppComponent,
+    CppsComponent
   ],
   imports: [
     BrowserModule,
