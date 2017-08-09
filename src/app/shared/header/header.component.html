@@ -1,0 +1,19 @@
+<md-toolbar color="primary">
+  <span class="cmj" [routerLink]="['/']" style="cursor: pointer;">C.M.{{currentUser.judet}}</span>
+
+  <span class="fill-remaining-space"></span>
+
+  <span class="operator">
+    <!--<button md-menu-item [mdMenuTriggerFor]="headerMenu">
+      <span>{{currentUser.nume}}</span>
+    </button>-->
+    <span [mdMenuTriggerFor]="headerMenu" style="cursor: pointer;">{{currentUser.nume}}</span>
+
+    <md-menu #headerMenu="mdMenu">
+      <button md-menu-item [routerLink]="['/login']">Terminare sesiune</button>
+      <button md-menu-item>Schimba parola</button>
+      <hr>
+      <button md-menu-item>Ajutor</button>
+    </md-menu>
+  </span>
+</md-toolbar>

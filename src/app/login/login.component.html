@@ -1,0 +1,19 @@
+
+<md-card class="mat-elevation-z7">
+  <form class="example-form" [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <md-input-container class="full-width">
+      <input mdInput formControlName="email" type="text" placeholder="Email" required>
+    </md-input-container>
+
+    <md-input-container class="full-width" required>
+      <input mdInput formControlName="password" type="password" placeholder="Password">
+    </md-input-container>
+
+    <button md-raised-button [disabled]="!loginForm.valid" color="primary" >Autentificare</button>
+
+  </form>
+  <md-card-footer>
+  <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+  </md-card-footer>
+</md-card>

@@ -1,0 +1,5 @@
+<div *ngIf="message" [ngClass]="">
+  {{message.text}} de tipul {{message.type}}
+</div>
+<!-- TODO: de modificat ng Class in functie de type ex [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error'
+se poate face o functie direct de afisare a snackbar}"-->

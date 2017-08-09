@@ -1,0 +1,39 @@
+
+.container {
+display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+justify-content: space-between;
+align-items: center;
+}
+
+.left-fixed-spacer {
+  order: 1;
+}
+
+.cmj {
+ order: 1;
+ padding-right: 10px;
+}
+
+.membru {
+  order: 1;
+}
+
+.fill-remaining-space {
+  order: 2;
+  flex: 1 1 auto;
+}
+
+.operator {
+  padding-left: 10px;
+  order: 2;
+}
+
+.right-fixed-spacer {
+  order: 3;
+}
+
+.icon {
+  padding: 0 14px;
+}
