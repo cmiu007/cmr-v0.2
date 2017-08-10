@@ -1,3 +1,28 @@
-<p>
-  cpps works!
-</p>
+<app-header></app-header>
+<div class="content">
+  <form [formGroup]="formCpps" novalidate (ngSubmit)="save(formCpps)">
+    <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+    <md-card>
+      <md-card-title>
+        <span class="full">Pregatire profesionala postuniversitara</span>
+      </md-card-title>
+    </md-card>
+    <md-card>
+      <md-card-content>
+        <button type="submit">
+          Submit
+        </button>
+      </md-card-content>
+    </md-card>
+    <div formArrayName="cpps">
+    <md-card *ngFor="let cpp of formCpps.controls.cpps.controls; let i = index">
+      <md-card-content>
+        <span>Control {{ i + 1}}</span>
+        <div class="row" [formGroupName]=i>
+          Continut formular
+        </div>
+      </md-card-content>
+    </md-card>
+    </div>
+  </form>
+</div>

@@ -1,4 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { MdSnackBar } from '@angular/material';
+import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
+
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
+
+import { Cpp } from '../../shared/interfaces/cpps.interface';
+import { MembriService } from '../../services/membri.service';
+import { NumeCpp } from '../../shared/models/registre.model';
+import { NomenclatorService } from '../../services/nomenclator.service';
 
 @Component({
   selector: 'app-cpps',
@@ -6,10 +18,52 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cpps.component.css']
 })
 export class CppsComponent implements OnInit {
+  loading = true;
+  formCpps: FormGroup;
 
-  constructor() { }
+  constructor(private _fb: FormBuilder) { }
 
   ngOnInit() {
+    this.formCpps = this._fb.group({
+      cpps: this._fb.array([
+        this.initCpps()
+      ])
+    });
+    this.loading = false;
+  }
+
+  initCpps() {
+    return this._fb.group({
+        'id_cpp': [{ value: '' }], // 212,
+        'id_mem': [{ value: '' }], // 126,
+        'reg_cpp_tip_id': [{ value: ''}], // 2,
+        'reg_cpp_id': [{ value: ''}], // 1034,
+        'grad_prof_cpp_id': [{ value: ''}], // 1,
+        'date_start': [{ value: '' }], // '2007-12-01',
+        'date_end': [{ value: '' }], // '0000-00-00',
+        'emitent': [{ value: ''}], // 'MS',
+        'act_serie': [{ value: '' }], // 'ZX',
+        'act_numar': [{ value: '' }], // 1234,
+        'act_data': [{ value: '' }], // '2008-01-08',
+        'act_descriere': [{ value: '' }], // '',
+        'obs': [{ value: '' }], // 'nu are',
+        'updated': [{ value: '' }], // '2017-04-08 09:59:32',
+        'ro': [{ value: '' }], // 'false'
+    });
+  }
+
+  addCpp() {
+    const control = <FormArray>this.formCpps.controls['cpps'];
+    control.push(this.initCpps());
+  }
+
+  removeCpp(i: number) {
+    const control = <FormArray>this.formCpps.controls['cpps'];
+    control.removeAt(i);
+  }
+
+  save(model: Cpp) {
+    console.log(this.formCpps);
   }
 
 }
