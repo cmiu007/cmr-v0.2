@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="content">
-  <form [formGroup]="formCpps" novalidate (ngSubmit)="save(formCpps)">
+  <form [formGroup]="formCpps" (ngSubmit)="save(formCpps)">
     <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
     <md-card>
       <md-card-title>
@@ -9,86 +9,23 @@
     </md-card>
     <md-card>
       <md-card-content>
-        <button type="submit">
+        <button *ngIf="!loading" type="submit">
           Submit
         </button>
       </md-card-content>
     </md-card>
-    <div formArrayName="cpps">
-    <md-card *ngFor="let cpp of formCpps.controls.cpps.controls; let i = index">
+    <!-- <div formArrayName="cpps">
+      <md-card *ngFor="let cpp of formCpps.controls.cpps.controls; let i = index">
 
-      <md-card-content>
-        <span>Control {{ i + 1}}</span>
-        <div class="row" [formGroupName]=i>
-                        <p><span class="full-width" (click)="cpp.hide = !cpp.hide">Tip {{cpp.get('reg_cpp_tip_id').value}} nume {{cpp.get('reg_cpp_id').value}} activ / inactiv</span></p>
-            <div [hidden]="!cpp.hide">
-              <div class="row">
-                <!-- <md-input-container>
-                  <input mdInput placeholder="Tip" type="number" formControlName="reg_cpp_tip_id">
-                </md-input-container> -->
-                <md-select placeholder="Tip" formControlName="reg_cpp_tip_id">
-                <md-option *ngFor="let tip_cpp of listaCppTip" [value]="tip_cpp.id">
-                  {{ tip_cpp.nume }}
-                </md-option>
-                </md-select>
-                <md-input-container>
-                  <input mdInput placeholder="Denumire" type="text" formControlName="reg_cpp_id" [mdAutocomplete]="denAuto">
-                </md-input-container>
+        <md-card-content>
+          <span>Control {{ i + 1}}</span>
+          <div class="row" [formGroupName]=i>
+            <app-cpp [cppForm]="formCpps.controls.cpps.controls[i]"></app-cpp>
+          </div>
+        </md-card-content>
+      </md-card>
+    </div> -->
 
-                <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayFnCpp.bind(this)">
-                  <md-option *ngFor="let denumire of listaCpp" [value]="denumire.id">
-                    {{ denumire.nume }}
-                  </md-option>
-                </md-autocomplete>
-
-                <!-- <md-input-container>
-                  <input mdInput placeholder="Grad" type="text" formControlName="grad_prof_cpp_id">
-                </md-input-container> -->
-                <md-select placeholder="Grad" formControlName="grad_prof_cpp_id">
-                  <md-option  *ngFor="let grad of listaGradCpp" [value]="grad.id" >
-                    {{ grad.nume }}
-                  </md-option>
-                </md-select>
-                <md-input-container>
-                  <input mdInput placeholder="Start date" type="text" formControlName="date_start">
-                </md-input-container>
-                <md-input-container>
-                  <input mdInput placeholder="End date" type="text" formControlName="date_end">
-                </md-input-container>
-              </div>
-              <div class="row">
-                <!-- <md-input-container>
-                  <input mdInput placeholder="Tip Document" type="number" formControlName="emitent">
-                </md-input-container> -->
-                <md-select placeholder="Emitent" formControlName="emitent">
-                  <md-option *ngFor="let emitent of listaEmitent" [value]="emitent.id">
-                    {{ emitent.nume }}
-                  </md-option>
-                </md-select>
-                <md-input-container>
-                  <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
-                </md-input-container>
-                <md-input-container>
-                  <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
-                </md-input-container>
-                <md-input-container>
-                  <input mdInput placeholder="Data" type="text" formControlName="act_data">
-                </md-input-container>
-                <md-input-container>
-                  <input mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere">
-                </md-input-container>
-              </div>
-              <!-- <div class="row">
-                <p>Obs: {{formCpp.get('obs').value}}</p>
-                <p>id_cpp: {{formCpp.get('id_cpp').value}}</p>
-                <p>id_mem: {{formCpp.get('id_mem').value}}</p>
-                <p>updated: {{formCpp.get('updated').value}}</p>
-                <p>ro: {{formCpp.get('ro').value}}</p>
-              </div> -->
-            </div>
-        </div>
-      </md-card-content>
-    </md-card>
-    </div>
+    <app-cpp-list  *ngIf="!loading" [formCpps]="formCpps" [cppFormData]="formData"></app-cpp-list>
   </form>
 </div>

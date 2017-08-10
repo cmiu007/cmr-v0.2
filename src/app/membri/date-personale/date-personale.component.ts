@@ -108,13 +108,13 @@ export class DatePersonaleComponent implements OnInit {
       .map(judet => judet && typeof judet === 'object' ? judet.nume : judet)
       .map(nume => nume ? this.filterJud(nume) : this.listaJudete.slice());
     this.nomeclatorService.getNomenclator('tara')
-      .subscribe(data => { this.listaTari = data });
+      .subscribe(data => { this.listaTari = data; });
     this.filtruTari = this.formDatePersonale.get('cetatenie').valueChanges
       .startWith(null)
       .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
       .map(nume => nume ? this.filterTari(nume) : this.listaTari.slice());
     this.nomeclatorService.getNomenclator('facultate')
-      .subscribe(data => { this.listaFac = data });
+      .subscribe(data => { this.listaFac = data; });
     this.filtruFac = this.formDatePersonale.get('fac_absolv').valueChanges
       .startWith(null)
       .map(fac => fac && typeof fac === 'object' ? fac.nume : fac)

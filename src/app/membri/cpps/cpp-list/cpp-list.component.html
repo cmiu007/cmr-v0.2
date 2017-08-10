@@ -1,0 +1,7 @@
+<div [formGroup]="formCpps" >
+  <div formArrayName="cpps">
+    <div *ngFor="let cpp of cppFormData">
+      <app-cpp-item [cppCtrl]="formCpps.controls" [cppData]="cpp"></app-cpp-item>
+    </div>
+  </div>
+</div>
