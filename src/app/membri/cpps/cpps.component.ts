@@ -21,15 +21,44 @@ export class CppsComponent implements OnInit {
   loading = true;
   formCpps: FormGroup;
 
-  constructor(private _fb: FormBuilder) { }
+  constructor(
+    private _fb: FormBuilder,
+    private _memService: MembriService,
+    private _aRoute: ActivatedRoute,
+    private _router: Router,
+    private _snack: MdSnackBar
+  ) { }
 
   ngOnInit() {
     this.formCpps = this._fb.group({
       cpps: this._fb.array([
-        this.initCpps()
+        // this.initCpps()
       ])
     });
-    this.loading = false;
+    this.getFormCppData();
+    // get form data
+    // get autocomplete data
+    // this.loading = false;
+  }
+
+  getFormCppData() {
+    this._memService.listaMembruDate('cpp', this._aRoute.snapshot.params['id'])
+      .subscribe(
+        data => {
+          if (data.result === '12') {
+            this._snack.open( data.mesaj, 'inchide', {duration: 5000});
+            this._router.navigate(['/login']);
+          } else {
+            for (let i = 0; i < data.length; i++) {
+              // this.initCpps(data[i]);
+              const control = <FormArray>this.formCpps.controls['cpps'];
+              control.push(this.initCpps());
+              control.patchValue(data);
+            }
+          }
+        }
+      );
+      this.loading = false;
   }
 
   initCpps() {
@@ -54,7 +83,7 @@ export class CppsComponent implements OnInit {
 
   addCpp() {
     const control = <FormArray>this.formCpps.controls['cpps'];
-    control.push(this.initCpps());
+    // control.push(this.initCpps('a'));
   }
 
   removeCpp(i: number) {
