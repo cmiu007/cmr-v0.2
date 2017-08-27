@@ -33,6 +33,8 @@ import { CppsComponent } from './membri/cpps/cpps.component';
 import { CppComponent } from './membri/cpp/cpp.component';
 import { CppListComponent } from './membri/cpps/cpp-list/cpp-list.component';
 import { CppItemComponent } from './membri/cpps/cpp-item/cpp-item.component';
+import { CppResolve } from './shared/resolvers/cpp.resolver';
+
 
 @NgModule({
   declarations: [
@@ -68,7 +70,8 @@ import { CppItemComponent } from './membri/cpps/cpp-item/cpp-item.component';
     fakeBackendProvider,
     MockBackend,
     BaseRequestOptions,
-    NomenclatorService
+    NomenclatorService,
+    CppResolve
   ],
   bootstrap: [AppComponent]
 })

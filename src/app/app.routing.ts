@@ -9,6 +9,7 @@ import { CppsComponent } from './membri/cpps/cpps.component';
 
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
+import { CppResolve } from './shared/resolvers/cpp.resolver';
 
 
 const appRoutes: Routes = [
@@ -17,11 +18,11 @@ const appRoutes: Routes = [
     {path: 'nou', component: DatePersonaleComponent },
     {path: ':id/datepersonale', component: DatePersonaleComponent },
     {path: ':id/cpp', component: CppComponent },
-    {path: ':id/cpp2', component: CppsComponent }
+    {path: ':id/cpp2', component: CppsComponent, resolve: {regCpp: CppResolve} }
   ]},
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},
-  {path: 'test2', component: Test2Component},
+  {path: 'test2', component: Test2Component, resolve: {regCpp: CppResolve}},
   {path: '**', redirectTo: ''}
 ];
 

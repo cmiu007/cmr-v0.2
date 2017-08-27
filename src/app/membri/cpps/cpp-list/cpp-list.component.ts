@@ -15,11 +15,12 @@ export class CppListComponent implements OnInit {
   @Input('cppFormData')
   public cppFormData: Cpp[];
 
+  @Input('regCpp')
+  public regCpp;
+
   constructor(private _cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // console.log(this.formCpps);
-    console.log(this.cppFormData);
     this.formCpps.addControl('cpps', new FormArray([]));
   }
 }

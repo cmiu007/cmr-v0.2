@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -44,8 +44,9 @@ export class CppsComponent implements OnInit, AfterViewInit {
     { id: 'AL', nume: 'Altul'}
   ];
 
+  regCpp;
   // TODO: de facut interface pt listaCpp?
-  itemRegCpp: ItemRegCpp[];
+  // itemRegCpp: ItemRegCpp[];
   filtruCpp: Observable<ItemRegCpp[]>;
 
   constructor(
@@ -53,6 +54,7 @@ export class CppsComponent implements OnInit, AfterViewInit {
     private _memService: MembriService,
     private _aRoute: ActivatedRoute,
     private _router: Router,
+    private _rounterSnapshot: ActivatedRoute,
     private _snack: MdSnackBar,
     private _nomenclator: NomenclatorService
   ) { }
@@ -60,16 +62,7 @@ export class CppsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.formCpps = this.toFormGroup();
     this.getFormCppData();
-    // this.formCpps = this._fb.group({
-    //   cpps: this._fb.array([
-    //     // this.initCpps()
-    //   ])
-    // });
-    // this.formCpps = this.toFormGroup(this.formData);
-    this._nomenclator.getNomenclator('cpp')
-      .subscribe(data => {
-        this.itemRegCpp = data;
-      });
+    this.regCpp = this._rounterSnapshot.snapshot.data['regCpp'];
   }
 
   ngAfterViewInit() {
@@ -86,12 +79,6 @@ export class CppsComponent implements OnInit, AfterViewInit {
             this._router.navigate(['/login']);
           } else {
             this.formData = data;
-            // for (let i = 0; i < data.length; i++) {
-            //   // this.initCpps(data[i]);
-            //   const control = <FormArray>this.formCpps.controls['cpps'];
-            //   control.push(this.initCpps());
-            //   control.patchValue(data);
-            // }
             this.loading = false;
           }
         }
@@ -102,7 +89,6 @@ export class CppsComponent implements OnInit, AfterViewInit {
   toFormGroup() {
     const formGroup = this._fb.group({
       cpps: this._fb.array([
-        // this.initCpps(data)
       ])
     });
     return formGroup;
@@ -148,7 +134,7 @@ export class CppsComponent implements OnInit, AfterViewInit {
 
   displayFnCpp(option: number) {
     if (option) {
-      return this.itemRegCpp.find(item => item.id === option).nume;
+      return this.regCpp.find(item => item.id === option).nume;
     }
   }
 

@@ -1,7 +1,7 @@
 <div [formGroup]="cppForm" >
           <md-card>
             <md-card-content>
-              <p><span class="full-width" (click)="hide = !hide">Tip {{cppForm.value.reg_cpp_tip_id}} nume {{cppForm.value.reg_cpp_id}} activ / inactiv</span></p>
+              <p><span class="full-width" (click)="hide = !hide">cppId: {{ cppForm.value.id_cpp }} | Tip {{cppForm.value.reg_cpp_tip_id}} nume {{cppForm.value.reg_cpp_id}} activ / inactiv</span></p>
             <div [hidden]="!hide">
               <div class="row">
                 <!-- <md-input-container>
@@ -18,7 +18,7 @@
 
                 <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayFnCpp.bind(this)">
                   <md-option *ngFor="let denumire of listaCpp" [value]="denumire.id">
-                    {{ denumire.nume }}
+                    {{ denumire.nume}}
                   </md-option>
                 </md-autocomplete>
 

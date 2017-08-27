@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -20,15 +21,19 @@ export class Test2Component implements OnInit {
   myControl: FormControl;
   options = [];
   filteredOptions: Observable<Judet[]>;
+  cpp;
 
   constructor(
     private nomeclatorService: NomenclatorService,
-    private globalVar: GlobalDataService
+    private globalVar: GlobalDataService,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.globalVar.shareObj['global'] = 'data';
-    console.log(this.globalVar.shareObj['apiAdress']);
+    // this.globalVar.shareObj['global'] = 'data';
+    // console.log(this.globalVar.shareObj['apiAdress']);
+    this.cpp = this._route.snapshot.data['regCpp'];
+    console.log(this.cpp);
   }
 
   show() {
