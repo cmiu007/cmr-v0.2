@@ -127,28 +127,6 @@ export class CppsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addCpp() {
-    const control = <FormArray>this.formCpps.controls['cpps'];
-    const a = this._fb.group({
-      'id_cpp': [{ value: '' }], // 212,
-      'id_mem': [{ value: '' }], // 126,
-      'reg_cpp_tip_id': [{ value: '' }], // 2,
-      'reg_cpp_id': [{ value: '' }], // 1034,
-      'grad_prof_cpp_id': [{ value: '' }], // 1,
-      'date_start': [{ value: '' }], // '2007-12-01',
-      'date_end': [{ value: '' }], // '0000-00-00',
-      'emitent': [{ value: '' }], // 'MS',
-      'act_serie': [{ value: '' }], // 'ZX',
-      'act_numar': [{ value: '' }], // 1234,
-      'act_data': [{ value: '' }], // '2008-01-08',
-      'act_descriere': [{ value: '' }], // '',
-      'obs': [{ value: '' }], // 'nu are',
-      'updated': [{ value: '' }], // '2017-04-08 09:59:32',
-      'ro': [{ value: '' }], // 'false'
-    });
-    control.push(a);
-    console.log(this.formCpps);
-  }
 
   removeCpp(i: number) {
     const control = <FormArray>this.formCpps.controls['cpps'];

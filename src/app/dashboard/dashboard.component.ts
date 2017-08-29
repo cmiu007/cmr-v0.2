@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
         this.emptySearchResult = true;
       }
       this.loading = false;
+      console.log(response);
       this.membri = response;
     });
   }

@@ -1,8 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Cpp } from '../../../shared/interfaces/cpps.interface';
-import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { NomenclatorService } from '../../../services/nomenclator.service';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { NumeCpp } from '../../../shared/models/registre.model';
+import { RegCpp } from '../../../shared/interfaces/listacpp.interface';
 
 @Component({
   selector: 'app-cpp-item',
@@ -14,8 +17,10 @@ export class CppItemComponent implements OnInit {
   @Input('cppCtrl')
   public cppCtrl: FormArray;
 
-  @Input('cppData')
-  public cppData: Cpp;
+  @Input('cppItem')
+  public cppItem: Cpp;
+
+  isHidden = true;
 
   // formStatus:
   // 0 - new - all field are enabled - addBtn
@@ -25,12 +30,13 @@ export class CppItemComponent implements OnInit {
   // TODO: de implementat roluri pt dezvoltarea ulterioara
   formStatus = 0; // new form
   isAdmin = false;
-  isSpecialitate = true; // hide grad_prog_cpp_id
-  regCpp;
+  isSpecialitate = false; // hide grad_prog_cpp_id
+  filteredNumeCpp: Observable<NumeCpp[]>;
+  regCpp: NumeCpp[];
+  formTitle: string;
 
   public cppForm: FormGroup;
 
-  listaCpp = [];
 
   listaCppTip = [
     { id: 1, nume: 'Rezident' },
@@ -57,20 +63,30 @@ export class CppItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cppForm = this.toFormGroup(this.cppData);
+    this.cppForm = this.toFormGroup(this.cppItem);
     this.regCpp = this._route.snapshot.data['regCpp'];
-    // TODO: set form type ro/rw/admin
     this.setFormStatus();
     this.setFormFields();
-    // TODO: set form type specialitateMedicala/altul
-    if (this.cppData.reg_cpp_tip_id !== 2) {
-      this.isSpecialitate = false;
+    this.setFormTitle();
+    // TODO: set form type specialitateMedicala/nou sau altul pt grad cpp
+    if (this.cppItem.reg_cpp_tip_id === 2 || this.formStatus === 0) {
+      this.isSpecialitate = true;
     }
+    // console.log(this.cppForm.get('reg_cpp_id').valueChanges);
+    // console.log(this.cppForm);
+    this.filteredNumeCpp = this.cppForm.get('reg_cpp_id').valueChanges
+      .startWith(null)
+      .map(cppNume => cppNume && typeof cppNume === 'object' ? cppNume.nume : cppNume)
+      .map(name => name ? this.filterCpp(name) : this.regCpp.slice());
   }
 
-  displayFnCpp(option) {
-    if (option) {
-      return this.regCpp.find(item => item.id === option).nume;
+  filterCpp(nume: string): NumeCpp[] {
+    return this.regCpp.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  displayFnCpp(numeCpp: number): string {
+    if (numeCpp) {
+      return this.regCpp.find(item => item.id === numeCpp).nume;
     }
   }
 
@@ -89,7 +105,7 @@ export class CppItemComponent implements OnInit {
   }
 
   displayFnActiv() {
-    if (this.cppData.date_end === '') {
+    if (this.cppItem.date_end === '') {
       return 'Activ';
     } else {
       return 'Inactiv';
@@ -115,24 +131,30 @@ export class CppItemComponent implements OnInit {
       'ro': [{ value: '' }], // 'false'
     });
     // clean 0000-00-00 and 0
-    Object.keys(this.cppData).forEach(
+    Object.keys(this.cppItem).forEach(
       key => {
-        if (this.cppData[key] === '0000-00-00' || this.cppData[key] === 0 ) {
-          this.cppData[key] = '';
+        if (this.cppItem[key] === '0000-00-00' || this.cppItem[key] === 0) {
+          this.cppItem[key] = '';
         }
       }
     );
     // this.tipCpp = this.displayFn();
     formGroup.patchValue(data);
-    // this.cppCtrl.push(formGroup);
+    this.cppCtrl['cpps'].controls.push(formGroup);
     return formGroup;
   }
 
   setFormStatus() {
+    if (this.cppForm.get('id_cpp').value === null) {
+      this.formStatus = 0;
+      this.isHidden = false;
+      return false;
+    }
     if (this.isAdmin === true) {
       this.formStatus = 1;
+      return false;
     } else {
-      if (this.cppData.date_end === '') {
+      if (this.cppItem.date_end === '') {
         this.formStatus = 2;
       } else {
         this.formStatus = 3;
@@ -140,6 +162,15 @@ export class CppItemComponent implements OnInit {
     }
   }
 
+  setFormTitle(): void {
+    if (this.formStatus === 0 ) {
+      this.formTitle = 'Inregistrare noua';
+      return;
+    }
+    const cppTip = this.displayFn(this.cppForm.controls['reg_cpp_tip_id'].value, 'cppTip');
+    const cppNume = this.displayFnCpp(this.cppForm.controls['reg_cpp_id'].value);
+    this.formTitle = cppTip + ' ' + cppNume;
+  }
   setFormFields() {
     switch (this.formStatus) {
       case 0:
@@ -149,24 +180,16 @@ export class CppItemComponent implements OnInit {
         break;
 
       case 2:
-        const fieldsDisabled = [ 'reg_cpp_tip_id', 'reg_cpp_id', 'grad_prof_cpp_id', 'date_start'];
+        const fieldsDisabled = ['reg_cpp_tip_id', 'reg_cpp_id', 'grad_prof_cpp_id', 'date_start'];
         fieldsDisabled.forEach(
           key => {
-            this.cppForm.controls[key].disable() ;
+            this.cppForm.controls[key].disable();
           }
         );
-        // this.cppForm.controls['reg_cpp_tip_id'].disable();
-        // console.log(this.cppForm.controls['reg_cpp_tip_id'].value) ;
         break;
 
       case 3:
         this.cppForm.disable();
-        // Object.keys(this.cppForm.controls).forEach(
-        //   key => {
-        //     this.cppForm.controls[key].disable() ;
-        //   }
-        // );
-
         break;
 
       default:
