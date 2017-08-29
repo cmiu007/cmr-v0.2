@@ -21,11 +21,4 @@
 
     <app-cpp-list *ngIf="!loading" [formCpps]="formCpps" [cppFormData]="formData"></app-cpp-list>
   </form>
-  <md-card>
-    <md-card-content>
-      <button *ngIf="!loading" md-raised-button (click)="addCpp()" color="primary">
-              Adauga Cpp
-            </button>
-    </md-card-content>
-  </md-card>
 </div>

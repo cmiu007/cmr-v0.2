@@ -5,7 +5,16 @@
     </md-card-title>
     <md-card-content>
       <p>Lista cpp</p>
+      <md-input-container>
+        <input type="text" mdInput [formControl]="myControl" [mdAutocomplete]="auto">
+      </md-input-container>
 
+      <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayRegCpp.bind(this)">
+        <md-option *ngFor="let option of filteredNumeCpp | async" [value]="option.id">
+          {{ option.nume }}
+        </md-option>
+      </md-autocomplete>
+      <span>Control value: {{ myControl.value }}</span>
     </md-card-content>
   </md-card>
 </div>
