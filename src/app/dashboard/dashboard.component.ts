@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MdSnackBar } from '@angular/material';
 
 import { User } from '../shared/models/user.model';
 import { UserService } from '../services/user.service';
@@ -21,7 +22,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService,
               private membriService: MembriService,
-              private router: Router) {}
+              private router: Router,
+              private snackBar: MdSnackBar) {}
 
   ngOnInit() {
     this.searchForm = new FormGroup ({
@@ -61,4 +63,8 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/membri', id , actiune]);
   }
 
+  onNewMember(): void {
+    localStorage.setItem('currentMemNume', 'Membru Nou');
+    this.router.navigate(['/membri/nou']);
+  }
 }

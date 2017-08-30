@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -51,7 +51,7 @@ export class DatePersonaleComponent implements OnInit {
     { id: 2, nume: 'Adeverinta' },
     { id: 3, nume: '(UE) Diploma' },
     { id: 4, nume: 'Confirmare MS' } // TODO: de clarificat la avizari denumirea pt medicii care au absolvit in alte tari
-  ]
+  ];
 
   constructor(
     private membriService: MembriService,
@@ -89,6 +89,7 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('loading');
     localStorage.setItem('currentPage', 'Date Personale');
     this.fillFormData();
     // get nomeclatoare & set filters
@@ -100,7 +101,7 @@ export class DatePersonaleComponent implements OnInit {
           //  de scos Buc Sectoare din lista
           // acelasi lucru sa fie facut dinamic si pt CPP
           .filter(option => option.nume !== 'ADM')
-          .filter(option => option.nume !== 'CMR')
+          .filter(option => option.nume !== 'CMR');
         // .filter(option => option.nume !== new RegExp(`Alb`, 'gm'));;
       }
       );
@@ -152,9 +153,7 @@ export class DatePersonaleComponent implements OnInit {
       this.formStatus = 1;
     }
     // check if admin set: jud_id = 160 (ADM)
-
     if ((JSON.parse(localStorage.getItem('currentUser'))).cmj === 160) {
-      console.log('hit 129')
       this.formStatus = 3;
     }
 
@@ -196,28 +195,29 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('fac_absolv').enable();
     this.formDatePersonale.get('fac_promotie').enable();
     // TODO: completeaza automat judet pe baza jud_id al operatorului
+    this.formDatePersonale.get('jud_id').enable();
+    this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
   }
 
   enableAdmin() {
     this.enableRW();
     this.enableNewMember();
     this.formDatePersonale.get('jud_id').enable();
-
   }
 
   filterJud(nume: string): Judet[] {
     return this.listaJudete
-      .filter(option => new RegExp(`^${nume}`, 'gi').test(option.nume));
+      .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   filterTari(nume: string): Tara[] {
     return this.listaTari
-      .filter(option => new RegExp(`^${nume}`, 'gi').test(option.nume));
+      .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   filterFac(nume: string): Fac[] {
     return this.listaFac
-      .filter(option => new RegExp(`^${nume}`, 'gi').test(option.nume));
+      .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   resetValue(formName) {
@@ -246,7 +246,7 @@ export class DatePersonaleComponent implements OnInit {
 
   checkCNP(control: FormGroup): { [s: string]: boolean } {
     // TODO: de verificat daca mai exista in baza de date!!
-    let testValCNP = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
+    const testValCNP = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
     let splitCNP = [];
     splitCNP = String(control.value).split('');
     let sum = 0;
@@ -255,9 +255,9 @@ export class DatePersonaleComponent implements OnInit {
     } else {
       for (let i = 0; i < testValCNP.length; i++) {
         sum = sum + splitCNP[i] * testValCNP[i];
-      };
-      if (sum % 11 != splitCNP[12]) {
-        return { 'cnpCtrlSumInvalid': true }
+      }
+      if ((sum % 11) !== +splitCNP[12]) {
+        return { 'cnpCtrlSumInvalid': true };
       } else {
         return null;
       }
@@ -265,18 +265,18 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   checkAnPromotie(control: FormGroup): { [s: string]: boolean } {
-    let today = new Date();
+    const today = new Date();
     if (control.value < 1950) {
       return { 'yearIsTooSmall': true };
     }
     if (control.value > today.getFullYear()) {
       return { 'yearIsInTheFuture': true };
     }
-    return null
+    return null;
   }
 
   checkDate(control: FormGroup): { [s: string]: boolean } {
-    var validateDateISO = /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
+    const validateDateISO = /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
     return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
     // TODO: check if date is in the past or in the future
     // let today = new Date();
@@ -289,8 +289,39 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   // log submit
-   log() {
-    console.log(this.formDatePersonale);
+  editDateMember() {
+    if (this.formStatus === 2) {
+      const memData = this.formDatePersonale.value;
+      this.membriService.adaugaMembruDate(this.formDatePersonale.value)
+        .subscribe(
+        data => {
+          if (data.result !== '00') {
+            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            if (data.result === '12') {
+              this.router.navigate(['/login']);
+            }
+          } else {
+            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            localStorage.setItem('currentMemNume',
+              (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+            this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
+          }
+        }
+        );
+      return;
+    }
+    this.formDatePersonale.get('jud_id').enable();
+    this.membriService.modificaMembruDate('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
+      .subscribe(
+        data => {
+          if (data.result !== '00') {
+            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+          } else {
+            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            this.router.navigate(['/membri', localStorage.getItem('currentMemId'), 'datepersonale']); // de adaugat id-ul
+          }
+        }
+      );
   }
 
   test() {
