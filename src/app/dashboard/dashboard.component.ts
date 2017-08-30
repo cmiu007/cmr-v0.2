@@ -27,7 +27,13 @@ export class DashboardComponent implements OnInit {
     this.searchForm = new FormGroup ({
       'searchMem': new FormControl(null, [Validators.required])
     });
+    this.setLocalStorage();
+  }
+
+  setLocalStorage(): void {
     localStorage.removeItem('currentMemNume');
+    localStorage.removeItem('currentMemId');
+    localStorage.removeItem('currentMemCuim');
     localStorage.setItem('currentPage', 'Pagina de start');
   }
 
@@ -51,6 +57,8 @@ export class DashboardComponent implements OnInit {
       this.membri.find(item => item.id === id).nume
       + ' '
       + this.membri.find(item => item.id === id).prenume);
+    localStorage.setItem('currentMemId', id);
+    localStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
     this.router.navigate(['/membri', id , actiune]);
   }
 
