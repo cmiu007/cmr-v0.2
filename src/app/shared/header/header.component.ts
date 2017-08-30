@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
   userJudet: string;
   currentMemNume: string;
   currentPage: string;
+  hideMemNume = true;
   constructor(private router: Router,
   private activeRoute: ActivatedRoute) { }
 
@@ -25,6 +26,11 @@ export class HeaderComponent implements OnInit {
 
   getMemNume(): void {
     this.currentMemNume = localStorage.getItem('currentMemNume');
+    if (this.currentMemNume !== null ) {
+      this.hideMemNume = false;
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   onClickMem(actiune: string) {
