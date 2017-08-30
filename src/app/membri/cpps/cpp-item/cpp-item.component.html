@@ -1,8 +1,13 @@
 <div [formGroup]="cppForm">
     <md-card>
+      <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
+          <span>{{ formTitle }}</span>
+          <span>
+          <md-icon class="icon-align">keyboard_arrow_down</md-icon>
+          </span>
+      </md-card-title>
       <md-card-content>
-        <p><span class="full-width" (click)="isHidden = !isHidden"  style="cursor: pointer;">{{ formTitle }}</span></p>
-        <div [hidden]="isHidden">
+        <div class="form-item-content" [hidden]="isHidden">
           <div class="row">
             <md-select placeholder="Tip" formControlName="reg_cpp_tip_id">
               <md-option *ngFor="let tip_cpp of listaCppTip" [value]="tip_cpp.id">

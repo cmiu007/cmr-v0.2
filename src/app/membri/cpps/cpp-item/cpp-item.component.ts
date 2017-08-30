@@ -169,7 +169,7 @@ export class CppItemComponent implements OnInit {
     }
     const cppTip = this.displayFn(this.cppForm.controls['reg_cpp_tip_id'].value, 'cppTip');
     const cppNume = this.displayFnCpp(this.cppForm.controls['reg_cpp_id'].value);
-    this.formTitle = cppTip + ' ' + cppNume;
+    this.formTitle = cppNume + ' - ' + cppTip;
   }
   setFormFields() {
     switch (this.formStatus) {
