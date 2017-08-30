@@ -2,7 +2,7 @@
 <div class="content">
   <form [formGroup]="formDatePersonale" ngSubmit="onFormSubmit()">
     <md-card *ngIf="formStatus === 3">
-      <md-card-title><span class="full-width">Administrare (form  status: {{formStatus}})</span></md-card-title>
+      <md-card-title  class="form-title"><span class="full-width">Administrare (form  status: {{formStatus}})</span></md-card-title>
       <md-card-content>
 
         <md-input-container>
@@ -36,7 +36,7 @@
 
     <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
     <md-card>
-      <md-card-title>
+      <md-card-title  class="form-title">
         <span class="full-width">Act Identitate</span>
       </md-card-title>
       <md-card-content>
@@ -93,7 +93,7 @@
     </md-card>
 
     <md-card>
-      <md-card-title>
+      <md-card-title  class="form-title">
         <span class="full-width">Facultatea Absolvita</span>
       </md-card-title>
       <md-card-content>
@@ -120,7 +120,7 @@
     </md-card>
 
     <md-card>
-      <md-card-title>
+      <md-card-title  class="form-title">
         <span class="full-width">Diploma facultate</span>
       </md-card-title>
       <md-card-content>
@@ -149,7 +149,7 @@
     </md-card>
 
     <md-card>
-      <md-card-title><span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span></md-card-title>
+      <md-card-title  class="form-title"><span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span></md-card-title>
       <md-card-content>
 
         <md-input-container>
