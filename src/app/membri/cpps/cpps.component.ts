@@ -60,6 +60,7 @@ export class CppsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    localStorage.setItem('currentPage', 'Pregatire Postuniversitara');
     this.getFormCppData();
     this.formCpps = this.toFormGroup();
     // get prefetched data

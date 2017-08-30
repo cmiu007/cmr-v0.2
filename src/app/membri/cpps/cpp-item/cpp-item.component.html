@@ -1,7 +1,7 @@
 <div [formGroup]="cppForm">
     <md-card>
       <md-card-content>
-        <p><span class="full-width" (click)="isHidden = !isHidden">{{ formTitle }}</span></p>
+        <p><span class="full-width" (click)="isHidden = !isHidden"  style="cursor: pointer;">{{ formTitle }}</span></p>
         <div [hidden]="isHidden">
           <div class="row">
             <md-select placeholder="Tip" formControlName="reg_cpp_tip_id">

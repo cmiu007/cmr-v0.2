@@ -21,14 +21,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService,
               private membriService: MembriService,
-              private router: Router) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
+              private router: Router) {}
 
   ngOnInit() {
     this.searchForm = new FormGroup ({
       'searchMem': new FormControl(null, [Validators.required])
     });
+    localStorage.removeItem('currentMemNume');
+    localStorage.setItem('currentPage', 'Pagina de start');
   }
 
   onSearch(searchVal: string) {
@@ -46,8 +46,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onClickMem(id: string) {
-    this.router.navigate(['/membri', id , 'datepersonale']);
+  onClickMem(id: string, actiune: string) {
+    localStorage.setItem('currentMemNume',
+      this.membri.find(item => item.id === id).nume
+      + ' '
+      + this.membri.find(item => item.id === id).prenume);
+    this.router.navigate(['/membri', id , actiune]);
   }
 
 }

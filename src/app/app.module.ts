@@ -30,7 +30,6 @@ import { DatePersonaleComponent } from './membri/date-personale/date-personale.c
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
 import { CppsComponent } from './membri/cpps/cpps.component';
-import { CppComponent } from './membri/cpp/cpp.component';
 import { CppListComponent } from './membri/cpps/cpp-list/cpp-list.component';
 import { CppItemComponent } from './membri/cpps/cpp-item/cpp-item.component';
 import { CppResolve } from './shared/resolvers/cpp.resolver';
@@ -47,7 +46,6 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     TestComponent,
     Test2Component,
     CppsComponent,
-    CppComponent,
     CppListComponent,
     CppItemComponent
   ],

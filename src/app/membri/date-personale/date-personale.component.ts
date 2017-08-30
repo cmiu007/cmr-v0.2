@@ -89,6 +89,7 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.setItem('currentPage', 'Date Personale');
     this.fillFormData();
     // get nomeclatoare & set filters
     this.nomeclatorService.getNomenclator('jud')
