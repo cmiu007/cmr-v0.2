@@ -99,6 +99,8 @@ export class MembriService {
   checkResponse(response) {
     if (response.json().result === '12') {
       this.snackBar.open(response.json().mesaj, 'inchide', { duration: 5000 });
+      // TODO: de rezolvat
+      // this.router.navigate(['/login'], {queryParams: { returnUrl: this.router.url }});
       this.router.navigate(['/login']);
     }
   }
