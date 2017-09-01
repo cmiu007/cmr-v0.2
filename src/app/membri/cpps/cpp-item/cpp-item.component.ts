@@ -1,11 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { FormArray, FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { NomenclatorService } from '../../../services/nomenclator.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { MdSnackBar } from '@angular/material';
+
+import { Cpp } from '../../../shared/interfaces/cpps.interface';
+import { NomenclatorService } from '../../../services/nomenclator.service';
+import { MembriService } from '../../../services/membri.service';
 import { NumeCpp } from '../../../shared/models/registre.model';
 import { RegCpp } from '../../../shared/interfaces/listacpp.interface';
+import { CppsComponent } from '../cpps.component';
+import { CppListComponent } from '../cpp-list/cpp-list.component';
 
 @Component({
   selector: 'app-cpp-item',
@@ -59,7 +64,10 @@ export class CppItemComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _memService: MembriService,
+    private _snackBar: MdSnackBar,
+    private _router: Router
   ) { }
 
   ngOnInit() {
@@ -163,7 +171,7 @@ export class CppItemComponent implements OnInit {
   }
 
   setFormTitle(): void {
-    if (this.formStatus === 0 ) {
+    if (this.formStatus === 0) {
       this.formTitle = 'Inregistrare noua';
       return;
     }
@@ -197,7 +205,55 @@ export class CppItemComponent implements OnInit {
     }
   }
 
-  onClick() {
-    console.log(this.cppForm);
+  onClickCpp(): void {
+    if (this.formStatus === 0) {
+      const newCppData = {
+        id_mem: localStorage.getItem('currentMemId'),
+        reg_cpp_tip_id: this.cppForm.get('reg_cpp_tip_id').value,
+        reg_cpp_id: this.cppForm.get('reg_cpp_id').value,
+        grad_prof_cpp_id: this.cppForm.get('grad_prof_cpp_id').value,
+        date_start: this.cppForm.get('date_start').value,
+        date_end: this.cppForm.get('date_end').value,
+        emitent: this.cppForm.get('emitent').value,
+        act_serie: this.cppForm.get('act_serie').value,
+        act_numar: this.cppForm.get('act_numar').value,
+        act_data: this.cppForm.get('act_data').value,
+        act_descriere: this.cppForm.get('act_descriere').value,
+        obs: this.cppForm.get('obs').value
+      };
+      this._memService.adaugaMembruDate('cpp', newCppData)
+        .subscribe(
+        data => {
+          if (data.result !== '00') {
+            this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            if (data.result === '12') {
+              this._router.navigate(['/login']);
+            }
+          } else {
+            this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            // CppListComponent.addActive = true;
+            CppsComponent.returned.next('test');
+            CppListComponent.addNewActive.next(true);
+          }
+        }
+      );
+      return;
+    }
+    // modifica cpp
+    this._memService.modificaMembruDate('cpp', this.cppForm.get('id_cpp').value, this.cppForm.value)
+    .subscribe(
+      data => {
+        if (data.result !== '00') {
+          this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+          if (data.result === '12') {
+            this._router.navigate(['/login']);
+          }
+        } else {
+          this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+        }
+      }
+      );
+    return;
+    // TO DO: de facut reload
   }
 }

@@ -32,16 +32,18 @@ export class MembriService {
       });
   }
 
-  adaugaMembruDate(data) {
+  adaugaMembruDate(actiune: string, data: any) {
     // de pus tip data
     const token = localStorage.getItem('userToken');
     const memData = JSON.stringify({
       'token': token,
-      'actiune': 'date_personale',
+      'actiune': actiune,
       'data': data
     });
+    console.log(memData);
     return this.http.put( this.apiAddress + 'api/adauga', memData)
       .map((response: Response) => {
+        console.log(response.json());
         this.checkResponse(response);
         return response.json();
       });

@@ -58,8 +58,8 @@
               <input mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere">
             </md-input-container>
           </div>
-          <div class="row" style="text-align: center;">
-            <button type="button" *ngIf="!loading" md-raised-button (click)="onClick()" color="primary">
+          <div class="row" *ngIf="formStatus !== 3" style="text-align: center;">
+            <button type="button" *ngIf="!loading" md-raised-button (click)="onClickCpp()" color="primary" [disabled]="cppForm.invalid || cppForm.untouched">
                        {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} pregatire profesionala postuniversitara
             </button>
           </div>

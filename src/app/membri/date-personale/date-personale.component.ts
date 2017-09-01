@@ -47,7 +47,7 @@ export class DatePersonaleComponent implements OnInit {
 
   // TODO: de adus din api | extindere api
   listaTipDocFac = [
-    { id: 1, nume: 'Diploma' },
+    { id: 1, nume: 'Diploma Licenta' },
     { id: 2, nume: 'Adeverinta' },
     { id: 3, nume: '(UE) Diploma' },
     { id: 4, nume: 'Confirmare MS' } // TODO: de clarificat la avizari denumirea pt medicii care au absolvit in alte tari
@@ -292,7 +292,7 @@ export class DatePersonaleComponent implements OnInit {
   editDateMember() {
     if (this.formStatus === 2) {
       const memData = this.formDatePersonale.value;
-      this.membriService.adaugaMembruDate(this.formDatePersonale.value)
+      this.membriService.adaugaMembruDate('date_personale', this.formDatePersonale.value)
         .subscribe(
         data => {
           if (data.result !== '00') {

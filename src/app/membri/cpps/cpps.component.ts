@@ -12,6 +12,8 @@ import { RegCpp, ItemRegCpp } from '../../shared/interfaces/listacpp.interface';
 import { MembriService } from '../../services/membri.service';
 import { NumeCpp } from '../../shared/models/registre.model';
 import { NomenclatorService } from '../../services/nomenclator.service';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-cpps',
@@ -19,8 +21,12 @@ import { NomenclatorService } from '../../services/nomenclator.service';
   styleUrls: ['./cpps.component.css']
 })
 export class CppsComponent implements OnInit, AfterViewInit {
+  // asculta pt nou cpp din child
+  public static returned: Subject<any> = new Subject();
+
   public formCpps: FormGroup;
   public formData: Cpps;
+
 
   loading = true;
   formStatus = 0;
@@ -65,6 +71,11 @@ export class CppsComponent implements OnInit, AfterViewInit {
     this.formCpps = this.toFormGroup();
     // get prefetched data
     this.regCpp = this._rounterSnapshot.snapshot.data['regCpp'];
+    // reincarca datele pt formular daca child s a schimbat
+    CppsComponent.returned.subscribe(res => {
+      this.getFormCppData();
+      console.log('se reincarca formularul');
+    });
   }
 
   ngAfterViewInit() {

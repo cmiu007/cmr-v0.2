@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-cpp-list',
@@ -8,6 +9,8 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./cpp-list.component.css']
 })
 export class CppListComponent implements OnInit {
+  // child notifies if new add is finished
+  public static addNewActive: Subject<boolean> = new Subject();
   @Input('formCpps')
   public formCpps: FormGroup;
 
@@ -17,7 +20,7 @@ export class CppListComponent implements OnInit {
   @Input('regCpp')
   public regCpp;
 
-  addActive = true;
+  addActive = true ;
 
   constructor(
     private _cd: ChangeDetectorRef,
@@ -26,6 +29,10 @@ export class CppListComponent implements OnInit {
 
   ngOnInit() {
     this.formCpps.addControl('cpps', new FormArray([]));
+    // this.addActive = true;
+    CppListComponent.addNewActive.subscribe(res => {
+      this.addActive = res;
+    });
   }
 
   addCpp() {
@@ -48,7 +55,7 @@ export class CppListComponent implements OnInit {
     };
     this.cppFormData.unshift(newCpp);
     this._cd.detectChanges();
-    this.addActive = false;
+    this.addActive = !this.addActive;
     return false;
   }
 }
