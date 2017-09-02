@@ -1,18 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 body {
   background: url("https://rm.cmr.ro/img/hexellence.png") repeat;
 }
 
-html, body, .viewport {
+html,
+body,
+.viewport {
   width: 100%;
   height: 100%;
   margin: 0;
 }
 
-header, footer,
-nav, article, aside {
+header,
+footer,
+nav,
+article,
+aside {
   border: 1px solid black;
   padding: 0.25em;
   margin: 0.25em;
@@ -32,7 +37,7 @@ nav, article, aside {
 }
 
 .content {
-  margin: 10px 10% 1px  10%;
+  margin: 10px 10% 1px 10%;
 }
 
 .mat-list-item {
@@ -43,8 +48,23 @@ nav, article, aside {
   margin-bottom: 0.2em;
 }
 
-.mat-card-title {
+.icon-align {
+  vertical-align: middle;
+}
+
+.form-title {
+  width: 100%;
   border-bottom: 0.1em solid #000;
+}
+
+.form-item-title {
+  font-size: 1em !important;
+  cursor: pointer;
+  margin-bottom: 0px !important;
+}
+
+.form-item-content {
+  margin-top: 10px !important;
 }
 
 .dash-header {

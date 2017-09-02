@@ -19,7 +19,8 @@ import { AlertService } from './services/alert.service';
 import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
 import { NomenclatorService } from './services/nomenclator.service';
-
+import { FormValidatorsService } from './services/form-validators.service';
+import { FormSetModeService } from './services/form-set-mode.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { LoginComponent } from './login/login.component';
@@ -30,7 +31,6 @@ import { DatePersonaleComponent } from './membri/date-personale/date-personale.c
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
 import { CppsComponent } from './membri/cpps/cpps.component';
-import { CppComponent } from './membri/cpp/cpp.component';
 import { CppListComponent } from './membri/cpps/cpp-list/cpp-list.component';
 import { CppItemComponent } from './membri/cpps/cpp-item/cpp-item.component';
 import { CppResolve } from './shared/resolvers/cpp.resolver';
@@ -47,7 +47,6 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     TestComponent,
     Test2Component,
     CppsComponent,
-    CppComponent,
     CppListComponent,
     CppItemComponent
   ],
@@ -60,18 +59,20 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     routing
   ],
   providers: [
+    // fake backend
+    fakeBackendProvider,
+    MockBackend,
+    BaseRequestOptions,
     GlobalDataService,
     AuthGuard,
     AlertService,
     AuthenticationService,
     UserService,
     MembriService,
-    // fake backend
-    fakeBackendProvider,
-    MockBackend,
-    BaseRequestOptions,
     NomenclatorService,
-    CppResolve
+    CppResolve,
+    FormValidatorsService,
+    FormSetModeService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,13 +1,17 @@
 <md-toolbar color="primary">
-  <span class="cmj" [routerLink]="['/']" style="cursor: pointer;">C.M.{{currentUser.judet}}</span>
+  <span class="cmj" [routerLink]="['/']" style="cursor: pointer;">C.M.{{userJudet}}</span>
+  <span *ngIf="!hideMemNume" class="membru" [mdMenuTriggerFor]="memMenu" style="cursor: pointer;">{{currentMemNume}}<md-icon class="icon-align">keyboard_arrow_down</md-icon></span>
 
+      <md-menu #memMenu="mdMenu">
+          <button md-menu-item (click)="onClickMem('datepersonale')">Date personale</button>
+          <button md-menu-item (click)="onClickMem('cpp')">Pregatire postuniv</button>
+      </md-menu>
+
+  <span class="titluPagina">{{currentPage}}</span>
   <span class="fill-remaining-space"></span>
 
   <span class="operator">
-    <!--<button md-menu-item [mdMenuTriggerFor]="headerMenu">
-      <span>{{currentUser.nume}}</span>
-    </button>-->
-    <span [mdMenuTriggerFor]="headerMenu" style="cursor: pointer;">{{currentUser.nume}}</span>
+    <span [mdMenuTriggerFor]="headerMenu" style="cursor: pointer;">Op: {{userName}}<md-icon class="icon-align">keyboard_arrow_down</md-icon></span>
 
     <md-menu #headerMenu="mdMenu">
       <button md-menu-item [routerLink]="['/login']">Terminare sesiune</button>

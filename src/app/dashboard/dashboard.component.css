@@ -25,3 +25,23 @@
 .half-width {
   width: 50%;
 }
+.container0 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+.toLeft {
+  order: 1;
+}
+
+.fill-remaining-space {
+  order: 2;
+  flex: 1 1 auto;
+}
+
+.toRight {
+  order: 2;
+}

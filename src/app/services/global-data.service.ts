@@ -11,7 +11,8 @@ export class GlobalDataService {
 
   shareObj: SharedObj = {
     'apiAdress': 'https://devel-api.cmr.ro/',
-    'userName': 'Gigu'
-  }
-
+    // 'userName': '',
+    // 'userGroup': '',
+    // 'activeMember': ''
+  };
 }

@@ -13,10 +13,16 @@ align-items: center;
 
 .cmj {
  order: 1;
- padding-right: 10px;
+ padding-right: 30px;
 }
 
 .membru {
+  order: 1;
+  padding-right: 10px;
+  color: rgb(248, 255, 181);
+}
+
+.titluPagina {
   order: 1;
 }
 

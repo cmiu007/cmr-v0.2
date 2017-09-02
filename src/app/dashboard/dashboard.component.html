@@ -3,36 +3,48 @@
 
 
 <div class="content">
+
   <md-card>
-    <h3>Hi {{currentUser.nume}} din {{currentUser.judet}}</h3>
-    <button md-raised-button [routerLink]="['/membri/nou']" color="primary" >Adauga un nou membru</button>
+    <md-card-title>Selectie Medici</md-card-title>
+    <md-card-content>
+      <form [formGroup]="searchForm" (keydown.enter)="onSearch(searchForm.value.searchMem)">
+        <md-input-container class="half-width">
+          <input mdInput formControlName="searchMem" type="text" placeholder="Cauta medic" required/>
+          <md-icon mdSuffix>search</md-icon>
+          <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
+        </md-input-container>
+      </form>
+    </md-card-content>
+    <md-card-footer>
+      <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+    </md-card-footer>
   </md-card>
 
-<md-card>
-  <md-card-title>Selectie Medici</md-card-title>
-  <md-card-content>
-    <form [formGroup]="searchForm" (keydown.enter)="onSearch(searchForm.value.searchMem)">
-      <md-input-container  class="half-width">
-        <input mdInput formControlName="searchMem" type="text" placeholder="Cauta medic" required/>
-        <md-icon mdSuffix>search</md-icon>
-        <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
-      </md-input-container>
-    </form>
-  </md-card-content>
-  <md-card-footer>
-  <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-  </md-card-footer>
-</md-card>
-
-<md-card *ngIf="emptySearchResult">
+  <md-card *ngIf="emptySearchResult">
     <span>Nu am gasit nici un membru cu datele {{searchForm.value.searchMem}}</span>
-</md-card>
+  </md-card>
 
-<md-card *ngFor="let medic of membri" (click)="onClickMem(medic.id)" style="cursor: pointer;">
-  <md-card-content>
-    {{ medic.nume }} {{ medic.prenume}} | CUIM: {{ medic.cuim}} | CNP: {{ medic.cnp }}
-  </md-card-content>
-</md-card>
+  <md-card *ngFor="let medic of membri">
+    <md-card-content>
+      <div class="container0">
+        <span class="toLeft">{{ medic.nume }} {{ medic.prenume}} (CUIM: {{ medic.cuim}})</span>
+        <span class="fill-remaining-space"></span>
+        <span class="toRight">
+        <button md-raised-button [mdMenuTriggerFor]="memMenu">Editare</button>
+        <md-menu #memMenu="mdMenu">
+          <button md-menu-item (click)="onClickMem(medic.id, 'datepersonale')">Date personale</button>
+          <button md-menu-item (click)="onClickMem(medic.id, 'cpp')">Pregatire postuniv</button>
+        </md-menu>
 
+        <button md-raised-button>Avizare</button>
+        <button md-raised-button>Certificat</button>
+    </span>
+      </div>
+    </md-card-content>
+  </md-card>
+
+  <md-card style="text-align: center;">
+    <button md-raised-button (click)="onNewMember()" color="primary">Adauga un nou membru</button>
+  </md-card>
 
 </div>
