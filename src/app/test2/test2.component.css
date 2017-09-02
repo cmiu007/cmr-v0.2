@@ -40,9 +40,11 @@
 .grid1 {
   width: 100%;
   grid-column: col-start / span 3;
+  border: 1px dotted blue;
 }
 
 .grid2 {
   width: 100%;
   grid-column: col-start 4 / span 2;
+  border: 1px dotted blue;
 }
