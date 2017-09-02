@@ -276,7 +276,8 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   checkDate(control: FormGroup): { [s: string]: boolean } {
-    const validateDateISO = /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
+    const validateDateISO =
+      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
     return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
     // TODO: check if date is in the past or in the future
     // let today = new Date();

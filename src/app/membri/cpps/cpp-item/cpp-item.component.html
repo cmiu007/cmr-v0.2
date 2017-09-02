@@ -9,7 +9,7 @@
       <md-card-content>
         <div class="form-item-content" [hidden]="isHidden">
           <div class="row">
-            <md-select placeholder="Tip" formControlName="reg_cpp_tip_id">
+            <md-select placeholder="Tip" formControlName="reg_cpp_tip_id" (blur)="checkRegTipId()">
               <md-option *ngFor="let tip_cpp of listaCppTip" [value]="tip_cpp.id">
                 {{ tip_cpp.nume }}
               </md-option>

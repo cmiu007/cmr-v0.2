@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormArray, FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MdSnackBar } from '@angular/material';
@@ -124,12 +124,12 @@ export class CppItemComponent implements OnInit {
     const formGroup = this._fb.group({
       'id_cpp': [{ value: '' }], // 212,
       'id_mem': [{ value: '' }], // 126,
-      'reg_cpp_tip_id': [{ value: '' }], // 2,
-      'reg_cpp_id': [{ value: '' }], // 1034,
-      'grad_prof_cpp_id': [{ value: '' }], // 1,
-      'date_start': [{ value: '' }], // '2007-12-01',
-      'date_end': [{ value: '' }], // '0000-00-00',
-      'emitent': [{ value: '' }], // 'MS',
+      'reg_cpp_tip_id': [{ value: '' }, [this.checkIfNumber, Validators.required]], // 2,
+      'reg_cpp_id': [{ value: '' }, [this.checkIfNumber, Validators.required]], // 1034,
+      'grad_prof_cpp_id': [{ value: '' }, [this.checkIfNumber]], // 1,
+      'date_start': [{ value: '' }, [Validators.required, this.checkDate]], // '2007-12-01',
+      'date_end': [{ value: '' }, [this.checkDate]], // '0000-00-00',
+      'emitent': [{ value: '' }, [Validators.required]], // 'MS',
       'act_serie': [{ value: '' }], // 'ZX',
       'act_numar': [{ value: '' }], // 1234,
       'act_data': [{ value: '' }], // '2008-01-08',
@@ -255,5 +255,46 @@ export class CppItemComponent implements OnInit {
       );
     return;
     // TO DO: de facut reload
+  }
+
+  checkDate(control: FormGroup): { [s: string]: boolean } {
+    // check if null pt cazul in care nu este required
+    if (control.value === '') {
+      return null;
+    }
+    const validateDateISO =
+      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
+    return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
+    // TODO: check if date is in the past or in the future
+    // let today = new Date();
+    // let formDate = new Date(control.value);
+    // if (today > formDate ) {
+    //   console.log('Date is in the past');
+    // } else {
+    //   console.log('Date is in the future');
+    // }
+  }
+
+  checkIfNumber(control: FormGroup): { [s: string]: boolean} {
+    // TODO: de pus si in form date personale
+    if (control.value === '') {
+      return null;
+    }
+    if (isNaN(control.value)) {
+      return { 'invalidId': true};
+    }
+    return null;
+  }
+
+  checkRegTipId() {
+    if (this.cppForm.get('reg_cpp_tip_id').value === null ) {
+      return;
+    }
+    if ( this.cppForm.get('reg_cpp_tip_id').value !== 2 ) {
+      console.log('not specialitate');
+      this.cppForm.get('grad_prof_cpp_id').disable();
+      return;
+    }
+    this.cppForm.get('grad_prof_cpp_id').enable();
   }
 }
