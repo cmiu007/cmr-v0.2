@@ -1,5 +1,6 @@
 
 <md-card class="mat-elevation-z7">
+  <md-card-content>
   <form class="example-form" [formGroup]="loginForm" (ngSubmit)="login()">
 
     <md-input-container class="full-width">
@@ -13,6 +14,7 @@
     <button md-raised-button [disabled]="!loginForm.valid" color="primary" >Autentificare</button>
 
   </form>
+  </md-card-content>
   <md-card-footer>
   <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
   </md-card-footer>
