@@ -19,7 +19,8 @@ import { AlertService } from './services/alert.service';
 import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
 import { NomenclatorService } from './services/nomenclator.service';
-
+import { FormValidatorsService } from './services/form-validators.service';
+import { FormSetModeService } from './services/form-set-mode.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { LoginComponent } from './login/login.component';
@@ -58,18 +59,20 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     routing
   ],
   providers: [
+    // fake backend
+    fakeBackendProvider,
+    MockBackend,
+    BaseRequestOptions,
     GlobalDataService,
     AuthGuard,
     AlertService,
     AuthenticationService,
     UserService,
     MembriService,
-    // fake backend
-    fakeBackendProvider,
-    MockBackend,
-    BaseRequestOptions,
     NomenclatorService,
-    CppResolve
+    CppResolve,
+    FormValidatorsService,
+    FormSetModeService
   ],
   bootstrap: [AppComponent]
 })

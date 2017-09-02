@@ -10,7 +10,7 @@
         </md-input-container>
 
         <md-input-container>
-          <input mdInput formControlName="jud_id" type="text" placeholder="Judet" [mdAutocomplete]="judAuto" (click)="resetValue('jud_id')">
+          <input mdInput formControlName="jud_id" type="text" placeholder="Judet" [mdAutocomplete]="judAuto" (click)="formDatePersonale.get('jud_id').setValue('')">
         </md-input-container>
 
         <md-autocomplete #judAuto="mdAutocomplete" [displayWith]="displayFnJudet.bind(this)">
@@ -42,7 +42,7 @@
       <md-card-content>
         <div class="row">
           <md-input-container>
-            <input mdInput formControlName="cetatenie" type="text" placeholder="Cetatenie*" [mdAutocomplete]="taraAuto" (click)="resetValue('cetatenie')">
+            <input mdInput formControlName="cetatenie" type="text" placeholder="Cetatenie*" [mdAutocomplete]="taraAuto" (click)="formDatePersonale.get('cetatenie').setValue('')">
           </md-input-container>
 
           <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
@@ -100,7 +100,7 @@
 
         <div class="row">
           <md-input-container>
-            <input mdInput formControlName="fac_absolv" type="text" placeholder="Facultate Absolvita" [mdAutocomplete]="facAuto" (click)="resetValue('fac_absolv')">
+            <input mdInput formControlName="fac_absolv" type="text" placeholder="Facultate Absolvita" [mdAutocomplete]="facAuto" (click)="formDatePersonale.get('fac_absolv').setValue('')">
           </md-input-container>
           <md-autocomplete #facAuto="mdAutocomplete" [displayWith]="displayFnFac.bind(this)">
             <md-option *ngFor="let fac of filtruFac | async" [value]="fac.id">

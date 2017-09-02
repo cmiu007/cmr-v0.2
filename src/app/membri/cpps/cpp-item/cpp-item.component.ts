@@ -7,6 +7,7 @@ import { MdSnackBar } from '@angular/material';
 import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { NomenclatorService } from '../../../services/nomenclator.service';
 import { MembriService } from '../../../services/membri.service';
+import { FormValidatorsService } from '../../../services/form-validators.service';
 import { NumeCpp } from '../../../shared/models/registre.model';
 import { RegCpp } from '../../../shared/interfaces/listacpp.interface';
 import { CppsComponent } from '../cpps.component';
@@ -67,7 +68,8 @@ export class CppItemComponent implements OnInit {
     private _route: ActivatedRoute,
     private _memService: MembriService,
     private _snackBar: MdSnackBar,
-    private _router: Router
+    private _router: Router,
+    private _formValidators: FormValidatorsService
   ) { }
 
   ngOnInit() {
@@ -124,11 +126,11 @@ export class CppItemComponent implements OnInit {
     const formGroup = this._fb.group({
       'id_cpp': [{ value: '' }], // 212,
       'id_mem': [{ value: '' }], // 126,
-      'reg_cpp_tip_id': [{ value: '' }, [this.checkIfNumber, Validators.required]], // 2,
-      'reg_cpp_id': [{ value: '' }, [this.checkIfNumber, Validators.required]], // 1034,
-      'grad_prof_cpp_id': [{ value: '' }, [this.checkIfNumber]], // 1,
-      'date_start': [{ value: '' }, [Validators.required, this.checkDate]], // '2007-12-01',
-      'date_end': [{ value: '' }, [this.checkDate]], // '0000-00-00',
+      'reg_cpp_tip_id': [{ value: '' }, [this._formValidators.checkIfNumber, Validators.required]], // 2,
+      'reg_cpp_id': [{ value: '' }, [this._formValidators.checkIfNumber, Validators.required]], // 1034,
+      'grad_prof_cpp_id': [{ value: '' }, [this._formValidators.checkIfNumber]], // 1,
+      'date_start': [{ value: '' }, [Validators.required, this._formValidators.checkDate]], // '2007-12-01',
+      'date_end': [{ value: '' }, [this._formValidators.checkDate]], // '0000-00-00',
       'emitent': [{ value: '' }, [Validators.required]], // 'MS',
       'act_serie': [{ value: '' }], // 'ZX',
       'act_numar': [{ value: '' }], // 1234,
@@ -257,44 +259,18 @@ export class CppItemComponent implements OnInit {
     // TO DO: de facut reload
   }
 
-  checkDate(control: FormGroup): { [s: string]: boolean } {
-    // check if null pt cazul in care nu este required
-    if (control.value === '') {
-      return null;
-    }
-    const validateDateISO =
-      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
-    return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
-    // TODO: check if date is in the past or in the future
-    // let today = new Date();
-    // let formDate = new Date(control.value);
-    // if (today > formDate ) {
-    //   console.log('Date is in the past');
-    // } else {
-    //   console.log('Date is in the future');
-    // }
-  }
-
-  checkIfNumber(control: FormGroup): { [s: string]: boolean} {
-    // TODO: de pus si in form date personale
-    if (control.value === '') {
-      return null;
-    }
-    if (isNaN(control.value)) {
-      return { 'invalidId': true};
-    }
-    return null;
-  }
-
   checkRegTipId() {
     if (this.cppForm.get('reg_cpp_tip_id').value === null ) {
       return;
     }
     if ( this.cppForm.get('reg_cpp_tip_id').value !== 2 ) {
-      console.log('not specialitate');
       this.cppForm.get('grad_prof_cpp_id').disable();
       return;
     }
     this.cppForm.get('grad_prof_cpp_id').enable();
+  }
+
+  resetValue(formName) {
+    this.cppForm.controls[formName].patchValue('');
   }
 }

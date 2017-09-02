@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import { MembriService } from '../../services/membri.service';
 import { NomenclatorService } from '../../services/nomenclator.service';
 import { Judet, Tara, Fac } from '../../shared/models/registre.model';
+import { FormValidatorsService } from '../../services/form-validators.service';
 
 @Component({
   selector: 'app-date-personale',
@@ -59,29 +60,30 @@ export class DatePersonaleComponent implements OnInit {
     private snackBar: MdSnackBar,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private _formValidators: FormValidatorsService
   ) {
     this.formDatePersonale = formBuilder.group({
       'cuim': [{ value: '', disabled: true }],
-      'cnp': [{ value: '', disabled: true }, [Validators.required, this.checkCNP]],
-      'jud_id': [{ value: '', disabled: true }, Validators.required],
+      'cnp': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkCNP]],
+      'jud_id': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
       'status': [{ value: '', disabled: true }],
-      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this.checkDate]],
+      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
       'cod_parafa': [{ value: '', disabled: true }],
       'nume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
       'initiala': [{ value: '', disabled: true }],
       'prenume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
       'nume_ant': [{ value: '', disabled: true }],
-      'cetatenie': [{ value: '', disabled: true }, Validators.required],
+      'cetatenie': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
       'act_ident_tip_id': [{ value: '', disabled: true }, Validators.required], // TODO: validator
       'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
       'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
-      'act_ident_exp_date': [{ value: '', disabled: true }, [Validators.required, this.checkDate]],
-      'fac_absolv': [{ value: '', disabled: true }, Validators.required],
-      'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this.checkAnPromotie]],
+      'act_ident_exp_date': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
+      'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
+      'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkAnPromotie]],
       'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
       'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
-      'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this.checkDate]],
+      'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
       'fac_dipl_adev': [{ value: '', disabled: true }, Validators.required],
       'updated': [{ value: '', disabled: true }],
       'ro': [{ value: '', disabled: true }]
@@ -220,10 +222,6 @@ export class DatePersonaleComponent implements OnInit {
       .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
-  resetValue(formName) {
-    this.formDatePersonale.controls[formName].patchValue('');
-  }
-
   displayFnTara(option) {
     if (option) {
       return this.listaTari.find(item => item.id === +option).nume;
@@ -244,50 +242,8 @@ export class DatePersonaleComponent implements OnInit {
 
   // validari campuri
 
-  checkCNP(control: FormGroup): { [s: string]: boolean } {
-    // TODO: de verificat daca mai exista in baza de date!!
-    const testValCNP = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
-    let splitCNP = [];
-    splitCNP = String(control.value).split('');
-    let sum = 0;
-    if (splitCNP.length !== 13) {
-      return { 'cnpLengthIsInvalid': true };
-    } else {
-      for (let i = 0; i < testValCNP.length; i++) {
-        sum = sum + splitCNP[i] * testValCNP[i];
-      }
-      if ((sum % 11) !== +splitCNP[12]) {
-        return { 'cnpCtrlSumInvalid': true };
-      } else {
-        return null;
-      }
-    }
-  }
 
-  checkAnPromotie(control: FormGroup): { [s: string]: boolean } {
-    const today = new Date();
-    if (control.value < 1950) {
-      return { 'yearIsTooSmall': true };
-    }
-    if (control.value > today.getFullYear()) {
-      return { 'yearIsInTheFuture': true };
-    }
-    return null;
-  }
 
-  checkDate(control: FormGroup): { [s: string]: boolean } {
-    const validateDateISO =
-      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
-    return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
-    // TODO: check if date is in the past or in the future
-    // let today = new Date();
-    // let formDate = new Date(control.value);
-    // if (today > formDate ) {
-    //   console.log('Date is in the past');
-    // } else {
-    //   console.log('Date is in the future');
-    // }
-  }
 
   // log submit
   editDateMember() {
