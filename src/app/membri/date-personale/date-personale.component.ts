@@ -240,11 +240,6 @@ export class DatePersonaleComponent implements OnInit {
     }
   }
 
-  // validari campuri
-
-
-
-
   // log submit
   editDateMember() {
     if (this.formStatus === 2) {
