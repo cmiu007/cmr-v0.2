@@ -81,7 +81,7 @@ export class EmailComponent implements OnInit {
       });
       return;
     }
-    delete this.emailForm.value.id_cont;
+
     this._membriService.adaugaMembruDate('contact', this.emailForm.value )
     .subscribe(
       data => {
