@@ -8,6 +8,7 @@
     </md-form-field>
   </div>
   <div class="row wrapper">
-    <button class="col3_3" type="button" md-raised-button (click)="onClickEmail()" color="primary" [disabled]="emailForm.invalid || emailForm.untouched">Modifica</button>
+    <button class="col3_3" type="button" md-raised-button (click)="onClickEmail()" color="primary" [disabled]="emailForm.invalid || emailForm.untouched">
+    {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} </button>
   </div>
 </div>
