@@ -53,6 +53,7 @@ export class EmailComponent implements OnInit {
 
   onClickEmail(): void {
     // totusi am nevoie de formStatus ca sa fie new sau edit
+    // stergem id_cont pt tunning cu api
     delete this.emailForm.value.id_cont;
     this._membriService.modificaMembruDate('contact', this.emailForm.get('id_cont').value , this.emailForm.value )
     .subscribe(
