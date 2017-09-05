@@ -8,7 +8,11 @@ import { CppsComponent } from './membri/cpps/cpps.component';
 
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
+import { ContactComponent } from './membri/contact/contact.component';
+
 import { CppResolve } from './shared/resolvers/cpp.resolver';
+import { JudetResolve } from './shared/resolvers/judet.resolver';
+import { TaraResolve  } from './shared/resolvers/tara.resolver';
 
 
 const appRoutes: Routes = [
@@ -16,7 +20,8 @@ const appRoutes: Routes = [
   {path: 'membri', canActivate: [AuthGuard], children: [
     {path: 'nou', component: DatePersonaleComponent },
     {path: ':id/datepersonale', component: DatePersonaleComponent },
-    {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} }
+    {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
+    {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}}
   ]},
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},

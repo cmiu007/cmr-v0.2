@@ -123,6 +123,7 @@ export class CppItemComponent implements OnInit {
   }
 
   toFormGroup(data: Cpp) {
+    console.log(data);
     const formGroup = this._fb.group({
       'id_cpp': [{ value: '' }], // 212,
       'id_mem': [{ value: '' }], // 126,

@@ -1,0 +1,13 @@
+<div [formGroup]="emailForm">
+  <div class="row wrapper">
+    <md-form-field class="col1_3">
+      <input type="text" placeholder="email" mdInput formControlName="email">
+    </md-form-field>
+    <md-form-field class="col5_3">
+      <input type="text" placeholder="telefon" mdInput formControlName="telefon">
+    </md-form-field>
+  </div>
+  <div class="row wrapper">
+    <button class="col3_3" type="button" md-raised-button (click)="onClickEmail()" color="primary" [disabled]="emailForm.invalid || emailForm.untouched">Modifica</button>
+  </div>
+</div>

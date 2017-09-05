@@ -33,7 +33,15 @@ import { Test2Component } from './test2/test2.component';
 import { CppsComponent } from './membri/cpps/cpps.component';
 import { CppListComponent } from './membri/cpps/cpp-list/cpp-list.component';
 import { CppItemComponent } from './membri/cpps/cpp-item/cpp-item.component';
+import { ContactComponent } from './membri/contact/contact.component';
+import { EmailComponent } from './membri/contact/email/email.component';
+import { AdresaComponent } from './membri/contact/adresa/adresa.component';
+import { AdreseListComponent } from './membri/contact/adrese-list/adrese-list.component';
+
 import { CppResolve } from './shared/resolvers/cpp.resolver';
+import { JudetResolve } from './shared/resolvers/judet.resolver';
+import { TaraResolve } from './shared/resolvers/tara.resolver';
+
 
 
 @NgModule({
@@ -48,7 +56,11 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     Test2Component,
     CppsComponent,
     CppListComponent,
-    CppItemComponent
+    CppItemComponent,
+    ContactComponent,
+    EmailComponent,
+    AdresaComponent,
+    AdreseListComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +83,8 @@ import { CppResolve } from './shared/resolvers/cpp.resolver';
     MembriService,
     NomenclatorService,
     CppResolve,
+    JudetResolve,
+    TaraResolve,
     FormValidatorsService,
     FormSetModeService
   ],

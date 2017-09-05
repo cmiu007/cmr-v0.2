@@ -84,14 +84,13 @@ export class DatePersonaleComponent implements OnInit {
       'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
       'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
       'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
-      'fac_dipl_adev': [{ value: '', disabled: true }, Validators.required],
+      'fac_doc_tip': [{ value: '', disabled: true }, Validators.required],
       'updated': [{ value: '', disabled: true }],
       'ro': [{ value: '', disabled: true }]
     });
   }
 
   ngOnInit() {
-    console.log('loading');
     localStorage.setItem('currentPage', 'Date Personale');
     this.fillFormData();
     // get nomeclatoare & set filters
@@ -181,7 +180,7 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('act_ident_exp_date').enable();
     // TODO: de facut if pt tipul actului de fac
     // daca act === diploma nu face enable
-    this.formDatePersonale.get('fac_dipl_adev').enable();
+    this.formDatePersonale.get('fac_doc_tip').enable();
     this.formDatePersonale.get('fac_dipl_serie').enable();
     this.formDatePersonale.get('fac_dipl_nr').enable();
     this.formDatePersonale.get('fac_dipl_data').enable();

@@ -4,6 +4,8 @@ import { MdSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -12,8 +14,6 @@ import { RegCpp, ItemRegCpp } from '../../shared/interfaces/listacpp.interface';
 import { MembriService } from '../../services/membri.service';
 import { NumeCpp } from '../../shared/models/registre.model';
 import { NomenclatorService } from '../../services/nomenclator.service';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-cpps',
@@ -74,7 +74,6 @@ export class CppsComponent implements OnInit, AfterViewInit {
     // reincarca datele pt formular daca child s a schimbat
     CppsComponent.returned.subscribe(res => {
       this.getFormCppData();
-      console.log('se reincarca formularul');
     });
   }
 
@@ -144,9 +143,4 @@ export class CppsComponent implements OnInit, AfterViewInit {
     const control = <FormArray>this.formCpps.controls['cpps'];
     control.removeAt(i);
   }
-
-  save(model: Cpp) {
-    console.log(this.formCpps);
-  }
-
 }

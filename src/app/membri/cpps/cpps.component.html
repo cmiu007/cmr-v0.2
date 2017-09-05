@@ -1,24 +1,12 @@
 <app-header></app-header>
 <div class="content">
-  <form [formGroup]="formCpps" (ngSubmit)="save(formCpps)">
+  <form [formGroup]="formCpps">
     <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
     <md-card>
       <md-card-title class="form-title">
         <span>Pregatire profesionala postuniversitara</span>
       </md-card-title>
     </md-card>
-    <!-- <div formArrayName="cpps">
-      <md-card *ngFor="let cpp of formCpps.controls.cpps.controls; let i = index">
-
-        <md-card-content>
-          <span>Control {{ i + 1}}</span>
-          <div class="row" [formGroupName]=i>
-            <app-cpp [cppForm]="formCpps.controls.cpps.controls[i]"></app-cpp>
-          </div>
-        </md-card-content>
-      </md-card>
-    </div> -->
-
     <app-cpp-list *ngIf="!loading" [formCpps]="formCpps" [cppFormData]="formData"></app-cpp-list>
   </form>
 </div>

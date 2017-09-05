@@ -109,6 +109,11 @@ aside {
   grid-column: col-start 2 / span 2;
 }
 
+.col2_4 {
+  width: 100%;
+  grid-column: col-start 2 / span 4;
+}
+
 .col2_5 {
   width: 100%;
   grid-column: col-start 2 / span 5;
@@ -122,6 +127,11 @@ aside {
 .col3_2 {
   width: 100%;
   grid-column: col-start 3 / span 2;
+}
+
+.col3_3 {
+  width: 100%;
+  grid-column: col-start 3 / span 3;
 }
 
 .col3_5 {
@@ -177,6 +187,11 @@ aside {
   grid-column: col-start 6 / span 3;
 }
 
+.col6_4 {
+  width: 100%;
+  grid-column: col-start 6 / span 4;
+}
+
 .col7_2 {
   width: 100%;
   grid-column: col-start 7 / span 2;
@@ -185,6 +200,11 @@ aside {
 .col7_6 {
   width: 100%;
   grid-column: col-start 7 / span 6;
+}
+
+.col8_5 {
+  width: 100%;
+  grid-column: col-start 8 / span 5;
 }
 
 .col9_2 {
