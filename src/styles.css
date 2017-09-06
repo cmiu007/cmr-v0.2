@@ -217,6 +217,11 @@ aside {
   grid-column: col-start 7 / span 6;
 }
 
+.col8_1 {
+  width: 100%;
+  grid-column: col-start 8 / span 1;
+}
+
 .col8_2 {
   width: 100%;
   grid-column: col-start 8 / span 2;
@@ -225,6 +230,11 @@ aside {
 .col8_5 {
   width: 100%;
   grid-column: col-start 8 / span 5;
+}
+
+.col9_1 {
+  width: 100%;
+  grid-column: col-start 9 / span 1;
 }
 
 .col9_2 {

@@ -23,6 +23,11 @@ export class AdresaComponent implements OnInit {
   filteredTara;
   filteredJud;
   adresaForm: FormGroup;
+  listaTipAdresa = [
+    {id: 'LO' , nume: 'Adresa Domiciliu'},
+    {id: 'CO' , nume: 'Adresa Contact'},
+    {id: 'LM' , nume: 'Adresa Loc de Munca'}
+  ];
 
   constructor(
     private _fb: FormBuilder,
