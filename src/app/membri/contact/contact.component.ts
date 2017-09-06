@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,8 @@ import { Response } from '@angular/http';
 export class ContactComponent implements OnInit {
   // public static formData: Subject<any> = new Subject;
   // de revazut la momentul add new address
+  @Input('formAdrese')
+  formAdrese: FormGroup;
 
   loading = true;
   formStatus: number;
@@ -33,7 +35,8 @@ export class ContactComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _memService: MembriService,
-    private _snack: MdSnackBar
+    private _snack: MdSnackBar,
+    private _fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -41,6 +44,7 @@ export class ContactComponent implements OnInit {
     this.regTara = this._activatedRoute.snapshot.data['regTara'];
     this.regTara = this._activatedRoute.snapshot.data['regJud'];
     this.getFormData();
+    this.formAdrese = this.toFormGroup();
     // de revazut la momentul add new address
     // ContactComponent.formData.subscribe(result => this.getFormData());
   }
@@ -68,5 +72,12 @@ export class ContactComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  toFormGroup() {
+    const formGroup = this._fb.group({
+      adrese: this._fb.array([])
+    });
+    return formGroup;
   }
 }

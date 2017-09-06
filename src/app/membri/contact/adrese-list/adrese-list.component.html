@@ -1,5 +1,33 @@
-<p>
-  adrese-list works!
-  <br>
-  {{ formAdreseData | json }}
-</p>
+<div class="row">
+  <md-card>
+    <md-card-title class="form-title"><span>Adrese</span></md-card-title>
+  </md-card>
+
+</div>
+
+<div *ngIf="addActive">
+  <md-card style="text-align: center;">
+    <md-card-content>
+      <button type="button" *ngIf="!loading" md-raised-button (click)="addAdresa()" color="primary">
+      Adauga Adresa
+      </button>
+    </md-card-content>
+  </md-card>
+</div>
+
+<div [formGroup]="formAdrese">
+  <div formArrayName="adrese">
+    <div *ngFor="let adresa of formAdreseData">
+      <app-adresa></app-adresa>
+    </div>
+  </div>
+</div>
+
+<md-card>
+  <md-card-content>
+    <p>
+      JSON: adrese
+      <br> {{ formAdreseData | json }}
+    </p>
+  </md-card-content>
+</md-card>

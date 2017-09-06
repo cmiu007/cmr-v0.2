@@ -41,7 +41,6 @@ export class EmailComponent implements OnInit {
   }
 
   toFormGroup(data: Email) {
-    console.log(this.formStatus);
     const formGroup = this._fb.group({
       'id_cont': [''],
       'id_mem': [''],
@@ -51,6 +50,8 @@ export class EmailComponent implements OnInit {
     });
     if (this.formStatus === 1) {
       formGroup.patchValue(data);
+    } else {
+      formGroup.get('id_mem').setValue(localStorage.getItem('currentMemId'));
     }
     // clean 0000-00-00 and 0
     // Object.keys(this.formContactData).forEach(
@@ -81,8 +82,8 @@ export class EmailComponent implements OnInit {
       });
       return;
     }
-
-    this._membriService.adaugaMembruDate('contact', this.emailForm.value )
+    delete this.emailForm.value.id_cont;
+    this._membriService.adaugaMembruContact('contact', null , this.emailForm.value )
     .subscribe(
       data => {
         if (data.result !== '00') {
@@ -94,5 +95,8 @@ export class EmailComponent implements OnInit {
           this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
         }
       });
+    // TODO: refresh data
+    // 1. get new data
+    // 2. patch data in form
   }
 }
