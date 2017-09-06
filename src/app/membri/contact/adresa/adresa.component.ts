@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-adresa',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./adresa.component.css']
 })
 export class AdresaComponent implements OnInit {
+  @Input ('formAdresaData')
+  formAdresaData;
 
   constructor() { }
 
