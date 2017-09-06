@@ -34,7 +34,7 @@ export class EmailComponent implements OnInit {
 
   setFormStatus(data: Email): void {
     if (!data) {
-      console.log('hit');
+
     } else {
       this.formStatus = 1;
     }
@@ -65,26 +65,27 @@ export class EmailComponent implements OnInit {
   }
 
   onClickEmail(): void {
-    if ( this.formStatus === 1) {
+    const date = this.emailForm.value;
+    const idItem = date.id_cont;
     // stergem id_cont pt api
-    delete this.emailForm.value.id_cont;
-    this._membriService.modificaMembruDate('contact', this.emailForm.get('id_cont').value , this.emailForm.value )
-    .subscribe(
-      data => {
-        if (data.result !== '00') {
-          this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-          if (data.result === '12') {
-            this._router.navigate(['/login']);
+    delete date.id_cont;
+    if (this.formStatus === 1) {
+      this._membriService.modificaMembruDate('contact', idItem, date)
+        .subscribe(
+        data => {
+          if (data.result !== '00') {
+            this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+            if (data.result === '12') {
+              this._router.navigate(['/login']);
+            }
+          } else {
+            this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
           }
-        } else {
-          this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-        }
-      });
+        });
       return;
     }
-    delete this.emailForm.value.id_cont;
-    this._membriService.adaugaMembruContact('contact', null , this.emailForm.value )
-    .subscribe(
+    this._membriService.adaugaMembruContact('contact', null , date)
+      .subscribe(
       data => {
         if (data.result !== '00') {
           this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
@@ -98,5 +99,6 @@ export class EmailComponent implements OnInit {
     // TODO: refresh data
     // 1. get new data
     // 2. patch data in form
+    return;
   }
 }

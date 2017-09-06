@@ -20,7 +20,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
 import { NomenclatorService } from './services/nomenclator.service';
 import { FormValidatorsService } from './services/form-validators.service';
-import { FormSetModeService } from './services/form-set-mode.service';
+import { FormSetService } from './services/form-set.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { LoginComponent } from './login/login.component';
@@ -86,7 +86,7 @@ import { TaraResolve } from './shared/resolvers/tara.resolver';
     JudetResolve,
     TaraResolve,
     FormValidatorsService,
-    FormSetModeService
+    FormSetService
   ],
   bootstrap: [AppComponent]
 })
