@@ -59,7 +59,7 @@ export class FormSetService {
       'tel': '',
       'detinator_adresa': '',
       'fax': '',
-      'email': [''],
+      'email': '',
       'web': '',
       'obs': ''
     });
