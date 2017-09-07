@@ -14,7 +14,7 @@ export class FormSetService {
   adresa(data: Adresa) {
     if (data) {
       const formGroup = this._fb.group({
-        'id_adresa': [data.id_adresa, [Validators.required, this._validator.checkIfNumber]],
+        'id_adresa': [data.id_adresa],
         'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]],
         'tip': [data.tip, [Validators.required]],
         'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
@@ -44,7 +44,7 @@ export class FormSetService {
       return formGroup;
     }
     const formGroupEmpty = this._fb.group({
-      'id_adresa': [null],
+      'id_adresa': null,
       'id_mem': [localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
       'tip': [null, [Validators.required]],
       'tara_id': [1183, [Validators.required, this._validator.checkIfNumber]],
