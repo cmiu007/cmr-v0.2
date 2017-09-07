@@ -15,7 +15,7 @@
 <div [formGroup]="formAdrese">
   <div formArrayName="adrese">
     <div *ngFor="let formAdresaData of formAdreseData">
-      <app-adresa [formAdresaData]="formAdresaData"></app-adresa>
+      <app-adresa [formAdresaData]="formAdresaData" [registruTara]="registruTara" [registruJudet]="registruJudet"></app-adresa>
     </div>
   </div>
 </div>

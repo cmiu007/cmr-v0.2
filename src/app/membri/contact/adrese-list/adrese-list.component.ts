@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormSetService } from '../../../services/form-set.service';
+import { Tara, Judet } from '../../../shared/models/registre.model';
 
 @Component({
   selector: 'app-adrese-list',
@@ -14,15 +15,21 @@ export class AdreseListComponent implements OnInit {
   @Input('formAdrese')
   public formAdrese: FormGroup;
 
+  @Input('registruTara')
+  registruTara: Tara[];
+
+  @Input('registruJudet')
+  registruJudet: Judet[];
+
+
   addActive = true;
 
   constructor(
-    private _formSet: FormSetService
+    private _formSet: FormSetService,
   ) { }
 
   ngOnInit() {
     this.formAdrese.addControl('adrese', new FormArray([]));
-
   }
 
   addAdresa(): void {
@@ -30,5 +37,7 @@ export class AdreseListComponent implements OnInit {
     this.formAdreseData.unshift(newAdresaData);
     this.addActive = !this.addActive;
   }
+
+
 
 }

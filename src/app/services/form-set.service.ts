@@ -29,7 +29,7 @@ export class FormSetService {
         'tel': data.tel,
         'detinator_adresa': data.detinator_adresa,
         'fax': data.fax,
-        'email': [data.email, [Validators.email]],
+        'email': [data.email],
         'web': data.web,
         'obs': data.obs
       });
@@ -44,13 +44,13 @@ export class FormSetService {
       return formGroup;
     }
     const formGroupEmpty = this._fb.group({
-      'id_adresa': null,
-      'id_mem': null,
-      'tip': null,
-      'tara_id': null,
-      'jud_id': null,
-      'localit': null,
-      'cod_post': '',
+      'id_adresa': [null],
+      'id_mem': [localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
+      'tip': [null, [Validators.required]],
+      'tara_id': [1183, [Validators.required, this._validator.checkIfNumber]],
+      'jud_id': [localStorage.getItem('userGroup'), [Validators.required, this._validator.checkIfNumber]],
+      'localit': ['', [Validators.required]],
+      'cod_post': ['', [Validators.required, this._validator.checkIfNumber]],
       'strada': '',
       'nr': '',
       'bl': '',
@@ -59,7 +59,7 @@ export class FormSetService {
       'tel': '',
       'detinator_adresa': '',
       'fax': '',
-      'email': '',
+      'email': [''],
       'web': '',
       'obs': ''
     });

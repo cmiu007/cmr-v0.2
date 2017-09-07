@@ -12,6 +12,7 @@ import 'rxjs/add/operator/map';
 import { DateContact, Adresa, Email } from '../../shared/interfaces/contact.interface';
 import { MembriService } from '../../services/membri.service';
 import { Response } from '@angular/http';
+import { Tara, Judet } from '../../shared/models/registre.model';
 
 @Component({
   selector: 'app-contact',
@@ -26,8 +27,9 @@ export class ContactComponent implements OnInit {
 
   loading = true;
   formStatus: number;
-  regTara;
-  regJudet;
+  registruTara: Tara[];
+  registruJudet: Judet[];
+  delValRegJud = ['ADM', 'CMR'];
   formContactData: Email[];
   formAdreseData;
 
@@ -36,17 +38,25 @@ export class ContactComponent implements OnInit {
     private _router: Router,
     private _memService: MembriService,
     private _snack: MdSnackBar,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private _aRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     localStorage.setItem('currentPage', 'Date Contact');
-    this.regTara = this._activatedRoute.snapshot.data['regTara'];
-    this.regTara = this._activatedRoute.snapshot.data['regJud'];
+    this.setRegistre();
     this.getFormData();
     this.formAdrese = this.toFormGroup();
     // de revazut la momentul add new address
     // ContactComponent.formData.subscribe(result => this.getFormData());
+  }
+
+  setRegistre(): void {
+    this.registruTara = this._aRoute.snapshot.data['regTara'];
+    this.registruJudet = this._aRoute.snapshot.data['regJud'];
+    this.delValRegJud.forEach(element => {
+      this.registruJudet = this.registruJudet.filter(option => option.nume !== element);
+    });
   }
 
   getFormData() {
