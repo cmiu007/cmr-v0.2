@@ -13,10 +13,12 @@ import { ContactComponent } from './membri/contact/contact.component';
 import { CppResolve } from './shared/resolvers/cpp.resolver';
 import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve  } from './shared/resolvers/tara.resolver';
+import { ReflectorComponent } from './shared/reflector/reflector.component';
 
 
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'reflector', component: ReflectorComponent, canActivate: [AuthGuard]},
   {path: 'membri', canActivate: [AuthGuard], children: [
     {path: 'nou', component: DatePersonaleComponent },
     {path: ':id/datepersonale', component: DatePersonaleComponent },

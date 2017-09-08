@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormSetService } from '../../../services/form-set.service';
 import { Tara, Judet } from '../../../shared/models/registre.model';
+import { ContactComponent } from '../contact.component';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-adrese-list',
@@ -37,7 +39,4 @@ export class AdreseListComponent implements OnInit {
     this.formAdreseData.unshift(newAdresaData);
     this.addActive = !this.addActive;
   }
-
-
-
 }

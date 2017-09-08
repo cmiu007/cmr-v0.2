@@ -41,6 +41,7 @@ import { AdreseListComponent } from './membri/contact/adrese-list/adrese-list.co
 import { CppResolve } from './shared/resolvers/cpp.resolver';
 import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve } from './shared/resolvers/tara.resolver';
+import { ReflectorComponent } from './shared/reflector/reflector.component';
 
 
 
@@ -60,7 +61,8 @@ import { TaraResolve } from './shared/resolvers/tara.resolver';
     ContactComponent,
     EmailComponent,
     AdresaComponent,
-    AdreseListComponent
+    AdreseListComponent,
+    ReflectorComponent
   ],
   imports: [
     BrowserModule,

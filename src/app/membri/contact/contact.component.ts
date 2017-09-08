@@ -20,7 +20,7 @@ import { Tara, Judet } from '../../shared/models/registre.model';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  // public static formData: Subject<any> = new Subject;
+  // public static _formDataChanged: Subject<boolean> = new Subject;
   // de revazut la momentul add new address
   @Input('formAdrese')
   formAdrese: FormGroup;
@@ -48,7 +48,8 @@ export class ContactComponent implements OnInit {
     this.getFormData();
     this.formAdrese = this.toFormGroup();
     // de revazut la momentul add new address
-    // ContactComponent.formData.subscribe(result => this.getFormData());
+    // ContactComponent._formDataChanged
+    //  .subscribe(result => this.getFormData());
   }
 
   setRegistre(): void {
@@ -60,6 +61,7 @@ export class ContactComponent implements OnInit {
   }
 
   getFormData() {
+    this.loading = true;
     // 1. get nr tel si email
     this._memService.listaMembruDate('contact', this._activatedRoute.snapshot.params['id'])
       .subscribe( data => {

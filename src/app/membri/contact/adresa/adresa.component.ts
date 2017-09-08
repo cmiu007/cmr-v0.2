@@ -9,6 +9,7 @@ import { FormValidatorsService } from '../../../services/form-validators.service
 import { FormSetService } from '../../../services/form-set.service';
 import { Judet, Tara } from '../../../shared/models/registre.model';
 import { RegLista } from '../../../shared/interfaces/listareg.interface';
+import { ContactComponent } from '../contact.component';
 
 @Component({
   selector: 'app-adresa',
@@ -47,7 +48,7 @@ export class AdresaComponent implements OnInit {
     private _router: Router,
     private _validator: FormValidatorsService,
     private _formSet: FormSetService,
-    private _aRoute: ActivatedRoute
+    private _aRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -131,6 +132,7 @@ export class AdresaComponent implements OnInit {
             }
           } else {
             this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
+            this._router.navigate(['/reflector']);
           }
         });
       return;
@@ -146,6 +148,7 @@ export class AdresaComponent implements OnInit {
           }
         } else {
           this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
+          this._router.navigate(['/reflector']);
         }
       });
     return;

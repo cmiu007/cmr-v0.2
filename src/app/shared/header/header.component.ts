@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
     this.userJudet = localStorage.getItem('userJudet');
     this.getMemNume();
     this.currentPage = localStorage.getItem('currentPage');
+    localStorage.setItem( 'currentUrl', this.router.url);
   }
 
   getMemNume(): void {

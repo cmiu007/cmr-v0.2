@@ -1,7 +1,7 @@
 <div [formGroup]="cppForm">
   <md-card>
     <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
-      <span>{{ formTitle }}</span>
+      <span [ngClass]="{'inactive': formStatusActive}" >{{ formTitle }}</span>
       <span>
           <md-icon class="icon-align">{{ isHidden ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</md-icon>
           </span>
