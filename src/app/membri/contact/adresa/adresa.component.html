@@ -1,0 +1,59 @@
+<md-card>
+  <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
+    <span>{{ itemName }}</span>
+    <span><md-icon class="icon-align">{{ isHidden ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</md-icon></span>
+  </md-card-title>
+  <md-card-content [formGroup]="adresaForm">
+    <div [hidden]="isHidden">
+      <div class="row wrapper">
+        <!-- <md-form-field class="col1_3"><input required type="text" placeholder="Tip" mdInput formControlName="tip"></md-form-field> -->
+        <md-select class="col1_3" placeholder="Tip adresa" formControlName="tip">
+          <md-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id" >
+            {{ tip_adresa.nume }}
+          </md-option>
+        </md-select>
+      </div>
+      <div class="row wrapper">
+
+        <md-form-field class="col1_3"><input required type="text" placeholder="Tara" mdInput formControlName="tara_id" [mdAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></md-form-field>
+
+        <md-form-field class="col4_3"><input required type="text" placeholder="Judet" mdInput formControlName="jud_id" [mdAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></md-form-field>
+        <md-form-field class="col7_3"><input required type="text" placeholder="Localitate" mdInput formControlName="localit"></md-form-field>
+        <md-form-field class="col11_2"><input required type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
+      </div>
+
+      <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
+          <md-option *ngFor="let tara of filteredTara | async" [value]="tara.id">
+            {{ tara.nume }}
+          </md-option>
+        </md-autocomplete>
+
+        <md-autocomplete #judetAuto="mdAutocomplete" [displayWith]="displayFnJudet.bind(this)">
+            <md-option *ngFor="let judet of filteredJudet | async" [value]="judet.id">
+              {{ judet.nume }}
+            </md-option>
+          </md-autocomplete>
+
+      <div class="row wrapper">
+        <md-form-field class="col1_3"><input type="text" placeholder="Strada" mdInput formControlName="strada"></md-form-field>
+        <md-form-field class="col4_1"><input type="text" placeholder="Nr." mdInput formControlName="nr"></md-form-field>
+        <md-form-field class="col7_1"><input type="text" placeholder="Bl." mdInput formControlName="bl"></md-form-field>
+        <md-form-field class="col8_1"><input type="text" placeholder="Sc." mdInput formControlName="scara"></md-form-field>
+        <md-form-field class="col9_1"><input type="text" placeholder="Ap." mdInput formControlName="ap"></md-form-field>
+      </div>
+      <br>
+      <div class="row wrapper">
+        <md-form-field class="col1_3"><input type="text" placeholder="Telefon" mdInput formControlName="tel"></md-form-field>
+        <md-form-field class="col4_3"><input type="text" placeholder="Email" mdInput formControlName="email"></md-form-field>
+      </div>
+      <div class="row wrapper">
+        <md-form-field class="col1_12"><textarea placeholder="Comentariu" mdInput formControlName="obs"></textarea></md-form-field>
+      </div>
+      <div class="row" style="text-align: center;">
+          <button type="submit" *ngIf="!loading" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="adresaForm.invalid || adresaForm.untouched">
+                       {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} adresa
+          </button>
+      </div>
+    </div>
+  </md-card-content>
+</md-card>

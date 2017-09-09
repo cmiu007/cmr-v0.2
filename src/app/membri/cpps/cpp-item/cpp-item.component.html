@@ -1,69 +1,68 @@
 <div [formGroup]="cppForm">
-    <md-card>
-      <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
-          <span>{{ formTitle }}</span>
-          <span>
-          <md-icon class="icon-align">keyboard_arrow_down</md-icon>
+  <md-card>
+    <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
+      <span [ngClass]="{'inactive': formStatusActive}" >{{ formTitle }}</span>
+      <span>
+          <md-icon class="icon-align">{{ isHidden ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</md-icon>
           </span>
-      </md-card-title>
-      <md-card-content>
-        <div class="form-item-content" [hidden]="isHidden">
-          <div class="row">
-            <md-select placeholder="Tip" formControlName="reg_cpp_tip_id" (blur)="checkRegTipId()">
-              <md-option *ngFor="let tip_cpp of listaCppTip" [value]="tip_cpp.id">
-                {{ tip_cpp.nume }}
-              </md-option>
-            </md-select>
+    </md-card-title>
+    <md-card-content>
+      <div class="form-item-content" [hidden]="isHidden">
+        <div class="row wrapper">
+          <md-select class="col1_2" placeholder="Tip" formControlName="reg_cpp_tip_id" (blur)="checkRegTipId()">
+            <md-option *ngFor="let tip_cpp of listaCppTip" [value]="tip_cpp.id">
+              {{ tip_cpp.nume }}
+            </md-option>
+          </md-select>
 
-            <md-input-container>
-              <input type="text" placeholder="Denumire" mdInput formControlName="reg_cpp_id" [mdAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
-            </md-input-container>
+          <md-form-field class="col2_5">
+            <input type="text" placeholder="Denumire" mdInput formControlName="reg_cpp_id" [mdAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
+          </md-form-field>
 
-            <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayFnCpp.bind(this)">
-              <md-option *ngFor="let cpp of filteredNumeCpp | async" [value]="cpp.id">
-                {{ cpp.nume }}
-              </md-option>
-            </md-autocomplete>
+          <md-select class="col7_2" *ngIf="isSpecialitate" placeholder="Grad" formControlName="grad_prof_cpp_id">
+            <md-option *ngFor="let grad of listaGradCpp" [value]="grad.id">
+              {{ grad.nume }}
+            </md-option>
+          </md-select>
 
-            <md-select *ngIf="isSpecialitate" placeholder="Grad" formControlName="grad_prof_cpp_id">
-              <md-option *ngFor="let grad of listaGradCpp" [value]="grad.id">
-                {{ grad.nume }}
-              </md-option>
-            </md-select>
+          <md-form-field class="col9_2">
+            <input mdInput placeholder="Start date" type="text" formControlName="date_start">
+          </md-form-field>
 
-            <md-input-container>
-              <input mdInput placeholder="Start date" type="text" formControlName="date_start">
-            </md-input-container>
-
-            <md-input-container>
-              <input mdInput placeholder="End date" type="text" formControlName="date_end">
-            </md-input-container>
-          </div>
-          <div class="row">
-            <md-select placeholder="Emitent" formControlName="emitent">
-              <md-option *ngFor="let emitent of listaEmitent" [value]="emitent.id">
-                {{ emitent.nume }}
-              </md-option>
-            </md-select>
-            <md-input-container>
-              <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
-            </md-input-container>
-            <md-input-container>
-              <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
-            </md-input-container>
-            <md-input-container>
-              <input mdInput placeholder="Data" type="text" formControlName="act_data">
-            </md-input-container>
-            <md-input-container>
-              <input mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere">
-            </md-input-container>
-          </div>
-          <div class="row" *ngIf="formStatus !== 3" style="text-align: center;">
-            <button type="button" *ngIf="!loading" md-raised-button (click)="onClickCpp()" color="primary" [disabled]="cppForm.invalid || cppForm.untouched">
+          <md-form-field class="col11_2">
+            <input mdInput placeholder="End date" type="text" formControlName="date_end">
+          </md-form-field>
+        </div>
+        <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayFnCpp.bind(this)">
+          <md-option *ngFor="let cpp of filteredNumeCpp | async" [value]="cpp.id">
+            {{ cpp.nume }}
+          </md-option>
+        </md-autocomplete>
+        <div class="row wrapper">
+          <md-select class="col1_2" placeholder="Emitent" formControlName="emitent">
+            <md-option *ngFor="let emitent of listaEmitent" [value]="emitent.id">
+              {{ emitent.nume }}
+            </md-option>
+          </md-select>
+          <md-form-field class="col2_1">
+            <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
+          </md-form-field>
+          <md-form-field class="col3_2">
+            <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
+          </md-form-field>
+          <md-form-field class="col5_2">
+            <input mdInput placeholder="Data" type="text" formControlName="act_data">
+          </md-form-field>
+          <md-form-field class="col7_6">
+            <textarea mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere"></textarea>
+          </md-form-field>
+        </div>
+        <div class="row" *ngIf="formStatus !== 3" style="text-align: center;">
+          <button type="button" *ngIf="!loading" md-raised-button (click)="onClickCpp()" color="primary" [disabled]="cppForm.invalid || cppForm.untouched">
                        {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} pregatire profesionala postuniversitara
             </button>
-          </div>
         </div>
-      </md-card-content>
-    </md-card>
-  </div>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

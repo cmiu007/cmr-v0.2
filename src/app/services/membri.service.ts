@@ -62,6 +62,20 @@ export class MembriService {
     });
   }
 
+  // nu are aceiasi forma cu celelante adauga !!!!
+  adaugaMembruContact(actiune: string, id: number, data: string) {
+    return this.http.put(this.apiAddress + 'api/adauga', JSON.stringify({
+      'token': localStorage.getItem('userToken'),
+      'actiune': actiune,
+      'id': id,
+      'data': data
+    }))
+    .map((response: Response) => {
+      this.checkResponse(response);
+      return response.json();
+    });
+  }
+
   listaMembruDate(actiune: string, id: string) {
     return this.http.put(this.apiAddress + 'api/lista', this.setPutValueGet(actiune, +id))
       .map((response: Response) => {

@@ -40,6 +40,7 @@ export class CppItemComponent implements OnInit {
   filteredNumeCpp: Observable<NumeCpp[]>;
   regCpp: NumeCpp[];
   formTitle: string;
+  formStatusActive = true;
 
   public cppForm: FormGroup;
 
@@ -166,6 +167,7 @@ export class CppItemComponent implements OnInit {
     } else {
       if (this.cppItem.date_end === '') {
         this.formStatus = 2;
+        this.formStatusActive = false;
       } else {
         this.formStatus = 3;
       }
@@ -181,6 +183,7 @@ export class CppItemComponent implements OnInit {
     const cppNume = this.displayFnCpp(this.cppForm.controls['reg_cpp_id'].value);
     this.formTitle = cppNume + ' - ' + cppTip;
   }
+
   setFormFields() {
     switch (this.formStatus) {
       case 0:

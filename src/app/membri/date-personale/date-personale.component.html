@@ -2,16 +2,16 @@
 <div class="content">
   <form [formGroup]="formDatePersonale" ngSubmit="onFormSubmit()">
     <md-card *ngIf="formStatus === 3">
-      <md-card-title  class="form-title"><span class="full-width">Administrare (form  status: {{formStatus}})</span></md-card-title>
+      <md-card-title class="form-title"><span class="full-width">Administrare (form  status: {{formStatus}})</span></md-card-title>
       <md-card-content>
 
-        <md-input-container>
+        <md-form-field>
           <input mdInput formControlName="cuim" type="text" placeholder="CUIM">
-        </md-input-container>
+        </md-form-field>
 
-        <md-input-container>
+        <md-form-field>
           <input mdInput formControlName="jud_id" type="text" placeholder="Judet" [mdAutocomplete]="judAuto" (click)="formDatePersonale.get('jud_id').setValue('')">
-        </md-input-container>
+        </md-form-field>
 
         <md-autocomplete #judAuto="mdAutocomplete" [displayWith]="displayFnJudet.bind(this)">
           <md-option *ngFor="let judet of filtruJudete | async" [value]="judet.id">
@@ -19,16 +19,16 @@
           </md-option>
         </md-autocomplete>
 
-        <md-input-container>
+        <md-form-field>
           <input mdInput formControlName="status" type="text" placeholder="Status">
-        </md-input-container>
+        </md-form-field>
 
-        <md-input-container>
+        <md-form-field>
           <input mdInput formControlName="updated" type="text" placeholder="Updated">
-        </md-input-container>
-        <md-input-container>
+        </md-form-field>
+        <md-form-field>
           <input mdInput formControlName="ro" type="text" placeholder="Read Only?">
-        </md-input-container>
+        </md-form-field>
         <button md-raised-button (click)="log()" color="primary">Log Values</button>
         <button md-raised-button (click)="test()" color="primary">Test</button>
       </md-card-content>
@@ -36,132 +36,127 @@
 
     <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
     <md-card>
-      <md-card-title  class="form-title">
+      <md-card-title class="form-title">
         <span class="full-width">Act Identitate</span>
       </md-card-title>
       <md-card-content>
-        <div class="row">
-          <md-input-container>
+        <div class="row wrapper">
+          <md-form-field class="col1_3">
             <input mdInput formControlName="cetatenie" type="text" placeholder="Cetatenie*" [mdAutocomplete]="taraAuto" (click)="formDatePersonale.get('cetatenie').setValue('')">
-          </md-input-container>
+          </md-form-field>
 
-          <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
-            <md-option *ngFor="let tara of filtruTari | async" [value]="tara.id">
-              {{ tara.nume }}
-            </md-option>
-          </md-autocomplete>
-
-          <md-input-container>
+          <md-form-field class="col6_3">
             <input mdInput formControlName="cnp" type="number" placeholder="CNP">
-          </md-input-container>
+          </md-form-field>
         </div>
-        <div class="row">
-          <md-input-container>
+        <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
+          <md-option *ngFor="let tara of filtruTari | async" [value]="tara.id">
+            {{ tara.nume }}
+          </md-option>
+        </md-autocomplete>
+        <div class="row wrapper">
+          <md-form-field class="col1_3">
             <input mdInput formControlName="nume" type="text" placeholder="Nume">
-          </md-input-container>
-          <md-input-container>
+          </md-form-field>
+          <md-form-field class="col4_1">
             <input mdInput formControlName="initiala" type="text" placeholder="Initiala">
-          </md-input-container>
-          <md-input-container>
+          </md-form-field>
+          <md-form-field class="col6_3">
             <input mdInput formControlName="prenume" type="text" placeholder="Prenume">
-          </md-input-container>
-          <md-input-container>
+          </md-form-field>
+          <md-form-field class="col11_2">
             <input mdInput formControlName="nume_ant" type="text" placeholder="Nume Anterior">
-          </md-input-container>
+          </md-form-field>
         </div>
-        <div class="row">
-          <!-- <md-input-container>
+        <div class="row wrapper">
+          <!-- <md-form-field>
             <input mdInput formControlName="act_ident_tip_id" type="text" placeholder="Tip Act Identitate">
-          </md-input-container> -->
-          <md-select placeholder="Tip Act Identitate" formControlName="act_ident_tip_id" name="ceva">
+          </md-form-field> -->
+          <md-select class="col1_3" placeholder="Tip Act Identitate" formControlName="act_ident_tip_id" name="ceva">
             <md-option *ngFor="let tip_id of listaActIdentTip" [value]="tip_id.id">
               {{tip_id.nume}}
             </md-option>
           </md-select>
-          <md-input-container>
-            <input mdInput formControlName="act_ident_serie" type="text" placeholder="Serie Act Identitate">
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="act_ident_nr" type="number" placeholder="Numar Act Identitate">
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="act_ident_exp_date" type="text" placeholder="Data Expirare Act Identitate">
-          </md-input-container>
+          <md-form-field class="col4_1">
+            <input mdInput formControlName="act_ident_serie" type="text" placeholder="Serie">
+          </md-form-field>
+          <md-form-field class="col6_3">
+            <input mdInput formControlName="act_ident_nr" type="number" placeholder="Numar">
+          </md-form-field>
+          <md-form-field class="col11_2">
+            <input mdInput formControlName="act_ident_exp_date" type="text" placeholder="Data Expirare">
+          </md-form-field>
         </div>
 
       </md-card-content>
     </md-card>
 
     <md-card>
-      <md-card-title  class="form-title">
+      <md-card-title class="form-title">
         <span class="full-width">Facultatea Absolvita</span>
       </md-card-title>
       <md-card-content>
 
-        <div class="row">
-          <md-input-container>
+        <div class="row wrapper">
+          <md-form-field class="col1_5">
             <input mdInput formControlName="fac_absolv" type="text" placeholder="Facultate Absolvita" [mdAutocomplete]="facAuto" (click)="formDatePersonale.get('fac_absolv').setValue('')">
-          </md-input-container>
-          <md-autocomplete #facAuto="mdAutocomplete" [displayWith]="displayFnFac.bind(this)">
-            <md-option *ngFor="let fac of filtruFac | async" [value]="fac.id">
-              {{ fac.nume }}
-            </md-option>
-          </md-autocomplete>
+          </md-form-field>
 
-          <md-input-container>
-            <input mdInput formControlName="fac_promotie" type="text" placeholder="An Promotie">
-          </md-input-container>
-          <md-input-container>
+          <md-form-field class="col6_2">
+            <input mdInput formControlName="fac_promotie" type="text" placeholder="Promotie">
+          </md-form-field>
+          <md-form-field class="col11_2">
             <input mdInput formControlName="cod_parafa" type="text" placeholder="Cod Parafa">
-          </md-input-container>
+          </md-form-field>
         </div>
 
+        <md-autocomplete #facAuto="mdAutocomplete" [displayWith]="displayFnFac.bind(this)">
+          <md-option *ngFor="let fac of filtruFac | async" [value]="fac.id">
+            {{ fac.nume }}
+          </md-option>
+        </md-autocomplete>
       </md-card-content>
     </md-card>
 
     <md-card>
-      <md-card-title  class="form-title">
+      <md-card-title class="form-title">
         <span class="full-width">Diploma facultate</span>
       </md-card-title>
       <md-card-content>
 
-        <div class="row">
-          <md-select placeholder="Tip Act Absolvire Fac" formControlName="fac_dipl_adev" name="ceva2">
+        <div class="row wrapper">
+          <md-select class="col1_3" placeholder="Tip Act Absolvire Fac" formControlName="fac_doc_tip" name="ceva2">
             <md-option *ngFor="let tip_doc of listaTipDocFac" [value]="tip_doc.id">
               {{tip_doc.nume}}
             </md-option>
           </md-select>
-        </div>
-        <div class="row">
-          <md-input-container>
-            <input mdInput formControlName="fac_dipl_serie" type="text" placeholder="Serie Diploma">
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="fac_dipl_nr" type="text" placeholder="Numar Diploma">
-          </md-input-container>
-          <md-input-container>
+          <md-form-field class="col4_1">
+            <input mdInput formControlName="fac_dipl_serie" type="text" placeholder="Serie">
+          </md-form-field>
+          <md-form-field class="col6_2">
+            <input mdInput formControlName="fac_dipl_nr" type="text" placeholder="Numar">
+          </md-form-field>
+          <md-form-field class="col9_2">
             <!-- TODO: de revazut fac_dipl_dat -->
-            <input mdInput formControlName="fac_dipl_data" type="text" placeholder="Data Diploma">
-          </md-input-container>
+            <input mdInput formControlName="fac_dipl_data" type="text" placeholder="Data">
+          </md-form-field>
         </div>
 
       </md-card-content>
     </md-card>
 
     <md-card>
-      <md-card-title  class="form-title"><span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span></md-card-title>
+      <md-card-title class="form-title"><span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span></md-card-title>
       <md-card-content>
-
-        <md-input-container>
+        <md-form-field>
           <input mdInput formControlName="data_juramant" type="text" placeholder="Data  juramant">
-        </md-input-container>
-
+        </md-form-field>
       </md-card-content>
     </md-card>
 
     <md-card style="text-align: center;">
       <md-card-content>
-        <div class="row" >
+        <div class="row">
           <button md-raised-button (click)="editDateMember()" color="warn" [disabled]="formDatePersonale.invalid || formDatePersonale.untouched">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
           <!-- TODO: nu merge disable / enable ....  -->
         </div>

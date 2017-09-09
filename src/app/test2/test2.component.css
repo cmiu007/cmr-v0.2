@@ -6,6 +6,7 @@
 .content {
   margin: 10px 10% 1px  10%;
 }
+
 .mat-list-item {
   border-bottom: 1px solid black;
 }
@@ -28,4 +29,22 @@
 
 .half-width {
   width: 50%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  grid-gap: 1em;
+}
+
+.grid1 {
+  width: 100%;
+  grid-column: col-start / span 3;
+  border: 1px dotted blue;
+}
+
+.grid2 {
+  width: 100%;
+  grid-column: col-start 4 / span 2;
+  border: 1px dotted blue;
 }
