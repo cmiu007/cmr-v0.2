@@ -10,5 +10,5 @@ export interface Asigurare {
   'polita_serie': string;
   'polita_nr': string;
   'data_start': string;
-  'data_eng': string;
+  'data_end': string;
 }

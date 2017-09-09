@@ -31,5 +31,6 @@ export class AvizariListComponent implements OnInit {
     const newAvizareForm = this._formSet.avizare(null);
     const arrayControl: FormArray = this.formAvizari.get('avizari');
     arrayControl.insert(0, newAvizareForm);
+    this.addActive = !this.addActive;
   }
 }

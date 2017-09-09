@@ -1,14 +1,6 @@
 <div class="row">
   <md-card>
     <md-card-title class="form-title"><span>Lista Avizari</span></md-card-title>
-    <md-card-content style="text-align: center;">
-      <div *ngIf="addActive">
-            <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
-            Adauga Avizare
-            </button>
-          </div>
-          <span>Aici trebuie sa apara lista de conditii ca in formularul din versiunea veche</span>
-    </md-card-content>
   </md-card>
 </div>
 
@@ -19,3 +11,14 @@
     </div>
   </div>
 </div>
+
+<md-card>
+    <md-card-content style="text-align: center;">
+        <div *ngIf="addActive">
+              <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
+              Adauga Avizare
+              </button>
+            </div>
+            <span>Aici trebuie sa apara lista de conditii ca in formularul din versiunea veche</span>
+      </md-card-content>
+</md-card>

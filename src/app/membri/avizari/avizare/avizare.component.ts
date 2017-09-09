@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
@@ -42,6 +42,7 @@ export class AvizareComponent implements OnInit {
 
   asigurariLoading = false;
   asigurariFormData: Asigurare[];
+  asigurareFormArray: FormArray;
 
   filteredAsigurator;
 
@@ -50,7 +51,8 @@ export class AvizareComponent implements OnInit {
     private _membriService: MembriService,
     private _snackBar: MdSnackBar,
     private _router: Router,
-    private _dataCal: DataCalService
+    private _dataCal: DataCalService,
+    private _fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -146,6 +148,8 @@ export class AvizareComponent implements OnInit {
   onClickAsigurare(): void {
     // get asigurari
     this.getAsigurariData();
+    this.initArrayInFormGroup();
+    // this.formAsigurari = this.toFormGroup();
 
   }
 
@@ -159,13 +163,29 @@ export class AvizareComponent implements OnInit {
       } else {
         this.asigurariFormData = data;
         this.setAsigurariData();
+        this.setAsigurariArray();
         console.log(this.asigurariFormData);
       }
     });
   }
 
+  initArrayInFormGroup(): void {
+    this.asigurareFormArray = this._fb.array([]);
+    this.avizareForm.addControl( 'asigurare',  this.asigurareFormArray );
+    console.log(this.avizareForm);
+  }
+
+  setAsigurariArray(): void {
+    this.asigurariFormData.forEach(
+      (asigurareData: Asigurare) => {
+        const asigurareForm = this._formSet.asigurare(asigurareData);
+        this.asigurareFormArray.push(asigurareForm);
+        console.log(this.avizareForm);
+      }
+    );
+  }
+
   setAsigurariData(): void {
-    const a = +this.avizareForm.get('id_dlp').value;
     this.asigurariFormData = this.asigurariFormData.filter(
       asigurare => asigurare.id_dlp === +this.avizareForm.get('id_dlp').value
     );

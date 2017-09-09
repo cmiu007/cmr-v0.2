@@ -37,6 +37,7 @@ export class AvizariComponent implements OnInit {
   }
 
   setRegistre(): void {
+    // TODO: de mutat unde ne trebuie, acum il plimbam aiurea peste tot
     this.registruAsiguratori = this._aRoute.snapshot.data['regAsiguratori'];
   }
 

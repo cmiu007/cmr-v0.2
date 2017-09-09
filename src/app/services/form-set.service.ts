@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
 import { Adresa } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
+import { Asigurare } from '../shared/interfaces/asigurari.interface';
 
 @Injectable()
 export class FormSetService {
@@ -70,34 +71,61 @@ export class FormSetService {
   avizare(data: Avizare) {
     if (data) {
       if (data.id_dlp) {
-      const formGroup = this._fb.group({
-        'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
-        // 'id_certificat': number;
-        'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
-        'inchis': [data.inchis], // de schimbat denumirea in activ
-        'dlp_data_start': [data.dlp_data_start, [Validators.required, this._validator.checkDate]],
-        'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
-        // TODO: add asigurari array
-      });
-      Object.keys(data).forEach(
-        key => {
-          if (data[key] === '0000-00-00' || data[key] === 0) {
-            data[key] = '';
+        const formGroup = this._fb.group({
+          'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
+          // 'id_certificat': number;
+          'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
+          'inchis': [data.inchis], // de schimbat denumirea in activ
+          'dlp_data_start': [data.dlp_data_start, [Validators.required, this._validator.checkDate]],
+          'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
+          // TODO: add asigurari array
+        });
+        Object.keys(data).forEach(
+          key => {
+            if (data[key] === '0000-00-00' || data[key] === 0) {
+              data[key] = '';
+            }
           }
-        }
-      );
-      formGroup.patchValue(data);
-      return formGroup;
+        );
+        formGroup.patchValue(data);
+        return formGroup;
       }
     }
     const formGroupEmpty = this._fb.group({
       'id_dlp': null, // TODO: nu merge initializarea cu null asa cum trebuie
       // 'id_certificat': number;
-      'id_mem': [ +localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
-      'inchis': [ null ], // de schimbat denumirea in activ
+      'id_mem': [+localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
+      'inchis': [null], // de schimbat denumirea in activ
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
-      'dlp_data_end': [ '', [this._validator.checkDate]]
+      'dlp_data_end': ['', [this._validator.checkDate]]
     });
     return formGroupEmpty;
+  }
+
+  asigurare(data: Asigurare) {
+    if (data) {
+      if (data.id_asig) {
+        // clean data
+        Object.keys(data).forEach(
+          key => {
+            if (data[key] === '0000-00-00' || data[key] === 0) {
+              data[key] = '';
+            }
+          }
+        );
+        const formGroup = this._fb.group({
+          'id_asig': data.id_asig,
+          'id_mem': data.id_mem,
+          'id_asigurator': data.id_asigurator,
+          'id_dlp': data.id_dlp,
+          'polita_serie': data.polita_serie,
+          'polita_nr': data.polita_nr,
+          'data_start': data.data_start,
+          'data_end': data.data_end
+        });
+        return formGroup;
+      }
+    }
+    // aici initializare form nou
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-asigurari-list',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./asigurari-list.component.css']
 })
 export class AsigurariListComponent implements OnInit {
+  @Input('formAsigurari')
+  public formAsigurari;
+
+  addActive = true;
 
   constructor() { }
 
