@@ -48,6 +48,7 @@ import { AvizariListComponent } from './membri/avizari/avizari-list/avizari-list
 import { AvizareComponent } from './membri/avizari/avizare/avizare.component';
 import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/asigurari-list.component';
 import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
+import { DataCalService } from './services/data-cal.service';
 
 
 
@@ -100,7 +101,8 @@ import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare
     TaraResolve,
     AsiguratoriResolve,
     FormValidatorsService,
-    FormSetService
+    FormSetService,
+    DataCalService
   ],
   bootstrap: [AppComponent]
 })

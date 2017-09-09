@@ -13,9 +13,9 @@
 - contine cel putin o Asigurare
 
 1. Stare DLP - se calculeaza pe baza data_start si data_end:
-    - Draft nu are data_start si data_end
-    - Activ are data_start
-    - Inactiv are data_start si data_end
+    - Draft are data_start mai mare ca azi
+    - Activ are data_end mai mare ca azi
+    - Inactiv este inchis si are data_end mai mica ca azi
 
 2. Workflow: 
 

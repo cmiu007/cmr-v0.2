@@ -18,6 +18,7 @@ export class AvizariComponent implements OnInit {
   registruAsiguratori: Asigurator[];
   formAvizariData: Avizare[];
   formAvizari: FormGroup;
+  formArrayAvizare: FormArray;
 
   constructor(
     private _aRoute: ActivatedRoute,
@@ -48,6 +49,7 @@ export class AvizariComponent implements OnInit {
           this._router.navigate(['/login']);
         } else {
           this.formAvizariData = data;
+          this.sortDlp();
           this.loading = false;
           this.toFormGroupTest();
         }
@@ -55,9 +57,16 @@ export class AvizariComponent implements OnInit {
     // TODO: de ordonat datele in functie de data calendaristica descrescator
   }
 
+  sortDlp(): void {
+    this.formAvizariData.sort((a: Avizare, b) => {
+      return a.dlp_data_start > b.dlp_data_start ? -1 : 1;
+    });
+  }
+
   toFormGroup(): FormGroup {
+    this.formArrayAvizare = this._fb.array([]);
     const formGroup = this._fb.group({
-      avizari: this._fb.array([])
+      avizari: this.formArrayAvizare
     });
     return formGroup;
   }
@@ -66,12 +75,12 @@ export class AvizariComponent implements OnInit {
     // console.log('form initial');
     // console.log(this.formAvizari);
     this.formAvizariData.forEach((avizareData: Avizare) => {
-      console.log(avizareData);
+      // console.log(avizareData);
+      const avizareForm = this._formSet.avizare(avizareData);
+      this.formArrayAvizare.push(avizareForm);
       // aici luam sir si ii bagam un item in lista
-      console.log(this._formSet.avizare(avizareData));
+      // console.log(this._formSet.avizare(avizareData));
       // this.formAvizari.addControl('avizari', this._formSet.avizare(avizareData));
     });
-    // console.log('form final');
-    // console.log(this.formAvizari);
   }
 }

@@ -260,3 +260,13 @@ aside {
   width: 100%;
   grid-column: col-start 12 / span 1;
 }
+
+.inactive {
+  color: gray;
+  text-decoration: line-through;
+}
+
+.active {
+  color: green;
+  /* text-decoration: underline; */
+}

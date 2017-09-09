@@ -14,8 +14,8 @@
 
 <div [formGroup]="formAvizari">
   <div formArrayName="avizari">
-    <div *ngFor="let formAvizareData of formAvizariData">
-      <app-avizare [formAvizareData]="formAvizareData" [registruAsiguratori]="registruAsiguratori"></app-avizare>
+    <div *ngFor="let formAvizareData of formAvizari.get('avizari').value; let i = index">
+      <app-avizare [arrayIndex]="i" [formAvizari]="formAvizari"  [formAvizareData]="formAvizareData" [registruAsiguratori]="registruAsiguratori"></app-avizare>
     </div>
   </div>
 </div>

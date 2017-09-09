@@ -11,13 +11,10 @@ import { Avizare } from '../../../shared/interfaces/avizari.interface';
   styleUrls: ['./avizari-list.component.css']
 })
 export class AvizariListComponent implements OnInit {
-  @Input('formAvizariData')
-  public formAvizariData: Avizare[];
-
   @Input('formAvizari')
   public formAvizari;
 
-  @Input ('registruAsiguratori')
+  @Input('registruAsiguratori')
   public registruAsiguratori: Asigurator[];
 
   addActive = true;
@@ -27,12 +24,12 @@ export class AvizariListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.formAvizari.addControl('avizari', new FormArray([]));
+    // this.formAvizari.addControl('avizari', new FormArray([]));
   }
 
   addAvizare() {
-    // const newAvizareData = this._formSet.avizare(null).value;
-    this.formAvizariData.unshift({});
-    this.addActive = !this.addActive;
+    const newAvizareForm = this._formSet.avizare(null);
+    const arrayControl: FormArray = this.formAvizari.get('avizari');
+    arrayControl.insert(0, newAvizareForm);
   }
 }

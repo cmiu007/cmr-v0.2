@@ -69,6 +69,7 @@ export class FormSetService {
 
   avizare(data: Avizare) {
     if (data) {
+      if (data.id_dlp) {
       const formGroup = this._fb.group({
         'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
         // 'id_certificat': number;
@@ -87,6 +88,7 @@ export class FormSetService {
       );
       formGroup.patchValue(data);
       return formGroup;
+      }
     }
     const formGroupEmpty = this._fb.group({
       'id_dlp': null, // TODO: nu merge initializarea cu null asa cum trebuie
@@ -94,7 +96,7 @@ export class FormSetService {
       'id_mem': [ +localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
       'inchis': [ null ], // de schimbat denumirea in activ
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
-      'dlp_data_end': [ '', [Validators.required, this._validator.checkDate]]
+      'dlp_data_end': [ '', [this._validator.checkDate]]
     });
     return formGroupEmpty;
   }
