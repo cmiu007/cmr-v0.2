@@ -41,7 +41,13 @@ import { AdreseListComponent } from './membri/contact/adrese-list/adrese-list.co
 import { CppResolve } from './shared/resolvers/cpp.resolver';
 import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve } from './shared/resolvers/tara.resolver';
+import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
+import { AvizariComponent } from './membri/avizari/avizari.component';
+import { AvizariListComponent } from './membri/avizari/avizari-list/avizari-list.component';
+import { AvizareComponent } from './membri/avizari/avizare/avizare.component';
+import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/asigurari-list.component';
+import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
 
 
 
@@ -62,7 +68,12 @@ import { ReflectorComponent } from './shared/reflector/reflector.component';
     EmailComponent,
     AdresaComponent,
     AdreseListComponent,
-    ReflectorComponent
+    ReflectorComponent,
+    AvizariComponent,
+    AvizariListComponent,
+    AvizareComponent,
+    AsigurariListComponent,
+    AsigurareComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +98,7 @@ import { ReflectorComponent } from './shared/reflector/reflector.component';
     CppResolve,
     JudetResolve,
     TaraResolve,
+    AsiguratoriResolve,
     FormValidatorsService,
     FormSetService
   ],

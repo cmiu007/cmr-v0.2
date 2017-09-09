@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
 import { Adresa } from '../shared/interfaces/contact.interface';
+import { Avizare } from '../shared/interfaces/avizari.interface';
 
 @Injectable()
 export class FormSetService {
@@ -17,7 +18,7 @@ export class FormSetService {
         'id_adresa': [data.id_adresa],
         'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]],
         'tip': [data.tip, [Validators.required]],
-        'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
+        // 'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
         'jud_id': [data.jud_id, [Validators.required, this._validator.checkIfNumber]],
         'localit': [data.localit, [Validators.required]],
         'cod_post': [data.cod_post, [Validators.required, this._validator.checkIfNumber]],
@@ -66,4 +67,35 @@ export class FormSetService {
     return formGroupEmpty;
   }
 
+  avizare(data: Avizare) {
+    if (data) {
+      const formGroup = this._fb.group({
+        'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
+        // 'id_certificat': number;
+        'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
+        'inchis': [data.inchis], // de schimbat denumirea in activ
+        'dlp_data_start': [data.dlp_data_start, [Validators.required, this._validator.checkDate]],
+        'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
+        // TODO: add asigurari array
+      });
+      Object.keys(data).forEach(
+        key => {
+          if (data[key] === '0000-00-00' || data[key] === 0) {
+            data[key] = '';
+          }
+        }
+      );
+      formGroup.patchValue(data);
+      return formGroup;
+    }
+    const formGroupEmpty = this._fb.group({
+      'id_dlp': null, // TODO: nu merge initializarea cu null asa cum trebuie
+      // 'id_certificat': number;
+      'id_mem': [ +localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
+      'inchis': [ null ], // de schimbat denumirea in activ
+      'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
+      'dlp_data_end': [ '', [Validators.required, this._validator.checkDate]]
+    });
+    return formGroupEmpty;
+  }
 }

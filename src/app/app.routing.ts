@@ -13,7 +13,9 @@ import { ContactComponent } from './membri/contact/contact.component';
 import { CppResolve } from './shared/resolvers/cpp.resolver';
 import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve  } from './shared/resolvers/tara.resolver';
+import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
+import { AvizariComponent } from './membri/avizari/avizari.component';
 
 
 const appRoutes: Routes = [
@@ -23,7 +25,8 @@ const appRoutes: Routes = [
     {path: 'nou', component: DatePersonaleComponent },
     {path: ':id/datepersonale', component: DatePersonaleComponent },
     {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
-    {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}}
+    {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
+    {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }}
   ]},
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},
