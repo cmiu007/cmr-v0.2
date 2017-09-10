@@ -25,3 +25,15 @@
 ## Grup de specialitati medicale
 
 - are asociat unul sau mai multe specialitati medicale
+
+# Modificare api
+
+## Pt asigurare noua
+```php
+ $query = "insert into mem_asig (id_mem, id_asigurator, polita_serie, polita_nr, data_start, data_end, id_dlp) values (?,?,?,?,?,?,?)";
+ ```
+ in
+
+ ```php
+  $query = "insert into mem_asig (id_mem, id_asigurator, id_dlp, polita_serie, polita_nr, data_start, data_end) values (?,?,?,?,?,?,?)";
+  ```

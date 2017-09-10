@@ -4,6 +4,7 @@ import { FormArray } from '@angular/forms';
 import { FormSetService } from '../../../services/form-set.service';
 import { Asigurator } from '../../../shared/models/registre.model';
 import { Avizare } from '../../../shared/interfaces/avizari.interface';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-avizari-list',
@@ -11,11 +12,11 @@ import { Avizare } from '../../../shared/interfaces/avizari.interface';
   styleUrls: ['./avizari-list.component.css']
 })
 export class AvizariListComponent implements OnInit {
+  public static addActiveSubj: Subject<boolean> = new Subject;
+
   @Input('formAvizari')
   public formAvizari;
 
-  @Input('registruAsiguratori')
-  public registruAsiguratori: Asigurator[];
 
   addActive = true;
 
@@ -25,6 +26,8 @@ export class AvizariListComponent implements OnInit {
 
   ngOnInit() {
     // this.formAvizari.addControl('avizari', new FormArray([]));
+    AvizariListComponent.addActiveSubj
+      .subscribe( result => this.addActive = !this.addActive);
   }
 
   addAvizare() {

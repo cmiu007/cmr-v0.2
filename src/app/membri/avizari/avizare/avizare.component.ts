@@ -10,6 +10,8 @@ import { FormSetService } from '../../../services/form-set.service';
 import { MembriService } from '../../../services/membri.service';
 import { DataCalService } from '../../../services/data-cal.service';
 import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
+import { AvizariListComponent } from '../avizari-list/avizari-list.component';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-avizare',
@@ -17,14 +19,10 @@ import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
   styleUrls: ['./avizare.component.css']
 })
 export class AvizareComponent implements OnInit {
+  public static addActiveSubj: Subject<boolean> = new Subject;
+
   @Input('formAvizari')
   public formAvizari: FormGroup;
-
-  @Input('formAvizareData')
-  public formAvizareData: Avizare;
-
-  @Input('registruAsiguratori')
-  public registruAsiguratori: Asigurator[];
 
   @Input('arrayIndex')
   public arrayIndex;
@@ -36,6 +34,7 @@ export class AvizareComponent implements OnInit {
   // 3 - inactiv
   isAdmin = false;
   isHidden = false;
+  isListaAsigurariHidden = true;
   itemName = '';
   avizareForm: FormGroup;
   formTitleStyle;
@@ -59,6 +58,14 @@ export class AvizareComponent implements OnInit {
     const a = this.formAvizari.get('avizari') as FormArray;
     this.avizareForm = this._formSet.avizare(a.at(this.arrayIndex).value);
     this.setFormStatus();
+    this.initArrayInFormGroup();
+    AvizareComponent.addActiveSubj
+      .subscribe( result => {
+        const b = this.formAvizari.get('avizari') as FormArray;
+        this.avizareForm = this._formSet.avizare(b.at(this.arrayIndex).value);
+        this.setFormStatus();
+        this.initArrayInFormGroup();
+      });
    }
 
   setFormStatus(): void {
@@ -109,10 +116,11 @@ export class AvizareComponent implements OnInit {
   onClickAvizare(): void {
     const data = this.avizareForm.value;
     const idItem = data.id_dlp;
-    // console.log(data);
     // delete pt api lu' peste
     delete data.id_dlp;
     delete data.inchis;
+    delete data.asigurare;
+    console.log(data);
     if (this.formStatus !== 0) {
       this._membriService.modificaMembruDate('dlp', idItem, data)
         .subscribe(
@@ -146,11 +154,10 @@ export class AvizareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
+    // this.initArrayInFormGroup();
     // get asigurari
     this.getAsigurariData();
-    this.initArrayInFormGroup();
-    // this.formAsigurari = this.toFormGroup();
-
+    this.isListaAsigurariHidden = !this.isListaAsigurariHidden;
   }
 
   getAsigurariData(): void {
@@ -164,7 +171,6 @@ export class AvizareComponent implements OnInit {
         this.asigurariFormData = data;
         this.setAsigurariData();
         this.setAsigurariArray();
-        console.log(this.asigurariFormData);
       }
     });
   }
@@ -172,23 +178,30 @@ export class AvizareComponent implements OnInit {
   initArrayInFormGroup(): void {
     this.asigurareFormArray = this._fb.array([]);
     this.avizareForm.addControl( 'asigurare',  this.asigurareFormArray );
-    console.log(this.avizareForm);
   }
 
   setAsigurariArray(): void {
     this.asigurariFormData.forEach(
       (asigurareData: Asigurare) => {
         const asigurareForm = this._formSet.asigurare(asigurareData);
-        this.asigurareFormArray.push(asigurareForm);
-        console.log(this.avizareForm);
+        const control = <FormArray>this.avizareForm.controls['asigurare'];
+        control.push(asigurareForm);
       }
     );
   }
 
   setAsigurariData(): void {
+    // filtram asigurarile care corespund avizarii active
     this.asigurariFormData = this.asigurariFormData.filter(
       asigurare => asigurare.id_dlp === +this.avizareForm.get('id_dlp').value
     );
+  }
+
+  delAvizare(): void {
+    const control = <FormArray>this.formAvizari.controls['avizari'];
+    control.removeAt(0);
+    // show add again
+    AvizariListComponent.addActiveSubj.next();
   }
 
   onClickDetali(): void {

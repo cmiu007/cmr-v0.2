@@ -8,26 +8,24 @@
       <div class="row wrapper">
         <md-form-field class="col1_3"><input required type="text" placeholder="Data start" mdInput formControlName="dlp_data_start" (blur)="addDlpDateEnd()"></md-form-field>
         <md-form-field class="col5_3"><input type="text" placeholder="Data end" mdInput formControlName="dlp_data_end"></md-form-field>
-        <div class="col10_3">
+        <div class="col9_3">
           <button type="submit" md-raised-button (click)="onClickAvizare()" color="primary" [disabled]="avizareForm.invalid || avizareForm.untouched">
             {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} avizare
         </button>
         </div>
+        <div class="col12_3">
+          <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="avizareForm.invalid || isListaAsigurariHidden === false">
+            Lista asigurari
+          </button>
+        </div>
       </div>
-
-      <div class="row" style="text-align: center;" *ngIf="formStatus === 0 || formStatus === 1">
-        <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="avizareForm.invalid">
-          Adauga asigurare
-        </button>
+      <div *ngIf="formStatus === 0" class="row" style="text-align: center;">
+        <button type="submit" md-raised-button (click)="delAvizare()" color="primary">
+              Sterge avizare
+          </button>
       </div>
-
-      <div class="row" style="text-align: center;" *ngIf="formStatus === 2 || formStatus === 3">
-        <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary">
-          Afiseaza detalii avizare
-        </button>
-      </div>
-      <div class="row">
-        <app-asigurari-list></app-asigurari-list>
+      <div class="row" *ngIf="isListaAsigurariHidden === false">
+        <app-asigurari-list [avizareForm]="avizareForm" [formStatus]="formStatus" ></app-asigurari-list>
       </div>
     </div>
   </md-card-content>

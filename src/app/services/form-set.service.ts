@@ -19,7 +19,7 @@ export class FormSetService {
         'id_adresa': [data.id_adresa],
         'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]],
         'tip': [data.tip, [Validators.required]],
-        // 'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
+        'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
         'jud_id': [data.jud_id, [Validators.required, this._validator.checkIfNumber]],
         'localit': [data.localit, [Validators.required]],
         'cod_post': [data.cod_post, [Validators.required, this._validator.checkIfNumber]],
@@ -69,6 +69,7 @@ export class FormSetService {
   }
 
   avizare(data: Avizare) {
+    // de rescris ca si asigurare
     if (data) {
       if (data.id_dlp) {
         const formGroup = this._fb.group({
@@ -103,6 +104,16 @@ export class FormSetService {
   }
 
   asigurare(data: Asigurare) {
+    const formGroupEmpty = this._fb.group({
+      'id_asig': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
+      'id_asigurator': [null, [Validators.required, this._validator.checkIfNumber]],
+      'id_dlp': [null, [Validators.required, this._validator.checkIfNumber]],
+      'polita_serie': ['', [Validators.required]],
+      'polita_nr': ['', [Validators.required]],
+      'data_start': ['', [Validators.required, this._validator.checkDate]],
+      'data_end': ['', [Validators.required, this._validator.checkDate]]
+    });
     if (data) {
       if (data.id_asig) {
         // clean data
@@ -113,19 +124,10 @@ export class FormSetService {
             }
           }
         );
-        const formGroup = this._fb.group({
-          'id_asig': data.id_asig,
-          'id_mem': data.id_mem,
-          'id_asigurator': data.id_asigurator,
-          'id_dlp': data.id_dlp,
-          'polita_serie': data.polita_serie,
-          'polita_nr': data.polita_nr,
-          'data_start': data.data_start,
-          'data_end': data.data_end
-        });
-        return formGroup;
+        formGroupEmpty.patchValue(data);
       }
     }
+    return formGroupEmpty;
     // aici initializare form nou
   }
 }

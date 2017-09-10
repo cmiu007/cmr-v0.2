@@ -4,21 +4,19 @@
   </md-card>
 </div>
 
+<md-card *ngIf="addActive">
+    <md-card-content style="text-align: center;">
+              <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
+              Adauga Avizare
+              </button>
+      </md-card-content>
+</md-card>
+
 <div [formGroup]="formAvizari">
   <div formArrayName="avizari">
     <div *ngFor="let formAvizareData of formAvizari.get('avizari').value; let i = index">
-      <app-avizare [arrayIndex]="i" [formAvizari]="formAvizari"  [formAvizareData]="formAvizareData" [registruAsiguratori]="registruAsiguratori"></app-avizare>
+      <app-avizare [arrayIndex]="i" [formAvizari]="formAvizari"></app-avizare>
     </div>
   </div>
 </div>
 
-<md-card>
-    <md-card-content style="text-align: center;">
-        <div *ngIf="addActive">
-              <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
-              Adauga Avizare
-              </button>
-            </div>
-            <span>Aici trebuie sa apara lista de conditii ca in formularul din versiunea veche</span>
-      </md-card-content>
-</md-card>

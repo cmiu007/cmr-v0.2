@@ -31,15 +31,10 @@ export class AvizariComponent implements OnInit {
 
   ngOnInit() {
     localStorage.setItem('currentPage', 'Avizari');
-    this.setRegistre();
     this.getFormData();
     this.formAvizari = this.toFormGroup();
   }
 
-  setRegistre(): void {
-    // TODO: de mutat unde ne trebuie, acum il plimbam aiurea peste tot
-    this.registruAsiguratori = this._aRoute.snapshot.data['regAsiguratori'];
-  }
 
   getFormData(): void {
     this.loading = true;
@@ -55,7 +50,6 @@ export class AvizariComponent implements OnInit {
           this.toFormGroupTest();
         }
       });
-    // TODO: de ordonat datele in functie de data calendaristica descrescator
   }
 
   sortDlp(): void {
