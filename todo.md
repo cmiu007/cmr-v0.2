@@ -66,3 +66,13 @@ this.formGp.controls['checkboxFld'].valueChanges.observer({
  ```php
   $query = "insert into mem_asig (id_mem, id_asigurator, id_dlp, polita_serie, polita_nr, data_start, data_end) values (?,?,?,?,?,?,?)";
   ```
+
+  ## Pt modificare din mem - coloana fac_doc_tip
+
+  ```php
+// nu mergea add new medic
+
+/// $query = "insert into mem (cnp, jud_id, data_juramant, cod_parafa, nume, initiala, prenume, nume_ant, cetatenie, act_ident_tip_id, act_ident_serie, act_ident_nr, act_ident_exp_date,
+// fac_absolv, fac_promotie, fac_dipl_serie, fac_dipl_nr, fac_dipl_data, fac_dipl_adev) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+$query = "insert into mem (cnp, jud_id, data_juramant, cod_parafa, nume, initiala, prenume, nume_ant, cetatenie, act_ident_tip_id, act_ident_serie, act_ident_nr, act_ident_exp_date, fac_absolv, fac_promotie, fac_dipl_serie, fac_dipl_nr, fac_dipl_data, fac_doc_tip) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+```
