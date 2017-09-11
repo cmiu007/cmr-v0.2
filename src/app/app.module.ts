@@ -50,6 +50,7 @@ import { AvizareComponent } from './membri/avizari/avizare/avizare.component';
 import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/asigurari-list.component';
 import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
 import { DataCalService } from './services/data-cal.service';
+import { CertificateComponent } from './membri/certificate/certificate.component';
 
 
 
@@ -75,7 +76,8 @@ import { DataCalService } from './services/data-cal.service';
     AvizariListComponent,
     AvizareComponent,
     AsigurariListComponent,
-    AsigurareComponent
+    AsigurareComponent,
+    CertificateComponent
   ],
   imports: [
     BrowserModule,

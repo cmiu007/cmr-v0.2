@@ -1,0 +1,14 @@
+:host {
+  width: 100%;
+  height: 100vh;
+}
+
+
+.date-cert {
+  color: #3F51B5;
+  font-weight: bolder;
+}
+
+.item-title {
+  font-size: 1.4em;
+}
