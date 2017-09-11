@@ -69,14 +69,10 @@
           </md-form-field>
         </div>
         <div class="row wrapper">
-          <!-- <md-form-field>
-            <input mdInput formControlName="act_ident_tip_id" type="text" placeholder="Tip Act Identitate">
-          </md-form-field> -->
-          <md-select class="col1_3" placeholder="Tip Act Identitate" formControlName="act_ident_tip_id" name="ceva">
-            <md-option *ngFor="let tip_id of listaActIdentTip" [value]="tip_id.id">
-              {{tip_id.nume}}
-            </md-option>
-          </md-select>
+          <md-form-field class="col1_3">
+            <input mdInput formControlName="act_ident_tip_id" type="text" placeholder="Tip Act Identitate" [mdAutocomplete]="actIdentTip"
+              (click)="formDatePersonale.get('act_ident_tip_id').setValue('')">
+          </md-form-field>
           <md-form-field class="col4_1">
             <input mdInput formControlName="act_ident_serie" type="text" placeholder="Serie">
           </md-form-field>
@@ -87,7 +83,11 @@
             <input mdInput formControlName="act_ident_exp_date" type="text" placeholder="Data Expirare">
           </md-form-field>
         </div>
-
+        <md-autocomplete #actIdentTip="mdAutocomplete" [displayWith]="displayFnActIdentTip.bind(this)">
+          <md-option *ngFor="let tip of filtruActIdentTip | async" [value]="tip.id">
+            {{ tip.nume }}
+          </md-option>
+        </md-autocomplete>
       </md-card-content>
     </md-card>
 
@@ -125,11 +125,8 @@
       <md-card-content>
 
         <div class="row wrapper">
-          <md-select class="col1_3" placeholder="Tip Act Absolvire Fac" formControlName="fac_doc_tip" name="ceva2">
-            <md-option *ngFor="let tip_doc of listaTipDocFac" [value]="tip_doc.id">
-              {{tip_doc.nume}}
-            </md-option>
-          </md-select>
+          <md-form-field><input mdInput formControlName="fac_doc_tip" type="text" placeholder="Tip Act Absolvire" [mdAutocomplete]="facDocTip"
+              (click)="formDatePersonale.get('fac_doc_tip').setValue('')"></md-form-field>
           <md-form-field class="col4_1">
             <input mdInput formControlName="fac_dipl_serie" type="text" placeholder="Serie">
           </md-form-field>
@@ -141,6 +138,11 @@
             <input mdInput formControlName="fac_dipl_data" type="text" placeholder="Data">
           </md-form-field>
         </div>
+        <md-autocomplete #facDocTip="mdAutocomplete" [displayWith]="displayFnDocFacTip.bind(this)">
+          <md-option *ngFor="let tip of filtruDocFacTip | async" [value]="tip.id">
+            {{ tip.nume }}
+          </md-option>
+        </md-autocomplete>
 
       </md-card-content>
     </md-card>

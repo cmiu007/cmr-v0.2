@@ -9,8 +9,10 @@ import 'rxjs/add/operator/map';
 
 import { MembriService } from '../../services/membri.service';
 import { NomenclatorService } from '../../services/nomenclator.service';
-import { Judet, Tara, Fac } from '../../shared/models/registre.model';
+import { Judet, Tara, Fac, ActIdentTip, DocFacTip } from '../../shared/models/registre.model';
 import { FormValidatorsService } from '../../services/form-validators.service';
+import { ItemRegLista } from '../../shared/interfaces/listareg.interface';
+import { ItemRegFac } from '../../shared/interfaces/fac.interface';
 
 @Component({
   selector: 'app-date-personale',
@@ -29,30 +31,32 @@ export class DatePersonaleComponent implements OnInit {
   formDatePersonale: FormGroup;
   loading = true;
 
-  listaJudete = [];
+  registruJudete: ItemRegLista[];
   filtruJudete: Observable<Judet[]>;
 
-  listaTari = [];
+  registruTari: ItemRegLista[];
   filtruTari: Observable<Tara[]>;
 
-  listaFac = [];
+  registruFac: ItemRegLista[];
   filtruFac: Observable<Fac[]>;
 
   // TODO: de adus din api | extindere api
-  listaActIdentTip = [
+  registruActIdentTip: ActIdentTip[] = [
     { id: 1, nume: 'Carte de identitate' },
     { id: 2, nume: 'Buletin de identitate' },
     { id: 3, nume: 'Pasaport' },
     { id: 4, nume: 'Permis de sedere' }
   ];
+  filtruActIdentTip: Observable<ActIdentTip[]>;
 
   // TODO: de adus din api | extindere api
-  listaTipDocFac = [
+  registruDocFacTip: DocFacTip[] = [
     { id: 1, nume: 'Diploma Licenta' },
     { id: 2, nume: 'Adeverinta' },
     { id: 3, nume: '(UE) Diploma' },
     { id: 4, nume: 'Confirmare MS' } // TODO: de clarificat la avizari denumirea pt medicii care au absolvit in alte tari
   ];
+  filtruDocFacTip: Observable<DocFacTip[]>;
 
   constructor(
     private membriService: MembriService,
@@ -75,7 +79,7 @@ export class DatePersonaleComponent implements OnInit {
       'prenume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
       'nume_ant': [{ value: '', disabled: true }],
       'cetatenie': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
-      'act_ident_tip_id': [{ value: '', disabled: true }, Validators.required], // TODO: validator
+      'act_ident_tip_id': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]], // TODO: validator
       'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
       'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
       'act_ident_exp_date': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
@@ -92,36 +96,43 @@ export class DatePersonaleComponent implements OnInit {
 
   ngOnInit() {
     localStorage.setItem('currentPage', 'Date Personale');
+    this.setRegistre();
     this.fillFormData();
     // get nomeclatoare & set filters
-    this.nomeclatorService.getNomenclator('jud')
-      .subscribe(
-      data => {
-        this.listaJudete = data
-          // TODO: de modificat api, nu are rost sa intoarcem ADM si restul de mai jos daca sunt pt uz intern
-          //  de scos Buc Sectoare din lista
-          // acelasi lucru sa fie facut dinamic si pt CPP
-          .filter(option => option.nume !== 'ADM')
-          .filter(option => option.nume !== 'CMR');
-        // .filter(option => option.nume !== new RegExp(`Alb`, 'gm'));;
-      }
-      );
+  }
+
+  setRegistre(): void {
+    this.registruJudete = this.route.snapshot.data['regJud'];
+    const delValRegJud = ['ADM', 'CMR'];
+    delValRegJud.forEach(element => {
+      this.registruJudete = this.registruJudete.filter(option => option.nume !== element);
+    });
     this.filtruJudete = this.formDatePersonale.get('jud_id').valueChanges
       .startWith(null)
       .map(judet => judet && typeof judet === 'object' ? judet.nume : judet)
-      .map(nume => nume ? this.filterJud(nume) : this.listaJudete.slice());
-    this.nomeclatorService.getNomenclator('tara')
-      .subscribe(data => { this.listaTari = data; });
+      .map(nume => nume ? this.filterJud(nume) : this.registruJudete.slice());
+
+    this.registruTari = this.route.snapshot.data['regTara'];
     this.filtruTari = this.formDatePersonale.get('cetatenie').valueChanges
       .startWith(null)
       .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
-      .map(nume => nume ? this.filterTari(nume) : this.listaTari.slice());
-    this.nomeclatorService.getNomenclator('facultate')
-      .subscribe(data => { this.listaFac = data; });
+      .map(nume => nume ? this.filterTari(nume) : this.registruTari.slice());
+
+    this.registruFac = this.route.snapshot.data['regFac'];
     this.filtruFac = this.formDatePersonale.get('fac_absolv').valueChanges
       .startWith(null)
       .map(fac => fac && typeof fac === 'object' ? fac.nume : fac)
-      .map(nume => nume ? this.filterFac(nume) : this.listaFac.slice());
+      .map(nume => nume ? this.filterFac(nume) : this.registruFac.slice());
+
+    this.filtruActIdentTip = this.formDatePersonale.get('act_ident_tip_id').valueChanges
+      .startWith(null)
+      .map(idTip => idTip && typeof idTip === 'object' ? idTip.nume : idTip)
+      .map(nume => nume ? this.filterActIdentTip(nume) : this.registruActIdentTip.slice());
+
+    this.filtruDocFacTip = this.formDatePersonale.get('fac_doc_tip').valueChanges
+      .startWith(null)
+      .map(docFacTip => docFacTip && typeof docFacTip === 'object' ? docFacTip.nume : docFacTip)
+      .map(nume => nume ? this.filterDocFacTip(nume) : this.registruDocFacTip.slice());
   }
 
   fillFormData() {
@@ -207,38 +218,59 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   filterJud(nume: string): Judet[] {
-    return this.listaJudete
+    return this.registruJudete
       .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   filterTari(nume: string): Tara[] {
-    return this.listaTari
+    return this.registruTari
       .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   filterFac(nume: string): Fac[] {
-    return this.listaFac
+    return this.registruFac
+      .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterActIdentTip(nume: string): ActIdentTip[] {
+    return this.registruActIdentTip
+      .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterDocFacTip(nume: string): ActIdentTip[] {
+    return this.registruDocFacTip
       .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
   displayFnTara(option) {
     if (option) {
-      return this.listaTari.find(item => item.id === +option).nume;
+      return this.registruTari.find(item => item.id === +option).nume;
     }
   }
 
   displayFnJudet(option) {
     if (option) {
-      return this.listaJudete.find(item => item.id === +option).nume;
+      return this.registruJudete.find(item => item.id === +option).nume;
     }
   }
 
   displayFnFac(option) {
     if (option) {
-      return this.listaFac.find(item => item.id === +option).nume;
+      return this.registruFac.find(item => item.id === +option).nume;
     }
   }
 
+  displayFnActIdentTip(option) {
+    if (option) {
+      return this.registruActIdentTip.find(item => item.id === +option).nume;
+    }
+  }
+
+  displayFnDocFacTip(option) {
+    if (option) {
+      return this.registruDocFacTip.find(item => item.id === +option).nume;
+    }
+  }
   // log submit
   editDateMember() {
     if (this.formStatus === 2) {
@@ -264,18 +296,18 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('jud_id').enable();
     this.membriService.modificaMembruDate('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
       .subscribe(
-        data => {
-          if (data.result !== '00') {
-            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-          } else {
-            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-            this.router.navigate(['/membri', localStorage.getItem('currentMemId'), 'datepersonale']); // de adaugat id-ul
-          }
+      data => {
+        if (data.result !== '00') {
+          this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+        } else {
+          this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
+          this.router.navigate(['/membri', localStorage.getItem('currentMemId'), 'datepersonale']); // de adaugat id-ul
         }
+      }
       );
   }
 
   test() {
-    console.log(this.listaFac);
+    console.log(this.registruFac);
   }
 }

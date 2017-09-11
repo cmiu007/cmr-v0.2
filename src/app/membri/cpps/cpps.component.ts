@@ -12,7 +12,6 @@ import 'rxjs/add/operator/map';
 import { Cpp, Cpps } from '../../shared/interfaces/cpps.interface';
 import { RegCpp, ItemRegCpp } from '../../shared/interfaces/listacpp.interface';
 import { MembriService } from '../../services/membri.service';
-import { NumeCpp } from '../../shared/models/registre.model';
 import { NomenclatorService } from '../../services/nomenclator.service';
 
 @Component({

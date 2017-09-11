@@ -41,6 +41,7 @@ import { AdreseListComponent } from './membri/contact/adrese-list/adrese-list.co
 import { CppResolve } from './shared/resolvers/cpp.resolver';
 import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve } from './shared/resolvers/tara.resolver';
+import { FacResolve } from './shared/resolvers/fac.resolver';
 import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
@@ -99,6 +100,7 @@ import { DataCalService } from './services/data-cal.service';
     CppResolve,
     JudetResolve,
     TaraResolve,
+    FacResolve,
     AsiguratoriResolve,
     FormValidatorsService,
     FormSetService,
