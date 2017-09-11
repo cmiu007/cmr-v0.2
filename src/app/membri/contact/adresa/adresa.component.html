@@ -50,7 +50,7 @@
         <md-form-field class="col1_12"><textarea placeholder="Comentariu" mdInput formControlName="obs"></textarea></md-form-field>
       </div>
       <div class="row" style="text-align: center;">
-        <button type="submit" *ngIf="!loading" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="adresaForm.invalid || adresaForm.untouched">
+        <button type="submit" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="adresaForm.invalid || adresaForm.untouched">
                        {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} adresa
           </button>
       </div>
