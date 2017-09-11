@@ -18,6 +18,16 @@ export class Judet {
   }
 }
 
+export class Asigurator {
+  id: number;
+  nume: string;
+
+  constructor(id, nume) {
+    this.id = id;
+    this.nume = nume;
+  }
+}
+
 export class Tara {
   id: number;
   nume: string;

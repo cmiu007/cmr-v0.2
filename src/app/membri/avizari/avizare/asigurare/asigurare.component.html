@@ -1,0 +1,28 @@
+<md-card>
+  <md-card-content [formGroup]="asigurareForm">
+    <div class="row wrapper">
+      <md-form-field class="col1_5"><input type="text" placeholder="Nume Asigurator" mdInput formControlName="id_asigurator" [mdAutocomplete]="asiguratorAuto"
+          (click)="asigurareForm.get('id_asigurator').setValue('')"></md-form-field>
+
+      <md-form-field class="col6_1"><input type="text" placeholder="Serie" mdInput formControlName="polita_serie"></md-form-field>
+      <md-form-field class="col7_2"><input type="text" placeholder="Numar" mdInput formControlName="polita_nr"></md-form-field>
+      <md-form-field class="col9_2"><input type="text" placeholder="Data start" mdInput formControlName="data_start" (blur)="addAsigDateEnd()"></md-form-field>
+      <md-form-field class="col11_2"><input type="text" placeholder="Data end" mdInput formControlName="data_end"></md-form-field>
+    </div>
+
+    <md-autocomplete #asiguratorAuto="mdAutocomplete" [displayWith]="displayFnAsigurator.bind(this)">
+      <md-option *ngFor="let asigurator of filteredAsiguratori | async" [value]="asigurator.id">
+        {{ asigurator.nume }}
+      </md-option>
+    </md-autocomplete>
+
+    <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2">
+      <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="asigurareForm.invalid || asigurareForm.untouched">
+            {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} asigurare
+          </button>
+      <button *ngIf="formStatus === 0" type="button" md-raised-button (click)="delAsigurare()" color="primary">
+              Sterge Asigurare
+            </button>
+    </div>
+  </md-card-content>
+</md-card>
