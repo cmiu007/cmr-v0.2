@@ -1,4 +1,33 @@
-# TODO
+# app
+
+### Login cu modal pt reautentificare daca editarea este activa
+
+### De revazut logica pt refresh
+
+http://jasonwatmore.com/post/2016/12/01/angular-2-communicating-between-components-with-observable-subject
+s
+### Validare vizuala formular inainte de submit
+
+```typescript
+this.RegisterForm1.controls["form control name"].updateValueAndValidity();
+```
+sau
+
+```typescript
+this.formGp.controls['checkboxFld'].valueChanges.observer({
+    next: (value) => {
+       this.formGp.controls['numberFld'].updateValueAndValidity();
+    }
+});
+```
+### div cu search gol
+
+```html
+  <md-card *ngIf="emptySearchResult">
+    <span>Nu am gasit nici un membru cu datele {{searchForm.value.searchMem}}</span>
+  </md-card>
+```
+
 
 ## Certificat
 - are asociat unul sau mai multe DLP

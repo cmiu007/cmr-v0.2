@@ -8,10 +8,11 @@ import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { NomenclatorService } from '../../../services/nomenclator.service';
 import { MembriService } from '../../../services/membri.service';
 import { FormValidatorsService } from '../../../services/form-validators.service';
-import { NumeCpp } from '../../../shared/models/registre.model';
+import { CppNume, RegValue, RegValueString, CppTip, CppGrad, CppEmitent } from '../../../shared/models/registre.model';
 import { RegCpp } from '../../../shared/interfaces/listacpp.interface';
 import { CppsComponent } from '../cpps.component';
 import { CppListComponent } from '../cpp-list/cpp-list.component';
+import { ItemRegLista } from '../../../shared/interfaces/listareg.interface';
 
 @Component({
   selector: 'app-cpp-item',
@@ -37,15 +38,14 @@ export class CppItemComponent implements OnInit {
   formStatus = 0; // new form
   isAdmin = false;
   isSpecialitate = false; // hide grad_prog_cpp_id
-  filteredNumeCpp: Observable<NumeCpp[]>;
-  regCpp: NumeCpp[];
   formTitle: string;
   formStatusActive = true;
-
   public cppForm: FormGroup;
 
+  registruCpp: CppNume[];
+  filtruCpp: Observable<CppNume[]>;
 
-  listaCppTip = [
+  registruCppTip: CppTip[] = [
     { id: 1, nume: 'Rezident' },
     { id: 2, nume: 'Specialitate Medicala' },
     { id: 3, nume: 'Supraspecializare' },
@@ -53,16 +53,19 @@ export class CppItemComponent implements OnInit {
     { id: 5, nume: 'Atestat de studii complementare' },
     { id: 6, nume: 'Abilitate' }
   ];
+  filtruCppTip: Observable<CppTip[]>;
 
-  listaGradCpp = [
+  registruCppGrad: CppGrad[] = [
     { id: 1, nume: 'Specialist' },
     { id: 2, nume: 'Primar' }
   ];
+  filtruCppGrad: Observable<CppGrad[]>;
 
-  listaEmitent = [
-    { id: 'MS', nume: 'M.S.' },
-    { id: 'AL', nume: 'Altul' }
+  registruCppEmitent: CppEmitent[] = [
+    { id: 'MS', nume: 'Ministerul Sanatatii' },
+    { id: 'AL', nume: 'Alt Emitent' }
   ];
+  filtruCppEmitent: Observable<CppEmitent[]>;
 
   constructor(
     private _fb: FormBuilder,
@@ -75,7 +78,7 @@ export class CppItemComponent implements OnInit {
 
   ngOnInit() {
     this.cppForm = this.toFormGroup(this.cppItem);
-    this.regCpp = this._route.snapshot.data['regCpp'];
+    this.setRegistre();
     this.setFormStatus();
     this.setFormFields();
     this.setFormTitle();
@@ -83,36 +86,70 @@ export class CppItemComponent implements OnInit {
     if (this.cppItem.reg_cpp_tip_id === 2 || this.formStatus === 0) {
       this.isSpecialitate = true;
     }
-    // console.log(this.cppForm.get('reg_cpp_id').valueChanges);
-    // console.log(this.cppForm);
-    this.filteredNumeCpp = this.cppForm.get('reg_cpp_id').valueChanges
+  }
+
+  setRegistre(): void {
+    this.registruCpp = this._route.snapshot.data['regCpp'];
+    this.filtruCpp = this.cppForm.get('reg_cpp_id').valueChanges
       .startWith(null)
       .map(cppNume => cppNume && typeof cppNume === 'object' ? cppNume.nume : cppNume)
-      .map(name => name ? this.filterCpp(name) : this.regCpp.slice());
+      .map(name => name ? this.filterCpp(name) : this.registruCpp.slice());
+
+    this.filtruCppTip = this.cppForm.get('reg_cpp_tip_id').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppTip(name) : this.registruCppTip.slice());
+
+    this.filtruCppGrad = this.cppForm.get('grad_prof_cpp_id').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppGrad(name) : this.registruCppGrad.slice());
+
+    this.filtruCppEmitent = this.cppForm.get('emitent').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppEmitent(name) : this.registruCppEmitent.slice());
+
   }
 
-  filterCpp(nume: string): NumeCpp[] {
-    return this.regCpp.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  filterCpp(nume: string): CppNume[] {
+    return this.registruCpp.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
-  displayFnCpp(numeCpp: number): string {
-    if (numeCpp) {
-      return this.regCpp.find(item => item.id === numeCpp).nume;
+  filterCppTip(nume: string): CppTip[] {
+    return this.registruCppTip.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterCppGrad(nume: string): CppGrad[] {
+    return this.registruCppGrad.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterCppEmitent(nume: string): CppEmitent[] {
+    return this.registruCppEmitent.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  displayCpp(cppNume: number): string {
+    if (cppNume) {
+      return this.registruCpp.find(item => item.id === cppNume).nume;
     }
   }
 
-  displayFn(option, reg) {
-    if (reg === 'cppTip') {
-      if (option) {
-        return this.listaCppTip.find(item => item.id === option).nume;
-      }
+  displayCppTip(id: number): string {
+    if (id) {
+      return this.registruCppTip.find(item => item.id === id).nume;
     }
-    if (reg === 'cppGrad') {
-      if (option) {
-        return this.listaGradCpp.find(item => item.id === option).nume;
-      }
+  }
+
+  displayCppGrad(id: number): string {
+    if (id) {
+      return this.registruCppGrad.find(item => item.id === id).nume;
     }
-    return 'Not Found';
+  }
+
+  displayCppEmitent(id: string): string {
+    if (id) {
+      return this.registruCppEmitent.find(item => item.id === id).nume;
+    }
   }
 
   displayFnActiv() {
@@ -179,8 +216,8 @@ export class CppItemComponent implements OnInit {
       this.formTitle = 'Inregistrare noua';
       return;
     }
-    const cppTip = this.displayFn(this.cppForm.controls['reg_cpp_tip_id'].value, 'cppTip');
-    const cppNume = this.displayFnCpp(this.cppForm.controls['reg_cpp_id'].value);
+    const cppTip = this.displayCppTip(this.cppForm.controls['reg_cpp_tip_id'].value);
+    const cppNume = this.displayCpp(this.cppForm.controls['reg_cpp_id'].value);
     this.formTitle = cppNume + ' - ' + cppTip;
   }
 
@@ -241,12 +278,12 @@ export class CppItemComponent implements OnInit {
             CppListComponent.addNewActive.next(true);
           }
         }
-      );
+        );
       return;
     }
     // modifica cpp
     this._memService.modificaMembruDate('cpp', this.cppForm.get('id_cpp').value, this.cppForm.value)
-    .subscribe(
+      .subscribe(
       data => {
         if (data.result !== '00') {
           this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
@@ -263,10 +300,10 @@ export class CppItemComponent implements OnInit {
   }
 
   checkRegTipId() {
-    if (this.cppForm.get('reg_cpp_tip_id').value === null ) {
+    if (this.cppForm.get('reg_cpp_tip_id').value === null) {
       return;
     }
-    if ( this.cppForm.get('reg_cpp_tip_id').value !== 2 ) {
+    if (this.cppForm.get('reg_cpp_tip_id').value !== 2) {
       this.cppForm.get('grad_prof_cpp_id').disable();
       return;
     }

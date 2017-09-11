@@ -8,11 +8,13 @@
     <md-card-title>Selectie Medici</md-card-title>
     <md-card-content>
       <form [formGroup]="searchForm" (keydown.enter)="onSearch(searchForm.value.searchMem)">
-        <md-input-container class="half-width">
+        <div class="row wrapper">
+        <md-input-container class="col1_5">
           <input mdInput formControlName="searchMem" type="text" placeholder="Cauta medic" required/>
           <md-icon mdSuffix>search</md-icon>
           <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
         </md-input-container>
+      </div>
       </form>
     </md-card-content>
     <md-card-footer>

@@ -1,5 +1,5 @@
-<md-card>
-  <md-card-content [formGroup]="asigurareForm">
+<md-card class="mat-elevation-z7">
+  <md-card-content  [formGroup]="asigurareForm">
     <div class="row wrapper">
       <md-form-field class="col1_5"><input type="text" placeholder="Nume Asigurator" mdInput formControlName="id_asigurator" [mdAutocomplete]="asiguratorAuto"
           (click)="asigurareForm.get('id_asigurator').setValue('')"></md-form-field>

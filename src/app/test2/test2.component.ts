@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 // import { GlobalDataService } from '../services/global-data.service';
 
 import { NomenclatorService } from '../services/nomenclator.service';
-import { NumeCpp } from '../shared/models/registre.model';
+import { CppNume } from '../shared/models/registre.model';
 import { RegCpp } from '../shared/interfaces/listacpp.interface';
 
 @Component({
@@ -20,8 +20,8 @@ import { RegCpp } from '../shared/interfaces/listacpp.interface';
 })
 export class Test2Component implements OnInit {
   myControl = new FormControl();
-  filteredNumeCpp: Observable<NumeCpp[]>;
-  regCpp: NumeCpp[];
+  filteredNumeCpp: Observable<CppNume[]>;
+  regCpp: CppNume[];
 
   constructor(
     // private nomeclatorService: NomenclatorService,
@@ -40,7 +40,7 @@ export class Test2Component implements OnInit {
     // this.myControl.setValue(1101);
   }
 
-  filterRegCpp(name: string): NumeCpp[] {
+  filterRegCpp(name: string): CppNume[] {
     return this.regCpp.filter(option => new RegExp(`${name}`, 'gi').test(option.nume));
   }
 

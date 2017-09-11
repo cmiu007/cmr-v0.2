@@ -16,14 +16,16 @@ import { TaraResolve  } from './shared/resolvers/tara.resolver';
 import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
+import { FacResolve } from './shared/resolvers/fac.resolver';
 
 
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'reflector', component: ReflectorComponent, canActivate: [AuthGuard]},
   {path: 'membri', canActivate: [AuthGuard], children: [
-    {path: 'nou', component: DatePersonaleComponent },
-    {path: ':id/datepersonale', component: DatePersonaleComponent },
+    {path: 'nou', component: DatePersonaleComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },
+    {path: ':id/datepersonale', component: DatePersonaleComponent,
+        resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },
     {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
     {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
     {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }}

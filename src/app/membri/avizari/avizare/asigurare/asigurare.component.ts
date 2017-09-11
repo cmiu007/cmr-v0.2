@@ -46,14 +46,11 @@ export class AsigurareComponent implements OnInit {
     this.asigurareForm = this._formSet.asigurare(a.at(this.arrayIndex).value);
     this.setFilterRegistre();
     this.setFormStatus();
-    console.log(this.avizareForm);
   }
 
   setFormStatus(): void {
     const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
     const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
-    console.log('dataStart :' + dataStart.toString());
-    console.log('dataEnd : ' + dataEnd.toString());
     if (this._dataCal.isInTheFuture(dataStart)) {
       this.parentFormStatus = 1;
     } else {
