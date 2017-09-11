@@ -12,6 +12,7 @@ export class CertificateComponent implements OnInit {
   loading = true;
   formData; // de pus tip
   printActive = false;
+  tipCert = '';
 
   constructor(
     private _memService: MembriService,
@@ -39,6 +40,7 @@ export class CertificateComponent implements OnInit {
           this.formData = data;
           // this.sortDlp();
           this.loading = false;
+          this.tipCert = data.tip_cert;
           // this.toFormGroupTest();
         }
       });

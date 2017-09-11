@@ -2,15 +2,15 @@
 
 <div class="content">
   <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+  <md-card>
+    <md-card-title class="form-title"> Certificat Tip {{ tipCert  }}</md-card-title>
+
+  </md-card>
 
   <!-- <md-card>
     <md-card-title class="form-title"><span>Lista date certificat de membru</span></md-card-title>
   </md-card> -->
   <div *ngIf="!loading">
-    <md-card>
-      <md-card-title class="form-title"> Certificat Tip {{ formData.tip_cert }}</md-card-title>
-
-    </md-card>
 
     <md-card>
       <md-card-content>
