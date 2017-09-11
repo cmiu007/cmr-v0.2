@@ -1,3 +1,4 @@
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <md-card>
   <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
     <span [ngClass]="formTitleStyle">{{ itemName }}</span>

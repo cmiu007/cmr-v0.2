@@ -38,6 +38,7 @@ export class AvizareComponent implements OnInit {
   itemName = '';
   avizareForm: FormGroup;
   formTitleStyle;
+  loading = false;
 
   asigurariLoading = false;
   asigurariFormData: Asigurare[];
@@ -114,6 +115,7 @@ export class AvizareComponent implements OnInit {
   }
 
   onClickAvizare(): void {
+    this.loading = true;
     const data = this.avizareForm.value;
     const idItem = data.id_dlp;
     // delete pt api lu' peste
@@ -154,6 +156,7 @@ export class AvizareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
+    this.loading = true;
     // this.initArrayInFormGroup();
     // get asigurari
     this.getAsigurariData();
@@ -171,6 +174,7 @@ export class AvizareComponent implements OnInit {
         this.asigurariFormData = data;
         this.setAsigurariData();
         this.setAsigurariArray();
+        this.loading = false;
       }
     });
   }

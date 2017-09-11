@@ -1,4 +1,24 @@
-# TODO
+# app
+
+## Login cu modal pt reautentificare daca editarea este activa
+
+## De revazut logica pt refresh
+
+http://jasonwatmore.com/post/2016/12/01/angular-2-communicating-between-components-with-observable-subject
+s
+## Validare vizuala formular inainte de submit
+
+```javascript
+this.RegisterForm1.controls["form control name"].updateValueAndValidity();
+```
+sau
+```typescript
+this.formGp.controls['checkboxFld'].valueChanges.observer({
+    next: (value) => {
+       this.formGp.controls['numberFld'].updateValueAndValidity();
+    }
+});
+```
 
 ## Certificat
 - are asociat unul sau mai multe DLP
