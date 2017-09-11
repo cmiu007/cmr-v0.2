@@ -1,17 +1,18 @@
 # app
 
-## Login cu modal pt reautentificare daca editarea este activa
+### Login cu modal pt reautentificare daca editarea este activa
 
-## De revazut logica pt refresh
+### De revazut logica pt refresh
 
 http://jasonwatmore.com/post/2016/12/01/angular-2-communicating-between-components-with-observable-subject
 s
-## Validare vizuala formular inainte de submit
+### Validare vizuala formular inainte de submit
 
-```javascript
+```typescript
 this.RegisterForm1.controls["form control name"].updateValueAndValidity();
 ```
 sau
+
 ```typescript
 this.formGp.controls['checkboxFld'].valueChanges.observer({
     next: (value) => {
