@@ -92,8 +92,12 @@ export class MembriService {
         });
   }
 
-  get_certificatMembruDate() {
-
+  getCertificatMembru(id: string) {
+    return this.http.put(this.apiAddress + 'api/get_certificat', this.setPutValueGet('certificat', +id))
+      .map((response: Response) => {
+        this.checkResponse(response);
+        return response.json();
+      });
   }
 
   setPutValueGet(actiune: string, searchVal: number) {

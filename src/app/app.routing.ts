@@ -17,6 +17,7 @@ import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
 import { FacResolve } from './shared/resolvers/fac.resolver';
+import { CertificateComponent } from './membri/certificate/certificate.component';
 
 
 const appRoutes: Routes = [
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
         resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },
     {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
     {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
-    {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }}
+    {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }},
+    {path: ':id/certificate', component: CertificateComponent}
   ]},
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},

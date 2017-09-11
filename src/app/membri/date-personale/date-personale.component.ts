@@ -204,6 +204,7 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('cnp').enable();
     this.formDatePersonale.get('data_juramant').enable();
     this.formDatePersonale.get('cetatenie').enable();
+    this.formDatePersonale.get('cetatenie').setValue('1183');
     this.formDatePersonale.get('fac_absolv').enable();
     this.formDatePersonale.get('fac_promotie').enable();
     // TODO: completeaza automat judet pe baza jud_id al operatorului
@@ -287,6 +288,7 @@ export class DatePersonaleComponent implements OnInit {
             this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
             localStorage.setItem('currentMemNume',
               (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+            localStorage.setItem('currentMemId', data.id_med);
             this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
           }
         }
