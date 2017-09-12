@@ -2,11 +2,11 @@
 - are asociat unul sau mai multe DLP
 
 1. Stare Certificat - se poate calcula pe baza data_start si data_end:
-    - Draft nu are data_start si data_end
-    - Activ are data_start
-    - Inactiv are data_start si data_end
+    - Draft nu are data_start si data_end - nu este un document legal
+    - Activ are data_start - este un document oficial eliberat de CMR
+    - Inactiv are data_start si data_end - nu mai este valid/valabil
 
-    daca este mai ok poate avea un camp activ/inactiv
+    daca este mai ok poate avea un camp draft/activ/inactiv (vezi inactivare)
 
 2. Workflow
   - certificat nou cu datele care sunt introduse deja, 
