@@ -10,6 +10,7 @@ import { GlobalDataService } from './global-data.service';
 // TODO: de refacut totul cu denumirile corecte, acum este varza
 // TODO: de focut acelasi lucru pt Membru
 // import { User } from '../shared/models/user.model';
+import { ApiDataService } from './api-data.service';
 
 @Injectable()
 export class MembriService {
@@ -19,7 +20,8 @@ export class MembriService {
     private http: Http,
     private globalVars: GlobalDataService,
     private router: Router,
-    private snackBar: MdSnackBar
+    private snackBar: MdSnackBar,
+    private _apiData: ApiDataService
     ) {
       this.apiAddress = this.globalVars.shareObj['apiAdress'];
     }
@@ -27,7 +29,9 @@ export class MembriService {
   getAll(actiune: string, searchVal: string) {
     return this.http.put( this.apiAddress + 'api/lista', this.setPutValueLista(actiune, searchVal))
       .map((response: Response) => {
-        this.checkResponse(response);
+        this._apiData.checkData(response);
+        this._apiData.callDialog('titlu', 'mesaj');
+        // this.checkResponse(response);
         return response.json();
       });
   }

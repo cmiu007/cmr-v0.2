@@ -51,6 +51,8 @@ import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/
 import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
 import { DataCalService } from './services/data-cal.service';
 import { CertificateComponent } from './membri/certificate/certificate.component';
+import { ApiDataService } from './services/api-data.service';
+import { AuthDialogComponent } from './shared/auth-dialog/auth-dialog.component';
 
 
 
@@ -77,7 +79,8 @@ import { CertificateComponent } from './membri/certificate/certificate.component
     AvizareComponent,
     AsigurariListComponent,
     AsigurareComponent,
-    CertificateComponent
+    CertificateComponent,
+    AuthDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +109,8 @@ import { CertificateComponent } from './membri/certificate/certificate.component
     AsiguratoriResolve,
     FormValidatorsService,
     FormSetService,
-    DataCalService
+    DataCalService,
+    ApiDataService
   ],
   bootstrap: [AppComponent]
 })

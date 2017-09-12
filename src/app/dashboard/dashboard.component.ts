@@ -21,12 +21,12 @@ export class DashboardComponent implements OnInit {
   loading = false;
 
   constructor(private userService: UserService,
-              private membriService: MembriService,
-              private router: Router,
-              private snackBar: MdSnackBar) {}
+    private membriService: MembriService,
+    private router: Router,
+    private snackBar: MdSnackBar) { }
 
   ngOnInit() {
-    this.searchForm = new FormGroup ({
+    this.searchForm = new FormGroup({
       'searchMem': new FormControl(null, [Validators.required])
     });
     this.setLocalStorage();
@@ -44,12 +44,17 @@ export class DashboardComponent implements OnInit {
     this.emptySearchResult = false;
     // TODO: de revizuit actiune
     const actiune = 'list';
-    this.membriService.getAll(actiune, searchVal).subscribe( (response) => {
-      if (response.length === 0) {
-        this.emptySearchResult = true;
+    this.membriService.getAll(actiune, searchVal).subscribe((response) => {
+      console.log(response);
+      if (response.mesaj) {
+        this.membri = null;
+      } else {
+        if (response.length === 0) {
+          this.emptySearchResult = true;
+        }
+        this.membri = response;
       }
       this.loading = false;
-      this.membri = response;
     });
   }
 
@@ -60,7 +65,7 @@ export class DashboardComponent implements OnInit {
       + this.membri.find(item => item.id === id).prenume);
     localStorage.setItem('currentMemId', id);
     localStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
-    this.router.navigate(['/membri', id , actiune]);
+    this.router.navigate(['/membri', id, actiune]);
   }
 
   onNewMember(): void {
