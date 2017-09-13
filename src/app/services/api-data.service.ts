@@ -17,7 +17,6 @@ export class ApiDataService {
   checkData(data: Response) {
     const a = data.json();
     if (a.result === '12') {
-      console.log('hit 12');
       // this._snackBar.open(a.mesaj, 'inchide', { duration: 10000 });
       // this.callDialog('title', 'message');
       return ;

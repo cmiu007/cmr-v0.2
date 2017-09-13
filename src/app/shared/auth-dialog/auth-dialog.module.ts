@@ -1,4 +1,4 @@
-import { MdDialogModule, MdButtonModule } from '@angular/material';
+import { MdDialogModule, MdButtonModule, MdInputModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 
 import { ApiDataService } from '../../services/api-data.service';
@@ -7,7 +7,8 @@ import { AuthDialogComponent } from './auth-dialog.component';
 @NgModule({
 imports: [
   MdDialogModule,
-  MdButtonModule
+  MdButtonModule,
+  MdInputModule,
 ],
 exports: [
   AuthDialogComponent

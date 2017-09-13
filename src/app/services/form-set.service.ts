@@ -13,6 +13,13 @@ export class FormSetService {
     private _validator: FormValidatorsService
   ) { }
 
+  login(): FormGroup {
+    return this._fb.group({
+      'email': ['', [Validators.required, Validators.email]],
+      'password': ['', [Validators.required]]
+    });
+  }
+
   adresa(data: Adresa) {
     if (data) {
       const formGroup = this._fb.group({

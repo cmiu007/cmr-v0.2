@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit {
     // TODO: de revizuit actiune
     const actiune = 'list';
     this.membriService.getAll(actiune, searchVal).subscribe((response) => {
-      console.log(response);
       if (response.mesaj) {
         this.membri = null;
       } else {
