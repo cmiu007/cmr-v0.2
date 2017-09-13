@@ -1,5 +1,11 @@
-<!-- <form [formGroup]="loginForm"> -->
-<md-input-container><input type="email" required mdInput formControlName="email" placeholder="Email"></md-input-container>
-<md-input-container><input type="text" required mdInput formControlName="password" placeholder="parola"></md-input-container>
-<button md-raised-button color="primary" >Autentificare</button>
-<!-- </form> -->
+<div [formGroup]="loginForm">
+  <div class="row">
+    <md-input-container class="full_width"><input type="email" required mdInput formControlName="email" placeholder="email"></md-input-container>
+  </div>
+  <div class="row">
+    <md-input-container class="full_width"><input type="password" required mdInput formControlName="password" placeholder="parola"></md-input-container>
+  </div>
+  <div class="row" style="text-align: center;">
+    <button md-raised-button color="primary" (click)="onClick()" [disabled]="loginForm.invalid" >Autentificare</button>
+  </div>
+</div>

@@ -53,6 +53,7 @@ import { DataCalService } from './services/data-cal.service';
 import { CertificateComponent } from './membri/certificate/certificate.component';
 import { ApiDataService } from './services/api-data.service';
 import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
+import { AlertSnackbarService } from './services/alert-snackbar.service';
 
 
 
@@ -110,7 +111,8 @@ import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
     FormValidatorsService,
     FormSetService,
     DataCalService,
-    ApiDataService
+    ApiDataService,
+    AlertSnackbarService
   ],
   bootstrap: [AppComponent]
 })

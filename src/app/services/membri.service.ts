@@ -29,10 +29,10 @@ export class MembriService {
   getAll(actiune: string, searchVal: string) {
     return this.http.put( this.apiAddress + 'api/lista', this.setPutValueLista(actiune, searchVal))
       .map((response: Response) => {
-        this._apiData.checkData(response);
-        this._apiData.callDialog('titlu', 'mesaj');
+        this._apiData.checkApiResponse(response);
+        // this._apiData.callDialog('titlu', 'mesaj');
         // this.checkResponse(response);
-        return response.json();
+        return response;
       });
   }
 

@@ -14,15 +14,12 @@ export class ApiDataService {
     private _mdDialog: MdDialog
   ) { }
 
-  checkData(data: Response) {
-    const a = data.json();
-    if (a.result === '12') {
-      // this._snackBar.open(a.mesaj, 'inchide', { duration: 10000 });
-      // this.callDialog('title', 'message');
-      return ;
-    } else {
-      return a;
+  checkApiResponse( response ) {
+    if (response.mesaj) {
+
     }
+    console.log(response);
+    return response;
   }
 
   callDialog(title: string, message: string): Observable<boolean> {
