@@ -40,3 +40,20 @@ daca este mai ok poate avea un camp activ/inactiv
 ## Grup de specialitati medicale
 
 - are asociat unul sau mai multe specialitati medicale
+
+## Cazuri de modificare:
+
+__Caz A__: Preschimbarea certificatelor (varianta veche) - se face la avizare.
+
+In cazul aceste avizarile anterioare nu trebuie inregistrate.
+
+
+__Caz B__: Preschimbarea certificatelor (varianta veche) - se face din cauza altor modificari ale datelor medicului (schimbare nume, grad profesional, trece din rezident in specialist etc...)
+
+Se introduce o avizare cu data de start egala cu data generarii noului certificat, data de sfarsit ramane la fel ca pe certificatul vechi
+
+__Caz C__: Preschimbarea certificatului ( varianta noua - a fost eliberat un certificat din aplicatie ) in aceleasi cazuri ca la pct B.
+
+In aplicatie editare avizare data stop apoi noua avizare cu data de start egala cu data generarii noului certificat, data de sfarsit ramane la fel ca pe certificatul anterior.
+
+Este acelasi mecanism ca in cazul pregatirilor profesionale cand trece de la specialist la primar
