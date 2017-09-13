@@ -52,7 +52,7 @@ import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare
 import { DataCalService } from './services/data-cal.service';
 import { CertificateComponent } from './membri/certificate/certificate.component';
 import { ApiDataService } from './services/api-data.service';
-import { AuthDialogComponent } from './shared/auth-dialog/auth-dialog.component';
+import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
 
 
 
@@ -80,7 +80,6 @@ import { AuthDialogComponent } from './shared/auth-dialog/auth-dialog.component'
     AsigurariListComponent,
     AsigurareComponent,
     CertificateComponent,
-    AuthDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +87,8 @@ import { AuthDialogComponent } from './shared/auth-dialog/auth-dialog.component'
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+    AuthDialogModule
   ],
   providers: [
     // fake backend
