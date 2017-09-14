@@ -29,11 +29,9 @@ export class MembriService {
   getAll(actiune: string, searchVal: string) {
     return this.http.put( this.apiAddress + 'api/lista', this.setPutValueLista(actiune, searchVal))
       .map((response: Response) => {
-        const isError = this._apiData.checkApiResponse(response);
-        this.
-        // this._apiData.callDialog('titlu', 'mesaj');
-        // this.checkResponse(response);
-        return response;
+        const data = response.json();
+        this._apiData.checkApiResponse(data);
+        return data;
       });
   }
 

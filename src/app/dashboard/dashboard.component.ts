@@ -60,10 +60,14 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     this.emptySearchResult = false;
     this.membriService.getAll('list', searchVal)
-      .subscribe((response) => {
-        const apiData = this._apiData.checkApiResponse(response);
-
+      .subscribe((data) => {
+        console.log(data);
         this.loading = false;
+        if (data.length === 0) {
+          this.emptySearchResult = true;
+          return;
+        }
+        this.membri = data;
       });
 
 

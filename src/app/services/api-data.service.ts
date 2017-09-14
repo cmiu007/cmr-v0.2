@@ -5,24 +5,23 @@ import { Response } from '@angular/http';
 import { MdDialog } from '@angular/material';
 import { AuthDialogComponent } from '../shared/auth-dialog/auth-dialog.component';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiDataService {
 
   constructor(
     private _snackBar: MdSnackBar,
-    private _mdDialog: MdDialog
+    private _mdDialog: MdDialog,
+    private _router: Router
   ) { }
 
-  checkApiResponse( response ) {
-    console.log(response);
-    if (response.json().result === '12') {
-      this._snackBar.open(response.json().mesaj, 'inchide', { duration: 5000 });
-      // TODO: de rezolvat
-      // this.router.navigate(['/login'], {queryParams: { returnUrl: this.router.url }});
-      this.router.navigate(['/login']);
+  checkApiResponse(response): void {
+    if (response.result === '12') {
+      this._snackBar.open(response.mesaj, 'inchide', { duration: 5000 });
+      this._router.navigate(['/login']);
     }
-    return response;
+    return;
   }
 
   callDialog(title: string, message: string): Observable<boolean> {
