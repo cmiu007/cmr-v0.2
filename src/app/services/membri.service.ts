@@ -11,6 +11,7 @@ import { GlobalDataService } from './global-data.service';
 // TODO: de focut acelasi lucru pt Membru
 // import { User } from '../shared/models/user.model';
 import { ApiDataService } from './api-data.service';
+import { AlertSnackbarService } from './alert-snackbar.service';
 
 @Injectable()
 export class MembriService {
@@ -20,19 +21,10 @@ export class MembriService {
     private http: Http,
     private globalVars: GlobalDataService,
     private router: Router,
-    private snackBar: MdSnackBar,
-    private _apiData: ApiDataService
-    ) {
-      this.apiAddress = this.globalVars.shareObj['apiAdress'];
-    }
-
-  getAll(actiune: string, searchVal: string) {
-    return this.http.put( this.apiAddress + 'api/lista', this.setPutValueLista(actiune, searchVal))
-      .map((response: Response) => {
-        const data = response.json();
-        this._apiData.checkApiResponse(data);
-        return data;
-      });
+    private _apiData: ApiDataService,
+    private _snackBarService: AlertSnackbarService
+  ) {
+    this.apiAddress = this.globalVars.shareObj['apiAdress'];
   }
 
   adaugaMembruDate(actiune: string, data: any) {
@@ -44,7 +36,7 @@ export class MembriService {
       'data': data
     });
     console.log(memData);
-    return this.http.put( this.apiAddress + 'api/adauga', memData)
+    return this.http.put(this.apiAddress + 'api/adauga', memData)
       .map((response: Response) => {
         console.log(response.json());
         this.checkResponse(response);
@@ -59,10 +51,10 @@ export class MembriService {
       'id': id,
       'data': data
     }))
-    .map((response: Response) => {
-      this.checkResponse(response);
-      return response.json();
-    });
+      .map((response: Response) => {
+        this.checkResponse(response);
+        return response.json();
+      });
   }
 
   // nu are aceiasi forma cu celelante adauga !!!!
@@ -73,10 +65,10 @@ export class MembriService {
       'id': id,
       'data': data
     }))
-    .map((response: Response) => {
-      this.checkResponse(response);
-      return response.json();
-    });
+      .map((response: Response) => {
+        this.checkResponse(response);
+        return response.json();
+      });
   }
 
   listaMembruDate(actiune: string, id: string) {
@@ -89,10 +81,10 @@ export class MembriService {
 
   getMembruDate(actiune: string, id: string) {
     return this.http.put(this.apiAddress + 'api/get/' + id, this.setPutValueGet(actiune, +id))
-        .map((response: Response) => {
-          this.checkResponse(response);
-          return response.json();
-        });
+      .map((response: Response) => {
+        this.checkResponse(response);
+        return response.json();
+      });
   }
 
   getCertificatMembru(id: string) {
@@ -105,23 +97,25 @@ export class MembriService {
 
   setPutValueGet(actiune: string, searchVal: number) {
     return JSON.stringify({
-      'token' : localStorage.getItem('userToken'),
+      'token': localStorage.getItem('userToken'),
       'actiune': actiune,
-      'id' : searchVal
+      'id': searchVal
     });
   }
 
   setPutValueLista(actiune: string, searchVal: string) {
     return JSON.stringify({
-      'token' : localStorage.getItem('userToken'),
+      'token': localStorage.getItem('userToken'),
       'actiune': actiune,
-      'cautare' : searchVal
+      'cautare': searchVal
     });
   }
 
   checkResponse(response) {
     if (response.json().result === '12') {
-      this.snackBar.open(response.json().mesaj, 'inchide', { duration: 5000 });
+      this._snackBarService.showSnackBar({id: 12, message: 'Eroare Autentificare', action: 'inchide'});
+      // old
+      // this.snackBar.open(response.json().mesaj, 'inchide', { duration: 5000 });
       // TODO: de rezolvat
       // this.router.navigate(['/login'], {queryParams: { returnUrl: this.router.url }});
       this.router.navigate(['/login']);

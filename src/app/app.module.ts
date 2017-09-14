@@ -54,6 +54,7 @@ import { CertificateComponent } from './membri/certificate/certificate.component
 import { ApiDataService } from './services/api-data.service';
 import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
 import { AlertSnackbarService } from './services/alert-snackbar.service';
+import { DialogService } from './services/dialog.service';
 
 
 
@@ -112,7 +113,8 @@ import { AlertSnackbarService } from './services/alert-snackbar.service';
     FormSetService,
     DataCalService,
     ApiDataService,
-    AlertSnackbarService
+    AlertSnackbarService,
+    DialogService
   ],
   bootstrap: [AppComponent]
 })

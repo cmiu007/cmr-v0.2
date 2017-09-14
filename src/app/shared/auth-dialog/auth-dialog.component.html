@@ -1,3 +1,5 @@
+<div [hidden]="!submitResult" style="text-align: center;">
+  <h2 class="mat-h2">{{submitResult}}</h2></div>
 <div [formGroup]="loginForm">
   <div class="row">
     <md-input-container class="full_width"><input type="email" required mdInput formControlName="email" placeholder="email"></md-input-container>

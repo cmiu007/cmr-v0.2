@@ -7,6 +7,9 @@ import { User } from '../shared/models/user.model';
 import { UserService } from '../services/user.service';
 import { MembriService } from '../services/membri.service';
 import { ApiDataService } from '../services/api-data.service';
+import { ApiData } from '../shared/interfaces/message.interface';
+import { AlertSnackbarService } from '../services/alert-snackbar.service';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,17 +23,20 @@ export class DashboardComponent implements OnInit {
   membri: any[];
   emptySearchResult = false;
   loading = false;
+  dialogResult: any;
 
   constructor(private userService: UserService,
     private membriService: MembriService,
     private router: Router,
     private snackBar: MdSnackBar,
-    private _apiData: ApiDataService
-    ) { }
+    private _apiData: ApiDataService,
+    private _snackBarService: AlertSnackbarService,
+    private _dialogService: DialogService
+  ) { }
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      'searchMem': new FormControl(null, [Validators.required])
+      'searchMem': new FormControl(null, [Validators.required, Validators.minLength(3)])
     });
     this.resetMedicSelectatDate();
   }
@@ -40,6 +46,33 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('currentMemId');
     localStorage.removeItem('currentMemCuim');
     localStorage.setItem('currentPage', 'Pagina de start');
+  }
+
+
+  onSearch(searchVal: string) {
+    if (this.searchForm.valid) {
+      this.loading = true;
+      this.emptySearchResult = false;
+      this._apiData.apiLista('list', searchVal)
+        .subscribe((response: ApiData) => {
+          this.loading = false;
+          if (response.data.length === 0 || response.status === 0) {
+            this.emptySearchResult = true;
+            return;
+          }
+          this.membri = response.data;
+        });
+    }
+  }
+
+  onClickMem(id: string, actiune: string) {
+    this.setMedicSelectatDate(id);
+    this.router.navigate(['/membri', id, actiune]);
+  }
+
+  onNewMember(): void {
+    this.setMedicSelectatDate('');
+    this.router.navigate(['/membri/nou']);
   }
 
   setMedicSelectatDate(id: string): void {
@@ -54,43 +87,5 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem('currentMemId', id);
     localStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
     return;
-  }
-
-  onSearch(searchVal: string) {
-    this.loading = true;
-    this.emptySearchResult = false;
-    this.membriService.getAll('list', searchVal)
-      .subscribe((data) => {
-        console.log(data);
-        this.loading = false;
-        if (data.length === 0) {
-          this.emptySearchResult = true;
-          return;
-        }
-        this.membri = data;
-      });
-
-
-    // this.membriService.getAll('list', searchVal).subscribe((response) => {
-    //   if (response.mesaj) {
-    //     this.membri = null;
-    //   } else {
-    //     if (response.length === 0) {
-    //       this.emptySearchResult = true;
-    //     }
-    //     this.membri = response;
-    //   }
-    // });
-
-  }
-
-  onClickMem(id: string, actiune: string) {
-    this.setMedicSelectatDate(id);
-    this.router.navigate(['/membri', id, actiune]);
-  }
-
-  onNewMember(): void {
-    this.setMedicSelectatDate('');
-    this.router.navigate(['/membri/nou']);
   }
 }

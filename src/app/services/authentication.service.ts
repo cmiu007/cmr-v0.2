@@ -21,10 +21,6 @@ export class AuthenticationService {
       });
   }
 
-  logout() {
-    localStorage.clear();
-  }
-
   reLogin(data) {
     // 2. login
     return this.http
@@ -35,6 +31,10 @@ export class AuthenticationService {
       });
     // trebuie sa aiba si un catch pt erori.
     // in caz de eroare stop joc
+  }
+
+  logout() {
+    localStorage.clear();
   }
 
   setLocalStorage(response: Response): string {
