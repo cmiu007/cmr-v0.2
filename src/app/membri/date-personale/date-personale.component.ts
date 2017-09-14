@@ -262,27 +262,9 @@ export class DatePersonaleComponent implements OnInit {
           // localStorage.setItem('currentMemId', data.id_med);
           // this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
         });
-      // this.membriService.adaugaMembruDate('date_personale', this.formDatePersonale.value)
-      //   .subscribe(
-      //   data => {
-      //     if (data.result !== '00') {
-      //       this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-      //       if (data.result === '12') {
-      //         this.router.navigate(['/login']);
-      //       }
-      //     } else {
-      //       this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-      //       localStorage.setItem('currentMemNume',
-      //         (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
-      //       localStorage.setItem('currentMemId', data.id_med);
-      //       this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
-      //     }
-      //   }
-      //   );
       return;
     }
     this.formDatePersonale.get('jud_id').enable();
-
     this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
