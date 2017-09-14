@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
+
 import { Adresa } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
 import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
+import { DataCalService } from './data-cal.service';
 
 @Injectable()
 export class FormSetService {
 
   constructor(
     private _fb: FormBuilder,
-    private _validator: FormValidatorsService
+    private _validator: FormValidatorsService,
+    private _checkDate: DataCalService
   ) { }
 
   login(): FormGroup {
@@ -27,7 +30,7 @@ export class FormSetService {
       'cnp': [{ value: '', disabled: true }, [Validators.required, this._validator.checkCNP]],
       'jud_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
       'status': [{ value: '', disabled: true }],
-      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate]],
+      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate, this._checkDate.isInThePast]],
       'cod_parafa': [{ value: '', disabled: true }],
       'nume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
       'initiala': [{ value: '', disabled: true }],
@@ -37,7 +40,8 @@ export class FormSetService {
       'act_ident_tip_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]], // TODO: validator
       'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
       'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
-      'act_ident_exp_date': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate]],
+      'act_ident_exp_date': [{ value: '', disabled: true },
+          [Validators.required, this._validator.checkDate, this._checkDate.isInTheFuture]],
       'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
       'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkAnPromotie]],
       'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
