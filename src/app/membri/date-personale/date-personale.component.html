@@ -170,7 +170,7 @@
     <md-card style="text-align: center;">
       <md-card-content>
         <div class="row">
-          <button type="button" md-raised-button (click)="editDateMember()" color="warn" [disabled]="formDatePersonale.invalid || formDatePersonale.untouched">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
+          <button type="submit" md-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
           <!-- TODO: nu merge disable / enable ....  -->
         </div>
       </md-card-content>

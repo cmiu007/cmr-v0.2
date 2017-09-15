@@ -17,6 +17,7 @@ import { FormSetService } from '../../services/form-set.service';
 import { ApiDataService } from '../../services/api-data.service';
 import { ApiData } from '../../shared/interfaces/message.interface';
 import { DatePersonale } from '../../shared/interfaces/datepersonale.interface';
+import { getTestBed } from '@angular/core/testing';
 
 @Component({
   selector: 'app-date-personale',
@@ -149,7 +150,7 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('fac_promotie').enable();
     // TODO: completeaza automat judet pe baza jud_id al operatorului
     this.formDatePersonale.get('jud_id').enable();
-    // this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
+    this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
   }
 
   enableAdmin() {
@@ -160,34 +161,47 @@ export class DatePersonaleComponent implements OnInit {
 
 
   // log submit
-  editDateMember() {
-    this.loading = true;
-    if (this.formStatus === 2) {
-      const memData = this.formDatePersonale.value;
-      this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
-        .subscribe((response: ApiData) => {
-          this.loading = false;
-          if (response.status === 0) {
-            console.log('Error: la adaugarea datelor');
-            return;
-          }
-          // localStorage.setItem('currentMemNume',
-          //   (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
-          // localStorage.setItem('currentMemId', data.id_med);
-          // this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
-        });
+  onSubmit() {
+    if (this.formDatePersonale.valid === false) {
+      console.log(this.formDatePersonale);
+      this._snackBar.open('Formular Invalid', 'Inchide');
       return;
     }
+
+    this.reloading = true;
+    if (this.formStatus === 2) {
+      this.adaugaMembru();
+      return;
+    }
+    this.editeazaMembru();
+  }
+
+  private editeazaMembru() {
     this.formDatePersonale.get('jud_id').enable();
     this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
-          console.log('Error: la modificarea datelor');
           return;
         }
         this.getFormData();
         return;
       });
+  }
+
+  private adaugaMembru() {
+    const memData = this.formDatePersonale.value;
+    this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          console.log('Error: la adaugarea datelor');
+          return;
+        }
+        localStorage.setItem('currentMemNume',
+             (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+        localStorage.setItem('currentMemId', response.data.id_med);
+        this.router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
+      });
+    return;
   }
 
   log() {
@@ -203,14 +217,14 @@ export class DatePersonaleComponent implements OnInit {
       this.reloading = true;
       const cnp = this.formDatePersonale.get('cnp').value;
       this._apiData.apiLista('list', cnp)
-      .subscribe((response: ApiData) => {
-        this.reloading = false;
-        const cnpResponse = response.data;
-        if ( cnpResponse.length !== 0 ) {
-          this.formDatePersonale.controls['cnp'].setErrors({'isUsed': true}) ;
-          this._snackBar.open('CNP-ul exista deja in baza de date, verifica folosind cautarea globala', 'Inchide');
-        }
-      });
+        .subscribe((response: ApiData) => {
+          this.reloading = false;
+          const cnpResponse = response.data;
+          if (cnpResponse.length !== 0) {
+            this.formDatePersonale.controls['cnp'].setErrors({ 'isUsed': true });
+            this._snackBar.open('CNP-ul exista deja in baza de date, verifica folosind cautarea globala', 'Inchide');
+          }
+        });
     }
   }
 
@@ -302,4 +316,5 @@ export class DatePersonaleComponent implements OnInit {
       return this.registruDocFacTip.find(item => item.id === +option).nume;
     }
   }
+
 }

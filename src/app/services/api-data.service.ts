@@ -48,12 +48,11 @@ export class ApiDataService {
       .map((response: Response) => {
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
-        return { data: data, status: status};
+        return { data: dataApi, status: status};
       });
   }
 
   apiModifica(actiune: string, id: number, data: any) {
-    console.log(this.setApiModificaData(actiune, id, data));
     return this._http.put(this.apiAddress + 'api/modifica', this.setApiModificaData(actiune, id, data))
     .map((response: Response) => {
       const dataApi = response.json();
