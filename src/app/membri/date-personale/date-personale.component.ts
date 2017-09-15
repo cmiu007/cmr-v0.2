@@ -36,7 +36,7 @@ export class DatePersonaleComponent implements OnInit {
   formDatePersonale: FormGroup;
   formDatePersonaleData;
   loading = true;
-  reloading = false;
+  reloading = true;
 
   registruJudete: ItemRegLista[];
   filtruJudete: Observable<Judet[]>;
@@ -88,6 +88,7 @@ export class DatePersonaleComponent implements OnInit {
     this._apiData.apiGet('date_personale', this._aRoute.snapshot.params['id'])
       .subscribe((response: ApiData) => {
         this.loading = false;
+        this.reloading = false;
         this.formDatePersonaleData = response.data;
         this.setForm();
         this.setFormMode();
@@ -118,7 +119,6 @@ export class DatePersonaleComponent implements OnInit {
 
     this.formStatus = 3;
     this.enableRW();
-    console.log('FormStatus is:' + this.formStatus.toString());
   }
 
   enableRW() {
@@ -150,7 +150,10 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('fac_promotie').enable();
     // TODO: completeaza automat judet pe baza jud_id al operatorului
     this.formDatePersonale.get('jud_id').enable();
-    this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
+    // judet ADM nu exista in lista de judete filtrate :)
+    if (this.formStatus !== 0 ) {
+      this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
+    }
   }
 
   enableAdmin() {
@@ -204,6 +207,10 @@ export class DatePersonaleComponent implements OnInit {
     return;
   }
 
+  isRequired(data) {
+    console.log(data);
+  }
+  
   log() {
     console.log(this.formDatePersonale.value);
   }
@@ -213,7 +220,7 @@ export class DatePersonaleComponent implements OnInit {
 
   checkCNP(): void {
     const controlValid = this.formDatePersonale.get('cnp').valid;
-    if (controlValid === true) {
+    if (controlValid === true && this.formStatus !== 0) {
       this.reloading = true;
       const cnp = this.formDatePersonale.get('cnp').value;
       this._apiData.apiLista('list', cnp)
