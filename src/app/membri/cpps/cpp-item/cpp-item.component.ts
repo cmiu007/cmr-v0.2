@@ -88,78 +88,6 @@ export class CppItemComponent implements OnInit {
     }
   }
 
-  setRegistre(): void {
-    this.registruCpp = this._route.snapshot.data['regCpp'];
-    this.filtruCpp = this.cppForm.get('reg_cpp_id').valueChanges
-      .startWith(null)
-      .map(cppNume => cppNume && typeof cppNume === 'object' ? cppNume.nume : cppNume)
-      .map(name => name ? this.filterCpp(name) : this.registruCpp.slice());
-
-    this.filtruCppTip = this.cppForm.get('reg_cpp_tip_id').valueChanges
-      .startWith(null)
-      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
-      .map(name => name ? this.filterCppTip(name) : this.registruCppTip.slice());
-
-    this.filtruCppGrad = this.cppForm.get('grad_prof_cpp_id').valueChanges
-      .startWith(null)
-      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
-      .map(name => name ? this.filterCppGrad(name) : this.registruCppGrad.slice());
-
-    this.filtruCppEmitent = this.cppForm.get('emitent').valueChanges
-      .startWith(null)
-      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
-      .map(name => name ? this.filterCppEmitent(name) : this.registruCppEmitent.slice());
-
-  }
-
-  filterCpp(nume: string): CppNume[] {
-    return this.registruCpp.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
-  }
-
-  filterCppTip(nume: string): CppTip[] {
-    return this.registruCppTip.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
-  }
-
-  filterCppGrad(nume: string): CppGrad[] {
-    return this.registruCppGrad.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
-  }
-
-  filterCppEmitent(nume: string): CppEmitent[] {
-    return this.registruCppEmitent.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
-  }
-
-  displayCpp(cppNume: number): string {
-    if (cppNume) {
-      return this.registruCpp.find(item => item.id === cppNume).nume;
-    }
-  }
-
-  displayCppTip(id: number): string {
-    if (id) {
-      return this.registruCppTip.find(item => item.id === id).nume;
-    }
-  }
-
-  displayCppGrad(id: number): string {
-    if (id) {
-      return this.registruCppGrad.find(item => item.id === id).nume;
-    }
-  }
-
-  displayCppEmitent(id: string): string {
-    if (id) {
-      return this.registruCppEmitent.find(item => item.id === id).nume;
-    }
-  }
-
-  displayFnActiv() {
-    if (this.cppItem.date_end === '') {
-      return 'Activ';
-    } else {
-      return 'Inactiv';
-    }
-  }
-
   toFormGroup(data: Cpp) {
     const formGroup = this._fb.group({
       'id_cpp': [{ value: '' }], // 212,
@@ -312,5 +240,77 @@ export class CppItemComponent implements OnInit {
 
   resetValue(formName) {
     this.cppForm.controls[formName].patchValue('');
+  }
+
+  setRegistre(): void {
+    this.registruCpp = this._route.snapshot.data['regCpp'];
+    this.filtruCpp = this.cppForm.get('reg_cpp_id').valueChanges
+      .startWith(null)
+      .map(cppNume => cppNume && typeof cppNume === 'object' ? cppNume.nume : cppNume)
+      .map(name => name ? this.filterCpp(name) : this.registruCpp.slice());
+
+    this.filtruCppTip = this.cppForm.get('reg_cpp_tip_id').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppTip(name) : this.registruCppTip.slice());
+
+    this.filtruCppGrad = this.cppForm.get('grad_prof_cpp_id').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppGrad(name) : this.registruCppGrad.slice());
+
+    this.filtruCppEmitent = this.cppForm.get('emitent').valueChanges
+      .startWith(null)
+      .map(itemNume => itemNume && typeof itemNume === 'object' ? itemNume.nume : itemNume)
+      .map(name => name ? this.filterCppEmitent(name) : this.registruCppEmitent.slice());
+
+  }
+
+  filterCpp(nume: string): CppNume[] {
+    return this.registruCpp.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterCppTip(nume: string): CppTip[] {
+    return this.registruCppTip.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterCppGrad(nume: string): CppGrad[] {
+    return this.registruCppGrad.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  filterCppEmitent(nume: string): CppEmitent[] {
+    return this.registruCppEmitent.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  displayCpp(cppNume: number): string {
+    if (cppNume) {
+      return this.registruCpp.find(item => item.id === cppNume).nume;
+    }
+  }
+
+  displayCppTip(id: number): string {
+    if (id) {
+      return this.registruCppTip.find(item => item.id === id).nume;
+    }
+  }
+
+  displayCppGrad(id: number): string {
+    if (id) {
+      return this.registruCppGrad.find(item => item.id === id).nume;
+    }
+  }
+
+  displayCppEmitent(id: string): string {
+    if (id) {
+      return this.registruCppEmitent.find(item => item.id === id).nume;
+    }
+  }
+
+  displayFnActiv() {
+    if (this.cppItem.date_end === '') {
+      return 'Activ';
+    } else {
+      return 'Inactiv';
+    }
   }
 }

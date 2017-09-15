@@ -6,16 +6,6 @@ export class FormValidatorsService {
 
   constructor() { }
 
-  checkDate(control: FormGroup): { [s: string]: boolean } {
-    // check if null pt cazul in care nu este required
-    if (control.value === '') {
-      return null;
-    }
-    const validateDateISO =
-      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
-    return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
-  }
-
   checkCNP(control: FormGroup): { [s: string]: boolean } {
     // TODO: de verificat daca mai exista in baza de date!!
     const testValCNP = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9];
@@ -34,6 +24,34 @@ export class FormValidatorsService {
         return null;
       }
     }
+  }
+
+  checkDate(control: FormGroup): { [s: string]: boolean } {
+    // check if null pt cazul in care nu este required
+    if (control.value === '') {
+      return null;
+    }
+    const validateDateISO =
+      /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/i;
+    return validateDateISO.test(control.value) ? null : { 'invalidDateFormat': true };
+  }
+
+  isInTheFuture(control: FormGroup): { [s: string]: boolean } {
+    const now = new Date(Date.now());
+    const date = new Date(control.value);
+    if (date > now ) {
+      return { 'isInTheFuture': true};
+    }
+    return null;
+  }
+
+  isInThePast(control: FormGroup): { [s: string]: boolean } {
+    const now = new Date(Date.now());
+    const date = new Date(control.value);
+    if (date < now ) {
+      return {'isInThePast': true} ;
+    }
+    return null;
   }
 
   checkAnPromotie(control: FormGroup): { [s: string]: boolean } {
