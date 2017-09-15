@@ -51,6 +51,10 @@ import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/
 import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
 import { DataCalService } from './services/data-cal.service';
 import { CertificateComponent } from './membri/certificate/certificate.component';
+import { ApiDataService } from './services/api-data.service';
+import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
+import { AlertSnackbarService } from './services/alert-snackbar.service';
+import { DialogService } from './services/dialog.service';
 
 
 
@@ -77,7 +81,7 @@ import { CertificateComponent } from './membri/certificate/certificate.component
     AvizareComponent,
     AsigurariListComponent,
     AsigurareComponent,
-    CertificateComponent
+    CertificateComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,7 +89,8 @@ import { CertificateComponent } from './membri/certificate/certificate.component
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+    AuthDialogModule
   ],
   providers: [
     // fake backend
@@ -106,7 +111,10 @@ import { CertificateComponent } from './membri/certificate/certificate.component
     AsiguratoriResolve,
     FormValidatorsService,
     FormSetService,
-    DataCalService
+    DataCalService,
+    ApiDataService,
+    AlertSnackbarService,
+    DialogService
   ],
   bootstrap: [AppComponent]
 })

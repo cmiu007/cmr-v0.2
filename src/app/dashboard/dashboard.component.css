@@ -45,3 +45,8 @@
 .toRight {
   order: 2;
 }
+
+.date-cert {
+  color: #3F51B5;
+  font-weight: bolder;
+}

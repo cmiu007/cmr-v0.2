@@ -1,7 +1,15 @@
 <app-header></app-header>
-<div class="content">
+
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<md-card class="content">
+  <md-card-title class="form-title">
+    <span class="full-width">Date Personale</span>
+  </md-card-title>
+</md-card>
+
+<div class="content" *ngIf="!loading">
   <form [formGroup]="formDatePersonale" ngSubmit="onFormSubmit()">
-    <md-card *ngIf="formStatus === 3">
+    <md-card *ngIf="formStatus === 0">
       <md-card-title class="form-title"><span class="full-width">Administrare (form  status: {{formStatus}})</span></md-card-title>
       <md-card-content>
 
@@ -29,12 +37,12 @@
         <md-form-field>
           <input mdInput formControlName="ro" type="text" placeholder="Read Only?">
         </md-form-field>
-        <button md-raised-button (click)="log()" color="primary">Log Values</button>
-        <button md-raised-button (click)="test()" color="primary">Test</button>
+        <button type="button" md-raised-button (click)="log()" color="primary">Log Values</button>
+        <button type="button" md-raised-button (click)="test()" color="primary">Test</button>
       </md-card-content>
     </md-card>
 
-    <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+    <md-progress-bar *ngIf="reloading" mode="indeterminate"></md-progress-bar>
     <md-card>
       <md-card-title class="form-title">
         <span class="full-width">Act Identitate</span>
@@ -46,7 +54,10 @@
           </md-form-field>
 
           <md-form-field class="col6_3">
-            <input mdInput formControlName="cnp" type="number" placeholder="CNP">
+            <input mdInput formControlName="cnp" type="number" placeholder="CNP" (blur)="checkCNP()" >
+            <md-error *ngIf="formDatePersonale.controls['cnp'].hasError('isUsed')">
+              CNP-ul exista deja in baza de date
+            </md-error>
           </md-form-field>
         </div>
         <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
@@ -159,7 +170,7 @@
     <md-card style="text-align: center;">
       <md-card-content>
         <div class="row">
-          <button md-raised-button (click)="editDateMember()" color="warn" [disabled]="formDatePersonale.invalid || formDatePersonale.untouched">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
+          <button type="submit" md-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
           <!-- TODO: nu merge disable / enable ....  -->
         </div>
       </md-card-content>

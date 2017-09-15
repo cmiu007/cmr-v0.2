@@ -1,17 +1,69 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
+
 import { Adresa } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
+import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
 
 @Injectable()
 export class FormSetService {
 
   constructor(
     private _fb: FormBuilder,
-    private _validator: FormValidatorsService
+    private _validator: FormValidatorsService,
   ) { }
+
+  login(): FormGroup {
+    return this._fb.group({
+      'email': ['', [Validators.required, Validators.email]],
+      'password': ['', [Validators.required]]
+    });
+  }
+
+  datePersonale(data: DatePersonale) {
+    const formGroupEmpty = this._fb.group({
+      'cuim': [{ value: '', disabled: true }],
+      'cnp': [{ value: '', disabled: true }, [Validators.required, this._validator.checkCNP]],
+      'jud_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'status': [{ value: '', disabled: true }],
+      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate]],
+      'cod_parafa': [{ value: '', disabled: true }],
+      'nume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
+      'initiala': [{ value: '', disabled: true }],
+      'prenume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
+      'nume_ant': [{ value: '', disabled: true }],
+      'cetatenie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'act_ident_tip_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]], // TODO: validator
+      'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
+      'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
+      'act_ident_exp_date': [{ value: '', disabled: true },
+          [Validators.required, this._validator.checkDate, this._validator.isInThePast]],
+      'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkAnPromotie]],
+      'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
+      'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
+      'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
+      'fac_doc_tip': [{ value: '', disabled: true }, Validators.required],
+      'updated': [{ value: '', disabled: true }],
+      'ro': [{ value: '', disabled: true }]
+    });
+    if (data) {
+      if (data.cnp) {
+        // clean data
+        Object.keys(data).forEach(
+          key => {
+            if (data[key] === '0000-00-00' || data[key] === 0) {
+              data[key] = '';
+            }
+          }
+        );
+        formGroupEmpty.patchValue(data);
+      }
+    }
+    return formGroupEmpty;
+  }
 
   adresa(data: Adresa) {
     if (data) {
