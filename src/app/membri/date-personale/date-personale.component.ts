@@ -35,6 +35,7 @@ export class DatePersonaleComponent implements OnInit {
   formDatePersonale: FormGroup;
   formDatePersonaleData;
   loading = true;
+  reloading = false;
 
   registruJudete: ItemRegLista[];
   filtruJudete: Observable<Judet[]>;
@@ -68,9 +69,9 @@ export class DatePersonaleComponent implements OnInit {
     private _formValidators: FormValidatorsService,
     private _apiData: ApiDataService,
     private _aRoute: ActivatedRoute,
+    private _snackBar: MdSnackBar,
 
     private membriService: MembriService,
-    private snackBar: MdSnackBar,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -95,40 +96,6 @@ export class DatePersonaleComponent implements OnInit {
 
   setForm(): void {
     this.formDatePersonale = this._formSet.datePersonale(this.formDatePersonaleData);
-  }
-
-  setRegistre(): void {
-    this.registruJudete = this.route.snapshot.data['regJud'];
-    const delValRegJud = ['ADM', 'CMR'];
-    delValRegJud.forEach(element => {
-      this.registruJudete = this.registruJudete.filter(option => option.nume !== element);
-    });
-    this.filtruJudete = this.formDatePersonale.get('jud_id').valueChanges
-      .startWith(null)
-      .map(judet => judet && typeof judet === 'object' ? judet.nume : judet)
-      .map(nume => nume ? this.filterJud(nume) : this.registruJudete.slice());
-
-    this.registruTari = this.route.snapshot.data['regTara'];
-    this.filtruTari = this.formDatePersonale.get('cetatenie').valueChanges
-      .startWith(null)
-      .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
-      .map(nume => nume ? this.filterTari(nume) : this.registruTari.slice());
-
-    this.registruFac = this.route.snapshot.data['regFac'];
-    this.filtruFac = this.formDatePersonale.get('fac_absolv').valueChanges
-      .startWith(null)
-      .map(fac => fac && typeof fac === 'object' ? fac.nume : fac)
-      .map(nume => nume ? this.filterFac(nume) : this.registruFac.slice());
-
-    this.filtruActIdentTip = this.formDatePersonale.get('act_ident_tip_id').valueChanges
-      .startWith(null)
-      .map(idTip => idTip && typeof idTip === 'object' ? idTip.nume : idTip)
-      .map(nume => nume ? this.filterActIdentTip(nume) : this.registruActIdentTip.slice());
-
-    this.filtruDocFacTip = this.formDatePersonale.get('fac_doc_tip').valueChanges
-      .startWith(null)
-      .map(docFacTip => docFacTip && typeof docFacTip === 'object' ? docFacTip.nume : docFacTip)
-      .map(nume => nume ? this.filterDocFacTip(nume) : this.registruDocFacTip.slice());
   }
 
   setFormMode() {
@@ -191,6 +158,96 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('jud_id').enable();
   }
 
+
+  // log submit
+  editDateMember() {
+    this.loading = true;
+    if (this.formStatus === 2) {
+      const memData = this.formDatePersonale.value;
+      this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
+        .subscribe((response: ApiData) => {
+          this.loading = false;
+          if (response.status === 0) {
+            console.log('Error: la adaugarea datelor');
+            return;
+          }
+          // localStorage.setItem('currentMemNume',
+          //   (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+          // localStorage.setItem('currentMemId', data.id_med);
+          // this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
+        });
+      return;
+    }
+    this.formDatePersonale.get('jud_id').enable();
+    this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          console.log('Error: la modificarea datelor');
+          return;
+        }
+        this.getFormData();
+        return;
+      });
+  }
+
+  log() {
+    console.log(this.formDatePersonale.value);
+  }
+  test() {
+    console.log(this.formDatePersonale);
+  }
+
+  checkCNP(): void {
+    const controlValid = this.formDatePersonale.get('cnp').valid;
+    if (controlValid === true) {
+      this.reloading = true;
+      const cnp = this.formDatePersonale.get('cnp').value;
+      this._apiData.apiLista('list', cnp)
+      .subscribe((response: ApiData) => {
+        this.reloading = false;
+        const cnpResponse = response.data;
+        if ( cnpResponse.length !== 0 ) {
+          this.formDatePersonale.controls['cnp'].setErrors({'isUsed': true}) ;
+          this._snackBar.open('CNP-ul exista deja in baza de date, verifica folosind cautarea globala', 'Inchide');
+        }
+      });
+    }
+  }
+
+  setRegistre(): void {
+    this.registruJudete = this.route.snapshot.data['regJud'];
+    const delValRegJud = ['ADM', 'CMR'];
+    delValRegJud.forEach(element => {
+      this.registruJudete = this.registruJudete.filter(option => option.nume !== element);
+    });
+    this.filtruJudete = this.formDatePersonale.get('jud_id').valueChanges
+      .startWith(null)
+      .map(judet => judet && typeof judet === 'object' ? judet.nume : judet)
+      .map(nume => nume ? this.filterJud(nume) : this.registruJudete.slice());
+
+    this.registruTari = this.route.snapshot.data['regTara'];
+    this.filtruTari = this.formDatePersonale.get('cetatenie').valueChanges
+      .startWith(null)
+      .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
+      .map(nume => nume ? this.filterTari(nume) : this.registruTari.slice());
+
+    this.registruFac = this.route.snapshot.data['regFac'];
+    this.filtruFac = this.formDatePersonale.get('fac_absolv').valueChanges
+      .startWith(null)
+      .map(fac => fac && typeof fac === 'object' ? fac.nume : fac)
+      .map(nume => nume ? this.filterFac(nume) : this.registruFac.slice());
+
+    this.filtruActIdentTip = this.formDatePersonale.get('act_ident_tip_id').valueChanges
+      .startWith(null)
+      .map(idTip => idTip && typeof idTip === 'object' ? idTip.nume : idTip)
+      .map(nume => nume ? this.filterActIdentTip(nume) : this.registruActIdentTip.slice());
+
+    this.filtruDocFacTip = this.formDatePersonale.get('fac_doc_tip').valueChanges
+      .startWith(null)
+      .map(docFacTip => docFacTip && typeof docFacTip === 'object' ? docFacTip.nume : docFacTip)
+      .map(nume => nume ? this.filterDocFacTip(nume) : this.registruDocFacTip.slice());
+  }
+
   filterJud(nume: string): Judet[] {
     return this.registruJudete
       .filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
@@ -244,42 +301,5 @@ export class DatePersonaleComponent implements OnInit {
     if (option) {
       return this.registruDocFacTip.find(item => item.id === +option).nume;
     }
-  }
-  // log submit
-  editDateMember() {
-    this.loading = true;
-    if (this.formStatus === 2) {
-      const memData = this.formDatePersonale.value;
-      this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
-        .subscribe((response: ApiData) => {
-          this.loading = false;
-          if (response.status === 0) {
-            console.log('Error: la adaugarea datelor');
-            return;
-          }
-          // localStorage.setItem('currentMemNume',
-          //   (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
-          // localStorage.setItem('currentMemId', data.id_med);
-          // this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
-        });
-      return;
-    }
-    this.formDatePersonale.get('jud_id').enable();
-    this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
-      .subscribe((response: ApiData) => {
-        if (response.status === 0) {
-          console.log('Error: la modificarea datelor');
-          return;
-        }
-        this.getFormData();
-        return;
-      });
-  }
-
-  log() {
-    console.log(this.formDatePersonale.value);
-  }
-  test() {
-    console.log(this.formDatePersonale);
   }
 }
