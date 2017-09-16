@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
 
 import { Adresa } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
 import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
+import { Cpp } from '../shared/interfaces/cpps.interface';
 
 @Injectable()
 export class FormSetService {
@@ -22,7 +23,7 @@ export class FormSetService {
     });
   }
 
-  datePersonale(data: DatePersonale) {
+  datePersonale(data: DatePersonale): FormGroup {
     const formGroupEmpty = this._fb.group({
       'cuim': [{ value: '', disabled: true }],
       'cnp': [{ value: '', disabled: true }, [Validators.required, this._validator.checkCNP]],
@@ -39,7 +40,7 @@ export class FormSetService {
       'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
       'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
       'act_ident_exp_date': [{ value: '', disabled: true },
-          [Validators.required, this._validator.checkDate, this._validator.isInThePast]],
+      [Validators.required, this._validator.checkDate, this._validator.isInThePast]],
       'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
       'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkAnPromotie]],
       'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
@@ -54,15 +55,60 @@ export class FormSetService {
         // clean data
         Object.keys(data).forEach(
           key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {
-              data[key] = '';
-            }
-          }
-        );
+            if (data[key] === '0000-00-00' || data[key] === 0) {data[key] = ''; }
+          });
         formGroupEmpty.patchValue(data);
       }
     }
     return formGroupEmpty;
+  }
+
+  cpps(actiune: string, data: Cpp, form?: FormGroup): FormGroup {
+    switch (actiune) {
+      case 'initFormCpps':
+        const formGroup = this._fb.group({
+          cpps: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'addCpp':
+        const b: FormGroup = form;
+
+        return b;
+      default:
+        break;
+    }
+
+  }
+
+  cpp(data: Cpp): FormGroup {
+    const formGroup = this._fb.group({
+      'id_cpp': [{ value: '', disabled: true }],
+      'id_mem': [{ value: '', disabled: true }],
+      'reg_cpp_tip_id': [{ value: '', disabled: true }, [this._validator.checkIfNumber, Validators.required]],
+      'reg_cpp_id': [{ value: '', disabled: true }, [this._validator.checkIfNumber, Validators.required]],
+      'grad_prof_cpp_id': [{ value: '', disabled: true }, [this._validator.checkIfNumber]],
+      'date_start': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate]],
+      'date_end': [{ value: '', disabled: true }, [this._validator.checkDate]],
+      'emitent': [{ value: '', disabled: true }, [Validators.required]],
+      'act_serie': [{ value: '', disabled: true }],
+      'act_numar': [{ value: '', disabled: true }],
+      'act_data': [{ value: '', disabled: true }],
+      'act_descriere': [{ value: '', disabled: true }],
+      'obs': [{ value: '', disabled: true }],
+      'updated': [{ value: '', disabled: true }],
+      'ro': [{ value: '', disabled: true }],
+    });
+    if (data) {
+      // clean data
+      Object.keys(data).forEach(
+        key => {
+          if (data[key] === '0000-00-00' || data[key] === 0) { data[key] = ''; }
+        });
+      formGroup.patchValue(data);
+    }
+    return formGroup;
   }
 
   adresa(data: Adresa) {

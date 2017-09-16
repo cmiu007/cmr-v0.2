@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
     if (this.searchForm.valid) {
       this.loading = true;
       this.emptySearchResult = false;
-      this._apiData.apiLista('list', searchVal)
+      this._apiData.apiCautaMembru('list', searchVal)
         .subscribe((response: ApiData) => {
           this.loading = false;
           if (response.data.length === 0 || response.status === 0) {

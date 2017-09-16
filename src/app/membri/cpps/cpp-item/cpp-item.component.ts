@@ -13,6 +13,7 @@ import { RegCpp } from '../../../shared/interfaces/listacpp.interface';
 import { CppsComponent } from '../cpps.component';
 import { CppListComponent } from '../cpp-list/cpp-list.component';
 import { ItemRegLista } from '../../../shared/interfaces/listareg.interface';
+import { FormSetService } from '../../../services/form-set.service';
 
 @Component({
   selector: 'app-cpp-item',
@@ -21,11 +22,11 @@ import { ItemRegLista } from '../../../shared/interfaces/listareg.interface';
 })
 export class CppItemComponent implements OnInit {
 
-  @Input('cppCtrl')
-  public cppCtrl: FormArray;
+  @Input('cppsForm')
+  public cppsForm: FormArray;
 
-  @Input('cppItem')
-  public cppItem: Cpp;
+  @Input('cppFormData')
+  public cppFormData: Cpp;
 
   isHidden = true;
 
@@ -42,29 +43,20 @@ export class CppItemComponent implements OnInit {
   formStatusActive = true;
   public cppForm: FormGroup;
 
+  @Input('registruCpp')
   registruCpp: CppNume[];
   filtruCpp: Observable<CppNume[]>;
 
-  registruCppTip: CppTip[] = [
-    { id: 1, nume: 'Rezident' },
-    { id: 2, nume: 'Specialitate Medicala' },
-    { id: 3, nume: 'Supraspecializare' },
-    { id: 4, nume: 'Competenta' },
-    { id: 5, nume: 'Atestat de studii complementare' },
-    { id: 6, nume: 'Abilitate' }
-  ];
+  @Input('registruCppTip')
+  registruCppTip: CppTip[];
   filtruCppTip: Observable<CppTip[]>;
 
-  registruCppGrad: CppGrad[] = [
-    { id: 1, nume: 'Specialist' },
-    { id: 2, nume: 'Primar' }
-  ];
+  @Input('registruCppGrad')
+  registruCppGrad: CppGrad[];
   filtruCppGrad: Observable<CppGrad[]>;
 
-  registruCppEmitent: CppEmitent[] = [
-    { id: 'MS', nume: 'Ministerul Sanatatii' },
-    { id: 'AL', nume: 'Alt Emitent' }
-  ];
+  @Input('registruCppEmitent')
+  registruCppEmitent: CppEmitent[];
   filtruCppEmitent: Observable<CppEmitent[]>;
 
   constructor(
@@ -73,64 +65,38 @@ export class CppItemComponent implements OnInit {
     private _memService: MembriService,
     private _snackBar: MdSnackBar,
     private _router: Router,
-    private _formValidators: FormValidatorsService
+    private _formValidators: FormValidatorsService,
+    private _formSet: FormSetService
   ) { }
 
   ngOnInit() {
-    this.cppForm = this.toFormGroup(this.cppItem);
-    this.setRegistre();
+    this.setForm();
     this.setFormStatus();
     this.setFormFields();
-    this.setFormTitle();
+    this.setHeader();
+    this.setRegistre();
     // TODO: set form type specialitateMedicala/nou sau altul pt grad cpp
-    if (this.cppItem.reg_cpp_tip_id === 2 || this.formStatus === 0) {
+    if (this.cppFormData.reg_cpp_tip_id === 2 || this.formStatus === 0) {
       this.isSpecialitate = true;
     }
   }
 
-  toFormGroup(data: Cpp) {
-    const formGroup = this._fb.group({
-      'id_cpp': [{ value: '' }], // 212,
-      'id_mem': [{ value: '' }], // 126,
-      'reg_cpp_tip_id': [{ value: '' }, [this._formValidators.checkIfNumber, Validators.required]], // 2,
-      'reg_cpp_id': [{ value: '' }, [this._formValidators.checkIfNumber, Validators.required]], // 1034,
-      'grad_prof_cpp_id': [{ value: '' }, [this._formValidators.checkIfNumber]], // 1,
-      'date_start': [{ value: '' }, [Validators.required, this._formValidators.checkDate]], // '2007-12-01',
-      'date_end': [{ value: '' }, [this._formValidators.checkDate]], // '0000-00-00',
-      'emitent': [{ value: '' }, [Validators.required]], // 'MS',
-      'act_serie': [{ value: '' }], // 'ZX',
-      'act_numar': [{ value: '' }], // 1234,
-      'act_data': [{ value: '' }], // '2008-01-08',
-      'act_descriere': [{ value: '' }], // '',
-      'obs': [{ value: '' }], // 'nu are',
-      'updated': [{ value: '' }], // '2017-04-08 09:59:32',
-      'ro': [{ value: '' }], // 'false'
-    });
-    // clean 0000-00-00 and 0
-    Object.keys(this.cppItem).forEach(
-      key => {
-        if (this.cppItem[key] === '0000-00-00' || this.cppItem[key] === 0) {
-          this.cppItem[key] = '';
-        }
-      }
-    );
-    // this.tipCpp = this.displayFn();
-    formGroup.patchValue(data);
-    this.cppCtrl['cpps'].controls.push(formGroup);
-    return formGroup;
+  private setForm(): void {
+    this.cppForm = this._formSet.cpp(this.cppFormData);
+    this.cppsForm.controls['cpps'].push(this.cppForm);
   }
 
-  setFormStatus() {
+  private setFormStatus(): void {
     if (this.cppForm.get('id_cpp').value === null) {
       this.formStatus = 0;
       this.isHidden = false;
-      return false;
+      return;
     }
     if (this.isAdmin === true) {
       this.formStatus = 1;
-      return false;
+      return;
     } else {
-      if (this.cppItem.date_end === '') {
+      if (this.cppFormData.date_end === '') {
         this.formStatus = 2;
         this.formStatusActive = false;
       } else {
@@ -139,7 +105,7 @@ export class CppItemComponent implements OnInit {
     }
   }
 
-  setFormTitle(): void {
+  private setHeader(): void {
     if (this.formStatus === 0) {
       this.formTitle = 'Inregistrare noua';
       return;
@@ -149,7 +115,7 @@ export class CppItemComponent implements OnInit {
     this.formTitle = cppNume + ' - ' + cppTip;
   }
 
-  setFormFields() {
+  private setFormFields(): void {
     switch (this.formStatus) {
       case 0:
         break;
@@ -202,7 +168,7 @@ export class CppItemComponent implements OnInit {
           } else {
             this._snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
             // CppListComponent.addActive = true;
-            CppsComponent.returned.next('test');
+            CppsComponent.needReload.next('test');
             CppListComponent.addNewActive.next(true);
           }
         }
@@ -243,7 +209,7 @@ export class CppItemComponent implements OnInit {
   }
 
   setRegistre(): void {
-    this.registruCpp = this._route.snapshot.data['regCpp'];
+    // this.registruCpp = this._route.snapshot.data['regCpp'];
     this.filtruCpp = this.cppForm.get('reg_cpp_id').valueChanges
       .startWith(null)
       .map(cppNume => cppNume && typeof cppNume === 'object' ? cppNume.nume : cppNume)
@@ -307,7 +273,7 @@ export class CppItemComponent implements OnInit {
   }
 
   displayFnActiv() {
-    if (this.cppItem.date_end === '') {
+    if (this.cppFormData.date_end === '') {
       return 'Activ';
     } else {
       return 'Inactiv';

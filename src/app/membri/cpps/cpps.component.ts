@@ -1,103 +1,63 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
 
 import { Cpp, Cpps } from '../../shared/interfaces/cpps.interface';
-import { RegCpp, ItemRegCpp } from '../../shared/interfaces/listacpp.interface';
-import { MembriService } from '../../services/membri.service';
-import { NomenclatorService } from '../../services/nomenclator.service';
+import { ApiDataService } from '../../services/api-data.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
+import { FormSetService } from '../../services/form-set.service';
 
 @Component({
   selector: 'app-cpps',
   templateUrl: './cpps.component.html',
   styleUrls: ['./cpps.component.css']
 })
-export class CppsComponent implements OnInit, AfterViewInit {
+export class CppsComponent implements OnInit {
   // asculta pt nou cpp din child
-  public static returned: Subject<any> = new Subject();
+  public static needReload: Subject<any> = new Subject();
 
   public formCpps: FormGroup;
   public formData: Cpps;
 
-
   loading = true;
-  formStatus = 0;
-
-  listaCppTip = [
-    { id: 1, nume: 'Rezident' },
-    { id: 2, nume: 'Specialitate Medicala' },
-    { id: 3, nume: 'Supraspecializare' },
-    { id: 4, nume: 'Competenta' },
-    { id: 5, nume: 'Atestat de studii complementare' },
-    { id: 6, nume: 'Abilitate' }
-  ];
-
-  listaGradCpp = [
-    { id: 1, nume: 'Specialist' },
-    { id: 2, nume: 'Primar' }
-  ];
-
-  listaEmitent = [
-    { id: 'MS', nume: 'M.S.' },
-    { id: 'AL', nume: 'Altul' }
-  ];
-
-  regCpp;
-  // TODO: de facut interface pt listaCpp?
-  // itemRegCpp: ItemRegCpp[];
-  filtruCpp: Observable<ItemRegCpp[]>;
+  formStatus = 1;
+  // formStatus:
+  // 0 - admin - vine din local storage cmj -
+  // 1 - read-only - vine din json
+  // 2 - newMember - vine din cale
+  // 3 - edit - vine din json
 
   constructor(
+    private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _memService: MembriService,
     private _aRoute: ActivatedRoute,
-    private _router: Router,
-    private _rounterSnapshot: ActivatedRoute,
-    private _snack: MdSnackBar,
-    private _nomenclator: NomenclatorService
+    private _formSet: FormSetService
   ) { }
 
   ngOnInit() {
     localStorage.setItem('currentPage', 'Pregatire Postuniversitara');
-    this.getFormCppData();
-    this.formCpps = this.toFormGroup();
-    // get prefetched data
-    this.regCpp = this._rounterSnapshot.snapshot.data['regCpp'];
+    this.getFormData();
+    // this.formCpps = this.toFormGroup();
     // reincarca datele pt formular daca child s a schimbat
-    CppsComponent.returned.subscribe(res => {
-      this.getFormCppData();
+    CppsComponent.needReload.subscribe(res => {
+      this.getFormData();
     });
   }
 
-  ngAfterViewInit() {
-    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    // Add 'implements AfterViewInit' to the class.
+
+  private getFormData(): void {
+    this.loading = true;
+    this._apiData.apiLista('cpp', this._aRoute.snapshot.params['id'])
+      .subscribe((response: ApiData) => {
+        this.formData = response.data;
+        this.sortCpp();
+        this.loading = false;
+      });
   }
 
-  getFormCppData() {
-    this._memService.listaMembruDate('cpp', this._aRoute.snapshot.params['id'])
-      .subscribe(
-      data => {
-        if (data.result === '12') {
-          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/login']);
-        } else {
-          this.formData = data;
-          this.sortCpp();
-          this.loading = false;
-        }
-      }
-      );
-  }
-
-  sortCpp() {
+  private sortCpp(): void {
     // 1. Ordonare dupa data
     Object(this.formData).sort((a, b) => {
       return a.date_start > b.date_start ? -1 : 1;
@@ -106,40 +66,5 @@ export class CppsComponent implements OnInit, AfterViewInit {
     Object(this.formData).sort((a, b) => {
       return a.reg_cpp_tip_id < b.reg_cpp_tip_id ? -1 : 1;
     });
-  }
-
-  // private toFormGroup(data: Cpps): FormGroup {
-  toFormGroup() {
-    const formGroup = this._fb.group({
-      cpps: this._fb.array([
-      ])
-    });
-    return formGroup;
-  }
-
-  initCpps(data: Cpps): FormGroup {
-    return this._fb.group({
-      'id_cpp': [{ value: '' }], // 212,
-      'id_mem': [{ value: '' }], // 126,
-      'reg_cpp_tip_id': [{ value: '' }], // 2,
-      'reg_cpp_id': [{ value: '' }], // 1034,
-      'grad_prof_cpp_id': [{ value: '' }], // 1,
-      'date_start': [{ value: '' }], // '2007-12-01',
-      'date_end': [{ value: '' }], // '0000-00-00',
-      'emitent': [{ value: '' }], // 'MS',
-      'act_serie': [{ value: '' }], // 'ZX',
-      'act_numar': [{ value: '' }], // 1234,
-      'act_data': [{ value: '' }], // '2008-01-08',
-      'act_descriere': [{ value: '' }], // '',
-      'obs': [{ value: '' }], // 'nu are',
-      'updated': [{ value: '' }], // '2017-04-08 09:59:32',
-      'ro': [{ value: '' }], // 'false'
-    });
-  }
-
-
-  removeCpp(i: number) {
-    const control = <FormArray>this.formCpps.controls['cpps'];
-    control.removeAt(i);
   }
 }

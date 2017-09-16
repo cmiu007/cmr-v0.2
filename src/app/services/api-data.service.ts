@@ -25,13 +25,22 @@ export class ApiDataService {
     this.apiAddress = this._globalVars.shareObj['apiAdress'];
   }
 
-  apiLista(actiune: string, searchVal: string) {
+  apiCautaMembru(actiune: string, searchVal: string) {
     return this._http.put(this.apiAddress + 'api/lista', this.setApiListaData(actiune, searchVal))
       .map((response: Response) => {
         const data = response.json();
         const status = this.checkApiResponse(data);
         return { data: data, status: status };
       });
+  }
+
+  apiLista (actiune: string, id: string) {
+    return this._http.put(this.apiAddress + 'api/lista', this.setApiGetData(actiune, id))
+    .map((response: Response) => {
+      const data = response.json();
+      const status = this.checkApiResponse(data);
+      return { data: data, status: status };
+    });
   }
 
   apiGet(actiune: string, id: string) {
@@ -93,6 +102,8 @@ export class ApiDataService {
       'data': data
     });
   }
+
+
   private checkApiResponse(response): number {
     switch (response.result) {
       case '12':

@@ -1,12 +1,12 @@
 <app-header></app-header>
 <div class="content">
-  <form [formGroup]="formCpps">
-    <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-    <md-card>
-      <md-card-title class="form-title">
-        <span>Pregatire profesionala postuniversitara</span>
-      </md-card-title>
-    </md-card>
-    <app-cpp-list *ngIf="!loading" [formCpps]="formCpps" [cppFormData]="formData"></app-cpp-list>
+  <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+  <md-card>
+    <md-card-title class="form-title">
+      <span>Pregatire profesionala postuniversitara</span>
+    </md-card-title>
+  </md-card>
+  <form *ngIf="!loading">
+    <app-cpp-list [cppFormData]="formData"></app-cpp-list>
   </form>
 </div>
