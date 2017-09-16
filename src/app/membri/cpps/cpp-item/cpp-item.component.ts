@@ -35,8 +35,14 @@ export class CppItemComponent implements OnInit {
   // 1 - admin - all fields are enabled - editBtn
   // 2 - edit - some of fields are enabled - editBtn
   // 3 - read-only - all fields are disabled - noBtn
-  // TODO: de implementat roluri pt dezvoltarea ulterioara
-  formStatus = 0; // new form
+
+  // formStatus:
+  // 0 - admin - vine din local storage cmj -
+  // 1 - read-only - vine din json
+  // 2 - newCpp - vine din cale
+  // 3 - edit - vine din json
+
+  formStatus = 1; // reod - only
   isAdmin = false;
   isSpecialitate = false; // hide grad_prog_cpp_id
   formTitle: string;
@@ -116,6 +122,8 @@ export class CppItemComponent implements OnInit {
   }
 
   private setFormFields(): void {
+    // enable all fields
+
     switch (this.formStatus) {
       case 0:
         break;
