@@ -12,8 +12,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./email.component.css']
 })
 export class EmailComponent implements OnInit {
-  @Input('formContactData')
-  public formContactData; // de pus tip-ul
+  @Input('contactData')
+  public contactData; // de pus tip-ul
+
+  @Input('contactForm')
+  public contactForm: FormGroup;
 
   isHidden = true;
   emailForm: FormGroup;
@@ -27,9 +30,9 @@ export class EmailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log(this.formContactData);
-    this.setFormStatus(this.formContactData);
-    this.emailForm = this.toFormGroup(this.formContactData);
+    // console.log(this.contactData);
+    this.setFormStatus(this.contactData);
+    this.emailForm = this.toFormGroup(this.contactData);
   }
 
   setFormStatus(data: Email): void {
@@ -54,10 +57,10 @@ export class EmailComponent implements OnInit {
       formGroup.get('id_mem').setValue(localStorage.getItem('currentMemId'));
     }
     // clean 0000-00-00 and 0
-    // Object.keys(this.formContactData).forEach(
+    // Object.keys(this.contactData).forEach(
     //   key => {
-    //     if (this.formContactData[key] === '0000-00-00' || this.formContactData[key] === 0) {
-    //       this.formContactData[key] = '';
+    //     if (this.contactData[key] === '0000-00-00' || this.contactData[key] === 0) {
+    //       this.contactData[key] = '';
     //     }
     //   }
     // );

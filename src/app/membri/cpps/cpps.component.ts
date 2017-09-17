@@ -7,7 +7,6 @@ import { Subject } from 'rxjs/Subject';
 import { Cpp, Cpps } from '../../shared/interfaces/cpps.interface';
 import { ApiDataService } from '../../services/api-data.service';
 import { ApiData } from '../../shared/interfaces/message.interface';
-import { FormSetService } from '../../services/form-set.service';
 
 @Component({
   selector: 'app-cpps',
@@ -18,7 +17,6 @@ export class CppsComponent implements OnInit {
   // asculta pt nou cpp din child
   public static needReload: Subject<any> = new Subject();
 
-  public formCpps: FormGroup;
   public formData: Cpps;
 
   loading = true;
@@ -32,14 +30,12 @@ export class CppsComponent implements OnInit {
   constructor(
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _aRoute: ActivatedRoute,
-    private _formSet: FormSetService
+    private _aRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     localStorage.setItem('currentPage', 'Pregatire Postuniversitara');
     this.getFormData();
-    // this.formCpps = this.toFormGroup();
     // reincarca datele pt formular daca child s a schimbat
     CppsComponent.needReload.subscribe(res => {
       this.getFormData();
@@ -51,6 +47,9 @@ export class CppsComponent implements OnInit {
     this.loading = true;
     this._apiData.apiLista('cpp', this._aRoute.snapshot.params['id'])
       .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
+        }
         this.formData = response.data;
         this.sortCpp();
         this.loading = false;

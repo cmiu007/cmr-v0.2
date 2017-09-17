@@ -13,6 +13,9 @@ import { DateContact, Adresa, Email } from '../../shared/interfaces/contact.inte
 import { MembriService } from '../../services/membri.service';
 import { Response } from '@angular/http';
 import { Tara, Judet } from '../../shared/models/registre.model';
+import { ApiDataService } from '../../services/api-data.service';
+import { FormSetService } from '../../services/form-set.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
 
 @Component({
   selector: 'app-contact',
@@ -20,70 +23,57 @@ import { Tara, Judet } from '../../shared/models/registre.model';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  // public static _formDataChanged: Subject<boolean> = new Subject;
-  // de revazut la momentul add new address
-  @Input('formAdrese')
-  formAdrese: FormGroup;
+  public static _formDataChanged: Subject<boolean> = new Subject;
 
   loading = true;
-  formStatus: number;
-  registruTara: Tara[];
-  registruJudet: Judet[];
-  delValRegJud = ['ADM', 'CMR'];
-  formContactData: Email[];
-  formAdreseData;
+  contactForm: FormGroup;
+  contactData: Email[];
+  adreseData;
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-    private _memService: MembriService,
-    private _snack: MdSnackBar,
+    private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _aRoute: ActivatedRoute
+    private _aRoute: ActivatedRoute,
+    private _formSet: FormSetService,
   ) { }
 
   ngOnInit() {
-    localStorage.setItem('currentPage', 'Date Contact');
-    this.setRegistre();
-    this.getFormData();
-    this.formAdrese = this.toFormGroup();
+    this.setHeader();
+    this.setForm();
+    console.log(this.contactForm);
     // de revazut la momentul add new address
     // ContactComponent._formDataChanged
     //  .subscribe(result => this.getFormData());
+    ContactComponent._formDataChanged
+      .subscribe(res => this.setForm());
   }
 
-  setRegistre(): void {
-    this.registruTara = this._aRoute.snapshot.data['regTara'];
-    this.registruJudet = this._aRoute.snapshot.data['regJud'];
-    this.delValRegJud.forEach(element => {
-      this.registruJudet = this.registruJudet.filter(option => option.nume !== element);
-    });
+  private setHeader(): void {
+    localStorage.setItem('currentPage', 'Date Contact');
   }
 
-  getFormData() {
+  private setForm(): void {
     this.loading = true;
     // 1. get nr tel si email
-    this._memService.listaMembruDate('contact', this._activatedRoute.snapshot.params['id'])
-      .subscribe( data => {
-        if (data.result === '12') {
-          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/login']);
-        } else {
-          this.formContactData = data[0];
-          this.loading = false;
-        }
-      });
-    // 2. get set adrese
-    this._memService.listaMembruDate('adrese', this._activatedRoute.snapshot.params['id'])
-    .subscribe( data => {
-      if (data.result === '12') {
-        this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-        this._router.navigate(['/login']);
-      } else {
-        this.formAdreseData = data;
-        this.loading = false;
+    this._apiData.apiLista('contact', this._aRoute.snapshot.params['id'])
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
       }
+      this.contactData = response.data;
+      this.loading = false;
     });
+
+    this._apiData.apiLista('adrese', this._aRoute.snapshot.params['id'])
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.adreseData = response.data;
+      this.loading = false;
+    });
+
+
   }
 
   toFormGroup() {

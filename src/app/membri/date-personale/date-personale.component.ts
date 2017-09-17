@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +17,7 @@ import { ApiDataService } from '../../services/api-data.service';
 import { ApiData } from '../../shared/interfaces/message.interface';
 import { DatePersonale } from '../../shared/interfaces/datepersonale.interface';
 import { getTestBed } from '@angular/core/testing';
+import { AlertSnackbarService } from '../../services/alert-snackbar.service';
 
 @Component({
   selector: 'app-date-personale',
@@ -70,7 +70,7 @@ export class DatePersonaleComponent implements OnInit {
     private _formValidators: FormValidatorsService,
     private _apiData: ApiDataService,
     private _aRoute: ActivatedRoute,
-    private _snackBar: MdSnackBar,
+    private _snackBar: AlertSnackbarService,
 
     private membriService: MembriService,
     private route: ActivatedRoute,
@@ -170,8 +170,7 @@ export class DatePersonaleComponent implements OnInit {
   // log submit
   onSubmit() {
     if (this.formDatePersonale.valid === false) {
-      console.log(this.formDatePersonale);
-      this._snackBar.open('Formular Invalid', 'Inchide');
+      this._snackBar.showSnackBar('Formular Invalid');
       return;
     }
 
@@ -200,7 +199,7 @@ export class DatePersonaleComponent implements OnInit {
     this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
-          console.log('Error: la adaugarea datelor');
+          this._snackBar.showSnackBar(response.data);
           return;
         }
         localStorage.setItem('currentMemNume',

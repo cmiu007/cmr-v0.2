@@ -30,13 +30,11 @@ export class AuthDialogComponent {
     this._authService.reLogin(this.loginForm.value)
       .subscribe(
       data => {
-        console.log(data);
         if ( data.result === '10' ) {
           this.submitResult = 'Autentificare esuata';
         }
         if ( data.result === '00') {
-          console.log('hit');
-          this._snackBarService.showSnackBar({message: 'Autentificare reusita', action: 'Inchide'});;
+          this._snackBarService.showSnackBar('Autentificare reusita');
           this.dialogRef.close();
         }
       });

@@ -1,6 +1,6 @@
 <div [hidden]="!submitResult" style="text-align: center;">
   <h2 class="mat-h2">{{submitResult}}</h2></div>
-<div [formGroup]="loginForm">
+<form [formGroup]="loginForm">
   <div class="row">
     <md-input-container class="full_width"><input type="email" required mdInput formControlName="email" placeholder="email"></md-input-container>
   </div>
@@ -8,6 +8,6 @@
     <md-input-container class="full_width"><input type="password" required mdInput formControlName="password" placeholder="parola"></md-input-container>
   </div>
   <div class="row" style="text-align: center;">
-    <button md-raised-button color="primary" (click)="onClick()" [disabled]="loginForm.invalid" >Autentificare</button>
+    <button type="submit" md-raised-button color="primary" (click)="onClick()" [disabled]="loginForm.invalid" >Autentificare</button>
   </div>
-</div>
+</form>
