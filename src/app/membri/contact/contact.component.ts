@@ -9,10 +9,13 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
-import { DateContact, Adresa, Email } from '../../shared/interfaces/contact.interface';
+import { DateContact, Adresa, Contact } from '../../shared/interfaces/contact.interface';
 import { MembriService } from '../../services/membri.service';
 import { Response } from '@angular/http';
 import { Tara, Judet } from '../../shared/models/registre.model';
+import { ApiDataService } from '../../services/api-data.service';
+import { FormSetService } from '../../services/form-set.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
 
 @Component({
   selector: 'app-contact',
@@ -20,76 +23,53 @@ import { Tara, Judet } from '../../shared/models/registre.model';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  // public static _formDataChanged: Subject<boolean> = new Subject;
-  // de revazut la momentul add new address
-  @Input('formAdrese')
-  formAdrese: FormGroup;
+  public static _formDataChanged: Subject<boolean> = new Subject;
 
-  loading = true;
-  formStatus: number;
-  registruTara: Tara[];
-  registruJudet: Judet[];
-  delValRegJud = ['ADM', 'CMR'];
-  formContactData: Email[];
-  formAdreseData;
+  loadingContact = true;
+  loadingAdrese = true;
+  contactForm: FormGroup;
+  contactData: Contact[];
+  adreseData;
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-    private _memService: MembriService,
-    private _snack: MdSnackBar,
+    private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _aRoute: ActivatedRoute
+    private _aRoute: ActivatedRoute,
+    private _formSet: FormSetService,
   ) { }
 
   ngOnInit() {
+    this.setHeader();
+    this.setForm();
+    // TODO: de setat form-ul mare care sa includa formurile contact si adrese
+    ContactComponent._formDataChanged
+      .subscribe(res => this.setForm());
+  }
+
+  private setHeader(): void {
     localStorage.setItem('currentPage', 'Date Contact');
-    this.setRegistre();
-    this.getFormData();
-    this.formAdrese = this.toFormGroup();
-    // de revazut la momentul add new address
-    // ContactComponent._formDataChanged
-    //  .subscribe(result => this.getFormData());
   }
 
-  setRegistre(): void {
-    this.registruTara = this._aRoute.snapshot.data['regTara'];
-    this.registruJudet = this._aRoute.snapshot.data['regJud'];
-    this.delValRegJud.forEach(element => {
-      this.registruJudet = this.registruJudet.filter(option => option.nume !== element);
-    });
-  }
-
-  getFormData() {
-    this.loading = true;
-    // 1. get nr tel si email
-    this._memService.listaMembruDate('contact', this._activatedRoute.snapshot.params['id'])
-      .subscribe( data => {
-        if (data.result === '12') {
-          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/login']);
-        } else {
-          this.formContactData = data[0];
-          this.loading = false;
-        }
-      });
-    // 2. get set adrese
-    this._memService.listaMembruDate('adrese', this._activatedRoute.snapshot.params['id'])
-    .subscribe( data => {
-      if (data.result === '12') {
-        this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-        this._router.navigate(['/login']);
-      } else {
-        this.formAdreseData = data;
-        this.loading = false;
+  private setForm(): void {
+    this.loadingAdrese = true;
+    this.loadingContact = true;
+    // 1. get nr tel si Contact
+    this._apiData.apiLista('contact', this._aRoute.snapshot.params['id'])
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
       }
+      this.contactData = response.data;
+      this.loadingContact = false;
     });
-  }
 
-  toFormGroup() {
-    const formGroup = this._fb.group({
-      adrese: this._fb.array([])
+    this._apiData.apiLista('adrese', this._aRoute.snapshot.params['id'])
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.adreseData = response.data;
+      this.loadingAdrese = false;
     });
-    return formGroup;
   }
 }

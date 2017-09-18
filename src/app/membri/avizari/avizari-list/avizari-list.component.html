@@ -4,13 +4,7 @@
   </md-card>
 </div>
 
-<md-card *ngIf="addActive">
-    <md-card-content style="text-align: center;">
-              <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
-              Adauga Avizare
-              </button>
-      </md-card-content>
-</md-card>
+
 
 <div [formGroup]="formAvizari">
   <div formArrayName="avizari">
@@ -20,3 +14,10 @@
   </div>
 </div>
 
+<md-card *ngIf="addActive">
+  <md-card-content style="text-align: center;">
+            <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
+            Adauga Avizare
+            </button>
+    </md-card-content>
+</md-card>

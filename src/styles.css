@@ -81,6 +81,13 @@ aside {
   grid-gap: 1em;
 }
 
+.mat-expansion-panel {
+  margin-bottom: 0.2em !important;
+}
+
+.mat-content {
+  flex-direction: column !important;
+}
 
 // grid pt formulare
 
@@ -92,6 +99,11 @@ aside {
 .col1_3 {
   width: 100%;
   grid-column: col-start / span 3;
+}
+
+.col1_4 {
+  width: 100%;
+  grid-column: col-start / span 4;
 }
 
 .col1_5 {

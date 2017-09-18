@@ -1,16 +1,21 @@
 <div *ngIf="addActive">
   <md-card style="text-align: center;">
     <md-card-content>
-      <button type="button" *ngIf="!loading" md-raised-button (click)="addCpp()" color="primary">
-              Adauga Cpp
-            </button>
+      <button type="button" *ngIf="!loading" md-raised-button (click)="addCpp()" color="primary">Adauga Cpp</button>
     </md-card-content>
   </md-card>
 </div>
 <div [formGroup]="formCpps">
   <div formArrayName="cpps">
-    <div *ngFor="let cpp of cppFormData">
-      <app-cpp-item [cppCtrl]="formCpps.controls" [cppItem]="cpp"></app-cpp-item>
+    <div *ngFor="let cppData of cppFormData">
+      <app-cpp-item
+      [cppsForm]="formCpps"
+      [cppFormData]="cppData"
+      [registruCpp]="registruCpp"
+      [registruCppTip]="registruCppTip"
+      [registruCppGrad]="registruCppGrad"
+      [registruCppEmitent]="registruCppEmitent"
+      ></app-cpp-item>
     </div>
   </div>
 </div>

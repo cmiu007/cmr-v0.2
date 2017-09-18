@@ -1,77 +1,77 @@
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <div [formGroup]="cppForm">
-  <md-card>
-    <md-card-title class="form-item-title" (click)="isHidden = !isHidden">
-      <span [ngClass]="{'inactive': formStatusActive}">{{ formTitle }}</span>
-      <span>
-          <md-icon class="icon-align">{{ isHidden ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</md-icon>
-          </span>
-    </md-card-title>
-    <md-card-content>
-      <div class="form-item-content" [hidden]="isHidden">
-        <div class="row wrapper">
+<md-expansion-panel [expanded]="formStatus === 'new'">
+  <md-expansion-panel-header>
+    <md-panel-title>
+      <span [ngClass]="{'inactive': !formStatusActive}">{{ formTitle.nume }}</span>
+    </md-panel-title>
+    <md-panel-description>
+        {{ formTitle.tip }}
+    </md-panel-description>
+  </md-expansion-panel-header>
+    <div class="form-item-content">
+      <div class="row wrapper">
 
-          <md-form-field class="col1_2"><input type="text" placeholder="Tip Pregatire" mdInput formControlName="reg_cpp_tip_id" [mdAutocomplete]="tipAuto"
-              (click)="cppForm.get('reg_cpp_tip_id').setValue('')" (blur)="checkRegTipId()"></md-form-field>
-          <md-form-field class="col2_5">
-            <input type="text" placeholder="Denumire" mdInput formControlName="reg_cpp_id" [mdAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
-          </md-form-field>
+        <md-form-field class="col1_2"><input type="text" placeholder="Tip Pregatire" mdInput formControlName="reg_cpp_tip_id" [mdAutocomplete]="tipAuto"
+            (click)="cppForm.get('reg_cpp_tip_id').setValue('')" (blur)="checkRegTipId()"></md-form-field>
+        <md-form-field class="col2_5">
+          <input type="text" placeholder="Denumire" mdInput formControlName="reg_cpp_id" [mdAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
+        </md-form-field>
 
-          <md-form-field class="col7_2"><input type="text" placeholder="Grad" mdInput formControlName="grad_prof_cpp_id" [mdAutocomplete]="gradAuto" (click)="cppForm.get('grad_prof_cpp_id').setValue('')"></md-form-field>
+        <md-form-field class="col7_2"><input type="text" placeholder="Grad" mdInput formControlName="grad_prof_cpp_id" [mdAutocomplete]="gradAuto" (click)="cppForm.get('grad_prof_cpp_id').setValue('')"></md-form-field>
 
-          <md-form-field class="col9_2">
-            <input mdInput placeholder="Start date" type="text" formControlName="date_start">
-          </md-form-field>
+        <md-form-field class="col9_2">
+          <input mdInput placeholder="Start date" type="text" formControlName="date_start">
+        </md-form-field>
 
-          <md-form-field class="col11_2">
-            <input mdInput placeholder="End date" type="text" formControlName="date_end">
-          </md-form-field>
-        </div>
-        <md-autocomplete #tipAuto="mdAutocomplete" [displayWith]="displayCppTip.bind(this)">
-          <md-option *ngFor="let tip of filtruCppTip | async" [value]="tip.id">
-            {{ tip.nume }}
-          </md-option>
-        </md-autocomplete>
-
-        <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayCpp.bind(this)">
-          <md-option *ngFor="let cpp of filtruCpp | async" [value]="cpp.id">
-            {{ cpp.nume }}
-          </md-option>
-        </md-autocomplete>
-
-        <md-autocomplete #gradAuto="mdAutocomplete" [displayWith]="displayCppGrad.bind(this)">
-          <md-option *ngFor="let grad of filtruCppGrad | async" [value]="grad.id">
-            {{ grad.nume }}
-          </md-option>
-        </md-autocomplete>
-
-        <div class="row wrapper">
-
-            <md-form-field class="col1_2"><input type="text" placeholder="Emitent" mdInput formControlName="emitent" [mdAutocomplete]="emitentAuto"
-              (click)="cppForm.get('emitent').setValue('')"></md-form-field>
-          <md-form-field class="col2_1">
-            <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
-          </md-form-field>
-          <md-form-field class="col3_2">
-            <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
-          </md-form-field>
-          <md-form-field class="col5_2">
-            <input mdInput placeholder="Data" type="text" formControlName="act_data">
-          </md-form-field>
-          <md-form-field class="col7_6">
-            <textarea mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere"></textarea>
-          </md-form-field>
-        </div>
-        <md-autocomplete #emitentAuto="mdAutocomplete" [displayWith]="displayCppEmitent.bind(this)">
-            <md-option *ngFor="let item of filtruCppEmitent | async" [value]="item.id">
-              {{ item.nume }}
-            </md-option>
-          </md-autocomplete>
-        <div class="row" *ngIf="formStatus !== 3" style="text-align: center;">
-          <button type="button" *ngIf="!loading" md-raised-button (click)="onClickCpp()" color="primary" [disabled]="cppForm.invalid || cppForm.untouched">
-                       {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} pregatire profesionala postuniversitara
-            </button>
-        </div>
+        <md-form-field class="col11_2">
+          <input mdInput placeholder="End date" type="text" formControlName="date_end">
+        </md-form-field>
       </div>
-    </md-card-content>
-  </md-card>
+      <md-autocomplete #tipAuto="mdAutocomplete" [displayWith]="displayCppTip.bind(this)">
+        <md-option *ngFor="let tip of filtruCppTip | async" [value]="tip.id">
+          {{ tip.nume }}
+        </md-option>
+      </md-autocomplete>
+
+      <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayCpp.bind(this)">
+        <md-option *ngFor="let cpp of filtruCpp | async" [value]="cpp.id">
+          {{ cpp.nume }}
+        </md-option>
+      </md-autocomplete>
+
+      <md-autocomplete #gradAuto="mdAutocomplete" [displayWith]="displayCppGrad.bind(this)">
+        <md-option *ngFor="let grad of filtruCppGrad | async" [value]="grad.id">
+          {{ grad.nume }}
+        </md-option>
+      </md-autocomplete>
+
+      <div class="row wrapper">
+
+        <md-form-field class="col1_2"><input type="text" placeholder="Emitent" mdInput formControlName="emitent" [mdAutocomplete]="emitentAuto" (click)="cppForm.get('emitent').setValue('')"></md-form-field>
+        <md-form-field class="col2_1">
+          <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
+        </md-form-field>
+        <md-form-field class="col3_2">
+          <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
+        </md-form-field>
+        <md-form-field class="col5_2">
+          <input mdInput placeholder="Data" type="text" formControlName="act_data">
+        </md-form-field>
+        <md-form-field class="col7_6">
+          <textarea mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere"></textarea>
+        </md-form-field>
+      </div>
+      <md-autocomplete #emitentAuto="mdAutocomplete" [displayWith]="displayCppEmitent.bind(this)">
+        <md-option *ngFor="let item of filtruCppEmitent | async" [value]="item.id">
+          {{ item.nume }}
+        </md-option>
+      </md-autocomplete>
+    </div>
+    <md-action-row *ngIf="formStatus !== 'ro'">
+      <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!cppForm.dirty">
+        {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }}
+      </button>
+    </md-action-row>
+  </md-expansion-panel>
 </div>

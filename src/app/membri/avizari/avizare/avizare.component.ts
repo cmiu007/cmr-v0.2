@@ -20,6 +20,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class AvizareComponent implements OnInit {
   public static addActiveSubj: Subject<boolean> = new Subject;
+  public static _formDataChanged: Subject<boolean> = new Subject;
 
   @Input('formAvizari')
   public formAvizari: FormGroup;
@@ -36,11 +37,13 @@ export class AvizareComponent implements OnInit {
   isHidden = false;
   isListaAsigurariHidden = true;
   itemName = '';
+  itemStatus = '';
   avizareForm: FormGroup;
   formTitleStyle;
   loading = false;
 
   asigurariLoading = false;
+  amAsigurariData = false;
   asigurariFormData: Asigurare[];
   asigurareFormArray: FormArray;
 
@@ -67,22 +70,29 @@ export class AvizareComponent implements OnInit {
         this.setFormStatus();
         this.initArrayInFormGroup();
       });
+    AvizareComponent._formDataChanged
+      .subscribe( result => {
+        this.avizareForm.removeControl('asigurare');
+        this.asigurariFormData = null;
+        this.initArrayInFormGroup();
+        this.getAsigurariData();
+      });
    }
 
   setFormStatus(): void {
     const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
     const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
     if (this._dataCal.isInTheFuture(dataStart)) {
-      this.itemName = 'Draft ';
+      this.itemStatus = 'Draft ';
       this.formStatus = 1;
     } else {
       if (this._dataCal.isInTheFuture(dataEnd)) {
-        this.itemName = 'Activ ';
+        this.itemStatus = 'Activa ';
         this.formTitleStyle = ['active'];
         this.formStatus = 2;
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {
-          this.itemName = 'Inactiv ';
+          this.itemStatus = 'Inactiva ';
           this.formTitleStyle = ['inactive'];
           this.formStatus = 3;
         }
@@ -90,7 +100,7 @@ export class AvizareComponent implements OnInit {
     }
     this.setForm();
     this.isHidden = true;
-    this.itemName = this.itemName +
+    this.itemName =
       this.avizareForm.get('dlp_data_start').value + ' pana la ' +
       this.avizareForm.get('dlp_data_end').value;
     if (this.avizareForm.get('dlp_data_start').value === '') {
@@ -156,11 +166,13 @@ export class AvizareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
+    if (this.amAsigurariData === true) {
+      return;
+    }
     this.loading = true;
-    // this.initArrayInFormGroup();
-    // get asigurari
     this.getAsigurariData();
     this.isListaAsigurariHidden = !this.isListaAsigurariHidden;
+    this.amAsigurariData = true;
   }
 
   getAsigurariData(): void {

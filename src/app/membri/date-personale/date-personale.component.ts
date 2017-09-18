@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +17,7 @@ import { ApiDataService } from '../../services/api-data.service';
 import { ApiData } from '../../shared/interfaces/message.interface';
 import { DatePersonale } from '../../shared/interfaces/datepersonale.interface';
 import { getTestBed } from '@angular/core/testing';
+import { AlertSnackbarService } from '../../services/alert-snackbar.service';
 
 @Component({
   selector: 'app-date-personale',
@@ -32,7 +32,7 @@ export class DatePersonaleComponent implements OnInit {
   // 3 - edit - vine din json
   // TODO: sa vina din json direct in functie de user e mai sigur
   // TODO: de implementat roluri pt dezvoltarea ulterioara
-  formStatus = 0; // case read-only (default), edit, newMember, admin
+  formStatus = 1; // case read-only (default), edit, newMember, admin
   formDatePersonale: FormGroup;
   formDatePersonaleData;
   loading = true;
@@ -70,7 +70,7 @@ export class DatePersonaleComponent implements OnInit {
     private _formValidators: FormValidatorsService,
     private _apiData: ApiDataService,
     private _aRoute: ActivatedRoute,
-    private _snackBar: MdSnackBar,
+    private _snackBar: AlertSnackbarService,
 
     private membriService: MembriService,
     private route: ActivatedRoute,
@@ -78,12 +78,16 @@ export class DatePersonaleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.setHeader();
     this.getFormData();
-    localStorage.setItem('currentPage', 'Date Personale');
     // get nomeclatoare & set filters
   }
 
-  getFormData(): void {
+  private setHeader(): void {
+    localStorage.setItem('currentPage', 'Date Personale');
+  }
+
+  private getFormData(): void {
     this.loading = true;
     this._apiData.apiGet('date_personale', this._aRoute.snapshot.params['id'])
       .subscribe((response: ApiData) => {
@@ -96,11 +100,11 @@ export class DatePersonaleComponent implements OnInit {
       });
   }
 
-  setForm(): void {
+  private setForm(): void {
     this.formDatePersonale = this._formSet.datePersonale(this.formDatePersonaleData);
   }
 
-  setFormMode() {
+  private setFormMode() {
     if ((JSON.parse(localStorage.getItem('userGroup'))) === 160) {
       this.formStatus = 0;
       this.enableAdmin();
@@ -121,7 +125,7 @@ export class DatePersonaleComponent implements OnInit {
     this.enableRW();
   }
 
-  enableRW() {
+  private enableRW() {
     this.formDatePersonale.get('nume').enable();
     this.formDatePersonale.get('initiala').enable();
     this.formDatePersonale.get('prenume').enable();
@@ -140,7 +144,7 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('cod_parafa').enable();
   }
 
-  enableNewMember() {
+  private enableNewMember() {
     this.enableRW();
     this.formDatePersonale.get('cnp').enable();
     this.formDatePersonale.get('data_juramant').enable();
@@ -156,7 +160,7 @@ export class DatePersonaleComponent implements OnInit {
     }
   }
 
-  enableAdmin() {
+  private enableAdmin() {
     this.enableRW();
     this.enableNewMember();
     this.formDatePersonale.get('jud_id').enable();
@@ -166,8 +170,7 @@ export class DatePersonaleComponent implements OnInit {
   // log submit
   onSubmit() {
     if (this.formDatePersonale.valid === false) {
-      console.log(this.formDatePersonale);
-      this._snackBar.open('Formular Invalid', 'Inchide');
+      this._snackBar.showSnackBar('Formular Invalid');
       return;
     }
 
@@ -196,7 +199,7 @@ export class DatePersonaleComponent implements OnInit {
     this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
-          console.log('Error: la adaugarea datelor');
+          this._snackBar.showSnackBar(response.data);
           return;
         }
         localStorage.setItem('currentMemNume',
@@ -207,35 +210,18 @@ export class DatePersonaleComponent implements OnInit {
     return;
   }
 
-  isRequired(data) {
+  private isRequired(data) {
     console.log(data);
   }
-  
-  log() {
+
+  private log() {
     console.log(this.formDatePersonale.value);
   }
-  test() {
+  private test() {
     console.log(this.formDatePersonale);
   }
 
-  checkCNP(): void {
-    const controlValid = this.formDatePersonale.get('cnp').valid;
-    if (controlValid === true && this.formStatus !== 0) {
-      this.reloading = true;
-      const cnp = this.formDatePersonale.get('cnp').value;
-      this._apiData.apiLista('list', cnp)
-        .subscribe((response: ApiData) => {
-          this.reloading = false;
-          const cnpResponse = response.data;
-          if (cnpResponse.length !== 0) {
-            this.formDatePersonale.controls['cnp'].setErrors({ 'isUsed': true });
-            this._snackBar.open('CNP-ul exista deja in baza de date, verifica folosind cautarea globala', 'Inchide');
-          }
-        });
-    }
-  }
-
-  setRegistre(): void {
+  private setRegistre(): void {
     this.registruJudete = this.route.snapshot.data['regJud'];
     const delValRegJud = ['ADM', 'CMR'];
     delValRegJud.forEach(element => {

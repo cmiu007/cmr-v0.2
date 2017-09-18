@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MdSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -10,6 +10,10 @@ import { FormSetService } from '../../../services/form-set.service';
 import { Judet, Tara } from '../../../shared/models/registre.model';
 import { RegLista } from '../../../shared/interfaces/listareg.interface';
 import { ContactComponent } from '../contact.component';
+import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
+import { ApiDataService } from '../../../services/api-data.service';
+import { ApiData } from '../../../shared/interfaces/message.interface';
+import { AdreseListComponent } from '../adrese-list/adrese-list.component';
 
 @Component({
   selector: 'app-adresa',
@@ -17,17 +21,22 @@ import { ContactComponent } from '../contact.component';
   styleUrls: ['./adresa.component.css']
 })
 export class AdresaComponent implements OnInit {
-  @Input('formAdresaData')
-  formAdresaData: Adresa;
+  @Input('adresaData')
+  adresaData: Adresa;
+
+  @Input('adreseForm')
+  adreseForm: FormGroup;
 
   @Input('registruTara')
   registruTara: Tara[];
+  filteredTara;
 
   @Input('registruJudet')
   registruJudet: Judet[];
+  filteredJudet;
 
-  formStatus = 0;
-  isAdmin = false;
+  loading = false;
+  formStatus = 'new';
   isHidden = true; // true
   itemName: string;
   adresaForm: FormGroup;
@@ -38,33 +47,38 @@ export class AdresaComponent implements OnInit {
   ];
 
   // TODO: de revazut unde e cel mai  bine sa stea rezolvarea registrelor
-  filteredTara;
-  filteredJudet;
+
 
   constructor(
     private _fb: FormBuilder,
-    private _membriService: MembriService,
-    private _snackBar: MdSnackBar,
+    private _snackBar: AlertSnackbarService,
     private _router: Router,
     private _validator: FormValidatorsService,
     private _formSet: FormSetService,
     private _aRoute: ActivatedRoute,
+    private _apiData: ApiDataService,
+
+    private _membriService: MembriService,
   ) { }
 
   ngOnInit() {
-    this.adresaForm = this._formSet.adresa(this.formAdresaData);
+    this.setForm();
     this.setFormStatus();
     this.setFormName();
-    this.setFilterRegistre();
+    this.setRegistre();
   }
 
-  setFormStatus(): void {
+  private setForm(): void {
+    this.adresaForm = this._formSet.adresa(this.adresaData);
+  }
+
+  private setFormStatus(): void {
     if (this.adresaForm.get('id_adresa').value) {
-      this.formStatus = 1;
+      this.formStatus = 'edit';
     }
   }
 
-  setFormName(): void {
+  private setFormName(): void {
     const tip = this.adresaForm.get('tip').value;
     switch (tip) {
       case null:
@@ -85,7 +99,7 @@ export class AdresaComponent implements OnInit {
     }
   }
 
-  setFilterRegistre(): void {
+  private setRegistre(): void {
     this.filteredTara = this.adresaForm.get('tara_id').valueChanges
       .startWith(null)
       .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
@@ -118,43 +132,33 @@ export class AdresaComponent implements OnInit {
   }
 
   onClickAdresa(): void {
-    const data = this.adresaForm.value;
-    const idItem = data.id_adresa;
-    delete data.id_adresa;
-    if (this.formStatus === 1) {
-      this._membriService.modificaMembruDate('adresa', idItem, data)
-        .subscribe(
-        returned => {
-          if (returned.result !== '00') {
-            this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-            if (returned.result === '12') {
-              this._router.navigate(['/login']);
-            }
-          } else {
-            this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-            this._router.navigate(['/reflector']);
-          }
-        });
+    if (this.adresaForm.valid === false) {
+      this._snackBar.showSnackBar('Formular invalid');
       return;
     }
-    data.id_mem = +localStorage.getItem('currentMemId');
-    this._membriService.adaugaMembruContact('adresa', null, data)
-      .subscribe(
-      returned => {
-        if (returned.result !== '00') {
-          this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-          if (returned.result === '12') {
-            this._router.navigate(['/login']);
-          }
-        } else {
-          this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/reflector']);
+    this.loading = true;
+    const formData: Adresa = this.adresaForm.value;
+    const adresaId = formData.id_adresa;
+    // TODO: aceiasi problema in api
+    delete formData.id_adresa;
+    if (this.formStatus === 'new') {
+      this._apiData.apiAdauga('adresa', formData)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
         }
+        ContactComponent._formDataChanged.next();
       });
-    return;
-  }
+      return;
+    }
 
-  onClickTest(): void {
-    console.log(this.adresaForm);
+    this._apiData.apiModifica('contact', adresaId, formData)
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.loading = false;
+    });
+    return;
   }
 }
