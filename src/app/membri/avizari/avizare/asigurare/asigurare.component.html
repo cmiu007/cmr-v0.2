@@ -1,3 +1,4 @@
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <md-card class="mat-elevation-z7">
   <md-card-content  [formGroup]="asigurareForm">
     <div class="row wrapper">
@@ -17,7 +18,7 @@
     </md-autocomplete>
 
     <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2">
-      <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="asigurareForm.invalid || asigurareForm.untouched">
+      <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty">
             {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} asigurare
           </button>
       <button *ngIf="formStatus === 0" type="button" md-raised-button (click)="delAsigurare()" color="primary">

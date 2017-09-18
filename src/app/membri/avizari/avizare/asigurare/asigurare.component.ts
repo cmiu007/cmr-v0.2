@@ -9,6 +9,10 @@ import { Asigurare } from '../../../../shared/interfaces/asigurari.interface';
 import { MembriService } from '../../../../services/membri.service';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { AlertSnackbarService } from '../../../../services/alert-snackbar.service';
+import { ApiData } from '../../../../shared/interfaces/message.interface';
+import { ApiDataService } from '../../../../services/api-data.service';
+import { AvizareComponent } from '../avizare.component';
 @Component({
   selector: 'app-asigurare',
   templateUrl: './asigurare.component.html',
@@ -32,20 +36,26 @@ export class AsigurareComponent implements OnInit {
   // 1 - edit
   parentFormStatus: number;
 
+  loading = false;
+
   constructor(
     private _formSet: FormSetService,
     private _dataCal: DataCalService,
-    private _membriService: MembriService,
-    private _snackBar: MdSnackBar,
+    private _apiData: ApiDataService,
+    private _snackBar: AlertSnackbarService,
     private _router: Router
 
   ) { }
 
   ngOnInit() {
-    const a = this.avizareForm.get('asigurare') as FormArray;
-    this.asigurareForm = this._formSet.asigurare(a.at(this.arrayIndex).value);
+    this.setForm();
     this.setFilterRegistre();
     this.setFormStatus();
+  }
+
+  private setForm(): void {
+    const a = this.avizareForm.get('asigurare') as FormArray;
+    this.asigurareForm = this._formSet.asigurare(a.at(this.arrayIndex).value);
   }
 
   setFormStatus(): void {
@@ -64,7 +74,7 @@ export class AsigurareComponent implements OnInit {
     }
     if (this.asigurareForm.get('id_asig').value) {
       this.formStatus = 1;
-      if ( this.parentFormStatus === 2 || this.parentFormStatus === 3 ) {
+      if (this.parentFormStatus === 2 || this.parentFormStatus === 3) {
         this.asigurareForm.disable();
       }
     } else {
@@ -113,40 +123,64 @@ export class AsigurareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
-    const data = this.asigurareForm.value;
-    console.log(data);
-    const idItem = data.id_asig;
-    delete data.id_asig;
+    if (this.asigurareForm.valid === false) {
+      this._snackBar.showSnackBar('Formular Invalid');
+      return;
+    }
+    this.loading = true;
+    const asigData = this.asigurareForm.value;
+    const idItem = asigData.id_asig;
+    delete asigData.id_asig;
     if (this.formStatus === 0) {
-      this._membriService.adaugaMembruContact('asigurare', null, data)
-        .subscribe(
-        returned => {
-          if (returned.result !== '00') {
-            this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-            if (returned.result === '12') {
-              this._router.navigate(['/login']);
-            }
-          } else {
-            this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-            this._router.navigate(['/reflector']);
+      this._apiData.apiAdauga('asigurare', asigData)
+        .subscribe((response: ApiData) => {
+          if (response.status === 0) {
+            return;
           }
+          this.loading = false;
+          AvizareComponent._formDataChanged.next();
+          AsigurariListComponent.addActiveSubj.next();
         });
       return;
     }
-    console.log('hit edit');
-    this._membriService.modificaMembruDate('asigurare', idItem, data)
-    .subscribe(
-      returned => {
-        if (returned.result !== '00') {
-          this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-          if (returned.result === '12') {
-            this._router.navigate(['/login']);
-          }
-        } else {
-          this._snackBar.open(returned.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/reflector']);
-        }
-      });
+
+    this._apiData.apiModifica('asigurare', idItem, asigData)
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.loading = false;
+    });
     return;
+
+    // if (this.formStatus === 0) {
+    //   this._membriService.adaugaMembruContact('asigurare', null, data)
+    //     .subscribe(
+    //     returned => {
+    //       if (returned.result !== '00') {
+    //         console.log(returned);
+    //         if (returned.result === '12') {
+    //           this._router.navigate(['/login']);
+    //         }
+    //       } else {
+    //         this._router.navigate(['/reflector']);
+    //       }
+    //     });
+    //   return;
+    // }
+    // console.log('hit edit');
+    // this._membriService.modificaMembruDate('asigurare', idItem, data)
+    //   .subscribe(
+    //   returned => {
+    //     if (returned.result !== '00') {
+    //       console.log(returned);
+    //       if (returned.result === '12') {
+    //         this._router.navigate(['/login']);
+    //       }
+    //     } else {
+    //       this._router.navigate(['/reflector']);
+    //     }
+    //   });
+    // return;
   }
 }

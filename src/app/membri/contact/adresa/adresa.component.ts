@@ -111,27 +111,27 @@ export class AdresaComponent implements OnInit {
       .map(nume => nume ? this.filterJudet(nume) : this.registruJudet.slice());
   }
 
-  private displayFnTara(option: number): string {
+  displayFnTara(option: number): string {
     if (option) {
       return this.registruTara.find(item => item.id === option).nume;
     }
   }
 
-  private filterTara(nume: string): Tara[] {
+  filterTara(nume: string): Tara[] {
     return this.registruTara.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
-  private displayFnJudet(option) {
+  displayFnJudet(option) {
     if (option) {
       return this.registruJudet.find(item => item.id === +option).nume;
     }
   }
 
-  private filterJudet(nume: string): Judet[] {
+  filterJudet(nume: string): Judet[] {
     return this.registruJudet.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
-  private onClickAdresa(): void {
+  onClickAdresa(): void {
     if (this.adresaForm.valid === false) {
       this._snackBar.showSnackBar('Formular invalid');
       return;

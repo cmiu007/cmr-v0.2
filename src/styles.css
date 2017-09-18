@@ -101,6 +101,11 @@ aside {
   grid-column: col-start / span 3;
 }
 
+.col1_4 {
+  width: 100%;
+  grid-column: col-start / span 4;
+}
+
 .col1_5 {
   width: 100%;
   grid-column: col-start / span 5;

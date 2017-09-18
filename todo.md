@@ -66,6 +66,11 @@ this.formGp.controls['checkboxFld'].valueChanges.observer({
  ```php
   $query = "insert into mem_asig (id_mem, id_asigurator, id_dlp, polita_serie, polita_nr, data_start, data_end) values (?,?,?,?,?,?,?)";
   ```
+  ### Pt edit asigurare
+
+  ```php
+ $query = "update mem_asig set id_asigurator=?, id_dlp=?, polita_serie=?, polita_nr=?, data_start=?, data_end=? where id_asig = ?";
+  ```
 
   ## Pt modificare din mem - coloana fac_doc_tip
 

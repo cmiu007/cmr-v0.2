@@ -2,23 +2,18 @@
   <md-card-title class="form-title"><span>Lista Adrese</span></md-card-title>
 </md-card>
 
+<div [formGroup]="adreseForm">
+  <div formArrayName="adresa">
+    <div *ngFor="let adresaData of adreseData">
+      <app-adresa [adresaData]="adresaData" [adreseForm]="adreseForm" [registruTara]="registruTara" [registruJudet]="registruJudet"></app-adresa>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="addActive">
   <md-card style="text-align: center;">
     <md-card-content>
       <button type="button" *ngIf="!loading" md-raised-button (click)="addAdresa()" color="primary">Adauga Adresa</button>
     </md-card-content>
   </md-card>
-</div>
-
-<div [formGroup]="adreseForm">
-  <div formArrayName="adresa">
-    <div *ngFor="let adresaData of adreseData">
-      <app-adresa
-      [adresaData]="adresaData"
-      [adreseForm]="adreseForm"
-      [registruTara]="registruTara"
-      [registruJudet]="registruJudet"
-      ></app-adresa>
-    </div>
-  </div>
 </div>
