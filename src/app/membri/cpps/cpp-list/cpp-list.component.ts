@@ -62,6 +62,7 @@ export class CppListComponent implements OnInit {
 
   private setForm(): void {
     this.formCpps = this._formSet.cpps('initFormCpps', null, this.formCpps);
+    // TODO; de revazut daca nu il putem baga in serviciul de mai sus
     this.formCpps.addControl('cpps', new FormArray([]));
   }
 

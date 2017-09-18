@@ -1,9 +1,9 @@
 export interface DateContact {
-  contact: Email;
+  contact: Contact;
   adrese: Adresa[];
 }
 
-export interface Email {
+export interface Contact {
   'id_cont': number;
   'id_mem': number;
   'email': string;

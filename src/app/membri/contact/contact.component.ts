@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
-import { DateContact, Adresa, Email } from '../../shared/interfaces/contact.interface';
+import { DateContact, Adresa, Contact } from '../../shared/interfaces/contact.interface';
 import { MembriService } from '../../services/membri.service';
 import { Response } from '@angular/http';
 import { Tara, Judet } from '../../shared/models/registre.model';
@@ -25,9 +25,10 @@ import { ApiData } from '../../shared/interfaces/message.interface';
 export class ContactComponent implements OnInit {
   public static _formDataChanged: Subject<boolean> = new Subject;
 
-  loading = true;
+  loadingContact = true;
+  loadingAdrese = true;
   contactForm: FormGroup;
-  contactData: Email[];
+  contactData: Contact[];
   adreseData;
 
   constructor(
@@ -40,10 +41,7 @@ export class ContactComponent implements OnInit {
   ngOnInit() {
     this.setHeader();
     this.setForm();
-    console.log(this.contactForm);
-    // de revazut la momentul add new address
-    // ContactComponent._formDataChanged
-    //  .subscribe(result => this.getFormData());
+    // TODO: de setat form-ul mare care sa includa formurile contact si adrese
     ContactComponent._formDataChanged
       .subscribe(res => this.setForm());
   }
@@ -53,15 +51,16 @@ export class ContactComponent implements OnInit {
   }
 
   private setForm(): void {
-    this.loading = true;
-    // 1. get nr tel si email
+    this.loadingAdrese = true;
+    this.loadingContact = true;
+    // 1. get nr tel si Contact
     this._apiData.apiLista('contact', this._aRoute.snapshot.params['id'])
     .subscribe((response: ApiData) => {
       if (response.status === 0) {
         return;
       }
       this.contactData = response.data;
-      this.loading = false;
+      this.loadingContact = false;
     });
 
     this._apiData.apiLista('adrese', this._aRoute.snapshot.params['id'])
@@ -70,16 +69,7 @@ export class ContactComponent implements OnInit {
         return;
       }
       this.adreseData = response.data;
-      this.loading = false;
+      this.loadingAdrese = false;
     });
-
-
-  }
-
-  toFormGroup() {
-    const formGroup = this._fb.group({
-      adrese: this._fb.array([])
-    });
-    return formGroup;
   }
 }

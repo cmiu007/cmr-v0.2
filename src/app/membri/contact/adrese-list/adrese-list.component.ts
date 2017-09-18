@@ -12,11 +12,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./adrese-list.component.css']
 })
 export class AdreseListComponent implements OnInit {
+  public static addNewActive: Subject<boolean> = new Subject();
+
   @Input('adreseData')
   public adreseData; // de pus tip-ul
 
-  @Input('contactForm')
-  public contactForm: FormGroup;
+  public adreseForm: FormGroup;
 
   registruTara: Tara[];
 
@@ -33,6 +34,7 @@ export class AdreseListComponent implements OnInit {
 
   ngOnInit() {
     this.setRegistre();
+    this.setForm();
     // this.formAdrese.addControl('adrese', new FormArray([]));
   }
 
@@ -44,7 +46,16 @@ export class AdreseListComponent implements OnInit {
     });
   }
 
-  addAdresa(): void {
+  private setForm(): void {
+    this.adreseForm = this._formSet.adrese('initFormCpps', null, this.adreseForm);
+    // TODO; de revazut daca nu il putem baga in serviciul de mai sus
+    this.adreseForm.addControl('adresa', new FormArray([]));
+    AdreseListComponent.addNewActive.subscribe(res => {
+      this.addActive = res;
+    });
+  }
+
+  private addAdresa(): void {
     const newAdresaData = this._formSet.adresa(null).value;
     this.adreseData.unshift(newAdresaData);
     this.addActive = !this.addActive;

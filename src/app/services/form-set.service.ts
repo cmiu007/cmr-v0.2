@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
 
-import { Adresa } from '../shared/interfaces/contact.interface';
+import { Adresa, Contact } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
 import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
@@ -55,7 +55,7 @@ export class FormSetService {
         // clean data
         Object.keys(data).forEach(
           key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {data[key] = ''; }
+            if (data[key] === '0000-00-00' || data[key] === 0) { data[key] = ''; }
           });
         formGroupEmpty.patchValue(data);
       }
@@ -74,7 +74,6 @@ export class FormSetService {
 
       case 'addCpp':
         const b: FormGroup = form;
-
         return b;
       default:
         break;
@@ -111,6 +110,37 @@ export class FormSetService {
     return formGroup;
   }
 
+  contact(data: Contact) {
+    const formGroup = this._fb.group({
+      'id_cont': [''],
+      'id_mem': [''],
+      'email': ['', [Validators.required, Validators.email]],
+      'telefon': ['', Validators.required],
+      'dummy': ['']
+    });
+    if (data) {
+      formGroup.patchValue(data);
+    }
+    return formGroup;
+  }
+
+  adrese(actiune: string, data: Cpp, form?: FormGroup): FormGroup {
+    switch (actiune) {
+      case 'initFormCpps':
+        const formGroup = this._fb.group({
+          cpps: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'addAdresa':
+        const b: FormGroup = form;
+        return b;
+      default:
+        break;
+    }
+  }
+
   adresa(data: Adresa) {
     if (data) {
       const formGroup = this._fb.group({
@@ -143,6 +173,8 @@ export class FormSetService {
       formGroup.patchValue(data);
       return formGroup;
     }
+
+
     const formGroupEmpty = this._fb.group({
       'id_adresa': null,
       'id_mem': [localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],

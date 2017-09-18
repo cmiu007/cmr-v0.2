@@ -164,6 +164,10 @@ export class CppItemComponent implements OnInit {
     }
     this.loading = true;
     if (this.formStatus === 'new') {
+      // TODO: de inlocuit const blah blah blah cu
+      // delet formData.key
+      // const newCppdata = this.cppForm.value;
+      // delete newCppData.reg_cpp_id;
       const newCppData = {
         id_mem: localStorage.getItem('currentMemId'),
         reg_cpp_tip_id: this.cppForm.get('reg_cpp_tip_id').value,
