@@ -5,6 +5,7 @@ import { FormSetService } from '../../services/form-set.service';
 import { Avizare } from '../../shared/interfaces/avizari.interface';
 import { ApiDataService } from '../../services/api-data.service';
 import { ApiData } from '../../shared/interfaces/message.interface';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-avizari',
@@ -12,6 +13,7 @@ import { ApiData } from '../../shared/interfaces/message.interface';
   styleUrls: ['./avizari.component.css']
 })
 export class AvizariComponent implements OnInit {
+  public static _formDataChanged: Subject<boolean> = new Subject;
   loading = true;
   formAvizariData: Avizare[];
   formAvizari: FormGroup;
@@ -27,6 +29,11 @@ export class AvizariComponent implements OnInit {
     this.setHeader();
     this.getFormData();
     this.formAvizari = this.toFormGroup();
+    AvizariComponent._formDataChanged
+      .subscribe(result => {
+        this.getFormData();
+        this.formAvizari = this.toFormGroup();
+      });
   }
 
   private setHeader(): void {
