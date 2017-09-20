@@ -9,18 +9,18 @@
         {{itemName}}
       </md-panel-description>
     </mat-expansion-panel-header>
-    <div class="row wrapper">
-      <md-form-field class="col1_3"><input required type="text" placeholder="Data start" mdInput formControlName="dlp_data_start" (blur)="addDlpDateEnd()"></md-form-field>
-      <md-form-field class="col5_3"><input type="text" placeholder="Data end" mdInput formControlName="dlp_data_end"></md-form-field>
-      <div class="col9_2" *ngIf="formStatus === 1 || formStatus === 0">
+    <section>
+      <md-form-field class="column"><input required type="text" placeholder="Data start" mdInput formControlName="dlp_data_start" (blur)="addDlpDateEnd()"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Data end" mdInput formControlName="dlp_data_end"></md-form-field>
+      <div class="column"></div>
+      <div class="column" *ngIf="formStatus === 1 || formStatus === 0">
         <button type="submit" md-raised-button (click)="onClickAvizare()" color="primary" [disabled]="!avizareForm.dirty">
         {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} avizare</button>
       </div>
-      <div class="col11_2" *ngIf="formStatus === 0">
+      <div class="column" *ngIf="formStatus === 0">
         <button type="submit" md-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>
       </div>
-    </div>
-
+    </section>
 
     <div class="row" *ngIf="formStatus !== 0">
       <app-asigurari-list [avizareForm]="avizareForm" [formStatus]="formStatus"></app-asigurari-list>
