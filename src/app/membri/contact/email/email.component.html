@@ -1,15 +1,16 @@
-<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <form [formGroup]="contactForm">
-  <div class="row wrapper">
-    <md-form-field class="col1_3">
+  <section>
+    <md-form-field class="column">
       <input type="text" placeholder="email" mdInput formControlName="email">
     </md-form-field>
-    <md-form-field class="col5_3">
+    <div class="column"></div>
+    <md-form-field class="column">
       <input type="text" placeholder="telefon" mdInput formControlName="telefon">
     </md-form-field>
-  </div>
-  <div class="row" style="text-align: center;">
-    <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
-    {{ formStatus === 'new' ? 'Adauga' : 'Modifica'}} </button>
-  </div>
+    <div class="column"></div>
+    <div class="column" style="text-align: center;">
+      <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
+      {{ formStatus === 'new' ? 'Adauga' : 'Modifica'}} </button>
+    </div>
+  </section>
 </form>

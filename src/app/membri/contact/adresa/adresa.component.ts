@@ -152,7 +152,7 @@ export class AdresaComponent implements OnInit {
       return;
     }
 
-    this._apiData.apiModifica('contact', adresaId, formData)
+    this._apiData.apiModifica('adresa', adresaId, formData)
     .subscribe((response: ApiData) => {
       if (response.status === 0) {
         return;
