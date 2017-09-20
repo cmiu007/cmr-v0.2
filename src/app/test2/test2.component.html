@@ -1,48 +1,59 @@
 <div class="content">
   <md-card>
     <md-card-title>
-      <span class="full-width">Test pt route resolve</span>
+      <span class="full-width">Test pt flex</span>
     </md-card-title>
     <md-card-content>
-      <p>Lista cpp</p>
-      <md-input-container>
-        <input type="text" mdInput [formControl]="myControl" [mdAutocomplete]="auto">
-      </md-input-container>
+        <section>
+            <div class="column">Tip</div>
+            <div class="column">Denumire</div>
+            <div class="column">Grad</div>
+            <div class="column">Start</div>
+            <div class="column">End</div>
+          </section>
 
-      <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayRegCpp.bind(this)">
-        <md-option *ngFor="let option of filteredNumeCpp | async" [value]="option.id">
-          {{ option.nume }}
-        </md-option>
-      </md-autocomplete>
-      <span>Control value: {{ myControl.value }}</span>
-    </md-card-content>
-  </md-card>
-  <md-card>
-    <md-card-content>
-      <div class="wrapper">
-        <div class="grid1">1</div>
-        <div class="grid2">2</div>
-        <div class="grid3">3</div>
-        <div class="grid4">4</div>
-        <div class="grid5">5</div>
-        <div class="grid6">6</div>
-        <div class="grid7">7</div>
-        <div class="grid8">8</div>
-        <div class="grid9">9</div>
-        <div class="grid10">10</div>
-        <div class="grid11">11</div>
-        <div class="grid12">12</div>
-      </div>
-    </md-card-content>
-  </md-card>
-  <md-card>
-    <md-card-content class="wrapper">
-      <md-input-container class="grid1">
-        <input type="text" mdInput [formControl]="myControl">
-      </md-input-container>
-      <md-input-container class="grid2">
-          <input type="text" mdInput [formControl]="myControl">
-        </md-input-container>
+          <section>
+            <div class="column">Emitent</div>
+            <div class="column">Serie</div>
+            <div class="column">Numar</div>
+            <div class="column">Data</div>
+            <div class="column">Alte date</div>
+          </section>
     </md-card-content>
   </md-card>
 </div>
+
+
+
+<section>
+  <div class="column">One Half</div>
+  <div class="column">One Half</div>
+</section>
+
+<section>
+  <div class="column">One Fourth</div>
+  <div class="column">One Fourth</div>
+  <div class="column">One Fourth</div>
+  <div class="column">One Fourth</div>
+</section>
+
+<section>
+  <div class="column">One Sixth</div>
+  <div class="column">One Sixth</div>
+  <div class="column">One Sixth</div>
+  <div class="column">One Sixth</div>
+  <div class="column">One Sixth</div>
+  <div class="column">One Sixth</div>
+</section>
+
+<section>
+  <div class="column">One Half</div>
+  <div class="column">One Fourth</div>
+  <div class="column">One Fourth</div>
+</section>
+
+<section>
+  <div class="column">One Sixth</div>
+  <div class="column">Two Thirds</div>
+  <div class="column">One Sixth</div>
+</section>
