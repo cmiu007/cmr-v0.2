@@ -3,19 +3,6 @@
   height: 100vh;
 }
 
-section {
-  /* max-width: 1024px; */
-  margin: 0 auto;
-  display: flex;
-}
-
-.column {
-  margin: 5px;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-}
-
 md-card:nth-of-type(1) section:nth-of-type(2) .column:nth-child(1) {
   flex-grow: 2;
   flex-shrink: 2;
