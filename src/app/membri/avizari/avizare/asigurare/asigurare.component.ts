@@ -152,35 +152,5 @@ export class AsigurareComponent implements OnInit {
       this.loading = false;
     });
     return;
-
-    // if (this.formStatus === 0) {
-    //   this._membriService.adaugaMembruContact('asigurare', null, data)
-    //     .subscribe(
-    //     returned => {
-    //       if (returned.result !== '00') {
-    //         console.log(returned);
-    //         if (returned.result === '12') {
-    //           this._router.navigate(['/login']);
-    //         }
-    //       } else {
-    //         this._router.navigate(['/reflector']);
-    //       }
-    //     });
-    //   return;
-    // }
-    // console.log('hit edit');
-    // this._membriService.modificaMembruDate('asigurare', idItem, data)
-    //   .subscribe(
-    //   returned => {
-    //     if (returned.result !== '00') {
-    //       console.log(returned);
-    //       if (returned.result === '12') {
-    //         this._router.navigate(['/login']);
-    //       }
-    //     } else {
-    //       this._router.navigate(['/reflector']);
-    //     }
-    //   });
-    // return;
   }
 }
