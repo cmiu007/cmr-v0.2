@@ -39,6 +39,8 @@ export class CertificatComponent implements OnInit {
     const data = (<FormArray>this.certificateForm.get('certificate')).at(this.arrayIndex).value;
     this.certificatForm =  this._formSet.certificate('add', data);
   }
+
+
   // print(pag: number): void {
   //   const nativeWindow = window;
   //   let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
