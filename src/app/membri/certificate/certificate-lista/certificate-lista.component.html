@@ -1,0 +1,18 @@
+<div class="row">
+  <md-card>
+    <md-card-title class="form-title"><span>Lista Certificate</span></md-card-title>
+  </md-card>
+</div>
+
+
+<div *ngFor="let certificatData of certificateForm.get('certificate').value; let i= index">
+  <app-certificat [arrayIndex]="i" [certificateForm]="certificateForm"></app-certificat>
+</div>
+
+<md-card *ngIf="isAddActive">
+  <md-card-content style="text-align: center;">
+    <button type="button" md-raised-button (click)="addCertificat()" color="primary">
+              Adauga Certificat
+              </button>
+  </md-card-content>
+</md-card>

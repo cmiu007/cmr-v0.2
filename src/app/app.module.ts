@@ -55,7 +55,8 @@ import { ApiDataService } from './services/api-data.service';
 import { AuthDialogModule } from './shared/auth-dialog/auth-dialog.module';
 import { AlertSnackbarService } from './services/alert-snackbar.service';
 import { DialogService } from './services/dialog.service';
-
+import { CertificatComponent } from './membri/certificate/certificat/certificat.component';
+import { CertificateListaComponent } from './membri/certificate/certificate-lista/certificate-lista.component';
 
 
 @NgModule({
@@ -82,6 +83,8 @@ import { DialogService } from './services/dialog.service';
     AsigurariListComponent,
     AsigurareComponent,
     CertificateComponent,
+    CertificatComponent,
+    CertificateListaComponent
   ],
   imports: [
     BrowserModule,
