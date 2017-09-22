@@ -4,6 +4,7 @@ import { FormArray } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { CertificateComponent } from '../certificate.component';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-certificate-lista',
@@ -11,32 +12,34 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./certificate-lista.component.css']
 })
 export class CertificateListaComponent implements OnInit {
-  loading: Subject<any> = new Subject<any>();
-  loadingObservable: Observable<any> = this.loading.asObservable();
+  public _isAddActive: Subject<boolean> = new Subject<boolean>();
+  public _isAddActiveObservable: Observable<any> = this._isAddActive.asObservable();
+
+  isAddActive = true;
 
   @Input('certificateForm')
   public certificateForm;
 
-  isAddActive = true;
+  // isAddActive = true;
 
   constructor(
     private _formSet: FormSetService
   ) { }
 
   ngOnInit() {
-    this.loadingObservable.subscribe(status => this.isAddActive = status.addActive);
-  }
+    this._isAddActive.subscribe((value: boolean) => this.isAddActive = value);
+    }
 
   addCertificat(): void {
     const newCertificatForm = this._formSet.certificate('newCertificat');
     const arrayControl = this.certificateForm.get('certificate') as FormArray;
     arrayControl.insert(0, newCertificatForm);
-    this.isAddActive = false;
+    this._isAddActive.next(false);
   }
 
    // de mutat in child
   makeActive(): void {
-    this.loading.next({addActive: true});
+    this._isAddActive.next(true);
   }
 
 }

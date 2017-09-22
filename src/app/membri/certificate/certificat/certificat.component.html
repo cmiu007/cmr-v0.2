@@ -1,7 +1,34 @@
-<form [formGroup]="">
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<form [formGroup]="certificatForm">
+  <md-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ itemName }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ itemStatus }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <section>
+      <md-form-field class="column"><input required type="text" placeholder="Data start" mdInput formControlName="data_start"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Data end" mdInput formControlName="data_invalidare"></md-form-field>
+      <div class="column"></div>
+      <div class="column" *ngIf="itemStatus === 'Nou' || itemStatus === 'In lucru'">
+        <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+        {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
+      </div>
+      <div class="column" *ngIf="itemStatus === 'Activ'">
+          <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+          Invalideaza Certificat</button>
+        </div>
+      <div class="column" *ngIf="itemStatus === 'Nou'">
+        <button type="submit" md-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
+      </div>
+    </section>
 
+  </md-expansion-panel>
 </form>
-
+{{ certificatForm.value | json }}
 
 
 <!-- <md-card>
