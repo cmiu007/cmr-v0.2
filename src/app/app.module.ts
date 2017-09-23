@@ -57,6 +57,7 @@ import { AlertSnackbarService } from './services/alert-snackbar.service';
 import { DialogService } from './services/dialog.service';
 import { CertificatComponent } from './membri/certificate/certificat/certificat.component';
 import { CertificateListaComponent } from './membri/certificate/certificate-lista/certificate-lista.component';
+import { IsAddActiveService } from './services/is-add-active.service';
 
 
 @NgModule({
@@ -117,7 +118,8 @@ import { CertificateListaComponent } from './membri/certificate/certificate-list
     DataCalService,
     ApiDataService,
     AlertSnackbarService,
-    DialogService
+    DialogService,
+    IsAddActiveService
   ],
   bootstrap: [AppComponent]
 })

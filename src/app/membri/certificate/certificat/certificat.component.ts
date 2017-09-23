@@ -7,6 +7,7 @@ import { CertificateListaComponent } from '../certificate-lista/certificate-list
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
+import { IsAddActiveService } from '../../../services/is-add-active.service';
 
 @Component({
   selector: 'app-certificat',
@@ -37,7 +38,8 @@ export class CertificatComponent implements OnInit {
     private _formSet: FormSetService,
     private _dataCal: DataCalService,
     private _snackBar: AlertSnackbarService,
-    private _apiData: ApiDataService
+    private _apiData: ApiDataService,
+    private _setAddBtn: IsAddActiveService
   ) { }
 
   ngOnInit() {
@@ -63,17 +65,20 @@ export class CertificatComponent implements OnInit {
     }
     if (dataStartVal === null && dataEndVal === null) {
       this.itemStatus = 'Nou';
+      this._setAddBtn.setStatus(false);
       return;
     }
     if (this._dataCal.isInThePast(dataStart) && dataEnd !== null) {
       this.itemStatus = 'Inactiv';
       this.itemName = 'valid de la ' + this._dataCal.dateToString(dataStart) + ' pana la ' + this._dataCal.dateToString(dataEnd);
+      this._setAddBtn.setStatus(false);
       return;
     }
     if (this._dataCal.isInTheFuture(dataStart) && dataEnd === null) {
       this.itemStatus = 'In Lucru';
       // TODO: disable add daca avem un certificat in lucru
       // CertificateListaComponent.
+      this._setAddBtn.setStatus(false);
       return;
     }
     if (this._dataCal.isInThePast(dataStart) && dataEnd === null) {
@@ -86,7 +91,7 @@ export class CertificatComponent implements OnInit {
   delCertificat(): void {
     const control = <FormArray>this.certificateForm.controls['certificate'];
     control.removeAt(0);
-    // TODO: activeaza buton de adauga
+    this._setAddBtn.setStatus(true);
   }
 
   onClickCert(): void {

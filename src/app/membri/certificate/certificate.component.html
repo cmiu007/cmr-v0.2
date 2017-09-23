@@ -1,19 +1,12 @@
 <app-header></app-header>
 <div class="content">
   <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-
+  <div class="row">
+    <md-card>
+      <md-card-title class="form-title"><span>Lista Certificate</span></md-card-title>
+    </md-card>
+  </div>
   <div *ngIf="!loading">
     <app-certificate-lista [certificateForm]="certificateForm" ></app-certificate-lista>
   </div>
 </div>
-
-
-<md-card>
-  <md-card-title>
-    Debug
-  </md-card-title>
-  <md-card-content>
-    Date:
-    <br> {{ certificateData | json }}
-  </md-card-content>
-</md-card>
