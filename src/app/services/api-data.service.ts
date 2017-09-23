@@ -34,13 +34,13 @@ export class ApiDataService {
       });
   }
 
-  apiLista (actiune: string, id: string) {
+  apiLista(actiune: string, id: string) {
     return this._http.put(this.apiAddress + 'api/lista', this.setApiGetData(actiune, id))
-    .map((response: Response) => {
-      const data = response.json();
-      const status = this.checkApiResponse(data);
-      return { data: data, status: status };
-    });
+      .map((response: Response) => {
+        const data = response.json();
+        const status = this.checkApiResponse(data);
+        return { data: data, status: status };
+      });
   }
 
   apiGet(actiune: string, id: string) {
@@ -49,7 +49,7 @@ export class ApiDataService {
         const data = response.json();
         const status = this.checkApiResponse(data);
         return { data: data, status: status };
-    });
+      });
   }
 
   apiAdauga(actiune: string, data: any) {
@@ -57,17 +57,17 @@ export class ApiDataService {
       .map((response: Response) => {
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
-        return { data: dataApi, status: status};
+        return { data: dataApi, status: status };
       });
   }
 
   apiModifica(actiune: string, id: number, data: any) {
     return this._http.put(this.apiAddress + 'api/modifica', this.setApiModificaData(actiune, id, data))
-    .map((response: Response) => {
-      const dataApi = response.json();
-      const status = this.checkApiResponse(dataApi);
-      return { data: data, status: status};
-    });
+      .map((response: Response) => {
+        const dataApi = response.json();
+        const status = this.checkApiResponse(dataApi);
+        return { data: data, status: status };
+      });
   }
 
   private setApiListaData(actiune: string, searchVal: string) {
@@ -105,6 +105,9 @@ export class ApiDataService {
 
 
   private checkApiResponse(response): number {
+    if (response === null) {
+      return 0;
+    }
     switch (response.result) {
       case '12':
         this.callAuth();
@@ -114,7 +117,7 @@ export class ApiDataService {
         this._snackBarService.showSnackBar(response.mesaj);
         return 1;
 
-    default:
+      default:
         break;
     }
 

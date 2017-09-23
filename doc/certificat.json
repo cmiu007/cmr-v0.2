@@ -1,0 +1,28 @@
+// Certificat Nou
+
+{
+  "id_certificat": null, // read-only
+  "id_mem": 212, // required
+  "nr": null, // read-only
+  "data_start": "2018-11-11", // required
+  "data_invalidare": null, // read-only
+  "reg_cert_id": null, // read-only
+  "cod_qr": null // read-only
+}
+
+// Invalidare Certificat
+
+{
+  "id_certificat": 264, // read only
+  "id_mem": 212, // read only - optional
+  "nr": "", // read only - completat de api
+  "data_start": "2017-05-23", // read-only
+  "data_invalidare": "2018-11-11", //
+  "reg_cert_id": 1, // read-only
+  "cod_qr": "" // read-only
+}
+
+de adaugat in DB: {
+  "status": number,
+  "comentarii": string // motivul invalidarii
+}

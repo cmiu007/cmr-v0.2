@@ -1,0 +1,7 @@
+section:nth-of-type(1) .column:nth-child(4) {
+  align-self: center;
+}
+
+section:nth-of-type(1) .column:nth-child(5) {
+  align-self: center;
+}

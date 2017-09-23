@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { Adresa } from '../../../shared/interfaces/contact.interface';
@@ -53,7 +52,6 @@ export class AvizareComponent implements OnInit {
 
   constructor(
     private _formSet: FormSetService,
-    private _snackBar: MdSnackBar,
     private _router: Router,
     private _dataCal: DataCalService,
     private _apiData: ApiDataService,
