@@ -1,14 +1,16 @@
-<div [formGroup]="emailForm">
-  <div class="row wrapper">
-    <md-form-field class="col1_3">
+<form [formGroup]="contactForm">
+  <section>
+    <md-form-field class="column">
       <input type="text" placeholder="email" mdInput formControlName="email">
     </md-form-field>
-    <md-form-field class="col5_3">
+    <div class="column"></div>
+    <md-form-field class="column">
       <input type="text" placeholder="telefon" mdInput formControlName="telefon">
     </md-form-field>
-  </div>
-  <div class="row wrapper">
-    <button class="col3_3" type="button" md-raised-button (click)="onClickEmail()" color="primary" [disabled]="emailForm.invalid || emailForm.untouched">
-    {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} </button>
-  </div>
-</div>
+    <div class="column"></div>
+    <div class="column" style="text-align: center;">
+      <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
+      {{ formStatus === 'new' ? 'Adauga' : 'Modifica'}} </button>
+    </div>
+  </section>
+</form>

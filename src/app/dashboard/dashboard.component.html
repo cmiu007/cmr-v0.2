@@ -8,13 +8,14 @@
     <md-card-title>Selectie Medici</md-card-title>
     <md-card-content>
       <form [formGroup]="searchForm" (keydown.enter)="onSearch(searchForm.value.searchMem)">
-        <div class="row wrapper">
-        <md-input-container class="col1_5">
-          <input mdInput formControlName="searchMem" type="text" placeholder="Cauta medic" required/>
-          <md-icon mdSuffix>search</md-icon>
-          <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
-        </md-input-container>
-      </div>
+        <section>
+          <md-input-container class="column">
+            <input mdInput formControlName="searchMem" type="text" placeholder="Cauta medic" required/>
+            <md-icon mdSuffix>search</md-icon>
+            <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
+          </md-input-container>
+          <div class="column"></div>
+        </section>
       </form>
     </md-card-content>
     <md-card-footer>
@@ -23,7 +24,7 @@
   </md-card>
 
   <md-card *ngIf="emptySearchResult">
-    <span>Nu am gasit nici un membru cu datele {{searchForm.value.searchMem}}</span>
+    <span>Nu am gasit nici un membru cu datele: <span class="date-cert">{{searchForm.value.searchMem}}</span></span>
   </md-card>
 
   <md-card *ngFor="let medic of membri">

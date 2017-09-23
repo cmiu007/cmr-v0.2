@@ -6,6 +6,10 @@ import { MdSnackBar } from '@angular/material';
 import { User } from '../shared/models/user.model';
 import { UserService } from '../services/user.service';
 import { MembriService } from '../services/membri.service';
+import { ApiDataService } from '../services/api-data.service';
+import { ApiData } from '../shared/interfaces/message.interface';
+import { AlertSnackbarService } from '../services/alert-snackbar.service';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,52 +23,69 @@ export class DashboardComponent implements OnInit {
   membri: any[];
   emptySearchResult = false;
   loading = false;
+  dialogResult: any;
 
   constructor(private userService: UserService,
-              private membriService: MembriService,
-              private router: Router,
-              private snackBar: MdSnackBar) {}
+    private membriService: MembriService,
+    private router: Router,
+    private snackBar: MdSnackBar,
+    private _apiData: ApiDataService,
+    private _snackBarService: AlertSnackbarService,
+    private _dialogService: DialogService
+  ) { }
 
   ngOnInit() {
-    this.searchForm = new FormGroup ({
-      'searchMem': new FormControl(null, [Validators.required])
+    this.searchForm = new FormGroup({
+      'searchMem': new FormControl(null, [Validators.required, Validators.minLength(3)])
     });
-    this.setLocalStorage();
+    this.resetMedicSelectatDate();
   }
 
-  setLocalStorage(): void {
+  resetMedicSelectatDate(): void {
     localStorage.removeItem('currentMemNume');
     localStorage.removeItem('currentMemId');
     localStorage.removeItem('currentMemCuim');
     localStorage.setItem('currentPage', 'Pagina de start');
   }
 
+
   onSearch(searchVal: string) {
-    this.loading = true;
-    this.emptySearchResult = false;
-    // TODO: de revizuit actiune
-    const actiune = 'list';
-    this.membriService.getAll(actiune, searchVal).subscribe( (response) => {
-      if (response.length === 0) {
-        this.emptySearchResult = true;
-      }
-      this.loading = false;
-      this.membri = response;
-    });
+    if (this.searchForm.valid) {
+      this.loading = true;
+      this.emptySearchResult = false;
+      this._apiData.apiCautaMembru('list', searchVal)
+        .subscribe((response: ApiData) => {
+          this.loading = false;
+          if (response.data.length === 0 || response.status === 0) {
+            this.emptySearchResult = true;
+            return;
+          }
+          this.membri = response.data;
+        });
+    }
   }
 
   onClickMem(id: string, actiune: string) {
+    this.setMedicSelectatDate(id);
+    this.router.navigate(['/membri', id, actiune]);
+  }
+
+  onNewMember(): void {
+    this.setMedicSelectatDate('');
+    this.router.navigate(['/membri/nou']);
+  }
+
+  setMedicSelectatDate(id: string): void {
+    if (id === '') {
+      localStorage.setItem('currentMemNume', 'Membru Nou');
+      return;
+    }
     localStorage.setItem('currentMemNume',
       this.membri.find(item => item.id === id).nume
       + ' '
       + this.membri.find(item => item.id === id).prenume);
     localStorage.setItem('currentMemId', id);
     localStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
-    this.router.navigate(['/membri', id , actiune]);
-  }
-
-  onNewMember(): void {
-    localStorage.setItem('currentMemNume', 'Membru Nou');
-    this.router.navigate(['/membri/nou']);
+    return;
   }
 }

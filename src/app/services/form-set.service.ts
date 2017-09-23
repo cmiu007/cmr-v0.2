@@ -1,17 +1,137 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { FormValidatorsService } from './form-validators.service';
-import { Adresa } from '../shared/interfaces/contact.interface';
+
+import { Adresa, Contact } from '../shared/interfaces/contact.interface';
 import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
+import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
+import { Cpp } from '../shared/interfaces/cpps.interface';
+import { Certificat } from '../shared/interfaces/certificate.interface';
+import { AlertSnackbarService } from './alert-snackbar.service';
 
 @Injectable()
 export class FormSetService {
 
   constructor(
     private _fb: FormBuilder,
-    private _validator: FormValidatorsService
+    private _validator: FormValidatorsService,
+    private _snackBar: AlertSnackbarService
   ) { }
+
+  login(): FormGroup {
+    return this._fb.group({
+      'email': ['', [Validators.required, Validators.email]],
+      'password': ['', [Validators.required]]
+    });
+  }
+
+  datePersonale(data: DatePersonale): FormGroup {
+    const formGroupEmpty = this._fb.group({
+      'cuim': [{ value: '', disabled: true }],
+      'cnp': [{ value: '', disabled: true }, [Validators.required, this._validator.checkCNP]],
+      'jud_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'status': [{ value: '', disabled: true }],
+      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate]],
+      'cod_parafa': [{ value: '', disabled: true }],
+      'nume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
+      'initiala': [{ value: '', disabled: true }],
+      'prenume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
+      'nume_ant': [{ value: '', disabled: true }],
+      'cetatenie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'act_ident_tip_id': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]], // TODO: validator
+      'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
+      'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
+      'act_ident_exp_date': [{ value: '', disabled: true },
+      [Validators.required, this._validator.checkDate, this._validator.isInThePast]],
+      'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._validator.checkIfNumber]],
+      'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._validator.checkAnPromotie]],
+      'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
+      'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
+      'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
+      'fac_doc_tip': [{ value: '', disabled: true }, Validators.required],
+      'updated': [{ value: '', disabled: true }],
+      'ro': [{ value: '', disabled: true }]
+    });
+    if (data) {
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
+    }
+    return formGroupEmpty;
+  }
+
+  cpps(actiune: string, data: Cpp, form?: FormGroup): FormGroup {
+    switch (actiune) {
+      case 'initFormCpps':
+        const formGroup = this._fb.group({
+          cpps: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'addCpp':
+        const b: FormGroup = form;
+        return b;
+      default:
+        break;
+    }
+  }
+
+  cpp(data: Cpp): FormGroup {
+    const formGroup = this._fb.group({
+      'id_cpp': [{ value: '', disabled: true }],
+      'id_mem': [{ value: '' }],
+      'reg_cpp_tip_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
+      'reg_cpp_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
+      'grad_prof_cpp_id': [{ value: '' }, [this._validator.checkIfNumber]],
+      'date_start': [{ value: '' }, [Validators.required, this._validator.checkDate]],
+      'date_end': [{ value: '' }, [this._validator.checkDate]],
+      'emitent': [{ value: '' }, [Validators.required]],
+      'act_serie': [{ value: '' }],
+      'act_numar': [{ value: '' }],
+      'act_data': [{ value: '' }],
+      'act_descriere': [{ value: '' }],
+      'obs': [{ value: '' }],
+      'updated': [{ value: '', disabled: true }],
+      'ro': [{ value: '', disabled: true }],
+    });
+    if (data) {
+      data = this.cleanData(data);
+      formGroup.patchValue(data);
+    }
+    return formGroup;
+  }
+
+  contact(data: Contact) {
+    const formGroup = this._fb.group({
+      'id_cont': [''],
+      'id_mem': [''],
+      'email': ['', [Validators.required, Validators.email]],
+      'telefon': ['', Validators.required],
+      'dummy': ['']
+    });
+    if (data) {
+      formGroup.patchValue(data);
+    }
+    return formGroup;
+  }
+
+  adrese(actiune: string, data: Cpp, form?: FormGroup): FormGroup {
+    switch (actiune) {
+      case 'initFormCpps':
+        const formGroup = this._fb.group({
+          cpps: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'addAdresa':
+        const b: FormGroup = form;
+        return b;
+      default:
+        break;
+    }
+  }
 
   adresa(data: Adresa) {
     if (data) {
@@ -35,16 +155,12 @@ export class FormSetService {
         'web': data.web,
         'obs': data.obs
       });
-      Object.keys(data).forEach(
-        key => {
-          if (data[key] === '0000-00-00' || data[key] === 0) {
-            data[key] = '';
-          }
-        }
-      );
+      data = this.cleanData(data);
       formGroup.patchValue(data);
       return formGroup;
     }
+
+
     const formGroupEmpty = this._fb.group({
       'id_adresa': null,
       'id_mem': [localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
@@ -81,13 +197,7 @@ export class FormSetService {
           'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
           // TODO: add asigurari array
         });
-        Object.keys(data).forEach(
-          key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {
-              data[key] = '';
-            }
-          }
-        );
+        data = this.cleanData(data);
         formGroup.patchValue(data);
         return formGroup;
       }
@@ -115,19 +225,61 @@ export class FormSetService {
       'data_end': ['', [Validators.required, this._validator.checkDate]]
     });
     if (data) {
-      if (data.id_asig) {
-        // clean data
-        Object.keys(data).forEach(
-          key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {
-              data[key] = '';
-            }
-          }
-        );
-        formGroupEmpty.patchValue(data);
-      }
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
     }
     return formGroupEmpty;
     // aici initializare form nou
   }
+
+  certificate(actiune: string, data?: Certificat, form?: FormGroup): FormGroup {
+    const formGroupEmpty = this._fb.group({
+      'id_certificat': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
+      'nr': [null, [this._validator.checkIfNumber]],
+      'data_start': [null, [Validators.required, this._validator.checkDate]],
+      'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
+      'reg_cert_id': [null, [this._validator.checkIfNumber]],
+      'cod_qr': [null],
+    });
+    if (data) {
+      data = this.cleanData(data);
+    }
+    switch (actiune) {
+      case 'initForm':
+        const formGroup = this._fb.group({
+          certificate: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'add':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      case 'newCertificat':
+        return formGroupEmpty;
+
+      case 'certificat':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      default:
+        this._snackBar.showSnackBar('setFormService certificate: Actiune Invalida');
+        break;
+    }
+
+  }
+
+  private cleanData(data): any {
+    Object.keys(data).forEach(
+      key => {
+        if (data[key] === '0000-00-00' || data[key] === 0) {
+          data[key] = '';
+        }
+      }
+    );
+    return data;
+  }
+
 }

@@ -19,7 +19,7 @@ export class AsigurariListComponent implements OnInit {
   @Input('formStatus')
   public formStatus;
 
-  addActive = true;
+  addActive = false;
   registruAsiguratori: Asigurator[];
 
   constructor(
@@ -29,6 +29,7 @@ export class AsigurariListComponent implements OnInit {
 
   ngOnInit() {
     // this.avizareForm.addControl('asigurare', new FormArray([]));
+    this.addActive = true;
     this.setRegistre();
     AsigurariListComponent.addActiveSubj
       .subscribe( result => {

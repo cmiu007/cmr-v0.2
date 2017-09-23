@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -13,6 +12,12 @@ import { Judet, Tara, Fac, ActIdentTip, DocFacTip } from '../../shared/models/re
 import { FormValidatorsService } from '../../services/form-validators.service';
 import { ItemRegLista } from '../../shared/interfaces/listareg.interface';
 import { ItemRegFac } from '../../shared/interfaces/fac.interface';
+import { FormSetService } from '../../services/form-set.service';
+import { ApiDataService } from '../../services/api-data.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
+import { DatePersonale } from '../../shared/interfaces/datepersonale.interface';
+import { getTestBed } from '@angular/core/testing';
+import { AlertSnackbarService } from '../../services/alert-snackbar.service';
 
 @Component({
   selector: 'app-date-personale',
@@ -21,15 +26,17 @@ import { ItemRegFac } from '../../shared/interfaces/fac.interface';
 })
 export class DatePersonaleComponent implements OnInit {
   // formStatus:
-  // 0 - read-only - vine din json
-  // 1 - edit - vine din json
+  // 0 - admin - vine din local storage cmj -
+  // 1 - read-only - vine din json
   // 2 - newMember - vine din cale
+  // 3 - edit - vine din json
   // TODO: sa vina din json direct in functie de user e mai sigur
-  // 3 - admin - vine din local storage cmj -
   // TODO: de implementat roluri pt dezvoltarea ulterioara
-  formStatus = 0; // case read-only (default), edit, newMember, admin
+  formStatus = 1; // case read-only (default), edit, newMember, admin
   formDatePersonale: FormGroup;
+  formDatePersonaleData;
   loading = true;
+  reloading = true;
 
   registruJudete: ItemRegLista[];
   filtruJudete: Observable<Judet[]>;
@@ -59,49 +66,162 @@ export class DatePersonaleComponent implements OnInit {
   filtruDocFacTip: Observable<DocFacTip[]>;
 
   constructor(
+    private _formSet: FormSetService,
+    private _formValidators: FormValidatorsService,
+    private _apiData: ApiDataService,
+    private _aRoute: ActivatedRoute,
+    private _snackBar: AlertSnackbarService,
+
     private membriService: MembriService,
-    private nomeclatorService: NomenclatorService,
-    private snackBar: MdSnackBar,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private router: Router,
-    private _formValidators: FormValidatorsService
-  ) {
-    this.formDatePersonale = formBuilder.group({
-      'cuim': [{ value: '', disabled: true }],
-      'cnp': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkCNP]],
-      'jud_id': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
-      'status': [{ value: '', disabled: true }],
-      'data_juramant': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
-      'cod_parafa': [{ value: '', disabled: true }],
-      'nume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
-      'initiala': [{ value: '', disabled: true }],
-      'prenume': [{ value: '', disabled: true }, [Validators.required, Validators.minLength(2)]],
-      'nume_ant': [{ value: '', disabled: true }],
-      'cetatenie': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
-      'act_ident_tip_id': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]], // TODO: validator
-      'act_ident_serie': [{ value: '', disabled: true }, Validators.required],
-      'act_ident_nr': [{ value: '', disabled: true }, Validators.required],
-      'act_ident_exp_date': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
-      'fac_absolv': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkIfNumber]],
-      'fac_promotie': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkAnPromotie]],
-      'fac_dipl_serie': [{ value: '', disabled: true }, Validators.required],
-      'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
-      'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._formValidators.checkDate]],
-      'fac_doc_tip': [{ value: '', disabled: true }, Validators.required],
-      'updated': [{ value: '', disabled: true }],
-      'ro': [{ value: '', disabled: true }]
-    });
-  }
+  ) { }
 
   ngOnInit() {
-    localStorage.setItem('currentPage', 'Date Personale');
-    this.setRegistre();
-    this.fillFormData();
+    this.setHeader();
+    this.getFormData();
     // get nomeclatoare & set filters
   }
 
-  setRegistre(): void {
+  private setHeader(): void {
+    localStorage.setItem('currentPage', 'Date Personale');
+  }
+
+  private getFormData(): void {
+    this.loading = true;
+    this._apiData.apiGet('date_personale', this._aRoute.snapshot.params['id'])
+      .subscribe((response: ApiData) => {
+        this.loading = false;
+        this.reloading = false;
+        this.formDatePersonaleData = response.data;
+        this.setForm();
+        this.setFormMode();
+        this.setRegistre();
+      });
+  }
+
+  private setForm(): void {
+    this.formDatePersonale = this._formSet.datePersonale(this.formDatePersonaleData);
+  }
+
+  private setFormMode() {
+    if ((JSON.parse(localStorage.getItem('userGroup'))) === 160) {
+      this.formStatus = 0;
+      this.enableAdmin();
+      return;
+    }
+    if (this.formDatePersonale.get('cetatenie').value === '') {
+      this.formStatus = 2;
+      this.enableNewMember();
+      return;
+    }
+
+    if (this.formDatePersonale.get('ro').value === 'true') {
+      this.formStatus = 1;
+      return;
+    }
+
+    this.formStatus = 3;
+    this.enableRW();
+  }
+
+  private enableRW() {
+    this.formDatePersonale.get('nume').enable();
+    this.formDatePersonale.get('initiala').enable();
+    this.formDatePersonale.get('prenume').enable();
+    this.formDatePersonale.get('nume_ant').enable();
+    this.formDatePersonale.get('act_ident_tip_id').enable();
+    this.formDatePersonale.get('act_ident_serie').enable();
+    this.formDatePersonale.get('act_ident_nr').enable();
+    this.formDatePersonale.get('act_ident_exp_date').enable();
+    // TODO: de facut if pt tipul actului de fac
+    // daca act === diploma nu face enable
+    this.formDatePersonale.get('fac_doc_tip').enable();
+    this.formDatePersonale.get('fac_dipl_serie').enable();
+    this.formDatePersonale.get('fac_dipl_nr').enable();
+    this.formDatePersonale.get('fac_dipl_data').enable();
+    // TODO: daca cod_parafa !== null ramane disabled
+    this.formDatePersonale.get('cod_parafa').enable();
+  }
+
+  private enableNewMember() {
+    this.enableRW();
+    this.formDatePersonale.get('cnp').enable();
+    this.formDatePersonale.get('data_juramant').enable();
+    this.formDatePersonale.get('cetatenie').enable();
+    this.formDatePersonale.get('cetatenie').setValue('1183');
+    this.formDatePersonale.get('fac_absolv').enable();
+    this.formDatePersonale.get('fac_promotie').enable();
+    // TODO: completeaza automat judet pe baza jud_id al operatorului
+    this.formDatePersonale.get('jud_id').enable();
+    // judet ADM nu exista in lista de judete filtrate :)
+    if (this.formStatus !== 0 ) {
+      this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
+    }
+  }
+
+  private enableAdmin() {
+    this.enableRW();
+    this.enableNewMember();
+    this.formDatePersonale.get('jud_id').enable();
+  }
+
+
+  // log submit
+  onSubmit() {
+    if (this.formDatePersonale.valid === false) {
+      this._snackBar.showSnackBar('Formular Invalid');
+      return;
+    }
+
+    this.reloading = true;
+    if (this.formStatus === 2) {
+      this.adaugaMembru();
+      return;
+    }
+    this.editeazaMembru();
+  }
+
+  private editeazaMembru() {
+    this.formDatePersonale.get('jud_id').enable();
+    this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
+        }
+        this.getFormData();
+        return;
+      });
+  }
+
+  private adaugaMembru() {
+    const memData = this.formDatePersonale.value;
+    this._apiData.apiAdauga('date_personale', this.formDatePersonale.value)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          this._snackBar.showSnackBar(response.data);
+          return;
+        }
+        localStorage.setItem('currentMemNume',
+             (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+        localStorage.setItem('currentMemId', response.data.id_med);
+        this.router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
+      });
+    return;
+  }
+
+  private isRequired(data) {
+    console.log(data);
+  }
+
+  private log() {
+    console.log(this.formDatePersonale.value);
+  }
+  private test() {
+    console.log(this.formDatePersonale);
+  }
+
+  private setRegistre(): void {
     this.registruJudete = this.route.snapshot.data['regJud'];
     const delValRegJud = ['ADM', 'CMR'];
     delValRegJud.forEach(element => {
@@ -133,89 +253,6 @@ export class DatePersonaleComponent implements OnInit {
       .startWith(null)
       .map(docFacTip => docFacTip && typeof docFacTip === 'object' ? docFacTip.nume : docFacTip)
       .map(nume => nume ? this.filterDocFacTip(nume) : this.registruDocFacTip.slice());
-  }
-
-  fillFormData() {
-    if (this.route.snapshot.params['id'] == null) {
-      this.loading = false;
-      this.formStatus = 2;
-      this.enableNewMember();
-    } else {
-      this.membriService.getMembruDate('date_personale', this.route.snapshot.params['id'])
-        .subscribe(
-        data => {
-          if (data.result === '12') {
-            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-            this.router.navigate(['/login']);
-            // TODO: trebuie sa se intoarca tot aici
-          } else {
-            this.formDatePersonale.patchValue(data);
-            this.setFormMode();
-          }
-          this.loading = false;
-        });
-    }
-  }
-
-  setFormMode() {
-    // TODO: set formStatus de mutat in functie separata | service
-    if (this.formDatePersonale.get('ro').value === 'true') {
-      this.formStatus = 0;
-    } else {
-      this.formStatus = 1;
-    }
-    // check if admin set: jud_id = 160 (ADM)
-    if ((JSON.parse(localStorage.getItem('currentUser'))).cmj === 160) {
-      this.formStatus = 3;
-    }
-
-    if (this.formStatus === 3) {
-      this.enableAdmin();
-    }
-    if (this.formStatus === 1) {
-      this.enableRW();
-    }
-    if (this.formStatus === 2) {
-      this.enableNewMember();
-    }
-  }
-
-  enableRW() {
-    this.formDatePersonale.get('nume').enable();
-    this.formDatePersonale.get('initiala').enable();
-    this.formDatePersonale.get('prenume').enable();
-    this.formDatePersonale.get('nume_ant').enable();
-    this.formDatePersonale.get('act_ident_tip_id').enable();
-    this.formDatePersonale.get('act_ident_serie').enable();
-    this.formDatePersonale.get('act_ident_nr').enable();
-    this.formDatePersonale.get('act_ident_exp_date').enable();
-    // TODO: de facut if pt tipul actului de fac
-    // daca act === diploma nu face enable
-    this.formDatePersonale.get('fac_doc_tip').enable();
-    this.formDatePersonale.get('fac_dipl_serie').enable();
-    this.formDatePersonale.get('fac_dipl_nr').enable();
-    this.formDatePersonale.get('fac_dipl_data').enable();
-    // TODO: daca cod_parafa !== null ramane disabled
-    this.formDatePersonale.get('cod_parafa').enable();
-  }
-
-  enableNewMember() {
-    this.enableRW();
-    this.formDatePersonale.get('cnp').enable();
-    this.formDatePersonale.get('data_juramant').enable();
-    this.formDatePersonale.get('cetatenie').enable();
-    this.formDatePersonale.get('cetatenie').setValue('1183');
-    this.formDatePersonale.get('fac_absolv').enable();
-    this.formDatePersonale.get('fac_promotie').enable();
-    // TODO: completeaza automat judet pe baza jud_id al operatorului
-    this.formDatePersonale.get('jud_id').enable();
-    this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
-  }
-
-  enableAdmin() {
-    this.enableRW();
-    this.enableNewMember();
-    this.formDatePersonale.get('jud_id').enable();
   }
 
   filterJud(nume: string): Judet[] {
@@ -272,44 +309,5 @@ export class DatePersonaleComponent implements OnInit {
       return this.registruDocFacTip.find(item => item.id === +option).nume;
     }
   }
-  // log submit
-  editDateMember() {
-    if (this.formStatus === 2) {
-      const memData = this.formDatePersonale.value;
-      this.membriService.adaugaMembruDate('date_personale', this.formDatePersonale.value)
-        .subscribe(
-        data => {
-          if (data.result !== '00') {
-            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-            if (data.result === '12') {
-              this.router.navigate(['/login']);
-            }
-          } else {
-            this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-            localStorage.setItem('currentMemNume',
-              (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
-            localStorage.setItem('currentMemId', data.id_med);
-            this.router.navigate(['/membri', data.id_med, 'datepersonale']); // de adaugat id-ul
-          }
-        }
-        );
-      return;
-    }
-    this.formDatePersonale.get('jud_id').enable();
-    this.membriService.modificaMembruDate('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
-      .subscribe(
-      data => {
-        if (data.result !== '00') {
-          this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-        } else {
-          this.snackBar.open(data.mesaj, 'inchide', { duration: 5000 });
-          this.router.navigate(['/membri', localStorage.getItem('currentMemId'), 'datepersonale']); // de adaugat id-ul
-        }
-      }
-      );
-  }
 
-  test() {
-    console.log(this.registruFac);
-  }
 }

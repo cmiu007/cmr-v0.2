@@ -1,14 +1,13 @@
 <app-header></app-header>
 <div class="content">
-    <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+    <md-progress-bar *ngIf="loadingContact && loadingAdrese" mode="indeterminate"></md-progress-bar>
     <md-card>
       <md-card-title class="form-title">
         <span>Date Contact</span>
       </md-card-title>
       <md-card-content>
-        <app-email *ngIf="!loading" [formContactData]="formContactData"></app-email>
+        <app-email *ngIf="!loadingContact" [contactData]="contactData"></app-email>
       </md-card-content>
     </md-card>
-
-    <app-adrese-list [formAdrese]="formAdrese" [formAdreseData]="formAdreseData" [registruTara]="registruTara" [registruJudet]="registruJudet" ></app-adrese-list>
+    <app-adrese-list *ngIf="!loadingAdrese" [adreseData]="adreseData"></app-adrese-list>
 </div>

@@ -3,6 +3,12 @@
   height: 100vh;
 }
 
+section:nth-of-type(1) .column:nth-child(2) {
+  flex-grow: 2;
+  flex-shrink: 2;
+  flex-basis: 15px;
+}
+
 .content {
   margin: 10px 10% 1px  10%;
 }
@@ -44,4 +50,9 @@
 
 .toRight {
   order: 2;
+}
+
+.date-cert {
+  color: #3F51B5;
+  font-weight: bolder;
 }

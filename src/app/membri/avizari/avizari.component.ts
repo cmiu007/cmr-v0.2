@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
 
 import { FormSetService } from '../../services/form-set.service';
-import { MembriService } from '../../services/membri.service';
-import { Asigurator } from '../../shared/models/registre.model';
 import { Avizare } from '../../shared/interfaces/avizari.interface';
+import { ApiDataService } from '../../services/api-data.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-avizari',
@@ -14,51 +13,55 @@ import { Avizare } from '../../shared/interfaces/avizari.interface';
   styleUrls: ['./avizari.component.css']
 })
 export class AvizariComponent implements OnInit {
+  public static _formDataChanged: Subject<boolean> = new Subject;
   loading = true;
-  registruAsiguratori: Asigurator[];
   formAvizariData: Avizare[];
   formAvizari: FormGroup;
   formArrayAvizare: FormArray;
 
   constructor(
-    private _aRoute: ActivatedRoute,
-    private _router: Router,
-    private _memService: MembriService,
-    private _snack: MdSnackBar,
+    private _apiData: ApiDataService,
     private _formSet: FormSetService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
   ) { }
 
   ngOnInit() {
-    localStorage.setItem('currentPage', 'Avizari');
+    this.setHeader();
     this.getFormData();
     this.formAvizari = this.toFormGroup();
-  }
-
-
-  getFormData(): void {
-    this.loading = true;
-    this._memService.listaMembruDate('dlp', localStorage.getItem('currentMemId'))
-      .subscribe(data => {
-        if (data.result === '12') {
-          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/login']);
-        } else {
-          this.formAvizariData = data;
-          this.sortDlp();
-          this.loading = false;
-          this.toFormGroupTest();
-        }
+    AvizariComponent._formDataChanged
+      .subscribe(result => {
+        this.getFormData();
+        this.formAvizari = this.toFormGroup();
       });
   }
 
-  sortDlp(): void {
+  private setHeader(): void {
+    localStorage.setItem('currentPage', 'Avizari');
+  }
+
+  private getFormData(): void {
+    this.loading = true;
+    const memId = localStorage.getItem('currentMemId');
+    this._apiData.apiLista('dlp', memId)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
+        }
+        this.formAvizariData = response.data;
+        this.sortDlp();
+        this.toFormGroupTest();
+        this.loading = false;
+      });
+  }
+
+  private sortDlp(): void {
     this.formAvizariData.sort((a: Avizare, b) => {
       return a.dlp_data_start > b.dlp_data_start ? -1 : 1;
     });
   }
 
-  toFormGroup(): FormGroup {
+  private toFormGroup(): FormGroup {
     this.formArrayAvizare = this._fb.array([]);
     const formGroup = this._fb.group({
       avizari: this.formArrayAvizare
@@ -66,16 +69,10 @@ export class AvizariComponent implements OnInit {
     return formGroup;
   }
 
-  toFormGroupTest() {
-    // console.log('form initial');
-    // console.log(this.formAvizari);
+  private toFormGroupTest(): void {
     this.formAvizariData.forEach((avizareData: Avizare) => {
-      // console.log(avizareData);
       const avizareForm = this._formSet.avizare(avizareData);
       this.formArrayAvizare.push(avizareForm);
-      // aici luam sir si ii bagam un item in lista
-      // console.log(this._formSet.avizare(avizareData));
-      // this.formAvizari.addControl('avizari', this._formSet.avizare(avizareData));
     });
   }
 }

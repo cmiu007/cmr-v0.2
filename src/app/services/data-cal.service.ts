@@ -10,7 +10,7 @@ export class DataCalService {
   }
 
   dateToString (data: Date): string {
-     const year = data.getFullYear().toString();
+    const year = data.getFullYear().toString();
     let month = (data.getMonth() + 1).toString();
     let day = data.getDate().toString();
     if ( month.length === 1 ) {

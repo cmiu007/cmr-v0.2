@@ -1,11 +1,3 @@
-<div *ngIf="addActive"  class="row">
-  <div style="text-align: center;" *ngIf="formStatus === 0 || formStatus === 1">
-    <button type="button" *ngIf="!loading" md-raised-button (click)="addAsigurare()" color="primary">
-      Adauga Asigurare
-    </button>
-  </div>
-</div>
-<br>
 <div class="row">
   <div [formGroup]="avizareForm">
     <div formArrayName="asigurare">
@@ -14,5 +6,13 @@
         <!-- <app-avizare [arrayIndex]="i" [asigurareForm]="asigurareForm"></app-avizare> -->
       </div>
     </div>
+  </div>
+</div>
+<br>
+<div *ngIf="addActive"  class="row">
+  <div style="text-align: center;" *ngIf="formStatus === 0 || formStatus === 1">
+    <button type="button" *ngIf="!loading" md-raised-button (click)="addAsigurare()" color="primary">
+      Adauga Asigurare
+    </button>
   </div>
 </div>
