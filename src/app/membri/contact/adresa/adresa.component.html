@@ -9,22 +9,20 @@
 
       </md-panel-description>
     </md-expansion-panel-header>
-    <div class="row wrapper">
-      <!-- <md-form-field class="col1_3"><input required type="text" placeholder="Tip" mdInput formControlName="tip"></md-form-field> -->
-      <md-select class="col1_3" placeholder="Tip adresa" formControlName="tip">
+    <section>
+      <md-select class="column" placeholder="Tip adresa" formControlName="tip">
         <md-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
           {{ tip_adresa.nume }}
         </md-option>
       </md-select>
-    </div>
-    <div class="row wrapper">
-
-      <md-form-field class="col1_3"><input required type="text" placeholder="Tara" mdInput formControlName="tara_id" [mdAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></md-form-field>
-
-      <md-form-field class="col4_3"><input required type="text" placeholder="Judet" mdInput formControlName="jud_id" [mdAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></md-form-field>
-      <md-form-field class="col7_3"><input required type="text" placeholder="Localitate" mdInput formControlName="localit"></md-form-field>
-      <md-form-field class="col11_2"><input required type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
-    </div>
+      <div class="column"></div>
+    </section>
+    <section>
+      <md-form-field class="column"><input required type="text" placeholder="Tara" mdInput formControlName="tara_id" [mdAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></md-form-field>
+      <md-form-field class="column"><input required type="text" placeholder="Judet" mdInput formControlName="jud_id" [mdAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></md-form-field>
+      <md-form-field class="column"><input required type="text" placeholder="Localitate" mdInput formControlName="localit"></md-form-field>
+      <md-form-field class="column"><input required type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
+    </section>
 
     <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
       <md-option *ngFor="let tara of filteredTara | async" [value]="tara.id">
@@ -38,25 +36,26 @@
       </md-option>
     </md-autocomplete>
 
-    <div class="row wrapper">
-      <md-form-field class="col1_3"><input type="text" placeholder="Strada" mdInput formControlName="strada"></md-form-field>
-      <md-form-field class="col4_1"><input type="text" placeholder="Nr." mdInput formControlName="nr"></md-form-field>
-      <md-form-field class="col7_1"><input type="text" placeholder="Bl." mdInput formControlName="bl"></md-form-field>
-      <md-form-field class="col8_1"><input type="text" placeholder="Sc." mdInput formControlName="scara"></md-form-field>
-      <md-form-field class="col9_1"><input type="text" placeholder="Ap." mdInput formControlName="ap"></md-form-field>
-    </div>
-    <br>
-    <div class="row wrapper">
-      <md-form-field class="col1_3"><input type="text" placeholder="Telefon" mdInput formControlName="tel"></md-form-field>
-      <md-form-field class="col4_3"><input type="text" placeholder="Email" mdInput formControlName="email"></md-form-field>
-    </div>
-    <div class="row wrapper">
-      <md-form-field class="col1_12"><textarea placeholder="Comentariu" mdInput formControlName="obs"></textarea></md-form-field>
-    </div>
-    <div class="row" style="text-align: center;">
-    </div>
+    <section>
+      <md-form-field class="column"><input type="text" placeholder="Strada" mdInput formControlName="strada"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Nr." mdInput formControlName="nr"></md-form-field>
+      <div class="column"></div>
+      <md-form-field class="column"><input type="text" placeholder="Bl." mdInput formControlName="bl"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Sc." mdInput formControlName="scara"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Ap." mdInput formControlName="ap"></md-form-field>
+      <div class="column"></div>
+    </section>
+
+    <section>
+      <md-form-field class="column"><input type="text" placeholder="Telefon" mdInput formControlName="tel"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Email" mdInput formControlName="email"></md-form-field>
+      <div class="column"></div>
+    </section>
+    <section>
+      <md-form-field class="column"><textarea placeholder="Comentariu" mdInput formControlName="obs"></textarea></md-form-field>
+    </section>
     <md-action-row>
-          <button type="submit" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
+      <button type="submit" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
                          {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }} adresa
             </button>
     </md-action-row>

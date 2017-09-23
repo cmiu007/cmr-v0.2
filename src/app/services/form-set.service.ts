@@ -7,6 +7,8 @@ import { Avizare } from '../shared/interfaces/avizari.interface';
 import { Asigurare } from '../shared/interfaces/asigurari.interface';
 import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
 import { Cpp } from '../shared/interfaces/cpps.interface';
+import { Certificat } from '../shared/interfaces/certificate.interface';
+import { AlertSnackbarService } from './alert-snackbar.service';
 
 @Injectable()
 export class FormSetService {
@@ -14,6 +16,7 @@ export class FormSetService {
   constructor(
     private _fb: FormBuilder,
     private _validator: FormValidatorsService,
+    private _snackBar: AlertSnackbarService
   ) { }
 
   login(): FormGroup {
@@ -51,14 +54,8 @@ export class FormSetService {
       'ro': [{ value: '', disabled: true }]
     });
     if (data) {
-      if (data.cnp) {
-        // clean data
-        Object.keys(data).forEach(
-          key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) { data[key] = ''; }
-          });
-        formGroupEmpty.patchValue(data);
-      }
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
     }
     return formGroupEmpty;
   }
@@ -78,7 +75,6 @@ export class FormSetService {
       default:
         break;
     }
-
   }
 
   cpp(data: Cpp): FormGroup {
@@ -100,11 +96,7 @@ export class FormSetService {
       'ro': [{ value: '', disabled: true }],
     });
     if (data) {
-      // clean data
-      Object.keys(data).forEach(
-        key => {
-          if (data[key] === '0000-00-00' || data[key] === 0) { data[key] = ''; }
-        });
+      data = this.cleanData(data);
       formGroup.patchValue(data);
     }
     return formGroup;
@@ -163,13 +155,7 @@ export class FormSetService {
         'web': data.web,
         'obs': data.obs
       });
-      Object.keys(data).forEach(
-        key => {
-          if (data[key] === '0000-00-00' || data[key] === 0) {
-            data[key] = '';
-          }
-        }
-      );
+      data = this.cleanData(data);
       formGroup.patchValue(data);
       return formGroup;
     }
@@ -211,13 +197,7 @@ export class FormSetService {
           'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
           // TODO: add asigurari array
         });
-        Object.keys(data).forEach(
-          key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {
-              data[key] = '';
-            }
-          }
-        );
+        data = this.cleanData(data);
         formGroup.patchValue(data);
         return formGroup;
       }
@@ -245,19 +225,61 @@ export class FormSetService {
       'data_end': ['', [Validators.required, this._validator.checkDate]]
     });
     if (data) {
-      if (data.id_asig) {
-        // clean data
-        Object.keys(data).forEach(
-          key => {
-            if (data[key] === '0000-00-00' || data[key] === 0) {
-              data[key] = '';
-            }
-          }
-        );
-        formGroupEmpty.patchValue(data);
-      }
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
     }
     return formGroupEmpty;
     // aici initializare form nou
   }
+
+  certificate(actiune: string, data?: Certificat, form?: FormGroup): FormGroup {
+    const formGroupEmpty = this._fb.group({
+      'id_certificat': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
+      'nr': [null, [this._validator.checkIfNumber]],
+      'data_start': [null, [Validators.required, this._validator.checkDate]],
+      'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
+      'reg_cert_id': [null, [this._validator.checkIfNumber]],
+      'cod_qr': [null],
+    });
+    if (data) {
+      data = this.cleanData(data);
+    }
+    switch (actiune) {
+      case 'initForm':
+        const formGroup = this._fb.group({
+          certificate: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'add':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      case 'newCertificat':
+        return formGroupEmpty;
+
+      case 'certificat':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      default:
+        this._snackBar.showSnackBar('setFormService certificate: Actiune Invalida');
+        break;
+    }
+
+  }
+
+  private cleanData(data): any {
+    Object.keys(data).forEach(
+      key => {
+        if (data[key] === '0000-00-00' || data[key] === 0) {
+          data[key] = '';
+        }
+      }
+    );
+    return data;
+  }
+
 }

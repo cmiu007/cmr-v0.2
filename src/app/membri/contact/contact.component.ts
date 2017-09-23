@@ -24,6 +24,7 @@ import { ApiData } from '../../shared/interfaces/message.interface';
 })
 export class ContactComponent implements OnInit {
   public static _formDataChanged: Subject<boolean> = new Subject;
+  public static _loadingContact: Subject<boolean> = new Subject;
 
   loadingContact = true;
   loadingAdrese = true;
@@ -44,6 +45,8 @@ export class ContactComponent implements OnInit {
     // TODO: de setat form-ul mare care sa includa formurile contact si adrese
     ContactComponent._formDataChanged
       .subscribe(res => this.setForm());
+    ContactComponent._loadingContact
+      .subscribe(res => this.loadingContact = !this.loadingContact);
   }
 
   private setHeader(): void {
@@ -52,7 +55,7 @@ export class ContactComponent implements OnInit {
 
   private setForm(): void {
     this.loadingAdrese = true;
-    this.loadingContact = true;
+    ContactComponent._loadingContact.next();
     // 1. get nr tel si Contact
     this._apiData.apiLista('contact', this._aRoute.snapshot.params['id'])
     .subscribe((response: ApiData) => {
@@ -60,7 +63,7 @@ export class ContactComponent implements OnInit {
         return;
       }
       this.contactData = response.data;
-      this.loadingContact = false;
+      ContactComponent._loadingContact.next();
     });
 
     this._apiData.apiLista('adrese', this._aRoute.snapshot.params['id'])
