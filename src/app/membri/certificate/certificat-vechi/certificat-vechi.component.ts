@@ -38,7 +38,6 @@ export class CertificatVechiComponent implements OnInit {
           this._router.navigate(['/login']);
         } else {
           this.formData = data;
-          console.log(this.formData);
           // this.sortDlp();
           this.loading = false;
           this.tipCert = data.tip_cert;
