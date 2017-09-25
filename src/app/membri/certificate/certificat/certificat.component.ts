@@ -33,6 +33,7 @@ export class CertificatComponent implements OnInit {
   formStatusStyle;
   certificatForm;
   loading = false;
+  showCertDetails = false;
 
   constructor(
     private _formSet: FormSetService,
@@ -129,5 +130,9 @@ export class CertificatComponent implements OnInit {
         // AvizariComponent._formDataChanged.next();
       });
     // TODO: data invalidari nu poate fi mai mica ca data start
+  }
+
+  onDetalii(): void {
+    this.showCertDetails = true;
   }
 }

@@ -18,13 +18,18 @@
         {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Activ'">
+        <button type="button" md-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
+        Detalii</button>
+      </div>
+      <div class="column" *ngIf="itemStatus === 'Activ'">
           <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
-          Invalideaza Certificat</button>
-        </div>
+          Invalideaza</button>
+      </div>
       <div class="column" *ngIf="itemStatus === 'Nou'">
         <button type="submit" md-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
       </div>
     </section>
 
   </md-expansion-panel>
+  <app-certificat-vechi *ngIf="showCertDetails"></app-certificat-vechi>
 </form>
