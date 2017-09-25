@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
-import { MembriService } from '../../services/membri.service';
 import { NomenclatorService } from '../../services/nomenclator.service';
 import { Judet, Tara, Fac, ActIdentTip, DocFacTip } from '../../shared/models/registre.model';
 import { FormValidatorsService } from '../../services/form-validators.service';
@@ -71,10 +70,7 @@ export class DatePersonaleComponent implements OnInit {
     private _apiData: ApiDataService,
     private _aRoute: ActivatedRoute,
     private _snackBar: AlertSnackbarService,
-
-    private membriService: MembriService,
-    private route: ActivatedRoute,
-    private router: Router,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -110,7 +106,7 @@ export class DatePersonaleComponent implements OnInit {
       this.enableAdmin();
       return;
     }
-    if (this.formDatePersonale.get('cetatenie').value === '') {
+    if (this.formDatePersonale.get('cetatenie').value === null) {
       this.formStatus = 2;
       this.enableNewMember();
       return;
@@ -205,11 +201,27 @@ export class DatePersonaleComponent implements OnInit {
         localStorage.setItem('currentMemNume',
              (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
         localStorage.setItem('currentMemId', response.data.id_med);
-        this.router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
+        this._router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
       });
     return;
   }
 
+  checkCNP(): void {
+    const controlValid = this.formDatePersonale.get('cnp').valid;
+    if (controlValid === true) {
+      this.reloading = true;
+      const cnp = this.formDatePersonale.get('cnp').value;
+      this._apiData.apiLista('list', cnp)
+      .subscribe((response: ApiData) => {
+        this.reloading = false;
+        const cnpResponse = response.data;
+        if ( cnpResponse.length !== 0 ) {
+          this.formDatePersonale.controls['cnp'].setErrors({'isUsed': true}) ;
+          this._snackBar.showSnackBar('CNP-ul exista deja in baza de date, verifica folosind cautarea globala');
+        }
+      });
+    }
+  }
   private isRequired(data) {
     console.log(data);
   }
@@ -222,7 +234,7 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   private setRegistre(): void {
-    this.registruJudete = this.route.snapshot.data['regJud'];
+    this.registruJudete = this._aRoute.snapshot.data['regJud'];
     const delValRegJud = ['ADM', 'CMR'];
     delValRegJud.forEach(element => {
       this.registruJudete = this.registruJudete.filter(option => option.nume !== element);
@@ -232,13 +244,13 @@ export class DatePersonaleComponent implements OnInit {
       .map(judet => judet && typeof judet === 'object' ? judet.nume : judet)
       .map(nume => nume ? this.filterJud(nume) : this.registruJudete.slice());
 
-    this.registruTari = this.route.snapshot.data['regTara'];
+    this.registruTari = this._aRoute.snapshot.data['regTara'];
     this.filtruTari = this.formDatePersonale.get('cetatenie').valueChanges
       .startWith(null)
       .map(tara => tara && typeof tara === 'object' ? tara.nume : tara)
       .map(nume => nume ? this.filterTari(nume) : this.registruTari.slice());
 
-    this.registruFac = this.route.snapshot.data['regFac'];
+    this.registruFac = this._aRoute.snapshot.data['regFac'];
     this.filtruFac = this.formDatePersonale.get('fac_absolv').valueChanges
       .startWith(null)
       .map(fac => fac && typeof fac === 'object' ? fac.nume : fac)

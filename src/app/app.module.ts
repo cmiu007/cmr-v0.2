@@ -47,8 +47,8 @@ import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
 import { AvizariListComponent } from './membri/avizari/avizari-list/avizari-list.component';
 import { AvizareComponent } from './membri/avizari/avizare/avizare.component';
-import { AsigurariListComponent } from './membri/avizari/avizare/asigurari-list/asigurari-list.component';
-import { AsigurareComponent } from './membri/avizari/avizare/asigurare/asigurare.component';
+import { AsigurariListComponent } from './membri/asigurari/asigurari-list/asigurari-list.component';
+import { AsigurareComponent } from './membri/asigurari/asigurare/asigurare.component';
 import { DataCalService } from './services/data-cal.service';
 import { CertificateComponent } from './membri/certificate/certificate.component';
 import { ApiDataService } from './services/api-data.service';
@@ -58,6 +58,7 @@ import { DialogService } from './services/dialog.service';
 import { CertificatComponent } from './membri/certificate/certificat/certificat.component';
 import { CertificateListaComponent } from './membri/certificate/certificate-lista/certificate-lista.component';
 import { IsAddActiveService } from './services/is-add-active.service';
+import { AsigurariComponent } from './membri/asigurari/asigurari.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { IsAddActiveService } from './services/is-add-active.service';
     AsigurareComponent,
     CertificateComponent,
     CertificatComponent,
-    CertificateListaComponent
+    CertificateListaComponent,
+    AsigurariComponent
   ],
   imports: [
     BrowserModule,

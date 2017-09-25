@@ -1,18 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormSetService } from '../../../../services/form-set.service';
-import { DataCalService } from '../../../../services/data-cal.service';
-import { Asigurator } from '../../../../shared/models/registre.model';
+import { FormSetService } from '../../../services/form-set.service';
+import { DataCalService } from '../../../services/data-cal.service';
+import { Asigurator } from '../../../shared/models/registre.model';
 import { Observable } from 'rxjs/Observable';
 import { AsigurariListComponent } from '../asigurari-list/asigurari-list.component';
-import { Asigurare } from '../../../../shared/interfaces/asigurari.interface';
-import { MembriService } from '../../../../services/membri.service';
+import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
+import { MembriService } from '../../../services/membri.service';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { AlertSnackbarService } from '../../../../services/alert-snackbar.service';
-import { ApiData } from '../../../../shared/interfaces/message.interface';
-import { ApiDataService } from '../../../../services/api-data.service';
-import { AvizareComponent } from '../avizare.component';
+import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
+import { ApiData } from '../../../shared/interfaces/message.interface';
+import { ApiDataService } from '../../../services/api-data.service';
+import { AvizareComponent } from '../../avizari/avizare/avizare.component';
+
 @Component({
   selector: 'app-asigurare',
   templateUrl: './asigurare.component.html',
