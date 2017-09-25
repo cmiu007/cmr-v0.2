@@ -129,20 +129,5 @@ export class CertificatComponent implements OnInit {
         // AvizariComponent._formDataChanged.next();
       });
     // TODO: data invalidari nu poate fi mai mica ca data start
-
   }
-  // print(pag: number): void {
-  //   const nativeWindow = window;
-  //   let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
-  //   urlRoot = urlRoot
-  //     + localStorage.getItem('userToken')
-  //     + '&id='
-  //     + localStorage.getItem('currentMemId');
-
-  //   if (pag === 1) {
-  //     nativeWindow.open(urlRoot + '&actiune=fata');
-  //     return;
-  //   }
-  //   nativeWindow.open(urlRoot + '&actiune=spate');
-  // }
 }
