@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormSetService } from '../../../../services/form-set.service';
+import { FormSetService } from '../../../services/form-set.service';
 import { FormArray } from '@angular/forms';
-import { Asigurator } from '../../../../shared/models/registre.model';
+import { Asigurator } from '../../../shared/models/registre.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 

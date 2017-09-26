@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSearch(searchVal: string) {
+    searchVal = searchVal.trim();
     if (this.searchForm.valid) {
       this.loading = true;
       this.emptySearchResult = false;
