@@ -59,6 +59,7 @@ import { CertificatComponent } from './membri/certificate/certificat/certificat.
 import { CertificateListaComponent } from './membri/certificate/certificate-lista/certificate-lista.component';
 import { IsAddActiveService } from './services/is-add-active.service';
 import { AsigurariComponent } from './membri/asigurari/asigurari.component';
+import { CertificatVechiComponent } from './membri/certificate/certificat-vechi/certificat-vechi.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { AsigurariComponent } from './membri/asigurari/asigurari.component';
     CertificateComponent,
     CertificatComponent,
     CertificateListaComponent,
-    AsigurariComponent
+    AsigurariComponent,
+    CertificatVechiComponent
   ],
   imports: [
     BrowserModule,

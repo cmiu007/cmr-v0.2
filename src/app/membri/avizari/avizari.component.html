@@ -1,6 +1,12 @@
 <app-header></app-header>
 <div class="content">
   <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-
-  <app-avizari-list [formAvizari]="formAvizari" ></app-avizari-list>
+  <div class="row">
+    <md-card>
+      <md-card-title class="form-title"><span>Lista Avizari</span></md-card-title>
+    </md-card>
+  </div>
+  <div *ngIf="!loading">
+    <app-avizari-list [formAvizari]="formAvizari"></app-avizari-list>
+  </div>
 </div>
