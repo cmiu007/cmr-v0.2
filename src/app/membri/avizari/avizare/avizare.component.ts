@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 
 import { Adresa } from '../../../shared/interfaces/contact.interface';
 import { Avizare } from '../../../shared/interfaces/avizari.interface';
@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { AvizariComponent } from '../avizari.component';
+import { IsAddActiveService } from '../../../services/is-add-active.service';
 
 @Component({
   selector: 'app-avizare',
@@ -56,6 +57,7 @@ export class AvizareComponent implements OnInit {
     private _dataCal: DataCalService,
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
+    private _setAddBtn: IsAddActiveService
   ) { }
 
   ngOnInit() {
@@ -85,11 +87,14 @@ export class AvizareComponent implements OnInit {
     if (this._dataCal.isInTheFuture(dataStart)) {
       this.itemStatus = 'Draft ';
       this.formStatus = 1;
+      this._setAddBtn.setStatus(false);
+      this.onClickAsigurare();
     } else {
       if (this._dataCal.isInTheFuture(dataEnd)) {
         this.itemStatus = 'Activa ';
         this.formTitleStyle = ['active'];
         this.formStatus = 2;
+        this.onClickAsigurare();
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {
           this.itemStatus = 'Inactiva ';
@@ -142,6 +147,7 @@ export class AvizareComponent implements OnInit {
           this.loading = false;
           AvizariComponent._formDataChanged.next();
         });
+        return;
     }
     this._apiData.apiAdauga('dlp', data)
       .subscribe((response: ApiData) => {
@@ -206,7 +212,7 @@ export class AvizareComponent implements OnInit {
     const control = <FormArray>this.formAvizari.controls['avizari'];
     control.removeAt(0);
     // show add again
-    AvizariListComponent.addActiveSubj.next();
+   this._setAddBtn.setStatus(true);
   }
 
   onClickDetali(): void {

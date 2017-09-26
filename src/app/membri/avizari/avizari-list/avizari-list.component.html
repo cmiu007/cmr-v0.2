@@ -1,23 +1,12 @@
-<div class="row">
-  <md-card>
-    <md-card-title class="form-title"><span>Lista Avizari</span></md-card-title>
-  </md-card>
+<div *ngFor="let formAvizareData of formAvizari.get('avizari').value; let i = index">
+  <app-avizare [arrayIndex]="i" [formAvizari]="formAvizari"></app-avizare>
 </div>
 
 
-
-<div [formGroup]="formAvizari">
-  <div formArrayName="avizari">
-    <div *ngFor="let formAvizareData of formAvizari.get('avizari').value; let i = index">
-      <app-avizare [arrayIndex]="i" [formAvizari]="formAvizari"></app-avizare>
-    </div>
-  </div>
-</div>
-
-<md-card *ngIf="addActive">
+<md-card *ngIf="isAddActive">
   <md-card-content style="text-align: center;">
-            <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
+    <button type="button" *ngIf="!loading" md-raised-button (click)="addAvizare()" color="primary">
             Adauga Avizare
             </button>
-    </md-card-content>
+  </md-card-content>
 </md-card>
