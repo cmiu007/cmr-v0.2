@@ -72,7 +72,7 @@ export class CertificatComponent implements OnInit {
     if (this._dataCal.isInThePast(dataStart) && dataEnd !== null) {
       this.itemStatus = 'Inactiv';
       this.itemName = 'valid de la ' + this._dataCal.dateToString(dataStart) + ' pana la ' + this._dataCal.dateToString(dataEnd);
-      this._setAddBtn.setStatus(false);
+      this._setAddBtn.setStatus(true);
       return;
     }
     if (this._dataCal.isInTheFuture(dataStart) && dataEnd === null) {
@@ -103,6 +103,7 @@ export class CertificatComponent implements OnInit {
     }
     this.loading = true;
     const data = this.certificatForm.value as Certificat;
+    delete data.nr;
     const idItem = data.id_certificat;
     console.log(data);
     if (this.itemStatus !== 'Nou') {
@@ -119,7 +120,10 @@ export class CertificatComponent implements OnInit {
       this.loading = false;
       return;
     }
-    // this._apiData.apiAdauga('certificat', data);
+    const data2 = localStorage.getItem('currentMemId');
+    console.log(data2);
+    data.id_mem = +data2;
+    delete data.id_certificat;
     this._apiData.apiAdauga('certificat', data)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
