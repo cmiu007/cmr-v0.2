@@ -14,7 +14,7 @@
       <md-form-field class="column"><input type="text" placeholder="Data end" mdInput formControlName="data_invalidare"></md-form-field>
       <div class="column"></div>
       <div class="column" *ngIf="itemStatus === 'Nou' || itemStatus === 'In lucru'">
-        <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+        <button type="submit" md-raised-button (click)="onClickCert()" color="primary">
         {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Activ'">

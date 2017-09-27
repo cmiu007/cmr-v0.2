@@ -233,22 +233,13 @@ export class FormSetService {
   }
 
   certificate(actiune: string, data?: Certificat, form?: FormGroup): FormGroup {
-    // const formGroupEmpty = this._fb.group({
-    //   'id_certificat': [null, [this._validator.checkIfNumber]],
-    //   'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
-    //   'nr': [null, [this._validator.checkIfNumber]],
-    //   'data_start': [null, [Validators.required, this._validator.checkDate]],
-    //   'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
-    //   'reg_cert_id': [null, [this._validator.checkIfNumber]],
-    //   'cod_qr': [null],
-    // });
     const formGroupEmpty = this._fb.group({
-      'id_certificat': [null, ],
-      'id_mem': [null, ],
-      'nr': [null, ], // TODO: de scos
-      'data_start': [null, ],
-      'data_invalidare': [null, ],
-      'reg_cert_id': [null,],
+      'id_certificat': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
+      'nr': [null, [this._validator.checkIfNumber]],
+      'data_start': [null, [Validators.required, this._validator.checkDate]],
+      'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
+      'reg_cert_id': [null, [this._validator.checkIfNumber]],
       'cod_qr': [null],
     });
     if (data) {
