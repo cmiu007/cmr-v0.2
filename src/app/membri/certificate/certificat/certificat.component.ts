@@ -125,6 +125,7 @@ export class CertificatComponent implements OnInit {
       return;
     }
     delete data.id_certificat;
+    data.data_invalidare = null;
     this._apiData.apiAdauga('certificat', data)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
