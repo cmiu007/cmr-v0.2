@@ -5,14 +5,16 @@ date_default_timezone_set('Europe/Bucharest');
 
 // creat a new pdf document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetProtection(array('modify', 'copy', 'extract', 'fill-forms', 'annot-forms', 'extract'), '', null, 1, null);
 
 // set document information
 
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Colegiul Medicilor din România');
-$pdf->SetTitle('Certificat de Membru al C.M.R.'); // de inlocuit cu Numele si CUIM
-$pdf->SetSubject('TCPDF Tutorial');
-$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+$pdf->SetTitle('Aviz anual privind exercitarea profesiei de medic');
+$pdf->SetSubject('Avizare pentru: Numele si Prenumele'); // TODO: de inlocuit cu Numele si CUIM
+$pdf->SetKeywords('Lista specialitati si statusul avizarii'); // TODO:
+
 
 // no header and footer
 $pdf->setPrintHeader(false);
@@ -52,18 +54,26 @@ $pageWidth = 210;
 $pageHeight = 297;
 $innerLine = $origin + 1;
 $imgOrigin = $innerLine + 2;
-$title = 'C O L E G I U L  M E D I C I L O R  D I N  R O M Â N I A
-Colegiul Medicilor $CMJ
-AVIZ ANUAL
-privind exercitarea profesiei de medic
-din data de $date';
 $titleXOrigin = $imgOrigin + 38;
 $titleYOrigin = $imgOrigin ;
+$title2YOrigin = $titleYOrigin + 7 ;
+$title3YOrigin = $title2YOrigin + 18 ;
+$titularYOrigin = $title3YOrigin + 24;
+$prezentaYOrigin = $titularYOrigin + 18 ;
+$box1YOrigin = $prezentaYOrigin + 14;
+$box2YOrigin = $box1YOrigin + 25;
+$box3YOrigin = $box2YOrigin + 25;
+$box4YOrigin = $box3YOrigin + 25;
+$notaYOrigin = $box4YOrigin + 25;
+$presedinteYOrigin = $notaYOrigin + 64;
+$lsYOrigin = $presedinteYOrigin + 10;
+$lsXOrigin = 170;
 
-$style1 = array('width' => 0.5, 'cap' => 'round', 'join' => 'miter', 'dash' => 0, 'color' => array(50, 50, 127));
-$style2 = array('width' => 1, 'cap' => 'round', 'join' => 'miter', 'dash' => 0, 'color' => array(50, 50, 127));
+
 
 // Border
+$style1 = array('width' => 0.5, 'cap' => 'round', 'join' => 'miter', 'dash' => 0, 'color' => array(50, 50, 127));
+$style2 = array('width' => 1, 'cap' => 'round', 'join' => 'miter', 'dash' => 0, 'color' => array(50, 50, 127));
 $pdf->Rect($origin, $origin, ($pageWidth - 2 * $origin), ($pageHeight - 2 * $origin), 'D', array('all' => $style1));
 $pdf->Rect($innerLine, $innerLine, ($pageWidth - 2 * $innerLine), ($pageHeight - 2 * $innerLine), 'D', array('all' => $style2));
 
@@ -79,17 +89,22 @@ $pdf->SetFillColor(255, 255, 127);
 // writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
 // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
 
-$titluHTML = '
+$titlu1HTML = '
 <h2>COLEGIUL&nbsp; &nbsp;MEDICILOR&nbsp; &nbsp;DIN&nbsp; &nbsp;ROMÂNIA</h2>
+';
+$titlu2HTML = '
 Colegiul Medicilor <span style="font-weight: bold;">TIMIȘOARA</span>
+<br>
 <h2>AVIZ ANUAL</h2>
+';
+$titlu3HTML = '
 <h2>privind exercitarea profesiei de medic</h2>
-din data de <span style="font-weight: bold;">29-09-2017</span>
+eliberat in data de <span style="font-weight: bold;">29-09-2017</span>
 ';
 
-
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titluHTML, 0, 0, $fill, true, 'C', true);
-// close and output PDF document
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titlu1HTML, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $title2YOrigin, $titlu2HTML, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $title3YOrigin, $titlu3HTML, 0, 0, $fill, true, 'C', true);
 
 $pdf->SetFont('freeserif', '', 12);
 $titularHTML = '
@@ -101,7 +116,7 @@ C.U.I.M.: <span style="font-weight: bold;">218213090123</span> Certificat de mem
 </p>
 ';
 $pdf->SetFillColor(127, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin * 2, 19, $origin + 5, $titleYOrigin + 52, $titularHTML, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin * 2, 19, $origin + 5, $titularYOrigin , $titularHTML, 0, 0, $fill, true, 'L', true);
 
 $prezenta = '
 <p style="font-weight: bold; "><i>
@@ -110,7 +125,7 @@ Prin prezenta se certifică faptul că titularul are dreptul de a profesa ca med
 </i></p>
 ';
 $pdf->SetFillColor(255, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 72, $prezenta, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $prezentaYOrigin, $prezenta, 0, 0, $fill, true, 'C', true);
 
 $pdf->SetFont('freeserif', '', 10);
 $specialitate = '
@@ -130,7 +145,7 @@ Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
 </table>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 85, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box1YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
 // ---------------------------
 
@@ -151,7 +166,7 @@ Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
 </table>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 110, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
 
 $specialitate = '
@@ -171,7 +186,7 @@ Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
 </table>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 135, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box3YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
 $specialitate = '
 <table border="1" cellpadding="2">
@@ -190,7 +205,7 @@ Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
 </table>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 160, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box4YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
 //----------------------------
 
@@ -211,19 +226,24 @@ $footer1 = '
 <b><i>(3)	drept de practică supravegheată</i></b> în baza căruia titularul își poate desfășura activitatea numai în cabinete medicale individuale, sub îndrumarea unui medic cu drept de liberă practică, în funcție de specialitatea în care a fost confirmat medic rezident, în condițiile Ordonanței Guvernului nr. 18/2009 privind organizarea și finanțarea rezidențiatului, aprobată prin Legea nr. 103/2012, cu completările ulterioare.
 ';
 $pdf->SetFillColor(255, 255, 0);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 185, $footer1, 0, 0, $fill, true, 'J', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
 
 $pdf->SetFont('freeserif', '', 10);
 $footer2 = '
 <h2>Președinte,</h2>
 <h2>Popescu Ionel al doilea</h2>
-<br>
+<p>
 …………………………………………………………
-<br>
-<br>
+</p>
 Notă: Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.
 ';
 $pdf->SetFillColor(255, 255, 0);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $titleYOrigin + 245, $footer2, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $presedinteYOrigin, $footer2, 0, 0, $fill, true, 'C', true);
 
-$pdf-> Output('test.pdf', 'I');
+$ls = '
+L.S.
+';
+// $pdf->WriteHTMLCell(20, 10, $lsXOrigin , $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell(20, 10, $lsXOrigin , $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
+
+$pdf-> Output('test.pdf', 'I'); // TODO: de inlocuit cu aviz_CUIM
