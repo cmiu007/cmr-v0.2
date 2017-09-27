@@ -1,19 +1,19 @@
 <?php
 
-include('/var/www/html/config.php');
-include('/var/www/html/functions.php');
+include('config.php');
+include('functions.php');
 
 
 $id=$_REQUEST['id'];
 $token = $_REQUEST['token'];
 $actiune = $_REQUEST['actiune'];
- 
+
  $data=[
 			'token' => $token,
 			'id'    => $id,
 		];
-		
-		//echo "<pre>";
+
+		//echo "<pre>
 		//print_r($data);
 		//echo "</pre>";
 		$url=$url_host."/get_certificat";
@@ -23,7 +23,7 @@ $actiune = $_REQUEST['actiune'];
 		/*echo "<pre>";
 		print_r($rezultat);
 		echo "</pre>";*/
-		
+
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf/tcpdf.php');
 date_default_timezone_set('Europe/Bucharest');
@@ -264,7 +264,7 @@ if ($actiune == "fata")
 		$pdf->Cell(30, 0, $rezultat['cuim'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 		switch($rezultat['tip_cert'])
 		{
-		case "A":	
+		case "A":
 				$pdf->SetFont('freeserif', '', 12);
 				$pdf->SetXY(11, 121);
 				$pdf->Cell(0, 0, $rezultat['facultate'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
@@ -277,7 +277,7 @@ if ($actiune == "fata")
 				$pdf->Cell(20, 0, $serie, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 				$x = 158;
 				foreach ($rezultat['specialitati'] as $spec){
-				 $pdf->SetFont('freeserif', '', 12);	
+				 $pdf->SetFont('freeserif', '', 12);
 				 $pdf->SetXY(13, $x);
 				 $pdf->Cell(20, 0, $spec['specialitate'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 				 $pdf->SetXY(165, $x);
@@ -286,10 +286,10 @@ if ($actiune == "fata")
 				}
 				$comple = "";
 				foreach($rezultat['superspecialitate'] as $spec){
-						$comple .= $spec['specialitate']. "; "; 
+						$comple .= $spec['specialitate']. "; ";
 				}
 				$pdf->SetFont('freeserif', '', 10);
-				
+
 				$lg = strlen($comple);
 				if ($lg > 90)
 				{
@@ -329,7 +329,7 @@ if ($actiune == "fata")
 							$pdf->SetXY(12, 218);
 							$pdf->Multicell(180, 0, $rest2,  0, 'L', 1, 0, '', '', true);
 						}
-						
+
 					}
 					else
 					{
@@ -337,7 +337,7 @@ if ($actiune == "fata")
 						$pdf->SetXY(12, 209);
 						$pdf->Multicell(180, 0, $rest,  0, 'L', 1, 0, '', '', true);
 					}
-					
+
 				}
 				else
 				{
@@ -398,13 +398,13 @@ if ($actiune == "fata")
 				$pdf->SetFont('freeserif', '', 16);
 				$pdf->SetXY(16, 138);
 				$pdf->Cell(20, 0, $serie, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-				
+
 				$pdf->SetFont('freeserif', '', 10);
 				$pdf->SetXY(70, 276);
 				$pdf->Cell(20, 0, $data_juramant, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 				$x = 158;
 				foreach ($rezultat['specialitati'] as $spec){
-				$pdf->SetFont('freeserif', '', 12);	
+				$pdf->SetFont('freeserif', '', 12);
 				$pdf->SetXY(13, $x);
 				$pdf->Cell(20, 0, $spec['specialitate'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 				$pdf->SetXY(140, $x);
@@ -416,9 +416,9 @@ if ($actiune == "fata")
 				foreach($rezultat['superspecialitate'] as $spec){
 						$comple .= $spec['specialitate'].";  ";
 				}
-				
+
 				$pdf->SetFont('freeserif', '', 10);
-				
+
 				$lg = strlen($comple);
 				if ($lg > 80)
 				{
@@ -458,7 +458,7 @@ if ($actiune == "fata")
 							$pdf->SetXY(16, 218);
 							$pdf->Multicell(180, 0, $rest2,  0, 'L', 1, 0, '', '', true);
 						}
-						
+
 					}
 					else
 					{
@@ -466,7 +466,7 @@ if ($actiune == "fata")
 						$pdf->SetXY(16, 209);
 						$pdf->Multicell(180, 0, $rest,  0, 'L', 1, 0, '', '', true);
 					}
-					
+
 				}
 				else
 				{
@@ -474,7 +474,7 @@ if ($actiune == "fata")
 					$pdf->SetXY(16, 200);
 					$pdf->Multicell(180, 0, $comple,  0, 'L', 1, 0, '', '', true);
 				}
-				
+
 		break;
 		}
 }
@@ -490,7 +490,7 @@ else {
 		//echo "<pre>";
 		//print_r($rezultat);
 		//echo "</pre>";
-	
+
 		$pdf->SetCreator(PDF_CREATOR);
 		$pdf->SetAuthor('CMR');
 		$pdf->SetTitle('Certificat membru nr. '.$id);
@@ -523,18 +523,18 @@ else {
 
 			$pdf->SetFillColor(255, 255, 255);
 			$pdf->MultiCell(68, 5, $rez['nume'], 0, 'L', 1, 0, '', '', true);
-			
+
 			$pdf->SetXY(93, $y+4);
 			$polita = $asig['polita_serie'] . "  " . $asig['polita_nr'];
 			$pdf->Cell(20, 0, $polita, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-			
+
 			$pdf->SetFont('freeserif', '', 9);
 			$perioada = timex($asig['data_start']). " - " . timex($asig['data_end']);
 			$pdf->SetXY(136, $y+4);
 			$pdf->Cell(20, 0, $perioada, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 			$y += 9;
 		}
-		
+
 }
 
 $nume_pdf = 'cert_medic_nr_'.$numar_cert.'.pdf';
