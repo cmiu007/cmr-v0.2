@@ -54,6 +54,8 @@ $pageWidth = 210;
 $pageHeight = 297;
 $innerLine = $origin + 1;
 $imgOrigin = $innerLine + 2;
+$timbruXOrigin =  175;
+$timbruYOrigin = 20;
 $titleXOrigin = $imgOrigin + 38;
 $titleYOrigin = $imgOrigin ;
 $title2YOrigin = $titleYOrigin + 7 ;
@@ -89,8 +91,16 @@ $pdf->SetFillColor(255, 255, 127);
 // writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
 // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
 
+$pdf->SetFont('freeserif', '', 8);
+$timbru = '
+<i>Timbru Sec</i>
+';
+$pdf->WriteHTMLCell(20, 10, $timbruXOrigin, $timbruYOrigin, $timbru, 0, 0, $fill, true, 'C', true);
+
+$pdf->SetFont('freeserif', '', 10);
+
 $titlu1HTML = '
-<h2>COLEGIUL&nbsp; &nbsp;MEDICILOR&nbsp; &nbsp;DIN&nbsp; &nbsp;ROMÂNIA</h2>
+<h2>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h2>
 ';
 $titlu2HTML = '
 Colegiul Medicilor <span style="font-weight: bold;">TIMIȘOARA</span>
