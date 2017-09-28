@@ -54,13 +54,14 @@ export class CertificatVechiComponent implements OnInit {
 
   print(pag: number): void {
     const nativeWindow = window;
-    this.genPDFAddress = this.genPDFAddress + localStorage.getItem('userToken');
+    let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
     if (pag === 1) {
-      this.genPDFAddress = this.genPDFAddress + '&actiune=fata';
+      url = url + '&actiune=fata';
     } else {
-      this.genPDFAddress = this.genPDFAddress + '&actiune=spate';
+      url = url + '&actiune=spate';
     }
-    this.genPDFAddress = this.genPDFAddress + '&id=' + this.certificatId; // TODO: de gasit ID
-    nativeWindow.open(this.genPDFAddress);
+    url = url + '&id=' + this.certificatId; // TODO: de gasit ID
+    console.log(url);
+    nativeWindow.open(url);
   }
 }
