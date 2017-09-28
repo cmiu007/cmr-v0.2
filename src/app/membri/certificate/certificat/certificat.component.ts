@@ -35,6 +35,7 @@ export class CertificatComponent implements OnInit {
   certificatForm;
   loading = false;
   showCertDetails = false;
+  certificatId: number;
 
   constructor(
     private _formSet: FormSetService,
@@ -55,6 +56,7 @@ export class CertificatComponent implements OnInit {
   }
 
   private setFormStatus(): void {
+    this.certificatId = this.certificatForm.get('id_certificat').value;
     let dataStart: Date = null;
     let dataEnd: Date = null;
     const dataStartVal = this.certificatForm.get('data_start').value;
@@ -102,17 +104,15 @@ export class CertificatComponent implements OnInit {
 
   onClickCert(): void {
     if (this.certificatForm.invalid) {
-      this._snackBar.showSnackBar('Formular Invalid');
       console.log(this.certificatForm);
+      this._snackBar.showSnackBar('Formular Invalid');
       return;
     }
     this.loading = true;
     this.certificatForm.get('data_start').enable();
     const data = this.certificatForm.value as Certificat;
-    delete data.nr;
     const idItem = data.id_certificat;
     if (this.itemStatus !== 'Nou') {
-      console.log(data);
       this._apiData.apiModifica('certificat', idItem, data)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {

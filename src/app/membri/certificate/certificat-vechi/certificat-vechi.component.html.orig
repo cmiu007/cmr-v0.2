@@ -1,0 +1,51 @@
+<md-card>
+  <md-card-content>
+    <div class="row">
+      <md-radio-group>
+        <md-checkbox (click)="printActive = !printActive">Confirm ca datele sunt corecte</md-checkbox>
+      </md-radio-group>
+    </div>
+
+    <div class="row" style="text-align: center;" *ngIf="printActive === true">
+      <br>
+      <button type="button" md-raised-button (click)="print(1)" color="primary">Pagina 1</button>
+      <button type="button" md-raised-button (click)="print(2)" color="primary">Pagina 2</button>
+    </div>
+  </md-card-content>
+</md-card>
+<div  *ngIf="!loading">
+<md-card>
+  <md-card-content>
+    <p class="form-title item-title">Date Personale</p>
+    <p>Titular: <span class="date-cert">{{formData.nume}}</span></p>
+    <p>Cnp: <span class="date-cert">{{formData.cnp}}</span></p>
+    <p>CUIM: <span class="date-cert">{{formData.cuim}}</span></p>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-card-content>
+    <p class="form-title item-title">Facultate</p>
+    <p>Facultate: <span class="date-cert">{{formData.facultate}}</span></p>
+    <p>Promotie: <span class="date-cert">{{formData.promotie}}</span></p>
+    <p>Date diploma licenta: <span class="date-cert">{{formData.dipl_serie}} / {{formData.dipl_nr}}</span></p>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-card-content>
+    <p class="form-title item-title">Specialitati medicale</p>
+    <p *ngFor="let item of formData.specialitati" class="date-cert">{{item.specialitate}} - {{item.gr_prof}}</p>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-card-content>
+    <p class="form-title item-title">Pregatire profesionala postuniversitara</p>
+    <p *ngFor="let item of formData.superspecialitate" class="date-cert">{{item.specialitate}}</p>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-card-content>
+    <p class="form-title item-title">Asigurari Medicale</p>
+    <p *ngFor="let item of formData.asigurare" class="date-cert">{{item.asigurator}}: {{item.polita_serie}}/{{item.polita_nr}} din {{item.data_start}} pana la {{item.data_end}}</p>
+  </md-card-content>
+</md-card>
+</div>

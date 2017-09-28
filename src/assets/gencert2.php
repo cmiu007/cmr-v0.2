@@ -82,7 +82,7 @@ $pdf->Rect($innerLine, $innerLine, ($pageWidth - 2 * $innerLine), ($pageHeight -
 // Image method signature:
 // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
 $pdf->setJPEGQuality(100);
-$pdf->Image('img/sigla_cmr.jpg', $imgOrigin, $imgOrigin + 2, 38, 30, 'JPEG', '', '', false, 300, '', false, false, 0, false, false, false);
+$pdf->Image('img/sigla_cmr.jpg', $imgOrigin, $imgOrigin + 2, 27, 21, 'JPEG', '', '', false, 300, '', false, false, 0, false, false, false);
 
 $pdf->SetFillColor(255, 255, 127);
 // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
@@ -105,7 +105,7 @@ $titlu1HTML = '
 $titlu2HTML = '
 Colegiul Medicilor <span style="font-weight: bold;">TIMIȘOARA</span>
 <br>
-<h2>AVIZ ANUAL</h2>
+<h2>A V I Z&nbsp; &nbsp;A N U A L</h2>
 ';
 $titlu3HTML = '
 <h2>privind exercitarea profesiei de medic</h2>

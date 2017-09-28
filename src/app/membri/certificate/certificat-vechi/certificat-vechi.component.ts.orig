@@ -1,0 +1,61 @@
+import { Component, OnInit } from '@angular/core';
+import { MembriService } from '../../../services/membri.service';
+import { MdSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-certificat-vechi',
+  templateUrl: './certificat-vechi.component.html',
+  styleUrls: ['./certificat-vechi.component.css']
+})
+export class CertificatVechiComponent implements OnInit {
+  loading = true;
+  formData; // de pus tip
+  printActive = false;
+  tipCert = '';
+
+  constructor(
+    private _memService: MembriService,
+    private _snack: MdSnackBar,
+    private _router: Router
+  ) { }
+
+  ngOnInit() {
+    this.setPageName();
+    this.getFormData();
+  }
+
+  setPageName(): void {
+    localStorage.setItem('currentPage', 'Certificat');
+  }
+
+  getFormData(): void {
+    this.loading = true;
+    this._memService.getCertificatMembru(localStorage.getItem('currentMemId'))
+      .subscribe(data => {
+        if (data.result === '12') {
+          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
+          this._router.navigate(['/login']);
+        } else {
+          this.formData = data;
+          // this.sortDlp();
+          this.loading = false;
+          this.tipCert = data.tip_cert;
+          // this.toFormGroupTest();
+        }
+      });
+  }
+
+  print(pag: number): void {
+    const nativeWindow = window;
+    let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
+    urlRoot = urlRoot + localStorage.getItem('userToken');
+    if (pag === 1) {
+      urlRoot = urlRoot + '&actiune=fata';
+    } else {
+      urlRoot = urlRoot + '&actiune=spate';
+    }
+    urlRoot = urlRoot + '&id=379'; // TODO: de gasit ID
+    nativeWindow.open(urlRoot);
+  }
+}
