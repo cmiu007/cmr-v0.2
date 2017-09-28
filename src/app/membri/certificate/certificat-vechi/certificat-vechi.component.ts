@@ -6,6 +6,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { Certificat } from '../../../shared/interfaces/certificate.interface';
+import { GlobalDataService } from '../../../services/global-data.service';
 
 @Component({
   selector: 'app-certificat-vechi',
@@ -20,13 +21,16 @@ export class CertificatVechiComponent implements OnInit {
   formData: Certificat; // de pus tip
   printActive = false;
   tipCert = '';
+  genPDFAddress = '';
 
   constructor(
     private _router: Router,
     private _apiData: ApiDataService,
     private _snack: AlertSnackbarService,
-
-  ) { }
+    private _globalVars: GlobalDataService,
+  ) {
+    this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+  }
 
   ngOnInit() {
     this.getFormData();
@@ -46,33 +50,17 @@ export class CertificatVechiComponent implements OnInit {
       this.loading = false;
     });
   return;
-
-
-    // this._memService.getCertificatMembru(localStorage.getItem('currentMemId'))
-    //   .subscribe(data => {
-    //     if (data.result === '12') {
-    //       this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-    //       this._router.navigate(['/login']);
-    //     } else {
-    //       this.formData = data;
-    //       // this.sortDlp();
-    //       this.loading = false;
-    //       this.tipCert = data.tip_cert;
-    //       // this.toFormGroupTest();
-    //     }
-    //   });
   }
 
   print(pag: number): void {
     const nativeWindow = window;
-    let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
-    urlRoot = urlRoot + localStorage.getItem('userToken');
+    this.genPDFAddress = this.genPDFAddress + localStorage.getItem('userToken');
     if (pag === 1) {
-      urlRoot = urlRoot + '&actiune=fata';
+      this.genPDFAddress = this.genPDFAddress + '&actiune=fata';
     } else {
-      urlRoot = urlRoot + '&actiune=spate';
+      this.genPDFAddress = this.genPDFAddress + '&actiune=spate';
     }
-    urlRoot = urlRoot + '&id=' + this.certificatId; // TODO: de gasit ID
-    nativeWindow.open(urlRoot);
+    this.genPDFAddress = this.genPDFAddress + '&id=' + this.certificatId; // TODO: de gasit ID
+    nativeWindow.open(this.genPDFAddress);
   }
 }
