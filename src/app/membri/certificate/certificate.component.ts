@@ -33,6 +33,7 @@ export class CertificateComponent implements OnInit {
     this.getFormData();
     CertificateComponent._formDataChanged
       .subscribe(result => {
+        this.setForm('init');
         this.getFormData();
       });
   }

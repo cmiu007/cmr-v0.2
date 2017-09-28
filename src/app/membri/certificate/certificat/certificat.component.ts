@@ -8,6 +8,7 @@ import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
+import { CertificateComponent } from '../certificate.component';
 
 @Component({
   selector: 'app-certificat',
@@ -34,6 +35,7 @@ export class CertificatComponent implements OnInit {
   certificatForm;
   loading = false;
   showCertDetails = false;
+  certificatId: number;
 
   constructor(
     private _formSet: FormSetService,
@@ -54,6 +56,7 @@ export class CertificatComponent implements OnInit {
   }
 
   private setFormStatus(): void {
+    this.certificatId = this.certificatForm.get('id_certificat').value;
     let dataStart: Date = null;
     let dataEnd: Date = null;
     const dataStartVal = this.certificatForm.get('data_start').value;
@@ -66,25 +69,29 @@ export class CertificatComponent implements OnInit {
     }
     if (dataStartVal === null && dataEndVal === null) {
       this.itemStatus = 'Nou';
+      this.certificatForm.get('data_start').setValue(this._dataCal.today());
+      this.certificatForm.get('id_mem').setValue(+localStorage.getItem('currentMemId'));
       this._setAddBtn.setStatus(false);
       return;
     }
     if (this._dataCal.isInThePast(dataStart) && dataEnd !== null) {
       this.itemStatus = 'Inactiv';
       this.itemName = 'valid de la ' + this._dataCal.dateToString(dataStart) + ' pana la ' + this._dataCal.dateToString(dataEnd);
-      this._setAddBtn.setStatus(false);
+      this.certificatForm.disable();
       return;
     }
-    if (this._dataCal.isInTheFuture(dataStart) && dataEnd === null) {
-      this.itemStatus = 'In Lucru';
-      // TODO: disable add daca avem un certificat in lucru
-      // CertificateListaComponent.
-      this._setAddBtn.setStatus(false);
-      return;
-    }
+    // if (this._dataCal.isInTheFuture(dataStart) && dataEnd === null) {
+    //   this.itemStatus = 'In Lucru';
+    //   // TODO: disable add daca avem un certificat in lucru
+    //   // CertificateListaComponent.
+    //   this._setAddBtn.setStatus(false);
+    //   return;
+    // }
     if (this._dataCal.isInThePast(dataStart) && dataEnd === null) {
       this.itemStatus = 'Activ';
       this.itemName = 'valid de la ' + this._dataCal.dateToString(dataStart);
+      this.certificatForm.get('data_start').disable();
+      this._setAddBtn.setStatus(false);
       return;
     }
   }
@@ -97,37 +104,35 @@ export class CertificatComponent implements OnInit {
 
   onClickCert(): void {
     if (this.certificatForm.invalid) {
+      console.log(this.certificatForm);
       this._snackBar.showSnackBar('Formular Invalid');
-      console.log(this.certificatForm.value);
       return;
     }
     this.loading = true;
+    this.certificatForm.get('data_start').enable();
     const data = this.certificatForm.value as Certificat;
     const idItem = data.id_certificat;
-    console.log(data);
     if (this.itemStatus !== 'Nou') {
       this._apiData.apiModifica('certificat', idItem, data)
         .subscribe((response: ApiData) => {
-          console.log(response);
           if (response.status === 0) {
             return;
           }
           this.loading = false;
-          // TODO: reload lista avizari
-          // AvizariComponent._formDataChanged.next();
+          CertificateComponent._formDataChanged.next();
         });
       this.loading = false;
       return;
     }
-    // this._apiData.apiAdauga('certificat', data);
+    delete data.id_certificat;
+    data.data_invalidare = null;
     this._apiData.apiAdauga('certificat', data)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
           return;
         }
         this.loading = false;
-        // TODO: reload lista avizari
-        // AvizariComponent._formDataChanged.next();
+        CertificateComponent._formDataChanged.next();
       });
     // TODO: data invalidari nu poate fi mai mica ca data start
   }

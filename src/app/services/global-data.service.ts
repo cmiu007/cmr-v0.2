@@ -11,6 +11,7 @@ export class GlobalDataService {
 
   shareObj: SharedObj = {
     'apiAdress': 'https://devel-api.cmr.ro/',
+    'genPDFAddress': 'https://test-rm.cmr.ro/assets/'
     // 'userName': '',
     // 'userGroup': '',
     // 'activeMember': ''
