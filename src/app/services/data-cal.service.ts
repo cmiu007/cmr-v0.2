@@ -9,6 +9,12 @@ export class DataCalService {
     return new Date(data);
   }
 
+  today(): string {
+    const now = new Date(Date.now());
+    const today = this.dateToString(now);
+    return today;
+  }
+
   dateToString (data: Date): string {
     const year = data.getFullYear().toString();
     let month = (data.getMonth() + 1).toString();

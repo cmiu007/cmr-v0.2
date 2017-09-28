@@ -4,12 +4,12 @@
 
       <md-menu #memMenu="mdMenu">
           <button md-menu-item (click)="onClickMem('datepersonale')">Date personale</button>
-          <button md-menu-item (click)="onClickMem('cpp')">Pregatire postuniv</button>
+          <button md-menu-item (click)="onClickMem('cpp')">Pregătire postuniv</button>
           <button md-menu-item (click)="onClickMem('contact')">Date contact</button>
           <hr>
-          <button md-menu-item (click)="onClickMem('avizari')">Avizari</button>
+          <button md-menu-item (click)="onClickMem('certificate')">Certificate</button>
           <hr>
-          <button md-menu-item (click)="onClickMem('certificate')">Certificat</button>
+          <button md-menu-item (click)="onClickMem('avizari')">Avizări</button>
       </md-menu>
 
   <span class="titluPagina">{{currentPage}}</span>
@@ -20,7 +20,7 @@
 
     <md-menu #headerMenu="mdMenu">
       <button md-menu-item [routerLink]="['/login']">Terminare sesiune</button>
-      <button md-menu-item>Schimba parola</button>
+      <button md-menu-item>Schimbă parola</button>
       <hr>
       <button md-menu-item>Ajutor</button>
     </md-menu>
