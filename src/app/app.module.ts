@@ -43,6 +43,7 @@ import { JudetResolve } from './shared/resolvers/judet.resolver';
 import { TaraResolve } from './shared/resolvers/tara.resolver';
 import { FacResolve } from './shared/resolvers/fac.resolver';
 import { AsiguratoriResolve } from './shared/resolvers/asigurator.resolver';
+import { TitluriResolve } from './shared/resolvers/titluri.resolver';
 import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
 import { AvizariListComponent } from './membri/avizari/avizari-list/avizari-list.component';
@@ -60,6 +61,9 @@ import { CertificateListaComponent } from './membri/certificate/certificate-list
 import { IsAddActiveService } from './services/is-add-active.service';
 import { AsigurariComponent } from './membri/asigurari/asigurari.component';
 import { CertificatVechiComponent } from './membri/certificate/certificat-vechi/certificat-vechi.component';
+import { TitluriProfesionaleComponent } from './membri/titluri-profesionale/titluri-profesionale.component';
+import { TitluriProfesionaleListaComponent } from './membri/titluri-profesionale/titluri-profesionale-lista/titluri-profesionale-lista.component';
+import { TitluProfesionalComponent } from './membri/titluri-profesionale/titlu-profesional/titlu-profesional.component';
 
 
 @NgModule({
@@ -89,7 +93,10 @@ import { CertificatVechiComponent } from './membri/certificate/certificat-vechi/
     CertificatComponent,
     CertificateListaComponent,
     AsigurariComponent,
-    CertificatVechiComponent
+    CertificatVechiComponent,
+    TitluriProfesionaleComponent,
+    TitluriProfesionaleListaComponent,
+    TitluProfesionalComponent
   ],
   imports: [
     BrowserModule,
@@ -117,6 +124,7 @@ import { CertificatVechiComponent } from './membri/certificate/certificat-vechi/
     TaraResolve,
     FacResolve,
     AsiguratoriResolve,
+    TitluriResolve,
     FormValidatorsService,
     FormSetService,
     DataCalService,

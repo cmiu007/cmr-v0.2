@@ -147,7 +147,6 @@ export class AvizareComponent implements OnInit {
     delete data.status;
     // data.status = 9;
     // delete data.id_certificat;
-    console.log(data);
     if (this.formStatus !== 0) {
       this._apiData.apiModifica('dlp', idItem, data)
         .subscribe((response: ApiData) => {

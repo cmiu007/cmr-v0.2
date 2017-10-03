@@ -104,7 +104,6 @@ export class CertificatComponent implements OnInit {
 
   onClickCert(): void {
     if (this.certificatForm.invalid) {
-      console.log(this.certificatForm);
       this._snackBar.showSnackBar('Formular Invalid');
       return;
     }

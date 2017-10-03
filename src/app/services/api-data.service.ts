@@ -107,6 +107,7 @@ export class ApiDataService {
 
   private checkApiResponse(response): number {
     if (response === null) {
+      this._snackBarService.showSnackBar('A aparut o eroare la conectarea cu serverul');
       return 0;
     }
     switch (response.result) {

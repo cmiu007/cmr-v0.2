@@ -1,0 +1,12 @@
+
+<div *ngFor="let titulData of titluriForm.get('titluri').value; let i = index ">
+  <app-titlu-profesional [arrayIndex]="i" [titluriForm]="titluriForm" [regFacultati]="regFacultati" [regTitluri]="regTitluri" ></app-titlu-profesional>
+</div>
+
+<md-card *ngIf="isAddActive">
+    <md-card-content style="text-align: center;">
+      <button type="button" *ngIf="!loading" md-raised-button (click)="addTitlu()" color="primary">
+                Adauga Titlu Profesional
+                </button>
+    </md-card-content>
+  </md-card>

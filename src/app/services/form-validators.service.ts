@@ -28,7 +28,7 @@ export class FormValidatorsService {
 
   checkDate(control: FormGroup): { [s: string]: boolean } {
     // check if null pt cazul in care nu este required
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const validateDateISO =
@@ -37,7 +37,7 @@ export class FormValidatorsService {
   }
 
   isInTheFuture(control: FormGroup): { [s: string]: boolean } {
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const now = new Date(Date.now());
@@ -49,7 +49,7 @@ export class FormValidatorsService {
   }
 
   isInThePast(control: FormGroup): { [s: string]: boolean } {
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const now = new Date(Date.now());

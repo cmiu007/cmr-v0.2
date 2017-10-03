@@ -1,0 +1,12 @@
+<app-header></app-header>
+<div class="content">
+  <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+  <div class="row">
+    <md-card>
+      <md-card-title class="form-title"><span>Titluri Profesionale</span></md-card-title>
+    </md-card>
+  </div>
+  <div *ngIf="!loading">
+    <app-titluri-profesionale-lista [titluriForm]="titluriForm" ></app-titluri-profesionale-lista>
+  </div>
+</div>

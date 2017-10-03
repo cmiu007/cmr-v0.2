@@ -9,6 +9,7 @@ import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
 import { Cpp } from '../shared/interfaces/cpps.interface';
 import { Certificat } from '../shared/interfaces/certificate.interface';
 import { AlertSnackbarService } from './alert-snackbar.service';
+import { Titlu } from '../shared/interfaces/titluri.interfacet';
 
 @Injectable()
 export class FormSetService {
@@ -218,6 +219,44 @@ export class FormSetService {
     }
     return formGroupEmpty;
     // aici initializare form nou
+  }
+
+
+  titluri(actiune: string, data?: Titlu, form?: FormGroup): FormGroup {
+    const  formGroupEmpty = this._fb.group({
+      'id_cdu': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [this._validator.checkIfNumber]],
+      'reg_titlu_id': [null, [this._validator.checkIfNumber]],
+      'reg_facultate_id': [null, [this._validator.checkIfNumber]],
+      'data_start': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
+      'data_end': ['', [this._validator.checkDate]]
+    });
+    if (data) {
+      data = this.cleanData(data);
+    }
+    switch (actiune) {
+      case 'initForm':
+        const formGroup = this._fb.group({
+          titluri: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'add':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      case 'newTitlu':
+        return formGroupEmpty;
+
+      case 'titlu':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      default:
+        this._snackBar.showSnackBar('setFormService titluri: Actiune Invalida');
+        break;
+    }
   }
 
   certificate(actiune: string, data?: Certificat, form?: FormGroup): FormGroup {
