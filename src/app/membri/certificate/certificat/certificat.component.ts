@@ -122,6 +122,7 @@ export class CertificatComponent implements OnInit {
           CertificateComponent._formDataChanged.next();
         });
       this.loading = false;
+      CertificateComponent._formDataChanged.next();
       return;
     }
     delete data.id_certificat;

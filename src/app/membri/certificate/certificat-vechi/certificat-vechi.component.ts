@@ -22,6 +22,7 @@ export class CertificatVechiComponent implements OnInit {
   printActive = false;
   tipCert = '';
   genPDFAddress = '';
+  memId = localStorage.getItem('currentMemId');
 
   constructor(
     private _router: Router,
@@ -57,11 +58,12 @@ export class CertificatVechiComponent implements OnInit {
     let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
     if (pag === 1) {
       url = url + '&actiune=fata';
+      url = url + '&id=' + this.certificatId; // TODO: de gasit ID
+      nativeWindow.open(url);
     } else {
-      url = url + '&actiune=spate';
+      // url = url + '&actiune=spate';
+      this._router.navigate(['/membri/' + this.memId + '/avizari']);
+      return;
     }
-    url = url + '&id=' + this.certificatId; // TODO: de gasit ID
-    console.log(url);
-    nativeWindow.open(url);
   }
 }

@@ -185,31 +185,19 @@ export class FormSetService {
   }
 
   avizare(data: Avizare) {
-    // de rescris ca si asigurare
-    if (data) {
-      if (data.id_dlp) {
-        const formGroup = this._fb.group({
-          'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
-          // 'id_certificat': number;
-          'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
-          'inchis': [data.inchis], // de schimbat denumirea in activ
-          'dlp_data_start': [data.dlp_data_start, [Validators.required, this._validator.checkDate]],
-          'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
-          // TODO: add asigurari array
-        });
-        data = this.cleanData(data);
-        formGroup.patchValue(data);
-        return formGroup;
-      }
-    }
     const formGroupEmpty = this._fb.group({
-      'id_dlp': null, // TODO: nu merge initializarea cu null asa cum trebuie
-      // 'id_certificat': number;
-      'id_mem': [+localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
-      'inchis': [null], // de schimbat denumirea in activ
+      'id_dlp': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
+      'inchis': [null, [this._validator.checkIfNumber]], // de schimbat denumirea in activ
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
-      'dlp_data_end': ['', [this._validator.checkDate]]
+      'dlp_data_end': ['', [Validators.required, this._validator.checkDate]],
+      'status': [null, [this._validator.checkIfNumber]],
+      'id_certificat': [null, [this._validator.checkIfNumber]]
     });
+    if (data) {
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
+    }
     return formGroupEmpty;
   }
 

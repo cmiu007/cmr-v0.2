@@ -10,6 +10,8 @@ export interface Certificat {
   'reg_cert_id': number;
   'continut': CertificatContinut;
   'cod_qr': string;
+  'status': string;
+  'comentarii': string;
 }
 
 export interface CertificatContinut {
@@ -21,12 +23,11 @@ export interface CertificatContinut {
   'facultate': string;
   'promotie': number;
   'dipl_serie': string;
+  'dipl_nr': string;
   'data_cert': string;
   'data_juramant': string;
   'specialitati': CertSpecialitate[];
   'superspecialitate': CertSuperSpec[];
-  'asigurare': CertAsig[];
-  'cpp': CertCpp[];
 }
 
 export interface CertSpecialitate {
@@ -39,23 +40,4 @@ export interface CertSuperSpec {
   'gr_prof': string;
 }
 
-export interface CertAsig {
-  'asigurator': string;
-  'polita_serie': string;
-  'polita_nr': string;
-  'data_start': string;
-  'data_end': string;
-}
-
-export interface CertCpp {
-  'tip': number;
-  '0': number;
-  'date_start': string;
-  '1': string;
-  'date_end': string;
-  '2': string;
-  'specialitate': string;
-  '3': string;
-  'grad': string;
-  '4': string;
-}
+// TODO: de adaugta lista DLP?

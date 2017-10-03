@@ -14,6 +14,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { AvizariComponent } from '../avizari.component';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
+import { GlobalDataService } from '../../../services/global-data.service';
 
 @Component({
   selector: 'app-avizare',
@@ -43,11 +44,13 @@ export class AvizareComponent implements OnInit {
   avizareForm: FormGroup;
   formTitleStyle;
   loading = false;
+  memId = localStorage.getItem('currentMemId');
 
   asigurariLoading = false;
   amAsigurariData = false;
   asigurariFormData: Asigurare[];
   asigurareFormArray: FormArray;
+  genPDFAddress = '';
 
   filteredAsigurator;
 
@@ -57,8 +60,11 @@ export class AvizareComponent implements OnInit {
     private _dataCal: DataCalService,
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _setAddBtn: IsAddActiveService
-  ) { }
+    private _setAddBtn: IsAddActiveService,
+    private _globalVars: GlobalDataService
+  ) {
+    this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+  }
 
   ngOnInit() {
     const a = this.formAvizari.get('avizari') as FormArray;
@@ -85,7 +91,7 @@ export class AvizareComponent implements OnInit {
     const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
     const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
     if (this._dataCal.isInTheFuture(dataStart)) {
-      this.itemStatus = 'Draft ';
+      this.itemStatus = 'Noua';
       this.formStatus = 1;
       this._setAddBtn.setStatus(false);
       this.onClickAsigurare();
@@ -115,7 +121,8 @@ export class AvizareComponent implements OnInit {
   }
 
   setForm(): void {
-    if (this.formStatus === 2 || this.formStatus === 3) {
+    this.avizareForm.get('id_mem').setValue(this.memId);
+    if (this.formStatus === 3) {
       Object.keys(this.avizareForm.controls).forEach(
         key => {
           this.avizareForm.get(key).disable();
@@ -137,6 +144,8 @@ export class AvizareComponent implements OnInit {
     delete data.id_dlp;
     delete data.inchis;
     delete data.asigurare;
+    delete data.status;
+    // delete data.id_certificat;
     console.log(data);
     if (this.formStatus !== 0) {
       this._apiData.apiModifica('dlp', idItem, data)
@@ -147,7 +156,7 @@ export class AvizareComponent implements OnInit {
           this.loading = false;
           AvizariComponent._formDataChanged.next();
         });
-        return;
+      return;
     }
     this._apiData.apiAdauga('dlp', data)
       .subscribe((response: ApiData) => {
@@ -168,6 +177,14 @@ export class AvizareComponent implements OnInit {
     this.getAsigurariData();
     this.isListaAsigurariHidden = !this.isListaAsigurariHidden;
     this.amAsigurariData = true;
+  }
+
+  printAvizare() {
+    const nativeWindow = window;
+    const certificatId = this.avizareForm.get('id_certificat').value;
+    let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
+    url = url + '&actiune=spate&id=' + certificatId;
+    nativeWindow.open(url);
   }
 
   getAsigurariData(): void {
@@ -212,7 +229,7 @@ export class AvizareComponent implements OnInit {
     const control = <FormArray>this.formAvizari.controls['avizari'];
     control.removeAt(0);
     // show add again
-   this._setAddBtn.setStatus(true);
+    this._setAddBtn.setStatus(true);
   }
 
   onClickDetali(): void {
