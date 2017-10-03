@@ -10,7 +10,7 @@ export interface Certificat {
   'reg_cert_id': number;
   'continut': CertificatContinut;
   'cod_qr': string;
-  'status': string;
+  'status': number;
   'comentarii': string;
 }
 

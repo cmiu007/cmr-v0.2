@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { FormGroup, FormArray } from '@angular/forms';
-import { Titluri, Titlu } from '../../shared/interfaces/titluri.interfacet';
+import { Titluri, Titlu } from '../../shared/interfaces/titluri.interface';
 import { ApiDataService } from '../../services/api-data.service';
 import { FormSetService } from '../../services/form-set.service';
 import { ApiData } from '../../shared/interfaces/message.interface';

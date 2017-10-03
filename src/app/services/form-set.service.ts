@@ -9,7 +9,7 @@ import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
 import { Cpp } from '../shared/interfaces/cpps.interface';
 import { Certificat } from '../shared/interfaces/certificate.interface';
 import { AlertSnackbarService } from './alert-snackbar.service';
-import { Titlu } from '../shared/interfaces/titluri.interfacet';
+import { Titlu } from '../shared/interfaces/titluri.interface';
 
 @Injectable()
 export class FormSetService {
