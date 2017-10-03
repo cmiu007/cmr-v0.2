@@ -145,6 +145,7 @@ export class AvizareComponent implements OnInit {
     delete data.inchis;
     delete data.asigurare;
     delete data.status;
+    // data.status = 9;
     // delete data.id_certificat;
     console.log(data);
     if (this.formStatus !== 0) {
