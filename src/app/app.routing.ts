@@ -18,6 +18,8 @@ import { ReflectorComponent } from './shared/reflector/reflector.component';
 import { AvizariComponent } from './membri/avizari/avizari.component';
 import { FacResolve } from './shared/resolvers/fac.resolver';
 import { CertificateComponent } from './membri/certificate/certificate.component';
+import { TitluriProfesionaleComponent } from './membri/titluri-profesionale/titluri-profesionale.component';
+import { TitluriResolve } from './shared/resolvers/titluri.resolver';
 
 
 const appRoutes: Routes = [
@@ -28,6 +30,7 @@ const appRoutes: Routes = [
     {path: ':id/datepersonale', component: DatePersonaleComponent,
         resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },
     {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
+    {path: ':id/titluri-profesionale', component: TitluriProfesionaleComponent, resolve: {regFac: FacResolve, regTitluri: TitluriResolve} },
     {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
     {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }},
     {path: ':id/certificate', component: CertificateComponent}

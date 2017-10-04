@@ -1,0 +1,44 @@
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<form [formGroup]="titluForm">
+
+  <md-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Titlu de ex: Profesor Doctor</mat-panel-title>
+      <mat-panel-description>de la 2017-01-01</mat-panel-description>
+    </mat-expansion-panel-header>
+    <section>
+
+
+      <md-form-field class="column">
+        <input mdInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [mdAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" >
+      </md-form-field>
+
+      <md-form-field class="column">
+        <input mdInput placeholder="Facultate" type="text" formControlName="reg_facultate_id" [mdAutocomplete]="facAuto" (click)="titluForm.get('reg_facultate_id').setValue('')">
+      </md-form-field>
+
+      <div class="column"></div>
+
+      <md-form-field class="column">
+        <input mdInput placeholder="Start date" type="text" formControlName="data_start">
+      </md-form-field>
+
+      <md-form-field class="column">
+        <input mdInput placeholder="End date" type="text" formControlName="data_end">
+      </md-form-field>
+    </section>
+
+    <md-autocomplete #tipAuto="mdAutocomplete" [displayWith]="displayFnTitlu.bind(this)">
+      <md-option *ngFor="let titlu of filteredTitluri | async" [value]="titlu.id">
+        {{titlu.nume}}
+      </md-option>
+    </md-autocomplete>
+
+    <md-autocomplete #facAuto="mdAutocomplete" [displayWith]="displayFnFacultate.bind(this)">
+      <md-option *ngFor="let fac of filteredFacultati | async" [value]="fac.id">
+        {{fac.nume}}
+      </md-option>
+    </md-autocomplete>
+
+  </md-expansion-panel>
+</form>

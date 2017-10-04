@@ -55,6 +55,7 @@ export class ApiDataService {
   apiAdauga(actiune: string, data: any) {
     return this._http.put(this.apiAddress + 'api/adauga', this.setApiAdaugaData(actiune, data))
       .map((response: Response) => {
+        console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: dataApi, status: status };
@@ -106,6 +107,7 @@ export class ApiDataService {
 
   private checkApiResponse(response): number {
     if (response === null) {
+      this._snackBarService.showSnackBar('A aparut o eroare la conectarea cu serverul');
       return 0;
     }
     switch (response.result) {
@@ -116,6 +118,10 @@ export class ApiDataService {
       case '00':
         this._snackBarService.showSnackBar(response.mesaj);
         return 1;
+
+      case '14':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
 
       default:
         break;

@@ -10,7 +10,7 @@
 </div>
 <br>
 <div *ngIf="addActive"  class="row">
-  <div style="text-align: center;" *ngIf="formStatus === 0 || formStatus === 1">
+  <div style="text-align: center;" *ngIf="formStatus === 1 || formStatus === 2">
     <button type="button" *ngIf="!loading" md-raised-button (click)="addAsigurare()" color="primary">
       Adauga Asigurare
     </button>

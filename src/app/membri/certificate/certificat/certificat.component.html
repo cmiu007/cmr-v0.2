@@ -17,7 +17,7 @@
         <button type="submit" md-raised-button (click)="onClickCert()" color="primary">
         {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
       </div>
-      <div class="column" *ngIf="itemStatus === 'Activ'">
+      <div class="column" *ngIf="itemStatus !== 'Nou' ">
         <button type="button" md-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
         Detalii</button>
       </div>

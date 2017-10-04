@@ -28,7 +28,7 @@ export class FormValidatorsService {
 
   checkDate(control: FormGroup): { [s: string]: boolean } {
     // check if null pt cazul in care nu este required
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const validateDateISO =
@@ -37,27 +37,42 @@ export class FormValidatorsService {
   }
 
   isInTheFuture(control: FormGroup): { [s: string]: boolean } {
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const now = new Date(Date.now());
     const date = new Date(control.value);
-    if (date > now ) {
+    if ( +date.getDate() > +now.getDate() ) {
       return { 'isInTheFuture': true};
     }
     return null;
   }
 
   isInThePast(control: FormGroup): { [s: string]: boolean } {
-    if (control.value === null) {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const now = new Date(Date.now());
+    now.setHours(0, 0, 0, 0);
     const date = new Date(control.value);
-    if (date < now ) {
+    if ( +date.getDate() < +now.getDate() ) {
       return {'isInThePast': true} ;
     }
     return null;
+  }
+
+  isToday(control: FormGroup): { [s: string]: boolean } {
+    if (control.value === null || control.value === '') {
+      return null;
+    }
+    const now = new Date(Date.now());
+    now.setHours(3, 0, 0, 0);
+    console.log(control.value);
+    const date = new Date(control.value);
+    if ( +date.getDate() === +now.getDate() ) {
+      return null;
+    }
+    return {'isNotToday': true} ;
   }
 
   checkAnPromotie(control: FormGroup): { [s: string]: boolean } {

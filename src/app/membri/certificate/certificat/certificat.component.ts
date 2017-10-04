@@ -104,7 +104,6 @@ export class CertificatComponent implements OnInit {
 
   onClickCert(): void {
     if (this.certificatForm.invalid) {
-      console.log(this.certificatForm);
       this._snackBar.showSnackBar('Formular Invalid');
       return;
     }
@@ -112,6 +111,7 @@ export class CertificatComponent implements OnInit {
     this.certificatForm.get('data_start').enable();
     const data = this.certificatForm.value as Certificat;
     const idItem = data.id_certificat;
+    // data.status = 99;
     if (this.itemStatus !== 'Nou') {
       this._apiData.apiModifica('certificat', idItem, data)
         .subscribe((response: ApiData) => {
@@ -122,6 +122,7 @@ export class CertificatComponent implements OnInit {
           CertificateComponent._formDataChanged.next();
         });
       this.loading = false;
+      CertificateComponent._formDataChanged.next();
       return;
     }
     delete data.id_certificat;

@@ -17,7 +17,8 @@
       </md-option>
     </md-autocomplete>
 
-    <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2">
+    <!-- <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2"> -->
+    <div class="row" style="text-align: center;">
       <button type="submit" md-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty">
             {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} asigurare
           </button>

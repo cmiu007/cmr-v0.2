@@ -1,6 +1,6 @@
 <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <form [formGroup]="avizareForm">
-  <md-expansion-panel [expanded]="formStatus === 1 || formStatus === 2" (click)="onClickAsigurare()">
+  <md-expansion-panel [expanded]="formStatus === 0 || formStatus === 1" (click)="onClickAsigurare()">
     <mat-expansion-panel-header>
       <md-panel-title>
         {{itemName}}
@@ -13,9 +13,12 @@
       <md-form-field class="column"><input required type="text" placeholder="Data start" mdInput formControlName="dlp_data_start" (blur)="addDlpDateEnd()"></md-form-field>
       <md-form-field class="column"><input type="text" placeholder="Data end" mdInput formControlName="dlp_data_end"></md-form-field>
       <div class="column"></div>
-      <div class="column" *ngIf="formStatus === 1 || formStatus === 0">
+      <div class="column" *ngIf="formStatus === 0 || formStatus === 2">
         <button type="submit" md-raised-button (click)="onClickAvizare()" color="primary" [disabled]="!avizareForm.dirty">
         {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} avizare</button>
+      </div>
+      <div class="column" *ngIf="formStatus !== 0">
+          <button type="button" md-raised-button (click)="printAvizare()" color="primary">Printează</button>
       </div>
       <div class="column" *ngIf="formStatus === 0">
         <button type="button" md-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>

@@ -6,3 +6,15 @@
 .item-title {
   font-size: 1.4em;
 }
+
+section .column:nth-child(1) {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 15px;
+}
+
+section .column:nth-child(2) {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 15px;
+}

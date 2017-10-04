@@ -9,6 +9,7 @@ import { DatePersonale } from '../shared/interfaces/datepersonale.interface';
 import { Cpp } from '../shared/interfaces/cpps.interface';
 import { Certificat } from '../shared/interfaces/certificate.interface';
 import { AlertSnackbarService } from './alert-snackbar.service';
+import { Titlu } from '../shared/interfaces/titluri.interface';
 
 @Injectable()
 export class FormSetService {
@@ -185,31 +186,19 @@ export class FormSetService {
   }
 
   avizare(data: Avizare) {
-    // de rescris ca si asigurare
-    if (data) {
-      if (data.id_dlp) {
-        const formGroup = this._fb.group({
-          'id_dlp': [data.id_dlp, [Validators.required, this._validator.checkIfNumber]],
-          // 'id_certificat': number;
-          'id_mem': [data.id_mem, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
-          'inchis': [data.inchis], // de schimbat denumirea in activ
-          'dlp_data_start': [data.dlp_data_start, [Validators.required, this._validator.checkDate]],
-          'dlp_data_end': [data.dlp_data_end, [Validators.required, this._validator.checkDate]]
-          // TODO: add asigurari array
-        });
-        data = this.cleanData(data);
-        formGroup.patchValue(data);
-        return formGroup;
-      }
-    }
     const formGroupEmpty = this._fb.group({
-      'id_dlp': null, // TODO: nu merge initializarea cu null asa cum trebuie
-      // 'id_certificat': number;
-      'id_mem': [+localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
-      'inchis': [null], // de schimbat denumirea in activ
+      'id_dlp': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
+      'inchis': [null, [this._validator.checkIfNumber]], // de schimbat denumirea in activ
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
-      'dlp_data_end': ['', [this._validator.checkDate]]
+      'dlp_data_end': ['', [Validators.required, this._validator.checkDate]],
+      'status': [null, [this._validator.checkIfNumber]],
+      'id_certificat': [null, [this._validator.checkIfNumber]]
     });
+    if (data) {
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
+    }
     return formGroupEmpty;
   }
 
@@ -232,11 +221,49 @@ export class FormSetService {
     // aici initializare form nou
   }
 
+
+  titluri(actiune: string, data?: Titlu, form?: FormGroup): FormGroup {
+    const  formGroupEmpty = this._fb.group({
+      'id_cdu': [null, [this._validator.checkIfNumber]],
+      'id_mem': [null, [this._validator.checkIfNumber]],
+      'reg_titlu_id': [null, [this._validator.checkIfNumber]],
+      'reg_facultate_id': [null, [this._validator.checkIfNumber]],
+      'data_start': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
+      'data_end': ['', [this._validator.checkDate]]
+    });
+    if (data) {
+      data = this.cleanData(data);
+    }
+    switch (actiune) {
+      case 'initForm':
+        const formGroup = this._fb.group({
+          titluri: this._fb.array([
+          ])
+        });
+        return formGroup;
+
+      case 'add':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      case 'newTitlu':
+        return formGroupEmpty;
+
+      case 'titlu':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      default:
+        this._snackBar.showSnackBar('setFormService titluri: Actiune Invalida');
+        break;
+    }
+  }
+
   certificate(actiune: string, data?: Certificat, form?: FormGroup): FormGroup {
     const formGroupEmpty = this._fb.group({
       'id_certificat': [null, [this._validator.checkIfNumber]],
       'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
-      'data_start': [null, [Validators.required, this._validator.checkDate]],
+      'data_start': [null, [Validators.required, this._validator.checkDate, this._validator.isToday]],
       'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
       'reg_cert_id': [null, [this._validator.checkIfNumber]],
       'cod_qr': [null],
