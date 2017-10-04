@@ -66,7 +66,7 @@ export class AsigurareComponent implements OnInit {
       this.parentFormStatus = 1;
     } else {
       if (this._dataCal.isInTheFuture(dataEnd)) {
-        this.parentFormStatus = 2;
+        this.parentFormStatus = 1;
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {
           this.parentFormStatus = 3;

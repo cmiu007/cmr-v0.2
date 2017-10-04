@@ -99,7 +99,7 @@ export class AvizareComponent implements OnInit {
       if (this._dataCal.isInTheFuture(dataEnd)) {
         this.itemStatus = 'Activa ';
         this.formTitleStyle = ['active'];
-        this.formStatus = 2;
+        this.formStatus = 1;
         this.onClickAsigurare();
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {

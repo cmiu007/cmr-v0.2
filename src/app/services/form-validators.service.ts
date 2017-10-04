@@ -42,7 +42,7 @@ export class FormValidatorsService {
     }
     const now = new Date(Date.now());
     const date = new Date(control.value);
-    if (date > now ) {
+    if ( +date.getDate() > +now.getDate() ) {
       return { 'isInTheFuture': true};
     }
     return null;
@@ -53,11 +53,26 @@ export class FormValidatorsService {
       return null;
     }
     const now = new Date(Date.now());
+    now.setHours(0, 0, 0, 0);
     const date = new Date(control.value);
-    if (date < now ) {
+    if ( +date.getDate() < +now.getDate() ) {
       return {'isInThePast': true} ;
     }
     return null;
+  }
+
+  isToday(control: FormGroup): { [s: string]: boolean } {
+    if (control.value === null || control.value === '') {
+      return null;
+    }
+    const now = new Date(Date.now());
+    now.setHours(3, 0, 0, 0);
+    console.log(control.value);
+    const date = new Date(control.value);
+    if ( +date.getDate() === +now.getDate() ) {
+      return null;
+    }
+    return {'isNotToday': true} ;
   }
 
   checkAnPromotie(control: FormGroup): { [s: string]: boolean } {
