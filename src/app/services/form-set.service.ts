@@ -229,7 +229,7 @@ export class FormSetService {
       'reg_titlu_id': [null, [this._validator.checkIfNumber]],
       'reg_facultate_id': [null, [this._validator.checkIfNumber]],
       'data_start': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
-      'data_end': ['', [this._validator.checkDate]]
+      'data_end': ['', [this._validator.checkDate, this._validator.isInTheFuture]]
     });
     if (data) {
       data = this.cleanData(data);

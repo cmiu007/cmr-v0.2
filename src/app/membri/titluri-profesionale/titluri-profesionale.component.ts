@@ -102,6 +102,15 @@ export class TitluriProfesionaleComponent implements OnInit {
       'status': 0,
       'data_start': '2017-01-01',
       'data_end': ''
+    },
+    {
+      'id_cdu': 3,
+      'id_mem': memId,
+      'reg_titlu_id': 9,
+      'reg_facultate_id': 11,
+      'status': 0,
+      'data_start': '2017-01-01',
+      'data_end': '2018-01-01'
     }];
     this.titluriData = temp;
     this.setForm('populate', this.titluriData);

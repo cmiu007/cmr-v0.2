@@ -34,6 +34,9 @@ export class TitluProfesionalComponent implements OnInit {
   // 2 - Activ - produce efecte
   // 3 - Inactiv
   itemTip;
+  itemTitlu;
+  itemSubtitlu;
+  univ = true;
 
   constructor(
     private _formSet: FormSetService,
@@ -56,6 +59,49 @@ export class TitluProfesionalComponent implements OnInit {
     //    - din registru tip titlu
     //    - input user pt nou
 
+    // este un formular nou? nu are data de start
+    if (!this.titluForm.get('data_start').value) {
+      this.itemTitlu = 'Titlu Profesional Nou';
+      this.itemStatus = 'Nou';
+      return;
+    }
+
+    if (!this.titluForm.get('data_end').value) {
+      this.itemStatus = 'Activ';
+      this.itemSubtitlu = 'incepand cu data: ' + this.titluForm.get('data_start').value.toString();
+      console.log(this.itemSubtitlu);
+      this.titluForm.disable();
+      this.titluForm.get('data_end').enable();
+    }
+
+    if (this.titluForm.get('data_end').value) {
+      this.titluForm.disable();
+      this.itemStatus = 'Inactiv';
+      this.itemSubtitlu = 'Inactiv';
+    }
+
+    const valueTitlu = this.titluForm.get('reg_titlu_id').value;
+    const numeTitlu = this.regTitluri.find(item => item.id === valueTitlu).nume;
+    console.log(numeTitlu);
+    this.itemTitlu = numeTitlu;
+    this.checkTipTitlu();
+  }
+
+  private checkTipTitlu(): void {
+    const valueTitlu = this.titluForm.get('reg_titlu_id').value;
+    if (valueTitlu) {
+      const tipTitlu = this.regTitluri.find(item => item.id === valueTitlu).tip;
+      if (tipTitlu !== 'U') {
+        if (this.itemStatus === 'Inactiv') {
+          this.titluForm.get('reg_facultate_id').disable();
+        } else {
+          this.titluForm.get('reg_facultate_id').enable();
+        }
+        this.univ = true;
+        return;
+      }
+      this.univ = false;
+    }
   }
 
   private setRegistre(): void {
@@ -87,5 +133,9 @@ export class TitluProfesionalComponent implements OnInit {
 
   filterTitlu(nume: string): ItemRegLista[] {
     return this.regTitluri.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+  onSubmit() {
+    console.log(this.titluForm);
   }
 }
