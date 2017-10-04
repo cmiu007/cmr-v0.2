@@ -30,6 +30,7 @@ $actiune = $_REQUEST['actiune'];
 		//echo "</pre>";
 		$numar_cert = $id;
   $data_cert = $rez['data_start'];
+  $id_mem = $rez['id_mem'];
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf/tcpdf.php');
 date_default_timezone_set('Europe/Bucharest');
@@ -149,7 +150,7 @@ class MYPDFC2 extends TCPDF {
 
 // create new PDF document
 if ($actiune == "fata")
-    {
+{
 	switch($rezultat['tip_cert'])
 	{
 		case "A":
@@ -187,7 +188,7 @@ if ($actiune == "fata")
 	//echo "</pre>";
 	//$numar_cert = $reznr['nr'];
 	//$data_cert = timex($reznr['data']);
-    }
+}
 else
 	{
 		switch($rezultat['tip_cert'])
@@ -484,12 +485,12 @@ if ($actiune == "fata")
 else {
 	$data=[
 			'token'		=> $token,
-			'actiune'	=> 'asigurare',
-			'id'    	=> $id,
+			'actiune'	=> 'dlp',
+			'id'    	=> $id_mem,
 		];
 		$url=$url_host."/lista";
 		$data_json = json_encode($data);
-	    $rezultat = call_api($url,$data_json);
+	 $rezultat = call_api($url,$data_json);
 		//echo "<pre>";
 		//print_r($rezultat);
 		//echo "</pre>";
@@ -510,32 +511,54 @@ else {
 		$pdf->SetFont('times', '', 48);
 		$pdf->AddPage();
 		$pdf->SetFont('freeserif', '', 16);
-		$y = 27;
-		foreach ($rezultat as $asig)
+		$y = 0;
+  $dy = 27;
+		foreach ($rezultat as $dlp)
 		{
-			//$y = 25;
-			$url = $url_host."/asig_nume";
-			$data = [ 'id' => $asig['id_asigurator'],];
-			$data_json = json_encode($data);
-			$rez = call_api($url,$data_json);
-			//echo "<pre>";
-			//print_r($rez);
-			//echo "</pre>";
-			$pdf->SetFont('freeserif', '', 9);
-			$pdf->SetXY(24, $y);
-
-			$pdf->SetFillColor(255, 255, 255);
-			$pdf->MultiCell(68, 5, $rez['nume'], 0, 'L', 1, 0, '', '', true);
-			
-			$pdf->SetXY(93, $y+4);
-			$polita = $asig['polita_serie'] . "  " . $asig['polita_nr'];
-			$pdf->Cell(20, 0, $polita, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-			
-			$pdf->SetFont('freeserif', '', 9);
-			$perioada = timex($asig['data_start']). " - " . timex($asig['data_end']);
-			$pdf->SetXY(136, $y+4);
-			$pdf->Cell(20, 0, $perioada, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-			$y += 9;
+   $data = [
+    'token'		=> $token,
+    'actiune'	=> 'asigurare',
+    'id'    	=> $id_mem,
+    'dlp'    => $dlp['id_dlp'],
+   ];
+   $url = $url_host."/lista";
+		 $data_json = json_encode($data);
+	  $rez = call_api($url,$data_json);
+   //echo "<pre>";
+		 //print_r($rez);
+		 //echo "</pre>";
+   foreach ($rez as $asigurare)
+   {
+      $url = $url_host."/asig_nume";
+      //echo "<pre>";
+      //print_r($asigurare);
+      //echo "</pre>";
+      //echo $asigurare['id_asigurator'];
+      $data = [ 'id' => $asigurare['id_asigurator'],];
+      $data_json = json_encode($data);
+      $asi = call_api($url,$data_json);
+      //echo "<pre>";
+      //print_r($asi);
+      //echo "</pre>";
+      $zy = $dy + $y;
+      $pdf->SetFont('freeserif', '', 9);
+      $pdf->SetXY(24, $zy);
+   
+      $pdf->SetFillColor(255, 255, 255);
+      $pdf->MultiCell(68, 5, $asi['nume'], 0, 'L', 1, 0, '', '', true);
+      
+      $pdf->SetXY(93, $zy+4);
+      $polita = $asigurare['polita_serie'] . "  " . $asigurare['polita_nr'];
+      $pdf->Cell(20, 0, $polita, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
+      
+      $pdf->SetFont('freeserif', '', 9);
+      $perioada = timex($asigurare['data_start']). " - " . timex($asigurare['data_end']);
+      $pdf->SetXY(136, $zy+4);
+      $pdf->Cell(20, 0, $perioada, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
+      $y += 9; 
+    
+   }
+			$dy += 31;
 		}
 		
 }
