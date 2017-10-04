@@ -220,9 +220,10 @@ export class DatePersonaleComponent implements OnInit {
     if (controlValid === true) {
       this.reloading = true;
       const cnp = this.formDatePersonale.get('cnp').value;
-      this._apiData.apiLista('list', cnp)
+      this._apiData.apiCautaMembru('list', cnp)
         .subscribe((response: ApiData) => {
           this.reloading = false;
+          console.log(response);
           const cnpResponse = response.data;
           if (cnpResponse.length !== 0) {
             this.formDatePersonale.controls['cnp'].setErrors({ 'isUsed': true });
