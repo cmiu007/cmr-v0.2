@@ -3,19 +3,21 @@
 
   <md-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
     <mat-expansion-panel-header>
-      <mat-panel-title>Titlu de ex: Profesor Doctor</mat-panel-title>
-      <mat-panel-description>de la 2017-01-01</mat-panel-description>
+      <mat-panel-title> <span [ngClass]="{'inactive': itemStatus === 'Inactiv'}">{{ itemTitlu }}</span></mat-panel-title>
+      <mat-panel-description>{{ itemSubtitlu }}</mat-panel-description>
     </mat-expansion-panel-header>
     <section>
 
 
-      <md-form-field class="column">
-        <input mdInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [mdAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" >
+      <md-form-field class="column" [hidden]="!univ">
+        <input mdInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [mdAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" (blur)="checkTipTitlu()" >
       </md-form-field>
 
-      <md-form-field class="column">
+      <md-form-field class="column" *ngIf="!univ">
         <input mdInput placeholder="Facultate" type="text" formControlName="reg_facultate_id" [mdAutocomplete]="facAuto" (click)="titluForm.get('reg_facultate_id').setValue('')">
       </md-form-field>
+
+      <div class="column" *ngIf="univ"></div>
 
       <div class="column"></div>
 
@@ -39,6 +41,12 @@
         {{fac.nume}}
       </md-option>
     </md-autocomplete>
+
+    <md-action-row *ngIf="itemStatus !== 'Inactiv'">
+        <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!titluForm.dirty">
+          {{ itemStatus === 'Nou' ? 'Adauga' : 'Inactiveaza' }}
+        </button>
+      </md-action-row>
 
   </md-expansion-panel>
 </form>

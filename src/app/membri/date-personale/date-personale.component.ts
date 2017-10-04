@@ -85,15 +85,23 @@ export class DatePersonaleComponent implements OnInit {
 
   private getFormData(): void {
     this.loading = true;
-    this._apiData.apiGet('date_personale', this._aRoute.snapshot.params['id'])
-      .subscribe((response: ApiData) => {
-        this.loading = false;
-        this.reloading = false;
-        this.formDatePersonaleData = response.data;
-        this.setForm();
-        this.setFormMode();
-        this.setRegistre();
-      });
+    if (this._aRoute.snapshot.params['id']) {
+      this._apiData.apiGet('date_personale', this._aRoute.snapshot.params['id'])
+        .subscribe((response: ApiData) => {
+          this.loading = false;
+          this.reloading = false;
+          this.formDatePersonaleData = response.data;
+          this.setForm();
+          this.setFormMode();
+          this.setRegistre();
+        });
+    } else {
+      this.loading = false;
+      this.reloading = false;
+      this.setForm();
+      this.setFormMode();
+      this.setRegistre();
+    }
   }
 
   private setForm(): void {
@@ -106,7 +114,8 @@ export class DatePersonaleComponent implements OnInit {
       this.enableAdmin();
       return;
     }
-    if (this.formDatePersonale.get('cetatenie').value === null) {
+    if (this.formDatePersonale.get('cetatenie').value === null
+      || this.formDatePersonale.get('cetatenie').value === '') {
       this.formStatus = 2;
       this.enableNewMember();
       return;
@@ -151,7 +160,7 @@ export class DatePersonaleComponent implements OnInit {
     // TODO: completeaza automat judet pe baza jud_id al operatorului
     this.formDatePersonale.get('jud_id').enable();
     // judet ADM nu exista in lista de judete filtrate :)
-    if (this.formStatus !== 0 ) {
+    if (this.formStatus !== 0) {
       this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
     }
   }
@@ -199,7 +208,7 @@ export class DatePersonaleComponent implements OnInit {
           return;
         }
         localStorage.setItem('currentMemNume',
-             (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
+          (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
         localStorage.setItem('currentMemId', response.data.id_med);
         this._router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
       });
@@ -211,15 +220,16 @@ export class DatePersonaleComponent implements OnInit {
     if (controlValid === true) {
       this.reloading = true;
       const cnp = this.formDatePersonale.get('cnp').value;
-      this._apiData.apiLista('list', cnp)
-      .subscribe((response: ApiData) => {
-        this.reloading = false;
-        const cnpResponse = response.data;
-        if ( cnpResponse.length !== 0 ) {
-          this.formDatePersonale.controls['cnp'].setErrors({'isUsed': true}) ;
-          this._snackBar.showSnackBar('CNP-ul exista deja in baza de date, verifica folosind cautarea globala');
-        }
-      });
+      this._apiData.apiCautaMembru('list', cnp)
+        .subscribe((response: ApiData) => {
+          this.reloading = false;
+          console.log(response);
+          const cnpResponse = response.data;
+          if (cnpResponse.length !== 0) {
+            this.formDatePersonale.controls['cnp'].setErrors({ 'isUsed': true });
+            this._snackBar.showSnackBar('CNP-ul exista deja in baza de date, verifica folosind cautarea globala');
+          }
+        });
     }
   }
   private isRequired(data) {
