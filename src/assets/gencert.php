@@ -27,7 +27,7 @@ $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -57,17 +57,17 @@ $imgOrigin = $innerLine + 2;
 $timbruXOrigin =  175;
 $timbruYOrigin = 20;
 $titleXOrigin = $imgOrigin + 38;
-$titleYOrigin = $imgOrigin ;
+$titleYOrigin = $imgOrigin;
 $title2YOrigin = $titleYOrigin + 7 ;
-$title3YOrigin = $title2YOrigin + 18 ;
-$titularYOrigin = $title3YOrigin + 24;
+$title3YOrigin = $title2YOrigin + 28 ;
+$titularYOrigin = $title3YOrigin + 40;
 $prezentaYOrigin = $titularYOrigin + 18 ;
 $box1YOrigin = $prezentaYOrigin + 14;
 $box2YOrigin = $box1YOrigin + 25;
-$box3YOrigin = $box2YOrigin + 25;
+$box3YOrigin = $box2YOrigin + 37;
 $box4YOrigin = $box3YOrigin + 25;
 $notaYOrigin = $box4YOrigin + 25;
-$presedinteYOrigin = $notaYOrigin + 64;
+$presedinteYOrigin = $notaYOrigin + 25;
 $lsYOrigin = $presedinteYOrigin + 10;
 $lsXOrigin = 170;
 
@@ -100,16 +100,14 @@ $pdf->WriteHTMLCell(20, 10, $timbruXOrigin, $timbruYOrigin, $timbru, 0, 0, $fill
 $pdf->SetFont('freeserif', '', 10);
 
 $titlu1HTML = '
-<h2>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h2>
+<h3>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h3>
 ';
 $titlu2HTML = '
-Colegiul Medicilor <span style="font-weight: bold;">TIMIȘOARA</span>
-<br>
-<h2>A V I Z&nbsp; &nbsp;A N U A L</h2>
+Colegiul Medicilor <b>TIMIȘOARA</b>
 ';
 $titlu3HTML = '
-<h2>privind exercitarea profesiei de medic</h2>
-eliberat in data de <span style="font-weight: bold;">29-09-2017</span>
+<h1>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</h1>
+nr. <b>837726</b> din data de <b>10/01/2017</b>
 ';
 
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titlu1HTML, 0, 0, $fill, true, 'C', true);
@@ -119,124 +117,124 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $ti
 $pdf->SetFont('freeserif', '', 12);
 $titularHTML = '
 <p>
-Titular: <span style="font-weight: bold;">Popescu Ionel</span>
+Titular: <b>Popescu Ionel</b>
 </p>
 <p>
-C.U.I.M.: <span style="font-weight: bold;">218213090123</span> Certificat de membru nr <span style="font-weight: bold;">20</span> din data de <span style="font-weight: bold;">13-13-2018</span>
+Titluri deținute: <b>Profesor Doctor, Cercetator gradul III</b> 
 </p>
+<p>
+C.N.P./data nașterii: <b>1740428997811</b> Cod unic de identificare (C.U.I.M): <b>1740428997811</b>
+</p>
+<p>
+Formarea medicală de bază:  promoția <b>1977</b>, atestată prin titlul de calificare  seria/nr. <b>RR / 2312334</b>
+eliberat de <b>Universitatea de Medicină și Farmacie "Carol Davila" din Bucuresti</b>.
+<br>
+recunoscut <i>(dacă este cazul)</i> prin certificatul de recunoaștere cu seria/nr. <b>PP / 88377392</b> din <b>21/10/2020</b>
+</p>
+
 ';
+
 $pdf->SetFillColor(127, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin * 2, 19, $origin + 5, $titularYOrigin , $titularHTML, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin * 2, 19, $origin + 5, $titularYOrigin, $titularHTML, 0, 0, $fill, true, 'L', true);
 
-$prezenta = '
-<p style="font-weight: bold; "><i>
-Prin prezenta se certifică faptul că titularul are dreptul de a profesa ca medic,<br>
-în următoarele grupe de specialități:
-</i></p>
-';
-$pdf->SetFillColor(255, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $prezentaYOrigin, $prezenta, 0, 0, $fill, true, 'C', true);
+// $prezenta = '
+// <p style="font-weight: bold; "><i>
+// Prin prezenta se certifică faptul că titularul are dreptul de a profesa ca medic,<br>
+// în următoarele grupe de specialități:
+// </i></p>
+// ';
+// $pdf->SetFillColor(255, 127, 127);
+// $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $prezentaYOrigin, $prezenta, 0, 0, $fill, true, 'C', true);
 
-$pdf->SetFont('freeserif', '', 10);
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box1YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
+// $pdf->SetFont('freeserif', '', 10);
+// $specialitate = '
+// <table border="1" cellpadding="2">
+// <tr>
+// <th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
+// </tr>
+// <tr>
+// <th>
+// Specialitate: <b>Cardiologie</b>  grad profesional: <b>Primar</b> tip: <b>cu raspundere limitata</b>
+// <br>
+// Asigurator: <b>ASIROM VIENNA INSURANCE GROUP</b> Polita Seria: <b>MM</b> Nr: <b>000626748</b>
+// <br>
+// Valabilitate aviz: <b>01.01.2018-31.12.2018</b>
+// </th>
+// </tr>
+// </table>
+// ';
+// $pdf->SetFillColor(0, 127, 127);
+// $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $box1YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
 // ---------------------------
 
 $specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+.tg td{padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
+.tg th{font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;border-top-width:1px;border-bottom-width:1px;}
+.tg .tg-yzt1{background-color:#efefef;vertical-align:top}
+.tg .tg-yw4l{vertical-align:top}
+.tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+.tg .tg-spec{width:80%}
+.tg .tg-grad{width:20%}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
+<div class="tg-wrap"><table class="tg">
+  <tr>
+    <th class="tg-yzt1 tg-spec">Specialitati</th>
+    <th class="tg-yw4l tg-grad">Grad</th>
+  </tr>
+  <tr>
+    <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
+    <td class="tg-b7b8 tg-grad">Primar</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4zl tg-spec">Neurologie</td>
+    <td class="tg-yw4l tg-grad">Specialist</td>
+  </tr>
+  <tr>
+  <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
+  <td class="tg-b7b8 tg-grad">Primar</td>
+  </tr>
+  <tr>
+  <td class="tg-yw4zl tg-spec">Neurologie</td>
+  <td class="tg-yw4l tg-grad">Specialist</td>
+  </tr>
+</table></div>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
-
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
+$competente = '
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+.tg td{padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
+.tg th{font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;border-top-width:1px;border-bottom-width:1px;}
+.tg .tg-yzt1{background-color:#efefef;vertical-align:top}
+.tg .tg-yw4l{vertical-align:top}
+.tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+.tg .tg-spec{width:100%}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
+<div class="tg-wrap"><table class="tg">
+  <tr>
+    <th class="tg-yzt1 tg-spec">Studii Complementare:</th>
+  </tr>
+  <tr>
+    <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
+  </tr>
+</table></div>
 ';
 $pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box3YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box4YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box3YOrigin, $competente, 0, 0, $fill, true, 'L', true);
 
 //----------------------------
 
-$pdf->SetFont('freeserif', '', 8);
+// $pdf->SetFont('freeserif', '', 8);
 $footer1 = '
-<span style="font-weight: bold; text-decoration: underline;">Nota:</span>
-<br>
-1.	Titularul are dreptul să practice profesia conform prevederilor de mai sus numai în specialitățile în care este avizat și numai în intervalul de timp pentru care există avizul anual al C.M.R.</li>
-<br>
-2.	Avizarea se face anual, pe baza asigurării de răspundere civilă pentru greșeli în activitatea profesională, valabilă pentru anul respectiv</li>
-<br><br>
-<span style="font-weight: bold; text-decoration: underline;">Mențiuni privind dreptul de practică:</span>
-<br>
-<b><i>(1)	drept de liberă practică</i></b> în specialitatea avizată în baza căruia titularul poate, potrivit pregătirii pentru care deține un titlu profesional, să desfășoare activități medicale în sistemul public de sănătate sau/și în sistemul privat, fie ca angajat, fie ca persoană fizică independentă pe bază de contract. Titularul poate înființa, în condițiile legii, cabinet(e) de practică medicală.
-<br>
-<b><i>(2)	drept de practică supravegheată în activitatea de medic rezident</i></b>, numai în unitățile sanitare acreditate, în condițiile Ordonanței Guvernului nr. 18/2009 privind organizarea și finanțarea rezidențiatului, aprobată prin Legea nr. 103/2012, cu completările ulterioare, și ale Ordinului Ministerului Sănătății Publice și al ministrului educației, cercetării și tineretului nr. 1141/1386/2007 privind modul de efectuare a pregătirii prin rezidențiat în specialitățile prevăzute de Nomenclatorul specialităților medicale, medico-dentare și farmaceutice pentru rețeaua de asistență medicală, cu modificările și completările ulterioare.
-<br>
-<b><i>(3)	drept de practică supravegheată</i></b> în baza căruia titularul își poate desfășura activitatea numai în cabinete medicale individuale, sub îndrumarea unui medic cu drept de liberă practică, în funcție de specialitatea în care a fost confirmat medic rezident, în condițiile Ordonanței Guvernului nr. 18/2009 privind organizarea și finanțarea rezidențiatului, aprobată prin Legea nr. 103/2012, cu completările ulterioare.
+Data depunerii jurământului: <b>10/12/2017</b>
 ';
 $pdf->SetFillColor(255, 255, 0);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
 
 $pdf->SetFont('freeserif', '', 10);
 $footer2 = '
@@ -248,12 +246,12 @@ $footer2 = '
 Notă: Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.
 ';
 $pdf->SetFillColor(255, 255, 0);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $presedinteYOrigin, $footer2, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $presedinteYOrigin, $footer2, 0, 0, $fill, true, 'C', true);
 
 $ls = '
 L.S.
 ';
 // $pdf->WriteHTMLCell(20, 10, $lsXOrigin , $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
-$pdf->WriteHTMLCell(20, 10, $lsXOrigin , $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
+$pdf->WriteHTMLCell(20, 10, $lsXOrigin, $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
 
 $pdf-> Output('test.pdf', 'I'); // TODO: de inlocuit cu aviz_CUIM
