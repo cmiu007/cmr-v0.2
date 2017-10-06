@@ -87,7 +87,7 @@ export class TitluProfesionalComponent implements OnInit {
     this.checkTipTitlu();
   }
 
-  private checkTipTitlu(): void {
+  checkTipTitlu(): void {
     const valueTitlu = this.titluForm.get('reg_titlu_id').value;
     if (valueTitlu) {
       const tipTitlu = this.regTitluri.find(item => item.id === valueTitlu).tip;
