@@ -70,7 +70,7 @@ export class AvizariComponent implements OnInit {
         }
         let certificatActiv = false;
         Object(response.data).forEach(element => {
-          if (element.status === 0) {
+          if (element.status === 2) {
             certificatActiv = true;
           }
         });

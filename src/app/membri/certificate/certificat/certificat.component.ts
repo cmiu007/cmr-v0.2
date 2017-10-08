@@ -113,6 +113,7 @@ export class CertificatComponent implements OnInit {
     const idItem = data.id_certificat;
     // data.status = 99;
     if (this.itemStatus !== 'Nou') {
+      data.status = 3;
       this._apiData.apiModifica('certificat', idItem, data)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {
@@ -125,6 +126,7 @@ export class CertificatComponent implements OnInit {
       CertificateComponent._formDataChanged.next();
       return;
     }
+    data.status = 2;
     delete data.id_certificat;
     data.data_invalidare = null;
     this._apiData.apiAdauga('certificat', data)

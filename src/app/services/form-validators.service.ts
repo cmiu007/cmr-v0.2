@@ -44,7 +44,7 @@ export class FormValidatorsService {
     now.setUTCHours(0, 0, 0, 0);
     const date = new Date(control.value);
     date.setUTCHours(0, 0, 0, 0);
-    if ( date > now ) {
+    if ( +date > +now ) {
       return { 'isInTheFuture': true};
     }
     return null;
@@ -58,7 +58,7 @@ export class FormValidatorsService {
     now.setUTCHours(0, 0, 0, 0);
     const date = new Date(control.value);
     date.setUTCHours(0, 0, 0, 0);
-    if ( date < now ) {
+    if ( +date < +now ) {
       return {'isInThePast': true} ;
     }
     return null;
@@ -72,7 +72,7 @@ export class FormValidatorsService {
     now.setUTCHours(0, 0, 0, 0);
     const date = new Date(control.value);
     date.setUTCHours(0, 0, 0, 0);
-    if ( date === now ) {
+    if ( +date === +now ) {
       return null;
     }
     return {'isNotToday': true} ;

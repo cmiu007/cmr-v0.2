@@ -10,7 +10,7 @@ $actiune = $_REQUEST['actiune'];
  
  $data=[
 			'token' => $token,
-   'actiune' => 'certificat',
+            'actiune' => 'certificat',
 			'id'    => $id,
 		];
 		
@@ -407,20 +407,24 @@ if ($actiune == "fata")
 				$pdf->SetXY(70, 276);
 				$pdf->Cell(20, 0, $data_juramant, 0, 1, 'L', 0, '', 0, false, 'B', 'B');
 				$x = 158;
-				foreach ($rezultat['specialitati'] as $spec){
-				$pdf->SetFont('freeserif', '', 12);	
-				$pdf->SetXY(13, $x);
-				$pdf->Cell(20, 0, $spec['specialitate'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-				$pdf->SetXY(140, $x);
-				$pdf->Cell(20, 0, $spec['gr_prof'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
-				$x+=9;
-				//echo $spec['specialitate']. "  " . $spec['gr_prof'];
+				if ($rezultat['specialitati']!="")
+				{
+					foreach ($rezultat['specialitati'] as $spec){
+					$pdf->SetFont('freeserif', '', 12);	
+					$pdf->SetXY(13, $x);
+					$pdf->Cell(20, 0, $spec['specialitate'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
+					$pdf->SetXY(140, $x);
+					$pdf->Cell(20, 0, $spec['gr_prof'], 0, 1, 'L', 0, '', 0, false, 'B', 'B');
+					$x+=9;
+					//echo $spec['specialitate']. "  " . $spec['gr_prof'];
+					}
 				}
 				$comple = "";
-				foreach($rezultat['superspecialitate'] as $spec){
-						$comple .= $spec['specialitate'].";  ";
+				if ($rezultat['superspecialitate']!=""){
+					foreach($rezultat['superspecialitate'] as $spec){
+							$comple .= $spec['specialitate'].";  ";
+					}
 				}
-				
 				$pdf->SetFont('freeserif', '', 10);
 				
 				$lg = strlen($comple);
