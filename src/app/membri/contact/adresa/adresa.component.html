@@ -21,7 +21,7 @@
       <md-form-field class="column"><input required type="text" placeholder="Tara" mdInput formControlName="tara_id" [mdAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></md-form-field>
       <md-form-field class="column"><input required type="text" placeholder="Judet" mdInput formControlName="jud_id" [mdAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></md-form-field>
       <md-form-field class="column"><input required type="text" placeholder="Localitate" mdInput formControlName="localit"></md-form-field>
-      <md-form-field class="column"><input required type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
+      <md-form-field class="column"><input type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
     </section>
 
     <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">

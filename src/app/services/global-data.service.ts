@@ -11,7 +11,10 @@ export class GlobalDataService {
 
   shareObj: SharedObj = {
     'apiAdress': 'https://devel-api.cmr.ro/',
-    'genPDFAddress': 'https://test-rm.cmr.ro/assets/'
+    'site': 'https://test-rm.cmr.ro',
+    'genPDFAddress': 'https://test-rm.cmr.ro/assets/',
+    'Titlu Aplicatie': 'Devel RegMed',
+
     // 'userName': '',
     // 'userGroup': '',
     // 'activeMember': ''
