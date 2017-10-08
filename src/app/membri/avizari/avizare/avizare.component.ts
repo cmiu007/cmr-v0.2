@@ -144,10 +144,11 @@ export class AvizareComponent implements OnInit {
     delete data.id_dlp;
     delete data.inchis;
     delete data.asigurare;
-    delete data.status;
+    // delete data.status;
     // data.status = 9;
     // delete data.id_certificat;
     if (this.formStatus !== 0) {
+      data.status = 1;
       this._apiData.apiModifica('dlp', idItem, data)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {
@@ -158,6 +159,7 @@ export class AvizareComponent implements OnInit {
         });
       return;
     }
+    data.status = 0;
     this._apiData.apiAdauga('dlp', data)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
