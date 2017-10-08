@@ -10,8 +10,8 @@ export class GlobalDataService {
   constructor() { }
 
   shareObj: SharedObj = {
-    'apiAdress': 'https://devel-api.cmr.ro/',
-    'genPDFAddress': 'https://test-rm.cmr.ro/assets/'
+    'apiAdress': 'https://api.cmr.ro/',
+    'genPDFAddress': 'https://rm.cmr.ro/assets/'
     // 'userName': '',
     // 'userGroup': '',
     // 'activeMember': ''
