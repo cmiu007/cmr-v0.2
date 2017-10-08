@@ -10,7 +10,7 @@ export class UserService {
 
   getAll() {
     // TODO: este pt useri nu pt membri
-    return this.http.get('https://devel-api.cmr.ro/api/cpp', this.jwt()).map((response: Response) => response.json());
+    return this.http.get('https://api.cmr.ro/api/cpp', this.jwt()).map((response: Response) => response.json());
   }
 
   getById(id: number) {
