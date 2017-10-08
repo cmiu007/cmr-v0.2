@@ -267,6 +267,7 @@ export class FormSetService {
       'data_invalidare': [null, [this._validator.checkDate, this._validator.isInTheFuture]],
       'reg_cert_id': [null, [this._validator.checkIfNumber]],
       'cod_qr': [null],
+      'status': [null]
     });
     if (data) {
       data = this.cleanData(data);

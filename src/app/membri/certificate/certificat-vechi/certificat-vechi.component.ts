@@ -46,7 +46,7 @@ export class CertificatVechiComponent implements OnInit {
       }
       const a = response.data;
       this.formData = JSON.parse(a.continut);
-      // console.log(this.formData.continut);
+      // console.log(this.formData);
       // this.setForm('populate', this.certificateData);
       this.loading = false;
     });
