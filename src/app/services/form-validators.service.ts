@@ -18,6 +18,10 @@ export class FormValidatorsService {
       for (let i = 0; i < testValCNP.length; i++) {
         sum = sum + splitCNP[i] * testValCNP[i];
       }
+      if ( sum % 11 === 10) {
+        console.log('hit');
+        sum = 1;
+      }
       if ((sum % 11) !== +splitCNP[12]) {
         return { 'cnpCtrlSumInvalid': true };
       } else {
