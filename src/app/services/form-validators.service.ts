@@ -19,7 +19,6 @@ export class FormValidatorsService {
         sum = sum + splitCNP[i] * testValCNP[i];
       }
       if ( sum % 11 === 10) {
-        console.log('hit');
         sum = 1;
       }
       if ((sum % 11) !== +splitCNP[12]) {
