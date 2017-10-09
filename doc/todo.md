@@ -1,3 +1,5 @@
+important https://raw.githubusercontent.com/cmiu007/cmr-v0.2/test-cmr/doc/todo_in_devel.md
+
 # app
 
 ### Login cu modal pt reautentificare daca editarea este activa
