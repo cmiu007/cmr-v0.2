@@ -13,7 +13,7 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     const test = JSON.stringify({ email: username, password: password });
-    return this.http.put('https://devel-api.cmr.ro/api/auth', JSON.stringify({ email: username, password: password }))
+    return this.http.put('https://api.cmr.ro/api/auth', JSON.stringify({ email: username, password: password }))
       .map((response: Response) => {
         this.setLocalStorage(response);
         // de revazut ce intoarcem si de ce intoarcem ceva
@@ -24,7 +24,7 @@ export class AuthenticationService {
   reLogin(data) {
     // 2. login
     return this.http
-      .put('https://devel-api.cmr.ro/api/auth', data)
+      .put('https://api.cmr.ro/api/auth', data)
       .map((response: Response) => {
         this.setLocalStorage(response);
         return JSON.parse(response.text());

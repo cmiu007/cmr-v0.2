@@ -1,3 +1,3 @@
 <?php
 
-$url_host="https://devel-api.cmr.ro/api";
+$url_host="https://api.cmr.ro/api";

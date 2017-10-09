@@ -9,7 +9,7 @@ export class NomenclatorService {
   constructor(private http: Http) { }
 
   getNomenclator(nomenclator: string) {
-    return this.http.get('https://devel-api.cmr.ro/api/' + nomenclator)
+    return this.http.get('https://api.cmr.ro/api/' + nomenclator)
       .map((response: Response) => {
         return response.json();
       });
