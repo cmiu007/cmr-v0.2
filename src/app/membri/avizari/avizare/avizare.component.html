@@ -1,6 +1,6 @@
 <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <form [formGroup]="avizareForm">
-  <md-expansion-panel [expanded]="formStatus === 1 || formStatus === 2" (click)="onClickAsigurare()">
+  <md-expansion-panel [expanded]="formStatus === 0" (click)="onClickAsigurare()">
     <mat-expansion-panel-header>
       <md-panel-title>
         {{itemName}}
@@ -18,7 +18,7 @@
         {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} avizare</button>
       </div>
       <div class="column" *ngIf="formStatus === 0">
-        <button type="button" md-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>
+        <button type="submit" md-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>
       </div>
     </section>
 

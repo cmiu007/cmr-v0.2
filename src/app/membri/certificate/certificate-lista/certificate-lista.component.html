@@ -2,10 +2,9 @@
   <app-certificat [arrayIndex]="i" [certificateForm]="certificateForm"></app-certificat>
 </div>
 
-
 <md-card *ngIf="isAddActive">
   <md-card-content style="text-align: center;">
-    <button type="button" *ngIf="!loading" md-raised-button (click)="addCertificat()" color="primary">
+    <button type="button" md-raised-button (click)="addCertificat()" color="primary">
               Adauga Certificat
               </button>
   </md-card-content>

@@ -194,7 +194,6 @@ export class CppItemComponent implements OnInit {
     // modifica cpp
     this._apiData.apiModifica('cpp', this.cppForm.get('id_cpp').value, this.cppForm.value)
       .subscribe((response: ApiData) => {
-        this.loading = false;
         if (response.status === 0) {
           return;
         }

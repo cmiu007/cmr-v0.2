@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './certificate-lista.component.html',
   styleUrls: ['./certificate-lista.component.css']
 })
-export class CertificateListaComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CertificateListaComponent implements OnInit {
   isAddActive = true;
 
   @Input('certificateForm')
@@ -43,7 +43,6 @@ export class CertificateListaComponent implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
   addCertificat(): void {
     const newCertificatForm = this._formSet.certificate('newCertificat');
     const arrayControl = this.certificateForm.get('certificate') as FormArray;
