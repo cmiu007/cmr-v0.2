@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { User } from '../shared/models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UserService {
-
-  constructor(private http: Http) { }
+  apiAddress = ''
+  constructor(private http: Http) { this.apiAddress = environment.apiUrl;  }
 
   getAll() {
     // TODO: este pt useri nu pt membri
-    return this.http.get('https://devel-api.cmr.ro/api/cpp', this.jwt()).map((response: Response) => response.json());
+    return this.http.get( this.apiAddress + 'api/cpp', this.jwt()).map((response: Response) => response.json());
   }
 
   getById(id: number) {
