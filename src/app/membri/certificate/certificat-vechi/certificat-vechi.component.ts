@@ -6,7 +6,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { Certificat } from '../../../shared/interfaces/certificate.interface';
-import { GlobalDataService } from '../../../services/global-data.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-certificat-vechi',
@@ -28,9 +28,10 @@ export class CertificatVechiComponent implements OnInit {
     private _router: Router,
     private _apiData: ApiDataService,
     private _snack: AlertSnackbarService,
-    private _globalVars: GlobalDataService,
+    // private _globalVars: GlobalDataService,
   ) {
-    this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+    // this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+    this.genPDFAddress = environment.resUrl;
   }
 
   ngOnInit() {

@@ -14,7 +14,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { AvizariComponent } from '../avizari.component';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
-import { GlobalDataService } from '../../../services/global-data.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-avizare',
@@ -60,10 +60,9 @@ export class AvizareComponent implements OnInit {
     private _dataCal: DataCalService,
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _setAddBtn: IsAddActiveService,
-    private _globalVars: GlobalDataService
+    private _setAddBtn: IsAddActiveService
   ) {
-    this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+    this.genPDFAddress = environment.resUrl;
   }
 
   ngOnInit() {
