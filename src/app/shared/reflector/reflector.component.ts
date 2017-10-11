@@ -13,7 +13,7 @@ export class ReflectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._router.navigate([localStorage.getItem('currentUrl')]);
+    this._router.navigate([sessionStorage.getItem('currentUrl')]);
   }
 
 }

@@ -22,7 +22,7 @@ export class CertificatVechiComponent implements OnInit {
   printActive = false;
   tipCert = '';
   genPDFAddress = '';
-  memId = localStorage.getItem('currentMemId');
+  memId = sessionStorage.getItem('currentMemId');
 
   constructor(
     private _router: Router,
@@ -55,7 +55,7 @@ export class CertificatVechiComponent implements OnInit {
 
   print(pag: number): void {
     const nativeWindow = window;
-    let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
+    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
     if (pag === 1) {
       url = url + '&actiune=fata';
       url = url + '&id=' + this.certificatId; // TODO: de gasit ID

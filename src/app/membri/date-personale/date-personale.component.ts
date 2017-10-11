@@ -80,7 +80,7 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   private setHeader(): void {
-    localStorage.setItem('currentPage', 'Date Personale');
+    sessionStorage.setItem('currentPage', 'Date Personale');
   }
 
   private getFormData(): void {
@@ -109,7 +109,7 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   private setFormMode() {
-    if ((JSON.parse(localStorage.getItem('userGroup'))) === 160) {
+    if ((JSON.parse(sessionStorage.getItem('userGroup'))) === 160) {
       this.formStatus = 0;
       this.enableAdmin();
       return;
@@ -161,7 +161,7 @@ export class DatePersonaleComponent implements OnInit {
     this.formDatePersonale.get('jud_id').enable();
     // judet ADM nu exista in lista de judete filtrate :)
     if (this.formStatus !== 0) {
-      this.formDatePersonale.patchValue({ 'jud_id': localStorage.getItem('userGroup') });
+      this.formDatePersonale.patchValue({ 'jud_id': sessionStorage.getItem('userGroup') });
     }
   }
 
@@ -189,7 +189,7 @@ export class DatePersonaleComponent implements OnInit {
 
   private editeazaMembru() {
     this.formDatePersonale.get('jud_id').enable();
-    this._apiData.apiModifica('date_personale', +localStorage.getItem('currentMemId'), this.formDatePersonale.value)
+    this._apiData.apiModifica('date_personale', +sessionStorage.getItem('currentMemId'), this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
           return;
@@ -207,9 +207,9 @@ export class DatePersonaleComponent implements OnInit {
           this._snackBar.showSnackBar(response.data);
           return;
         }
-        localStorage.setItem('currentMemNume',
+        sessionStorage.setItem('currentMemNume',
           (this.formDatePersonale.get('nume').value + ' ' + this.formDatePersonale.get('prenume').value));
-        localStorage.setItem('currentMemId', response.data.id_med);
+        sessionStorage.setItem('currentMemId', response.data.id_med);
         this._router.navigate(['/membri', response.data.id_med, 'datepersonale']); // de adaugat id-ul
       });
     return;

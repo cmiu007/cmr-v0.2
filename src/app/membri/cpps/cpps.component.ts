@@ -34,7 +34,7 @@ export class CppsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    localStorage.setItem('currentPage', 'Pregatire Postuniversitara');
+    sessionStorage.setItem('currentPage', 'Pregatire Postuniversitara');
     this.getFormData();
     // reincarca datele pt formular daca child s a schimbat
     CppsComponent.needReload.subscribe(res => {

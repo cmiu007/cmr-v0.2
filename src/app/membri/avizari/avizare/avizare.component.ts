@@ -44,7 +44,7 @@ export class AvizareComponent implements OnInit {
   avizareForm: FormGroup;
   formTitleStyle;
   loading = false;
-  memId = localStorage.getItem('currentMemId');
+  memId = sessionStorage.getItem('currentMemId');
 
   asigurariLoading = false;
   amAsigurariData = false;
@@ -184,14 +184,14 @@ export class AvizareComponent implements OnInit {
   printAvizare() {
     const nativeWindow = window;
     const certificatId = this.avizareForm.get('id_certificat').value;
-    let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
+    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
     url = url + '&actiune=spate&id=' + certificatId;
     nativeWindow.open(url);
   }
 
   getAsigurariData(): void {
     this.asigurariLoading = true;
-    const memId = localStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
     this._apiData.apiLista('asigurare', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {

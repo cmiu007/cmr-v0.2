@@ -75,7 +75,7 @@ export class ApiDataService {
 
   private setApiListaData(actiune: string, searchVal: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'cautare': searchVal
     });
@@ -83,7 +83,7 @@ export class ApiDataService {
 
   private setApiGetData(actiune: string, id: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id
     });
@@ -91,7 +91,7 @@ export class ApiDataService {
 
   private setApiAdaugaData(actiune: string, data: any) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'data': data
     });
@@ -99,7 +99,7 @@ export class ApiDataService {
 
   private setApiModificaData(actiune: string, id: number, data: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id,
       'data': data

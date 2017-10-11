@@ -51,7 +51,7 @@ export class EmailComponent implements OnInit {
   private setForm(): void {
     this.contactForm = this._formSet.contact(this.contactData[0]);
     if (this.formStatus === 'new') {
-      this.contactForm.get('id_mem').setValue(localStorage.getItem('currentMemId'));
+      this.contactForm.get('id_mem').setValue(sessionStorage.getItem('currentMemId'));
     }
   }
 

@@ -30,7 +30,7 @@ export class UserService {
   }
 
   private jwt() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     if ( currentUser && currentUser.token ) {
       const headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
       return new RequestOptions({ headers: headers });

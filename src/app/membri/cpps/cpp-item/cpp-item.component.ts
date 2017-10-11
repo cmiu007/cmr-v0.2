@@ -169,7 +169,7 @@ export class CppItemComponent implements OnInit {
       // const newCppdata = this.cppForm.value;
       // delete newCppData.reg_cpp_id;
       const newCppData = {
-        id_mem: localStorage.getItem('currentMemId'),
+        id_mem: sessionStorage.getItem('currentMemId'),
         reg_cpp_tip_id: this.cppForm.get('reg_cpp_tip_id').value,
         reg_cpp_id: this.cppForm.get('reg_cpp_id').value,
         grad_prof_cpp_id: this.cppForm.get('grad_prof_cpp_id').value,

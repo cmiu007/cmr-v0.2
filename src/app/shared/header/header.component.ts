@@ -18,15 +18,15 @@ export class HeaderComponent implements OnInit {
   private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.userName = localStorage.getItem('userName');
-    this.userJudet = localStorage.getItem('userJudet');
+    this.userName = sessionStorage.getItem('userName');
+    this.userJudet = sessionStorage.getItem('userJudet');
     this.getMemNume();
-    this.currentPage = localStorage.getItem('currentPage');
-    localStorage.setItem( 'currentUrl', this.router.url);
+    this.currentPage = sessionStorage.getItem('currentPage');
+    sessionStorage.setItem( 'currentUrl', this.router.url);
   }
 
   getMemNume(): void {
-    this.currentMemNume = localStorage.getItem('currentMemNume');
+    this.currentMemNume = sessionStorage.getItem('currentMemNume');
     if (this.currentMemNume !== null ) {
       this.hideMemNume = false;
     } else {

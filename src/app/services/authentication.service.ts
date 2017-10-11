@@ -34,17 +34,17 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.clear();
+    sessionStorage.clear();
   }
 
   setLocalStorage(response: Response): string {
     const data = JSON.parse(response.text());
     if (data.result === '00') {
-      localStorage.setItem('userToken', data.token);
-      localStorage.setItem('userName', data.nume);
-      localStorage.setItem('userGroup', data.cmj);
-      localStorage.setItem('userJudet', data.judet);
-      localStorage.setItem('currentUser', JSON.stringify(data));
+      sessionStorage.setItem('userToken', data.token);
+      sessionStorage.setItem('userName', data.nume);
+      sessionStorage.setItem('userGroup', data.cmj);
+      sessionStorage.setItem('userJudet', data.judet);
+      sessionStorage.setItem('currentUser', JSON.stringify(data));
     }
     if (data.result === '10') {
       // auth error

@@ -3,7 +3,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 
 export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
     // array in local storage for registered users
-    let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+    let users: any[] = JSON.parse(sessionStorage.getItem('users')) || [];
     // configure fake backend
     backend.connections.subscribe((connection: MockConnection) => {
         // wrap in timeout to simulate server api call
@@ -88,7 +88,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                 // save new user
                 newUser.id = users.length + 1;
                 users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users));
+                sessionStorage.setItem('users', JSON.stringify(users));
 
                 // respond 200 OK
                 connection.mockRespond(new Response(new ResponseOptions({ status: 200 })));
@@ -108,7 +108,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
                         if (user.id === id) {
                             // delete user
                             users.splice(i, 1);
-                            localStorage.setItem('users', JSON.stringify(users));
+                            sessionStorage.setItem('users', JSON.stringify(users));
                             break;
                         }
                     }
