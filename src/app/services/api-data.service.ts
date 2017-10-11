@@ -57,7 +57,6 @@ export class ApiDataService {
   apiAdauga(actiune: string, data: any) {
     return this._http.put(this.apiAddress + 'api/adauga', this.setApiAdaugaData(actiune, data))
       .map((response: Response) => {
-        console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: dataApi, status: status };
@@ -113,15 +112,19 @@ export class ApiDataService {
       return 0;
     }
     switch (response.result) {
-      case '12':
-        this.callAuth();
-        return 0;
-
       case '00':
         this._snackBarService.showSnackBar(response.mesaj);
         return 1;
 
-      case '14':
+      case '01':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
+
+      case '12':
+        this.callAuth();
+        return 0;
+
+        case '14':
         this._snackBarService.showSnackBar(response.mesaj);
         return 0;
 

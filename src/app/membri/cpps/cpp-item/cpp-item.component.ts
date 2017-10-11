@@ -212,7 +212,7 @@ export class CppItemComponent implements OnInit {
       return;
     }
     this.cppForm.get('grad_prof_cpp_id').enable();
-    this.cppForm.get('grad_prof_cpp_id').setValidators([this._formValidators.checkIfNumber, Validators.required]);
+    this.cppForm.get('grad_prof_cpp_id').updateValueAndValidity();
   }
 
   private setRegistre(): void {

@@ -84,7 +84,7 @@ export class FormSetService {
       'id_mem': [{ value: '' }],
       'reg_cpp_tip_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
       'reg_cpp_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
-      'grad_prof_cpp_id': [{ value: '' }, [this._validator.checkIfNumber]],
+      'grad_prof_cpp_id': [{ value: '' }, [Validators.required, this._validator.checkIfNumber]],
       'date_start': [{ value: '' }, [Validators.required, this._validator.checkDate]],
       'date_end': [{ value: '' }, [this._validator.checkDate]],
       'emitent': [{ value: '' }, [Validators.required]],
