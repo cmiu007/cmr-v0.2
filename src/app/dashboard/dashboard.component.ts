@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
+import { Title } from '@angular/platform-browser';
+import { environment } from '../../environments/environment';
 
 import { User } from '../shared/models/user.model';
 import { UserService } from '../services/user.service';
@@ -31,10 +33,12 @@ export class DashboardComponent implements OnInit {
     private snackBar: MdSnackBar,
     private _apiData: ApiDataService,
     private _snackBarService: AlertSnackbarService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _title: Title
   ) { }
 
   ngOnInit() {
+    this._title.setTitle(environment.titluAplicatie);
     this.searchForm = new FormGroup({
       'searchMem': new FormControl(null, [Validators.required, Validators.minLength(3)])
     });

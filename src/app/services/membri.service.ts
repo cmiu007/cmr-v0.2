@@ -12,6 +12,7 @@ import { GlobalDataService } from './global-data.service';
 // import { User } from '../shared/models/user.model';
 import { ApiDataService } from './api-data.service';
 import { AlertSnackbarService } from './alert-snackbar.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MembriService {
@@ -24,7 +25,7 @@ export class MembriService {
     private _apiData: ApiDataService,
     private _snackBarService: AlertSnackbarService
   ) {
-    this.apiAddress = this.globalVars.shareObj['apiAdress'];
+    this.apiAddress = environment.apiUrl;
   }
 
   adaugaMembruDate(actiune: string, data: any) {

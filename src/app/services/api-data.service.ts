@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { AlertSnackbarService } from './alert-snackbar.service';
 import { GlobalDataService } from './global-data.service';
 import { DialogService } from './dialog.service';
+import { environment } from '../../environments/environment';
+
 
 @Injectable()
 export class ApiDataService {
@@ -22,7 +24,7 @@ export class ApiDataService {
     private _router: Router,
     private _dialogService: DialogService
   ) {
-    this.apiAddress = this._globalVars.shareObj['apiAdress'];
+    this.apiAddress = environment.apiUrl;
   }
 
   apiCautaMembru(actiune: string, searchVal: string) {
@@ -120,6 +122,10 @@ export class ApiDataService {
         return 1;
 
       case '14':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
+
+      case '20':
         this._snackBarService.showSnackBar(response.mesaj);
         return 0;
 
