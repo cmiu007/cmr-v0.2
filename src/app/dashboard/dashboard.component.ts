@@ -54,6 +54,7 @@ export class DashboardComponent implements OnInit {
 
 
   onSearch(searchVal: string) {
+    this.membri = [];
     searchVal = searchVal.trim();
     if (this.searchForm.valid) {
       this.loading = true;

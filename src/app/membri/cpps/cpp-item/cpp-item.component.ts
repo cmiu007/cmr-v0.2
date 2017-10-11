@@ -208,9 +208,11 @@ export class CppItemComponent implements OnInit {
     }
     if (this.cppForm.get('reg_cpp_tip_id').value !== 2) {
       this.cppForm.get('grad_prof_cpp_id').disable();
+      this.cppForm.get('grad_prof_cpp_id').setValidators(null);
       return;
     }
     this.cppForm.get('grad_prof_cpp_id').enable();
+    this.cppForm.get('grad_prof_cpp_id').setValidators([this._formValidators.checkIfNumber, Validators.required]);
   }
 
   private setRegistre(): void {
