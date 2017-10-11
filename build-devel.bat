@@ -1,1 +1,0 @@
-ng build --target development
