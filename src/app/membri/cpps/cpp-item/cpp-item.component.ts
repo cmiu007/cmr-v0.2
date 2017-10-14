@@ -160,6 +160,7 @@ export class CppItemComponent implements OnInit {
   private onSubmit(): void {
     if (this.cppForm.valid === false) {
       this._snackBar.showSnackBar('Formular Invalid');
+      this.cppForm.get('grad_prof_cpp_id').updateValueAndValidity();
       return;
     }
     this.loading = true;
@@ -212,6 +213,7 @@ export class CppItemComponent implements OnInit {
       return;
     }
     this.cppForm.get('grad_prof_cpp_id').enable();
+    this.cppForm.get('grad_prof_cpp_id').setValidators([Validators.required, this._formValidators.checkIfNumber]);
     this.cppForm.get('grad_prof_cpp_id').updateValueAndValidity();
   }
 

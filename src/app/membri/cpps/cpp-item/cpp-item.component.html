@@ -1,5 +1,5 @@
 <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-<div [formGroup]="cppForm">
+<form [formGroup]="cppForm">
   <md-expansion-panel [expanded]="formStatus === 'new'">
     <md-expansion-panel-header>
       <md-panel-title>
@@ -76,4 +76,4 @@
       </button>
     </md-action-row>
   </md-expansion-panel>
-</div>
+</form>
