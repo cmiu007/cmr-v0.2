@@ -30,6 +30,7 @@ const appRoutes: Routes = [
     {path: ':id/datepersonale', component: DatePersonaleComponent,
         resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },
     {path: ':id/cpp', component: CppsComponent, resolve: {regCpp: CppResolve} },
+    // tslint:disable-next-line:max-line-length
     // {path: ':id/titluri-profesionale', component: TitluriProfesionaleComponent, resolve: {regFac: FacResolve, regTitluri: TitluriResolve} },
     {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
     {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }},

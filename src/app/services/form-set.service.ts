@@ -143,7 +143,7 @@ export class FormSetService {
         'tara_id': [data.tara_id, [Validators.required, this._validator.checkIfNumber]],
         'jud_id': [data.jud_id, [Validators.required, this._validator.checkIfNumber]],
         'localit': [data.localit, [Validators.required]],
-        'cod_post': [data.cod_post, [Validators.required, this._validator.checkIfNumber]],
+        'cod_post': [data.cod_post, [this._validator.checkIfNumber]],
         'strada': data.strada,
         'nr': data.nr,
         'bl': data.bl,
