@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { Adresa, Contact, DateContact } from '../../../shared/interfaces/contact.interface';
 import { MembriService } from '../../../services/membri.service';

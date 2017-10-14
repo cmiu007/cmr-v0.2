@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { AlertService } from '../services/alert.service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
       private router: Router,
       private authenticationService: AuthenticationService,
       private alertService: AlertService,
-      private snackBar: MdSnackBar
+      private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {

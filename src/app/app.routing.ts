@@ -23,7 +23,7 @@ import { TitluriResolve } from './shared/resolvers/titluri.resolver';
 
 
 const appRoutes: Routes = [
-  {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: '', component: DashboardComponent, canActivate: [AuthGuard], resolve: {regJud: JudetResolve}},
   {path: 'reflector', component: ReflectorComponent, canActivate: [AuthGuard]},
   {path: 'membri', canActivate: [AuthGuard], children: [
     {path: 'nou', component: DatePersonaleComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve, regFac: FacResolve} },

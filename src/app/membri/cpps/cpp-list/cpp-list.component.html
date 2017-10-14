@@ -1,9 +1,9 @@
 <div *ngIf="addActive">
-  <md-card style="text-align: center;">
-    <md-card-content>
-      <button type="button" *ngIf="!loading" md-raised-button (click)="addCpp()" color="primary">Adauga Cpp</button>
-    </md-card-content>
-  </md-card>
+  <mat-card style="text-align: center;">
+    <mat-card-content>
+      <button type="button" *ngIf="!loading" mat-raised-button (click)="addCpp()" color="primary">Adauga Cpp</button>
+    </mat-card-content>
+  </mat-card>
 </div>
 <div [formGroup]="formCpps">
   <div formArrayName="cpps">

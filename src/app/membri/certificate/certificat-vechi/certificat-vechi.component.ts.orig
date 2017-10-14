@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MembriService } from '../../../services/membri.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ export class CertificatVechiComponent implements OnInit {
 
   constructor(
     private _memService: MembriService,
-    private _snack: MdSnackBar,
+    private _snack: MatSnackBar,
     private _router: Router
   ) { }
 

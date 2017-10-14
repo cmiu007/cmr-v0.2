@@ -1,79 +1,79 @@
-<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="cppForm">
-  <md-expansion-panel [expanded]="formStatus === 'new'">
-    <md-expansion-panel-header>
-      <md-panel-title>
+  <mat-expansion-panel [expanded]="formStatus === 'new'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
         <span [ngClass]="{'inactive': !formStatusActive}">{{ formTitle.nume }}</span>
-      </md-panel-title>
-      <md-panel-description>
+      </mat-panel-title>
+      <mat-panel-description>
         {{ formTitle.tip }}
-      </md-panel-description>
-    </md-expansion-panel-header>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <div class="form-item-content">
       <section>
 
-        <md-form-field class="column"><input type="text" placeholder="Tip Pregatire" mdInput formControlName="reg_cpp_tip_id" [mdAutocomplete]="tipAuto"
-            (click)="cppForm.get('reg_cpp_tip_id').setValue('')" (blur)="checkRegTipId()"></md-form-field>
-        <md-form-field class="column">
-          <input type="text" placeholder="Denumire" mdInput formControlName="reg_cpp_id" [mdAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
-        </md-form-field>
+        <mat-form-field class="column"><input type="text" placeholder="Tip Pregatire" matInput formControlName="reg_cpp_tip_id" [matAutocomplete]="tipAuto"
+            (click)="cppForm.get('reg_cpp_tip_id').setValue('')" (blur)="checkRegTipId()"></mat-form-field>
+        <mat-form-field class="column">
+          <input type="text" placeholder="Denumire" matInput formControlName="reg_cpp_id" [matAutocomplete]="denAuto" (click)="cppForm.get('reg_cpp_id').setValue('')">
+        </mat-form-field>
 
-        <md-form-field class="column"><input type="text" placeholder="Grad" mdInput formControlName="grad_prof_cpp_id" [mdAutocomplete]="gradAuto" (click)="cppForm.get('grad_prof_cpp_id').setValue('')"></md-form-field>
+        <mat-form-field class="column"><input type="text" placeholder="Grad" matInput formControlName="grad_prof_cpp_id" [matAutocomplete]="gradAuto" (click)="cppForm.get('grad_prof_cpp_id').setValue('')"></mat-form-field>
 
-        <md-form-field class="column">
-          <input mdInput placeholder="Start date" type="text" formControlName="date_start">
-        </md-form-field>
+        <mat-form-field class="column">
+          <input matInput placeholder="Start date" type="text" formControlName="date_start">
+        </mat-form-field>
 
-        <md-form-field class="column">
-          <input mdInput placeholder="End date" type="text" formControlName="date_end">
-        </md-form-field>
+        <mat-form-field class="column">
+          <input matInput placeholder="End date" type="text" formControlName="date_end">
+        </mat-form-field>
 
       </section>
 
-      <md-autocomplete #tipAuto="mdAutocomplete" [displayWith]="displayCppTip.bind(this)">
-        <md-option *ngFor="let tip of filtruCppTip | async" [value]="tip.id">
+      <mat-autocomplete #tipAuto="matAutocomplete" [displayWith]="displayCppTip.bind(this)">
+        <mat-option *ngFor="let tip of filtruCppTip | async" [value]="tip.id">
           {{ tip.nume }}
-        </md-option>
-      </md-autocomplete>
+        </mat-option>
+      </mat-autocomplete>
 
-      <md-autocomplete #denAuto="mdAutocomplete" [displayWith]="displayCpp.bind(this)">
-        <md-option *ngFor="let cpp of filtruCpp | async" [value]="cpp.id">
+      <mat-autocomplete #denAuto="matAutocomplete" [displayWith]="displayCpp.bind(this)">
+        <mat-option *ngFor="let cpp of filtruCpp | async" [value]="cpp.id">
           {{ cpp.nume }}
-        </md-option>
-      </md-autocomplete>
+        </mat-option>
+      </mat-autocomplete>
 
-      <md-autocomplete #gradAuto="mdAutocomplete" [displayWith]="displayCppGrad.bind(this)">
-        <md-option *ngFor="let grad of filtruCppGrad | async" [value]="grad.id">
+      <mat-autocomplete #gradAuto="matAutocomplete" [displayWith]="displayCppGrad.bind(this)">
+        <mat-option *ngFor="let grad of filtruCppGrad | async" [value]="grad.id">
           {{ grad.nume }}
-        </md-option>
-      </md-autocomplete>
+        </mat-option>
+      </mat-autocomplete>
 
       <section>
-        <md-form-field class="column"><input type="text" placeholder="Emitent" mdInput formControlName="emitent" [mdAutocomplete]="emitentAuto" (click)="cppForm.get('emitent').setValue('')"></md-form-field>
-        <md-form-field class="column">
-          <input mdInput placeholder="Serie" type="text" formControlName="act_serie">
-        </md-form-field>
-        <md-form-field class="column">
-          <input mdInput placeholder="Numar" type="text" formControlName="act_numar">
-        </md-form-field>
-        <md-form-field class="column">
-          <input mdInput placeholder="Data" type="text" formControlName="act_data">
-        </md-form-field>
-        <md-form-field class="column">
-          <textarea mdInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere"></textarea>
-        </md-form-field>
+        <mat-form-field class="column"><input type="text" placeholder="Emitent" matInput formControlName="emitent" [matAutocomplete]="emitentAuto" (click)="cppForm.get('emitent').setValue('')"></mat-form-field>
+        <mat-form-field class="column">
+          <input matInput placeholder="Serie" type="text" formControlName="act_serie">
+        </mat-form-field>
+        <mat-form-field class="column">
+          <input matInput placeholder="Numar" type="text" formControlName="act_numar">
+        </mat-form-field>
+        <mat-form-field class="column">
+          <input matInput placeholder="Data" type="text" formControlName="act_data">
+        </mat-form-field>
+        <mat-form-field class="column">
+          <textarea matInput placeholder="Date pentru alt tip de document" type="text" formControlName="act_descriere"></textarea>
+        </mat-form-field>
       </section>
 
-      <md-autocomplete #emitentAuto="mdAutocomplete" [displayWith]="displayCppEmitent.bind(this)">
-        <md-option *ngFor="let item of filtruCppEmitent | async" [value]="item.id">
+      <mat-autocomplete #emitentAuto="matAutocomplete" [displayWith]="displayCppEmitent.bind(this)">
+        <mat-option *ngFor="let item of filtruCppEmitent | async" [value]="item.id">
           {{ item.nume }}
-        </md-option>
-      </md-autocomplete>
+        </mat-option>
+      </mat-autocomplete>
     </div>
-    <md-action-row *ngIf="formStatus !== 'ro'">
-      <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!cppForm.dirty">
+    <mat-action-row *ngIf="formStatus !== 'ro'">
+      <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!cppForm.dirty">
         {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }}
       </button>
-    </md-action-row>
-  </md-expansion-panel>
+    </mat-action-row>
+  </mat-expansion-panel>
 </form>

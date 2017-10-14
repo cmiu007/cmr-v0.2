@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { NomenclatorService } from '../../../services/nomenclator.service';

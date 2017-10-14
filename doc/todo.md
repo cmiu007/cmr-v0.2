@@ -25,9 +25,9 @@ this.formGp.controls['checkboxFld'].valueChanges.observer({
 ### div cu search gol
 
 ```html
-  <md-card *ngIf="emptySearchResult">
+  <mat-card *ngIf="emptySearchResult">
     <span>Nu am gasit nici un membru cu datele {{searchForm.value.searchMem}}</span>
-  </md-card>
+  </mat-card>
 ```
 
 

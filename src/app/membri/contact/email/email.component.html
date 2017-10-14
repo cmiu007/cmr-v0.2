@@ -1,15 +1,15 @@
 <form [formGroup]="contactForm">
   <section>
-    <md-form-field class="column">
-      <input type="text" placeholder="email" mdInput formControlName="email">
-    </md-form-field>
+    <mat-form-field class="column">
+      <input type="text" placeholder="email" matInput formControlName="email">
+    </mat-form-field>
     <div class="column"></div>
-    <md-form-field class="column">
-      <input type="text" placeholder="telefon" mdInput formControlName="telefon">
-    </md-form-field>
+    <mat-form-field class="column">
+      <input type="text" placeholder="telefon" matInput formControlName="telefon">
+    </mat-form-field>
     <div class="column"></div>
     <div class="column" style="text-align: center;">
-      <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
+      <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
       {{ formStatus === 'new' ? 'Adauga' : 'Modifica'}} </button>
     </div>
   </section>

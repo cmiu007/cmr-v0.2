@@ -2,12 +2,12 @@
   <h2 class="mat-h2">{{submitResult}}</h2></div>
 <form [formGroup]="loginForm">
   <div class="row">
-    <md-input-container class="full_width"><input type="email" required mdInput formControlName="email" placeholder="email"></md-input-container>
+    <mat-input-container class="full_width"><input type="email" required matInput formControlName="email" placeholder="email"></mat-input-container>
   </div>
   <div class="row">
-    <md-input-container class="full_width"><input type="password" required mdInput formControlName="password" placeholder="parola"></md-input-container>
+    <mat-input-container class="full_width"><input type="password" required matInput formControlName="password" placeholder="parola"></mat-input-container>
   </div>
   <div class="row" style="text-align: center;">
-    <button type="submit" md-raised-button color="primary" (click)="onClick()" [disabled]="loginForm.invalid" >Autentificare</button>
+    <button type="submit" mat-raised-button color="primary" (click)="onClick()" [disabled]="loginForm.invalid" >Autentificare</button>
   </div>
 </form>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MembriService } from '../../../services/membri.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { ApiDataService } from '../../../services/api-data.service';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';

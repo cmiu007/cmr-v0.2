@@ -4,52 +4,103 @@
 
 <div class="content">
 
-  <md-card>
-    <md-card-title>Selecție Medici</md-card-title>
-    <md-card-content>
-      <form [formGroup]="searchForm" (keydown.enter)="onSearch(searchForm.value.searchMem)">
-        <section>
-          <md-input-container class="column">
-            <input mdInput formControlName="searchMem" type="text" placeholder="Caută medic" required/>
-            <md-icon mdSuffix>search</md-icon>
-            <md-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</md-hint>
-          </md-input-container>
-          <div class="column"></div>
-        </section>
-      </form>
-    </md-card-content>
-    <md-card-footer>
-      <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-    </md-card-footer>
-  </md-card>
 
-  <md-card *ngIf="emptySearchResult">
-    <span>Nu am găsit nici un membru cu datele: <span class="date-cert">{{searchForm.value.searchMem}}</span></span>
-  </md-card>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar *ngIf="loadingCMR" mode="indeterminate"></mat-progress-bar>
+  <section>
+    <mat-card class="full-width">
+      <mat-card-title>Selecție Medici</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch(searchForm.value.searchMem, 'cmj')">
+          <section>
+            <mat-input-container class="toleft full-width">
+              <input matInput formControlName="searchMem" type="text" placeholder="Caută medic" required (focus)="onSearchFocus('cmj')"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</mat-hint>
+            </mat-input-container>
+            <!-- <span class="fill-remaining-space"></span>
+                <div class="toRight"><button type="submit" mat-raised-button (click)="onSearch(searchForm.value.searchMem, 'cmj')" color="primary">Caută</button></div> -->
+          </section>
+        </form>
+      </mat-card-content>
+      <mat-card-footer>
+      </mat-card-footer>
+    </mat-card>
+ <div>
+ &nbsp;
+ </div>
 
-  <md-card *ngFor="let medic of membri">
-    <md-card-content>
+    <mat-card class="full-width">
+      <mat-card-title>Registru Național</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="searchFormCMR" (ngSubmit)="onSearch(searchFormCMR.value.searchMemCMR, 'cmr')">
+          <section>
+            <mat-input-container class="toleft full-width">
+              <input matInput formControlName="searchMemCMR" type="text" placeholder="Caută în registrul național" required (focus)="onSearchFocus('cmr')"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-hint align="start">Se pot folosi: Nume / Prenume / CNP / CUIM</mat-hint>
+            </mat-input-container>
+            <!-- <span class="fill-remaining-space"></span>
+                  <div class="toRight"><button type="submit" mat-raised-button (click)="onSearch(searchFormCMR.value.searchMemCMR, 'cmr')" color="primary">Caută</button></div> -->
+          </section>
+        </form>
+      </mat-card-content>
+      <mat-card-footer>
+
+      </mat-card-footer>
+    </mat-card>
+
+  </section>
+
+  <mat-card style="text-align: center;">
+      <button mat-raised-button (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
+    </mat-card>
+
+  <mat-card *ngIf="emptySearchResult">
+    <span>C.M.J.: Nu am găsit nici un membru cu datele:
+      <span class="date-cert">{{searchForm.value.searchMem}}</span>
+    </span>
+  </mat-card>
+
+  <mat-card *ngIf="emptySearchResultCMR">
+    <span>C.M.R.:Nu am găsit nici un membru cu datele:
+      <span class="date-cert">{{searchFormCMR.value.searchMemCMR}}</span>
+    </span>
+  </mat-card>
+
+  <mat-card *ngFor="let medic of membri">
+    <mat-card-content>
       <div class="container0">
         <span class="toLeft">{{ medic.nume }} {{ medic.prenume}} (CUIM: {{ medic.cuim}})</span>
         <span class="fill-remaining-space"></span>
         <span class="toRight">
-        <button md-raised-button [mdMenuTriggerFor]="memMenu">Editare</button>
-        <md-menu #memMenu="mdMenu">
-          <button md-menu-item (click)="onClickMem(medic.id, 'datepersonale')">Date personale</button>
-          <button md-menu-item (click)="onClickMem(medic.id, 'cpp')">Pregătire postuniv</button>
-          <!-- <button md-menu-item (click)="onClickMem(medic.id, 'titluri-profesionale')">Titluri profesionale</button> -->
-          <button md-menu-item (click)="onClickMem(medic.id, 'contact')">Date Contact</button>
-        </md-menu>
+          <button mat-raised-button [matMenuTriggerFor]="memMenu">Editare</button>
+          <mat-menu #memMenu="matMenu">
+            <button mat-menu-item (click)="onClickMem(medic.id, 'datepersonale')">Date personale</button>
+            <button mat-menu-item (click)="onClickMem(medic.id, 'cpp')">Pregătire postuniv</button>
+            <!-- <button mat-menu-item (click)="onClickMem(medic.id, 'titluri-profesionale')">Titluri profesionale</button> -->
+            <button mat-menu-item (click)="onClickMem(medic.id, 'contact')">Date Contact</button>
+          </mat-menu>
 
-        <button md-raised-button (click)="onClickMem(medic.id, 'certificate')">Certificate</button>
-        <button md-raised-button (click)="onClickMem(medic.id, 'avizari')">Avizari</button>
-    </span>
+          <button mat-raised-button (click)="onClickMem(medic.id, 'certificate')">Certificate</button>
+          <button mat-raised-button (click)="onClickMem(medic.id, 'avizari')">Avizari</button>
+        </span>
       </div>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 
-  <md-card style="text-align: center;">
-    <button md-raised-button (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
-  </md-card>
+
+  <mat-card *ngFor="let medic of membriCMR">
+    <mat-card-content>
+      <section>
+        <span class="column">{{displayFnJudet(medic.jud_id)}}</span>
+        <span class="column">{{ medic.nume }} {{ medic.prenume}}</span>
+        <span class="column">CUIM: {{ medic.cuim}}</span>
+        <span class="column">CNP: {{ medic.cnp}}</span>
+      </section>
+    </mat-card-content>
+  </mat-card>
 
 </div>

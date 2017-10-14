@@ -1,29 +1,29 @@
-<md-toolbar color="primary" class="mat-elevation-z7">
+<mat-toolbar color="primary" class="mat-elevation-z7">
   <span class="cmj" [routerLink]="['/']" style="cursor: pointer;">C.M.{{userJudet}}</span>
-  <span *ngIf="!hideMemNume" class="membru" [mdMenuTriggerFor]="memMenu" style="cursor: pointer;">{{currentMemNume}}<md-icon class="icon-align">keyboard_arrow_down</md-icon></span>
+  <span *ngIf="!hideMemNume" class="membru" [matMenuTriggerFor]="memMenu" style="cursor: pointer;">{{currentMemNume}}<mat-icon class="icon-align">keyboard_arrow_down</mat-icon></span>
 
-      <md-menu #memMenu="mdMenu">
-          <button md-menu-item (click)="onClickMem('datepersonale')">Date personale</button>
-          <button md-menu-item (click)="onClickMem('cpp')">Pregătire postuniv</button>
-          <!-- <button md-menu-item (click)="onClickMem('titluri-profesionale')">Titluri Profesionale</button> -->
-          <button md-menu-item (click)="onClickMem('contact')">Date contact</button>
+      <mat-menu #memMenu="matMenu">
+          <button mat-menu-item (click)="onClickMem('datepersonale')">Date personale</button>
+          <button mat-menu-item (click)="onClickMem('cpp')">Pregătire postuniv</button>
+          <!-- <button mat-menu-item (click)="onClickMem('titluri-profesionale')">Titluri Profesionale</button> -->
+          <button mat-menu-item (click)="onClickMem('contact')">Date contact</button>
           <hr>
-          <button md-menu-item (click)="onClickMem('certificate')">Certificate</button>
+          <button mat-menu-item (click)="onClickMem('certificate')">Certificate</button>
           <hr>
-          <button md-menu-item (click)="onClickMem('avizari')">Avizări</button>
-      </md-menu>
+          <button mat-menu-item (click)="onClickMem('avizari')">Avizări</button>
+      </mat-menu>
 
   <span class="titluPagina">{{currentPage}}</span>
   <span class="fill-remaining-space"></span>
 
   <span class="operator">
-    <span [mdMenuTriggerFor]="headerMenu" style="cursor: pointer;">Op: {{userName}}<md-icon class="icon-align">keyboard_arrow_down</md-icon></span>
+    <span [matMenuTriggerFor]="headerMenu" style="cursor: pointer;">Op: {{userName}}<mat-icon class="icon-align">keyboard_arrow_down</mat-icon></span>
 
-    <md-menu #headerMenu="mdMenu">
-      <button md-menu-item [routerLink]="['/login']">Terminare sesiune</button>
-      <button md-menu-item>Schimbă parola</button>
+    <mat-menu #headerMenu="matMenu">
+      <button mat-menu-item [routerLink]="['/login']">Terminare sesiune</button>
+      <button mat-menu-item>Schimbă parola</button>
       <hr>
-      <button md-menu-item>Ajutor</button>
-    </md-menu>
+      <button mat-menu-item>Ajutor</button>
+    </mat-menu>
   </span>
-</md-toolbar>
+</mat-toolbar>

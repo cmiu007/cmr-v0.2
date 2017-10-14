@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { MatSnackBar, MatDialogRef } from '@angular/material';
 import { Response, Http } from '@angular/http';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { AuthDialogComponent } from '../shared/auth-dialog/auth-dialog.component';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class ApiDataService {
     private _http: Http,
     private _globalVars: GlobalDataService,
     private _snackBarService: AlertSnackbarService,
-    private _mdDialog: MdDialog,
+    private _mdDialog: MatDialog,
     private _router: Router,
     private _dialogService: DialogService
   ) {

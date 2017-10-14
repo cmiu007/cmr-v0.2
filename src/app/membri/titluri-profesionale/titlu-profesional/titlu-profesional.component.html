@@ -1,7 +1,7 @@
-<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="titluForm">
 
-  <md-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
+  <mat-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
     <mat-expansion-panel-header>
       <mat-panel-title> <span [ngClass]="{'inactive': itemStatus === 'Inactiv'}">{{ itemTitlu }}</span></mat-panel-title>
       <mat-panel-description>{{ itemSubtitlu }}</mat-panel-description>
@@ -9,44 +9,44 @@
     <section>
 
 
-      <md-form-field class="column" [hidden]="!univ">
-        <input mdInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [mdAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" (blur)="checkTipTitlu()" >
-      </md-form-field>
+      <mat-form-field class="column" [hidden]="!univ">
+        <input matInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [matAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" (blur)="checkTipTitlu()" >
+      </mat-form-field>
 
-      <md-form-field class="column" *ngIf="!univ">
-        <input mdInput placeholder="Facultate" type="text" formControlName="reg_facultate_id" [mdAutocomplete]="facAuto" (click)="titluForm.get('reg_facultate_id').setValue('')">
-      </md-form-field>
+      <mat-form-field class="column" *ngIf="!univ">
+        <input matInput placeholder="Facultate" type="text" formControlName="reg_facultate_id" [matAutocomplete]="facAuto" (click)="titluForm.get('reg_facultate_id').setValue('')">
+      </mat-form-field>
 
       <div class="column" *ngIf="univ"></div>
 
       <div class="column"></div>
 
-      <md-form-field class="column">
-        <input mdInput placeholder="Start date" type="text" formControlName="data_start">
-      </md-form-field>
+      <mat-form-field class="column">
+        <input matInput placeholder="Start date" type="text" formControlName="data_start">
+      </mat-form-field>
 
-      <md-form-field class="column">
-        <input mdInput placeholder="End date" type="text" formControlName="data_end">
-      </md-form-field>
+      <mat-form-field class="column">
+        <input matInput placeholder="End date" type="text" formControlName="data_end">
+      </mat-form-field>
     </section>
 
-    <md-autocomplete #tipAuto="mdAutocomplete" [displayWith]="displayFnTitlu.bind(this)">
-      <md-option *ngFor="let titlu of filteredTitluri | async" [value]="titlu.id">
+    <mat-autocomplete #tipAuto="matAutocomplete" [displayWith]="displayFnTitlu.bind(this)">
+      <mat-option *ngFor="let titlu of filteredTitluri | async" [value]="titlu.id">
         {{titlu.nume}}
-      </md-option>
-    </md-autocomplete>
+      </mat-option>
+    </mat-autocomplete>
 
-    <md-autocomplete #facAuto="mdAutocomplete" [displayWith]="displayFnFacultate.bind(this)">
-      <md-option *ngFor="let fac of filteredFacultati | async" [value]="fac.id">
+    <mat-autocomplete #facAuto="matAutocomplete" [displayWith]="displayFnFacultate.bind(this)">
+      <mat-option *ngFor="let fac of filteredFacultati | async" [value]="fac.id">
         {{fac.nume}}
-      </md-option>
-    </md-autocomplete>
+      </mat-option>
+    </mat-autocomplete>
 
-    <md-action-row *ngIf="itemStatus !== 'Inactiv'">
-        <button type="submit" md-raised-button (click)="onSubmit()" color="primary" [disabled]="!titluForm.dirty">
+    <mat-action-row *ngIf="itemStatus !== 'Inactiv'">
+        <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!titluForm.dirty">
           {{ itemStatus === 'Nou' ? 'Adauga' : 'Inactiveaza' }}
         </button>
-      </md-action-row>
+      </mat-action-row>
 
-  </md-expansion-panel>
+  </mat-expansion-panel>
 </form>

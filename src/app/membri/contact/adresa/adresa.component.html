@@ -1,63 +1,64 @@
-<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="adresaForm">
-  <md-expansion-panel [expanded]="formStatus === 'new'">
-    <md-expansion-panel-header>
-      <md-panel-title>
+  <mat-expansion-panel [expanded]="formStatus === 'new'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
         {{ itemName }}
-      </md-panel-title>
-      <md-panel-description>
+      </mat-panel-title>
+      <mat-panel-description>
 
-      </md-panel-description>
-    </md-expansion-panel-header>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <section>
-      <md-select class="column" placeholder="Tip adresa" formControlName="tip">
-        <md-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
+      <mat-select class="column" placeholder="Tip adresa" formControlName="tip">
+        <mat-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
           {{ tip_adresa.nume }}
-        </md-option>
-      </md-select>
+        </mat-option>
+      </mat-select>
       <div class="column"></div>
     </section>
+
     <section>
-      <md-form-field class="column"><input required type="text" placeholder="Tara" mdInput formControlName="tara_id" [mdAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></md-form-field>
-      <md-form-field class="column"><input required type="text" placeholder="Judet" mdInput formControlName="jud_id" [mdAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></md-form-field>
-      <md-form-field class="column"><input required type="text" placeholder="Localitate" mdInput formControlName="localit"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Cod Postal" mdInput formControlName="cod_post"></md-form-field>
+      <mat-form-field class="column"><input required type="text" placeholder="Tara" matInput formControlName="tara_id" [matAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></mat-form-field>
+      <mat-form-field class="column"><input required type="text" placeholder="Judet" matInput formControlName="jud_id" [matAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></mat-form-field>
+      <mat-form-field class="column"><input required type="text" placeholder="Localitate" matInput formControlName="localit"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Cod Postal" matInput formControlName="cod_post"></mat-form-field>
     </section>
 
-    <md-autocomplete #taraAuto="mdAutocomplete" [displayWith]="displayFnTara.bind(this)">
-      <md-option *ngFor="let tara of filteredTara | async" [value]="tara.id">
+    <mat-autocomplete #taraAuto="matAutocomplete" [displayWith]="displayFnTara.bind(this)">
+      <mat-option *ngFor="let tara of filteredTara | async" [value]="tara.id">
         {{ tara.nume }}
-      </md-option>
-    </md-autocomplete>
+      </mat-option>
+    </mat-autocomplete>
 
-    <md-autocomplete #judetAuto="mdAutocomplete" [displayWith]="displayFnJudet.bind(this)">
-      <md-option *ngFor="let judet of filteredJudet | async" [value]="judet.id">
+    <mat-autocomplete #judetAuto="matAutocomplete" [displayWith]="displayFnJudet.bind(this)">
+      <mat-option *ngFor="let judet of filteredJudet | async" [value]="judet.id">
         {{ judet.nume }}
-      </md-option>
-    </md-autocomplete>
+      </mat-option>
+    </mat-autocomplete>
 
     <section>
-      <md-form-field class="column"><input type="text" placeholder="Strada" mdInput formControlName="strada"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Nr." mdInput formControlName="nr"></md-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Strada" matInput formControlName="strada"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Nr." matInput formControlName="nr"></mat-form-field>
       <div class="column"></div>
-      <md-form-field class="column"><input type="text" placeholder="Bl." mdInput formControlName="bl"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Sc." mdInput formControlName="scara"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Ap." mdInput formControlName="ap"></md-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Bl." matInput formControlName="bl"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Sc." matInput formControlName="scara"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Ap." matInput formControlName="ap"></mat-form-field>
       <div class="column"></div>
     </section>
 
     <section>
-      <md-form-field class="column"><input type="text" placeholder="Telefon" mdInput formControlName="tel"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Email" mdInput formControlName="email"></md-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Telefon" matInput formControlName="tel"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Email" matInput formControlName="email"></mat-form-field>
       <div class="column"></div>
     </section>
     <section>
-      <md-form-field class="column"><textarea placeholder="Comentariu" mdInput formControlName="obs"></textarea></md-form-field>
+      <mat-form-field class="column"><textarea placeholder="Comentariu" matInput formControlName="obs"></textarea></mat-form-field>
     </section>
-    <md-action-row>
-      <button type="submit" md-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
+    <mat-action-row>
+      <button type="submit" mat-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
                          {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }} adresa
             </button>
-    </md-action-row>
-  </md-expansion-panel>
+    </mat-action-row>
+  </mat-expansion-panel>
 </form>

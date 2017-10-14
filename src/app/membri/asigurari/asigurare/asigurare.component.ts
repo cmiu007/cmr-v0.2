@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AsigurariListComponent } from '../asigurari-list/asigurari-list.component';
 import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
 import { MembriService } from '../../../services/membri.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
