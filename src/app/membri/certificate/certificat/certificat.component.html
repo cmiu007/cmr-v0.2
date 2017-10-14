@@ -1,6 +1,6 @@
-<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="certificatForm">
-  <md-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
+  <mat-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ itemName }}
@@ -10,26 +10,26 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <section>
-      <md-form-field class="column"><input required type="text" placeholder="Data start" mdInput formControlName="data_start"></md-form-field>
-      <md-form-field class="column"><input type="text" placeholder="Data end" mdInput formControlName="data_invalidare"></md-form-field>
+      <mat-form-field class="column"><input required type="text" placeholder="Data start" matInput formControlName="data_start"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Data end" matInput formControlName="data_invalidare"></mat-form-field>
       <div class="column"></div>
       <div class="column" *ngIf="itemStatus === 'Nou' || itemStatus === 'In lucru'">
-        <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+        <button type="submit" mat-raised-button (click)="onClickCert()" color="primary">
         {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
       </div>
-      <div class="column" *ngIf="itemStatus === 'Activ'">
-        <button type="button" md-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
+      <div class="column" *ngIf="itemStatus !== 'Nou' ">
+        <button type="button" mat-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
         Detalii</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Activ'">
-          <button type="submit" md-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+          <button type="submit" mat-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
           Invalideaza</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Nou'">
-        <button type="submit" md-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
+        <button type="submit" mat-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
       </div>
     </section>
 
-    <app-certificat-vechi *ngIf="showCertDetails"></app-certificat-vechi>
-  </md-expansion-panel>
+    <app-certificat-vechi *ngIf="showCertDetails" [certificatId]="certificatId"></app-certificat-vechi>
+  </mat-expansion-panel>
 </form>

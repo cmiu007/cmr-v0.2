@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormSetService } from '../../services/form-set.service';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -17,7 +17,7 @@ export class AuthDialogComponent {
   submitResult: string;
 
   constructor(
-    public dialogRef: MdDialogRef<AuthDialogComponent>,
+    public dialogRef: MatDialogRef<AuthDialogComponent>,
     private _formSet: FormSetService,
     private _authService: AuthenticationService,
     private _snackBarService: AlertSnackbarService

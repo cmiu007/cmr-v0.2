@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { MatSnackBar, MatDialogRef } from '@angular/material';
 import { Response, Http } from '@angular/http';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { AuthDialogComponent } from '../shared/auth-dialog/auth-dialog.component';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { AlertSnackbarService } from './alert-snackbar.service';
 import { GlobalDataService } from './global-data.service';
 import { DialogService } from './dialog.service';
+import { environment } from '../../environments/environment';
+
 
 @Injectable()
 export class ApiDataService {
@@ -18,11 +20,11 @@ export class ApiDataService {
     private _http: Http,
     private _globalVars: GlobalDataService,
     private _snackBarService: AlertSnackbarService,
-    private _mdDialog: MdDialog,
+    private _mdDialog: MatDialog,
     private _router: Router,
     private _dialogService: DialogService
   ) {
-    this.apiAddress = this._globalVars.shareObj['apiAdress'];
+    this.apiAddress = environment.apiUrl;
   }
 
   apiCautaMembru(actiune: string, searchVal: string) {
@@ -72,7 +74,7 @@ export class ApiDataService {
 
   private setApiListaData(actiune: string, searchVal: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'cautare': searchVal
     });
@@ -80,7 +82,7 @@ export class ApiDataService {
 
   private setApiGetData(actiune: string, id: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id
     });
@@ -88,7 +90,7 @@ export class ApiDataService {
 
   private setApiAdaugaData(actiune: string, data: any) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'data': data
     });
@@ -96,7 +98,7 @@ export class ApiDataService {
 
   private setApiModificaData(actiune: string, id: number, data: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id,
       'data': data
@@ -106,16 +108,29 @@ export class ApiDataService {
 
   private checkApiResponse(response): number {
     if (response === null) {
+      this._snackBarService.showSnackBar('A aparut o eroare la conectarea cu serverul');
       return 0;
     }
     switch (response.result) {
+      case '00':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 1;
+
+      case '01':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
+
       case '12':
         this.callAuth();
         return 0;
 
-      case '00':
+        case '14':
         this._snackBarService.showSnackBar(response.mesaj);
-        return 1;
+        return 0;
+
+      case '20':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
 
       default:
         break;

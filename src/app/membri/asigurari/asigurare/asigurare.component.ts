@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AsigurariListComponent } from '../asigurari-list/asigurari-list.component';
 import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
 import { MembriService } from '../../../services/membri.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
@@ -66,7 +66,7 @@ export class AsigurareComponent implements OnInit {
       this.parentFormStatus = 1;
     } else {
       if (this._dataCal.isInTheFuture(dataEnd)) {
-        this.parentFormStatus = 2;
+        this.parentFormStatus = 1;
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {
           this.parentFormStatus = 3;
@@ -86,7 +86,7 @@ export class AsigurareComponent implements OnInit {
   setNewForm(): void {
     // id mem
     this.asigurareForm.get('id_mem').setValue(
-      localStorage.getItem('currentMemId')
+      sessionStorage.getItem('currentMemId')
     );
     // id dlp
     this.asigurareForm.get('id_dlp').setValue(

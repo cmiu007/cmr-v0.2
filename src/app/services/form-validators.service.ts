@@ -18,6 +18,9 @@ export class FormValidatorsService {
       for (let i = 0; i < testValCNP.length; i++) {
         sum = sum + splitCNP[i] * testValCNP[i];
       }
+      if ( sum % 11 === 10) {
+        sum = 1;
+      }
       if ((sum % 11) !== +splitCNP[12]) {
         return { 'cnpCtrlSumInvalid': true };
       } else {
@@ -28,7 +31,7 @@ export class FormValidatorsService {
 
   checkDate(control: FormGroup): { [s: string]: boolean } {
     // check if null pt cazul in care nu este required
-    if (control.value === '') {
+    if (control.value === null || control.value === '') {
       return null;
     }
     const validateDateISO =
@@ -37,21 +40,45 @@ export class FormValidatorsService {
   }
 
   isInTheFuture(control: FormGroup): { [s: string]: boolean } {
+    if (control.value === null || control.value === '') {
+      return null;
+    }
     const now = new Date(Date.now());
+    now.setUTCHours(0, 0, 0, 0);
     const date = new Date(control.value);
-    if (date > now ) {
+    date.setUTCHours(0, 0, 0, 0);
+    if ( +date > +now ) {
       return { 'isInTheFuture': true};
     }
     return null;
   }
 
   isInThePast(control: FormGroup): { [s: string]: boolean } {
+    if (control.value === null || control.value === '') {
+      return null;
+    }
     const now = new Date(Date.now());
+    now.setUTCHours(0, 0, 0, 0);
     const date = new Date(control.value);
-    if (date < now ) {
+    date.setUTCHours(0, 0, 0, 0);
+    if ( +date < +now ) {
       return {'isInThePast': true} ;
     }
     return null;
+  }
+
+  isToday(control: FormGroup): { [s: string]: boolean } {
+    if (control.value === null || control.value === '') {
+      return null;
+    }
+    const now = new Date(Date.now());
+    now.setUTCHours(0, 0, 0, 0);
+    const date = new Date(control.value);
+    date.setUTCHours(0, 0, 0, 0);
+    if ( +date === +now ) {
+      return null;
+    }
+    return {'isNotToday': true} ;
   }
 
   checkAnPromotie(control: FormGroup): { [s: string]: boolean } {

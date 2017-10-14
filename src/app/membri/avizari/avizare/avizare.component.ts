@@ -14,6 +14,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { AvizariComponent } from '../avizari.component';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-avizare',
@@ -43,11 +44,13 @@ export class AvizareComponent implements OnInit {
   avizareForm: FormGroup;
   formTitleStyle;
   loading = false;
+  memId = sessionStorage.getItem('currentMemId');
 
   asigurariLoading = false;
   amAsigurariData = false;
   asigurariFormData: Asigurare[];
   asigurareFormArray: FormArray;
+  genPDFAddress = '';
 
   filteredAsigurator;
 
@@ -58,7 +61,9 @@ export class AvizareComponent implements OnInit {
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
     private _setAddBtn: IsAddActiveService
-  ) { }
+  ) {
+    this.genPDFAddress = environment.resUrl;
+  }
 
   ngOnInit() {
     const a = this.formAvizari.get('avizari') as FormArray;
@@ -85,7 +90,7 @@ export class AvizareComponent implements OnInit {
     const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
     const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
     if (this._dataCal.isInTheFuture(dataStart)) {
-      this.itemStatus = 'Draft ';
+      this.itemStatus = 'Noua';
       this.formStatus = 1;
       this._setAddBtn.setStatus(false);
       this.onClickAsigurare();
@@ -93,7 +98,7 @@ export class AvizareComponent implements OnInit {
       if (this._dataCal.isInTheFuture(dataEnd)) {
         this.itemStatus = 'Activa ';
         this.formTitleStyle = ['active'];
-        this.formStatus = 2;
+        this.formStatus = 1;
         this.onClickAsigurare();
       } else {
         if (this._dataCal.isInThePast(dataEnd)) {
@@ -115,7 +120,8 @@ export class AvizareComponent implements OnInit {
   }
 
   setForm(): void {
-    if (this.formStatus === 2 || this.formStatus === 3) {
+    this.avizareForm.get('id_mem').setValue(this.memId);
+    if (this.formStatus === 3) {
       Object.keys(this.avizareForm.controls).forEach(
         key => {
           this.avizareForm.get(key).disable();
@@ -137,8 +143,11 @@ export class AvizareComponent implements OnInit {
     delete data.id_dlp;
     delete data.inchis;
     delete data.asigurare;
-    console.log(data);
+    // delete data.status;
+    // data.status = 9;
+    // delete data.id_certificat;
     if (this.formStatus !== 0) {
+      data.status = 1;
       this._apiData.apiModifica('dlp', idItem, data)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {
@@ -147,8 +156,9 @@ export class AvizareComponent implements OnInit {
           this.loading = false;
           AvizariComponent._formDataChanged.next();
         });
-        return;
+      return;
     }
+    data.status = 0;
     this._apiData.apiAdauga('dlp', data)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
@@ -170,9 +180,17 @@ export class AvizareComponent implements OnInit {
     this.amAsigurariData = true;
   }
 
+  printAvizare() {
+    const nativeWindow = window;
+    const certificatId = this.avizareForm.get('id_certificat').value;
+    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
+    url = url + '&actiune=spate&id=' + certificatId;
+    nativeWindow.open(url);
+  }
+
   getAsigurariData(): void {
     this.asigurariLoading = true;
-    const memId = localStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
     this._apiData.apiLista('asigurare', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
@@ -212,7 +230,7 @@ export class AvizareComponent implements OnInit {
     const control = <FormArray>this.formAvizari.controls['avizari'];
     control.removeAt(0);
     // show add again
-   this._setAddBtn.setStatus(true);
+    this._setAddBtn.setStatus(true);
   }
 
   onClickDetali(): void {

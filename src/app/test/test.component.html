@@ -1,25 +1,25 @@
 <div class="content">
-  <md-card>
-    <md-card-title>
+  <mat-card>
+    <mat-card-title>
       <span class="full-width">Test</span>
-    </md-card-title>
-    <md-card-content>
-      <md-input-container>
-         <input type="text" mdInput [formControl]="myControl" [mdAutocomplete]="auto" (click)="resetValue(myControl)">
-      </md-input-container>
+    </mat-card-title>
+    <mat-card-content>
+      <mat-input-container>
+         <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" (click)="resetValue(myControl)">
+      </mat-input-container>
 
-      <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayFn.bind(this)">
-         <md-option *ngFor="let option of filteredOptions | async" [value]="option.id">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+         <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id">
             {{ option.nume }}
-         </md-option>
-      </md-autocomplete>
-      <button md-button (click)="show()">Show value</button>
+         </mat-option>
+      </mat-autocomplete>
+      <button mat-button (click)="show()">Show value</button>
       <div class="row">
-        <button md-button (click)="patch(myControl)">Patch value</button>
+        <button mat-button (click)="patch(myControl)">Patch value</button>
       </div>
       <div class="row">
         <!-- <p>{{ result | json}}</p> -->
       </div>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

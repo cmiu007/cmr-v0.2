@@ -1,11 +1,11 @@
 <app-header></app-header>
 <div class="content">
-  <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
-  <md-card>
-    <md-card-title class="form-title">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-card>
+    <mat-card-title class="form-title">
       <span>Pregatire profesionala postuniversitara</span>
-    </md-card-title>
-  </md-card>
+    </mat-card-title>
+  </mat-card>
   <form *ngIf="!loading">
     <app-cpp-list [cppFormData]="formData"></app-cpp-list>
   </form>

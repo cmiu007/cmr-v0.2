@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class AlertSnackbarService {
   snackDuration = 10000;
 
   constructor(
-    private _snackBar: MdSnackBar
+    private _snackBar: MatSnackBar
   ) { }
 
 

@@ -33,17 +33,18 @@ export class CertificateComponent implements OnInit {
     this.getFormData();
     CertificateComponent._formDataChanged
       .subscribe(result => {
+        this.setForm('init');
         this.getFormData();
       });
   }
 
   private setPageName(): void {
-    localStorage.setItem('currentPage', 'Certificat');
+    sessionStorage.setItem('currentPage', 'Certificat');
   }
 
   private getFormData(): void {
     this.loading = true;
-    const memId = localStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
     this._apiData.apiLista('certificat', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {

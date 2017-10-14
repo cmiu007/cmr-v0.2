@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -50,7 +50,7 @@ export class ContactComponent implements OnInit {
   }
 
   private setHeader(): void {
-    localStorage.setItem('currentPage', 'Date Contact');
+    sessionStorage.setItem('currentPage', 'Date Contact');
   }
 
   private setForm(): void {

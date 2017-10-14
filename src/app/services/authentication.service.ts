@@ -4,16 +4,18 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Judet } from '../shared/models/registre.model';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
 
+  apiAddress = '';
   constructor(private http: Http,
-    private _router: Router) { }
+    private _router: Router) { this.apiAddress = environment.apiUrl; }
 
   login(username: string, password: string) {
     const test = JSON.stringify({ email: username, password: password });
-    return this.http.put('https://devel-api.cmr.ro/api/auth', JSON.stringify({ email: username, password: password }))
+    return this.http.put( this.apiAddress + 'api/auth', JSON.stringify({ email: username, password: password }))
       .map((response: Response) => {
         this.setLocalStorage(response);
         // de revazut ce intoarcem si de ce intoarcem ceva
@@ -24,7 +26,7 @@ export class AuthenticationService {
   reLogin(data) {
     // 2. login
     return this.http
-      .put('https://devel-api.cmr.ro/api/auth', data)
+      .put( this.apiAddress + 'api/auth', data)
       .map((response: Response) => {
         this.setLocalStorage(response);
         return JSON.parse(response.text());
@@ -35,16 +37,17 @@ export class AuthenticationService {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
   }
 
   setLocalStorage(response: Response): string {
     const data = JSON.parse(response.text());
     if (data.result === '00') {
-      localStorage.setItem('userToken', data.token);
-      localStorage.setItem('userName', data.nume);
-      localStorage.setItem('userGroup', data.cmj);
-      localStorage.setItem('userJudet', data.judet);
-      localStorage.setItem('currentUser', JSON.stringify(data));
+      sessionStorage.setItem('userToken', data.token);
+      sessionStorage.setItem('userName', data.nume);
+      sessionStorage.setItem('userGroup', data.cmj);
+      sessionStorage.setItem('userJudet', data.judet);
+      sessionStorage.setItem('currentUser', JSON.stringify(data));
     }
     if (data.result === '10') {
       // auth error

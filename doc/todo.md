@@ -1,3 +1,5 @@
+important https://raw.githubusercontent.com/cmiu007/cmr-v0.2/test-cmr/doc/todo_in_devel.md
+
 # app
 
 ### Login cu modal pt reautentificare daca editarea este activa
@@ -23,9 +25,9 @@ this.formGp.controls['checkboxFld'].valueChanges.observer({
 ### div cu search gol
 
 ```html
-  <md-card *ngIf="emptySearchResult">
+  <mat-card *ngIf="emptySearchResult">
     <span>Nu am gasit nici un membru cu datele {{searchForm.value.searchMem}}</span>
-  </md-card>
+  </mat-card>
 ```
 
 

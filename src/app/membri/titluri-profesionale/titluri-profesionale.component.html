@@ -1,0 +1,12 @@
+<app-header></app-header>
+<div class="content">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <div class="row">
+    <mat-card>
+      <mat-card-title class="form-title"><span>Titluri Profesionale</span></mat-card-title>
+    </mat-card>
+  </div>
+  <div *ngIf="!loading">
+    <app-titluri-profesionale-lista [titluriForm]="titluriForm" ></app-titluri-profesionale-lista>
+  </div>
+</div>

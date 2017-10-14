@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { Adresa, Contact, DateContact } from '../../../shared/interfaces/contact.interface';
 import { MembriService } from '../../../services/membri.service';
@@ -51,7 +51,7 @@ export class EmailComponent implements OnInit {
   private setForm(): void {
     this.contactForm = this._formSet.contact(this.contactData[0]);
     if (this.formStatus === 'new') {
-      this.contactForm.get('id_mem').setValue(localStorage.getItem('currentMemId'));
+      this.contactForm.get('id_mem').setValue(sessionStorage.getItem('currentMemId'));
     }
   }
 

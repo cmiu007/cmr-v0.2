@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MembriService } from '../../../services/membri.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { ApiDataService } from '../../../services/api-data.service';
+import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
+import { ApiData } from '../../../shared/interfaces/message.interface';
+import { Certificat } from '../../../shared/interfaces/certificate.interface';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-certificat-vechi',
@@ -9,55 +14,57 @@ import { Router } from '@angular/router';
   styleUrls: ['./certificat-vechi.component.css']
 })
 export class CertificatVechiComponent implements OnInit {
+  @Input ('certificatId')
+  public certificatId;
+
   loading = true;
-  formData; // de pus tip
+  formData: Certificat; // de pus tip
   printActive = false;
   tipCert = '';
+  genPDFAddress = '';
+  memId = sessionStorage.getItem('currentMemId');
 
   constructor(
-    private _memService: MembriService,
-    private _snack: MdSnackBar,
-    private _router: Router
-  ) { }
-
-  ngOnInit() {
-    this.setPageName();
-    this.getFormData();
+    private _router: Router,
+    private _apiData: ApiDataService,
+    private _snack: AlertSnackbarService,
+    // private _globalVars: GlobalDataService,
+  ) {
+    // this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+    this.genPDFAddress = environment.resUrl;
   }
 
-  setPageName(): void {
-    localStorage.setItem('currentPage', 'Certificat');
+  ngOnInit() {
+    this.getFormData();
   }
 
   getFormData(): void {
     this.loading = true;
-    this._memService.getCertificatMembru(localStorage.getItem('currentMemId'))
-      .subscribe(data => {
-        if (data.result === '12') {
-          this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
-          this._router.navigate(['/login']);
-        } else {
-          this.formData = data;
-          // this.sortDlp();
-          this.loading = false;
-          this.tipCert = data.tip_cert;
-          // this.toFormGroupTest();
-        }
-      });
+    this._apiData.apiGet('certificat', this.certificatId)
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      const a = response.data;
+      this.formData = JSON.parse(a.continut);
+      // console.log(this.formData);
+      // this.setForm('populate', this.certificateData);
+      this.loading = false;
+    });
+  return;
   }
 
   print(pag: number): void {
     const nativeWindow = window;
-    let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
-    urlRoot = urlRoot
-      + localStorage.getItem('userToken')
-      + '&id='
-      + localStorage.getItem('currentMemId');
-
+    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
     if (pag === 1) {
-      nativeWindow.open(urlRoot + '&actiune=fata');
+      url = url + '&actiune=fata';
+      url = url + '&id=' + this.certificatId; // TODO: de gasit ID
+      nativeWindow.open(url);
+    } else {
+      // url = url + '&actiune=spate';
+      this._router.navigate(['/membri/' + this.memId + '/avizari']);
       return;
     }
-    nativeWindow.open(urlRoot + '&actiune=spate');
   }
 }

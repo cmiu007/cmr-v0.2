@@ -1,0 +1,52 @@
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<form [formGroup]="titluForm">
+
+  <mat-expansion-panel [expanded]="itemStatus === 'Nou' || itemStatus === 'Activ'">
+    <mat-expansion-panel-header>
+      <mat-panel-title> <span [ngClass]="{'inactive': itemStatus === 'Inactiv'}">{{ itemTitlu }}</span></mat-panel-title>
+      <mat-panel-description>{{ itemSubtitlu }}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <section>
+
+
+      <mat-form-field class="column" [hidden]="!univ">
+        <input matInput placeholder="Tip" type="text" formControlName="reg_titlu_id" [matAutocomplete]="tipAuto" (click)="titluForm.get('reg_titlu_id').setValue('')" (blur)="checkTipTitlu()" >
+      </mat-form-field>
+
+      <mat-form-field class="column" *ngIf="!univ">
+        <input matInput placeholder="Facultate" type="text" formControlName="reg_facultate_id" [matAutocomplete]="facAuto" (click)="titluForm.get('reg_facultate_id').setValue('')">
+      </mat-form-field>
+
+      <div class="column" *ngIf="univ"></div>
+
+      <div class="column"></div>
+
+      <mat-form-field class="column">
+        <input matInput placeholder="Start date" type="text" formControlName="data_start">
+      </mat-form-field>
+
+      <mat-form-field class="column">
+        <input matInput placeholder="End date" type="text" formControlName="data_end">
+      </mat-form-field>
+    </section>
+
+    <mat-autocomplete #tipAuto="matAutocomplete" [displayWith]="displayFnTitlu.bind(this)">
+      <mat-option *ngFor="let titlu of filteredTitluri | async" [value]="titlu.id">
+        {{titlu.nume}}
+      </mat-option>
+    </mat-autocomplete>
+
+    <mat-autocomplete #facAuto="matAutocomplete" [displayWith]="displayFnFacultate.bind(this)">
+      <mat-option *ngFor="let fac of filteredFacultati | async" [value]="fac.id">
+        {{fac.nume}}
+      </mat-option>
+    </mat-autocomplete>
+
+    <mat-action-row *ngIf="itemStatus !== 'Inactiv'">
+        <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!titluForm.dirty">
+          {{ itemStatus === 'Nou' ? 'Adauga' : 'Inactiveaza' }}
+        </button>
+      </mat-action-row>
+
+  </mat-expansion-panel>
+</form>

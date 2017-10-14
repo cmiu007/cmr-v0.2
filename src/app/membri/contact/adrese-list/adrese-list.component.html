@@ -1,6 +1,6 @@
-<md-card>
-  <md-card-title class="form-title"><span>Lista Adrese</span></md-card-title>
-</md-card>
+<mat-card>
+  <mat-card-title class="form-title"><span>Lista Adrese</span></mat-card-title>
+</mat-card>
 
 <div [formGroup]="adreseForm">
   <div formArrayName="adresa">
@@ -11,9 +11,9 @@
 </div>
 
 <div *ngIf="addActive">
-  <md-card style="text-align: center;">
-    <md-card-content>
-      <button type="button" *ngIf="!loading" md-raised-button (click)="addAdresa()" color="primary">Adauga Adresa</button>
-    </md-card-content>
-  </md-card>
+  <mat-card style="text-align: center;">
+    <mat-card-content>
+      <button type="button" *ngIf="!loading" mat-raised-button (click)="addAdresa()" color="primary">Adauga Adresa</button>
+    </mat-card-content>
+  </mat-card>
 </div>
