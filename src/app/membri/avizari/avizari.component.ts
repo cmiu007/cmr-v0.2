@@ -21,7 +21,7 @@ export class AvizariComponent implements OnInit {
   formAvizariData: Avizare[];
   formAvizari: FormGroup;
   formArrayAvizare: FormArray;
-  memId = localStorage.getItem('currentMemId');
+  memId = sessionStorage.getItem('currentMemId');
 
   constructor(
     private _apiData: ApiDataService,
@@ -43,13 +43,13 @@ export class AvizariComponent implements OnInit {
   }
 
   private setHeader(): void {
-    localStorage.setItem('currentPage', 'Avizari');
+    sessionStorage.setItem('currentPage', 'Avizari');
   }
 
   private getFormData(): void {
     this.checkCertificat();
     this.loading = true;
-    const memId = localStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
     this._apiData.apiLista('dlp', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {

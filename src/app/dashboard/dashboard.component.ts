@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
+import { Title } from '@angular/platform-browser';
+import { environment } from '../../environments/environment';
 
 import { User } from '../shared/models/user.model';
 import { UserService } from '../services/user.service';
@@ -31,10 +33,12 @@ export class DashboardComponent implements OnInit {
     private snackBar: MdSnackBar,
     private _apiData: ApiDataService,
     private _snackBarService: AlertSnackbarService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _title: Title
   ) { }
 
   ngOnInit() {
+    this._title.setTitle(environment.titluAplicatie);
     this.searchForm = new FormGroup({
       'searchMem': new FormControl(null, [Validators.required, Validators.minLength(3)])
     });
@@ -42,14 +46,15 @@ export class DashboardComponent implements OnInit {
   }
 
   resetMedicSelectatDate(): void {
-    localStorage.removeItem('currentMemNume');
-    localStorage.removeItem('currentMemId');
-    localStorage.removeItem('currentMemCuim');
-    localStorage.setItem('currentPage', 'Pagina de start');
+    sessionStorage.removeItem('currentMemNume');
+    sessionStorage.removeItem('currentMemId');
+    sessionStorage.removeItem('currentMemCuim');
+    sessionStorage.setItem('currentPage', 'Pagina de start');
   }
 
 
   onSearch(searchVal: string) {
+    this.membri = [];
     searchVal = searchVal.trim();
     if (this.searchForm.valid) {
       this.loading = true;
@@ -78,15 +83,15 @@ export class DashboardComponent implements OnInit {
 
   setMedicSelectatDate(id: string): void {
     if (id === '') {
-      localStorage.setItem('currentMemNume', 'Membru Nou');
+      sessionStorage.setItem('currentMemNume', 'Membru Nou');
       return;
     }
-    localStorage.setItem('currentMemNume',
+    sessionStorage.setItem('currentMemNume',
       this.membri.find(item => item.id === id).nume
       + ' '
       + this.membri.find(item => item.id === id).prenume);
-    localStorage.setItem('currentMemId', id);
-    localStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
+    sessionStorage.setItem('currentMemId', id);
+    sessionStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
     return;
   }
 }

@@ -12,6 +12,7 @@ import { GlobalDataService } from './global-data.service';
 // import { User } from '../shared/models/user.model';
 import { ApiDataService } from './api-data.service';
 import { AlertSnackbarService } from './alert-snackbar.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MembriService {
@@ -24,12 +25,12 @@ export class MembriService {
     private _apiData: ApiDataService,
     private _snackBarService: AlertSnackbarService
   ) {
-    this.apiAddress = this.globalVars.shareObj['apiAdress'];
+    this.apiAddress = environment.apiUrl;
   }
 
   adaugaMembruDate(actiune: string, data: any) {
     // de pus tip data
-    const token = localStorage.getItem('userToken');
+    const token = sessionStorage.getItem('userToken');
     const memData = JSON.stringify({
       'token': token,
       'actiune': actiune,
@@ -46,7 +47,7 @@ export class MembriService {
 
   modificaMembruDate(actiune: string, id: number, data: string) {
     return this.http.put(this.apiAddress + 'api/modifica', JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id,
       'data': data
@@ -60,7 +61,7 @@ export class MembriService {
   // nu are aceiasi forma cu celelante adauga !!!!
   adaugaMembruContact(actiune: string, id: number, data: string) {
     return this.http.put(this.apiAddress + 'api/adauga', JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id,
       'data': data
@@ -97,7 +98,7 @@ export class MembriService {
 
   setPutValueGet(actiune: string, searchVal: number) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': searchVal
     });
@@ -105,7 +106,7 @@ export class MembriService {
 
   setPutValueLista(actiune: string, searchVal: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'cautare': searchVal
     });

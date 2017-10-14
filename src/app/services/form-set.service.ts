@@ -84,7 +84,7 @@ export class FormSetService {
       'id_mem': [{ value: '' }],
       'reg_cpp_tip_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
       'reg_cpp_id': [{ value: '' }, [this._validator.checkIfNumber, Validators.required]],
-      'grad_prof_cpp_id': [{ value: '' }, [this._validator.checkIfNumber]],
+      'grad_prof_cpp_id': [{ value: '' }, [Validators.required, this._validator.checkIfNumber]],
       'date_start': [{ value: '' }, [Validators.required, this._validator.checkDate]],
       'date_end': [{ value: '' }, [this._validator.checkDate]],
       'emitent': [{ value: '' }, [Validators.required]],
@@ -164,10 +164,10 @@ export class FormSetService {
 
     const formGroupEmpty = this._fb.group({
       'id_adresa': null,
-      'id_mem': [localStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
+      'id_mem': [sessionStorage.getItem('currentMemId'), [Validators.required, this._validator.checkIfNumber]],
       'tip': [null, [Validators.required]],
       'tara_id': [1183, [Validators.required, this._validator.checkIfNumber]],
-      'jud_id': [localStorage.getItem('userGroup'), [Validators.required, this._validator.checkIfNumber]],
+      'jud_id': [sessionStorage.getItem('userGroup'), [Validators.required, this._validator.checkIfNumber]],
       'localit': ['', [Validators.required]],
       'cod_post': ['', [Validators.required, this._validator.checkIfNumber]],
       'strada': '',

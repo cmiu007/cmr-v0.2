@@ -37,7 +37,7 @@ export class TitluriProfesionaleComponent implements OnInit {
   }
 
   private setPageName(): void {
-    localStorage.setItem('currentPage', 'Titluri Profesionale');
+    sessionStorage.setItem('currentPage', 'Titluri Profesionale');
   }
 
   private setForm(actiune: string, data?: Titlu[], form?: FormGroup): void {
@@ -60,7 +60,7 @@ export class TitluriProfesionaleComponent implements OnInit {
   }
 
   private getFormData(): void {
-    const memId = +localStorage.getItem('currentMemId');
+    const memId = +sessionStorage.getItem('currentMemId');
 
     // this._apiData.apiLista('titluri', memId)
     //   .subscribe((response: ApiData) => {

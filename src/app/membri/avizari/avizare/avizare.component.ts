@@ -14,7 +14,7 @@ import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
 import { AvizariComponent } from '../avizari.component';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
-import { GlobalDataService } from '../../../services/global-data.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-avizare',
@@ -44,7 +44,7 @@ export class AvizareComponent implements OnInit {
   avizareForm: FormGroup;
   formTitleStyle;
   loading = false;
-  memId = localStorage.getItem('currentMemId');
+  memId = sessionStorage.getItem('currentMemId');
 
   asigurariLoading = false;
   amAsigurariData = false;
@@ -60,10 +60,9 @@ export class AvizareComponent implements OnInit {
     private _dataCal: DataCalService,
     private _apiData: ApiDataService,
     private _fb: FormBuilder,
-    private _setAddBtn: IsAddActiveService,
-    private _globalVars: GlobalDataService
+    private _setAddBtn: IsAddActiveService
   ) {
-    this.genPDFAddress = this._globalVars.shareObj['genPDFAddress'];
+    this.genPDFAddress = environment.resUrl;
   }
 
   ngOnInit() {
@@ -184,14 +183,14 @@ export class AvizareComponent implements OnInit {
   printAvizare() {
     const nativeWindow = window;
     const certificatId = this.avizareForm.get('id_certificat').value;
-    let url = this.genPDFAddress + 'genpdf.php?token=' + localStorage.getItem('userToken');
+    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
     url = url + '&actiune=spate&id=' + certificatId;
     nativeWindow.open(url);
   }
 
   getAsigurariData(): void {
     this.asigurariLoading = true;
-    const memId = localStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
     this._apiData.apiLista('asigurare', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {

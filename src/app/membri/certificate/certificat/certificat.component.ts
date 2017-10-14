@@ -70,7 +70,7 @@ export class CertificatComponent implements OnInit {
     if (dataStartVal === null && dataEndVal === null) {
       this.itemStatus = 'Nou';
       this.certificatForm.get('data_start').setValue(this._dataCal.today());
-      this.certificatForm.get('id_mem').setValue(+localStorage.getItem('currentMemId'));
+      this.certificatForm.get('id_mem').setValue(+sessionStorage.getItem('currentMemId'));
       this._setAddBtn.setStatus(false);
       return;
     }

@@ -86,7 +86,7 @@ export class AsigurareComponent implements OnInit {
   setNewForm(): void {
     // id mem
     this.asigurareForm.get('id_mem').setValue(
-      localStorage.getItem('currentMemId')
+      sessionStorage.getItem('currentMemId')
     );
     // id dlp
     this.asigurareForm.get('id_dlp').setValue(

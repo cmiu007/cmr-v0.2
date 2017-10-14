@@ -26,12 +26,12 @@ export class CertificatVechiComponent implements OnInit {
   }
 
   setPageName(): void {
-    localStorage.setItem('currentPage', 'Certificat');
+    sessionStorage.setItem('currentPage', 'Certificat');
   }
 
   getFormData(): void {
     this.loading = true;
-    this._memService.getCertificatMembru(localStorage.getItem('currentMemId'))
+    this._memService.getCertificatMembru(sessionStorage.getItem('currentMemId'))
       .subscribe(data => {
         if (data.result === '12') {
           this._snack.open(data.mesaj, 'inchide', { duration: 5000 });
@@ -49,7 +49,7 @@ export class CertificatVechiComponent implements OnInit {
   print(pag: number): void {
     const nativeWindow = window;
     let urlRoot = 'https://devel-rm.cmr.ro/genpdf.php?token=';
-    urlRoot = urlRoot + localStorage.getItem('userToken');
+    urlRoot = urlRoot + sessionStorage.getItem('userToken');
     if (pag === 1) {
       urlRoot = urlRoot + '&actiune=fata';
     } else {

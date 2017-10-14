@@ -50,7 +50,7 @@ export class ContactComponent implements OnInit {
   }
 
   private setHeader(): void {
-    localStorage.setItem('currentPage', 'Date Contact');
+    sessionStorage.setItem('currentPage', 'Date Contact');
   }
 
   private setForm(): void {

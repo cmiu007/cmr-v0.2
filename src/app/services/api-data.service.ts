@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { AlertSnackbarService } from './alert-snackbar.service';
 import { GlobalDataService } from './global-data.service';
 import { DialogService } from './dialog.service';
+import { environment } from '../../environments/environment';
+
 
 @Injectable()
 export class ApiDataService {
@@ -22,7 +24,7 @@ export class ApiDataService {
     private _router: Router,
     private _dialogService: DialogService
   ) {
-    this.apiAddress = this._globalVars.shareObj['apiAdress'];
+    this.apiAddress = environment.apiUrl;
   }
 
   apiCautaMembru(actiune: string, searchVal: string) {
@@ -55,7 +57,6 @@ export class ApiDataService {
   apiAdauga(actiune: string, data: any) {
     return this._http.put(this.apiAddress + 'api/adauga', this.setApiAdaugaData(actiune, data))
       .map((response: Response) => {
-        console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: dataApi, status: status };
@@ -73,7 +74,7 @@ export class ApiDataService {
 
   private setApiListaData(actiune: string, searchVal: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'cautare': searchVal
     });
@@ -81,7 +82,7 @@ export class ApiDataService {
 
   private setApiGetData(actiune: string, id: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id
     });
@@ -89,7 +90,7 @@ export class ApiDataService {
 
   private setApiAdaugaData(actiune: string, data: any) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'data': data
     });
@@ -97,7 +98,7 @@ export class ApiDataService {
 
   private setApiModificaData(actiune: string, id: number, data: string) {
     return JSON.stringify({
-      'token': localStorage.getItem('userToken'),
+      'token': sessionStorage.getItem('userToken'),
       'actiune': actiune,
       'id': id,
       'data': data
@@ -111,15 +112,23 @@ export class ApiDataService {
       return 0;
     }
     switch (response.result) {
-      case '12':
-        this.callAuth();
-        return 0;
-
       case '00':
         this._snackBarService.showSnackBar(response.mesaj);
         return 1;
 
-      case '14':
+      case '01':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
+
+      case '12':
+        this.callAuth();
+        return 0;
+
+        case '14':
+        this._snackBarService.showSnackBar(response.mesaj);
+        return 0;
+
+      case '20':
         this._snackBarService.showSnackBar(response.mesaj);
         return 0;
 

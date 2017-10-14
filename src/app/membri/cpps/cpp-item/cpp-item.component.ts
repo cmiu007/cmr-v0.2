@@ -169,7 +169,7 @@ export class CppItemComponent implements OnInit {
       // const newCppdata = this.cppForm.value;
       // delete newCppData.reg_cpp_id;
       const newCppData = {
-        id_mem: localStorage.getItem('currentMemId'),
+        id_mem: sessionStorage.getItem('currentMemId'),
         reg_cpp_tip_id: this.cppForm.get('reg_cpp_tip_id').value,
         reg_cpp_id: this.cppForm.get('reg_cpp_id').value,
         grad_prof_cpp_id: this.cppForm.get('grad_prof_cpp_id').value,
@@ -208,9 +208,11 @@ export class CppItemComponent implements OnInit {
     }
     if (this.cppForm.get('reg_cpp_tip_id').value !== 2) {
       this.cppForm.get('grad_prof_cpp_id').disable();
+      this.cppForm.get('grad_prof_cpp_id').setValidators(null);
       return;
     }
     this.cppForm.get('grad_prof_cpp_id').enable();
+    this.cppForm.get('grad_prof_cpp_id').updateValueAndValidity();
   }
 
   private setRegistre(): void {
