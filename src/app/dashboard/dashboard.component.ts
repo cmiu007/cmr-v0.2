@@ -109,7 +109,6 @@ export class DashboardComponent implements OnInit {
             }
             this.membri = response.data;
           });
-
         return;
 
       case 'cmr':

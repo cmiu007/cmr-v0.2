@@ -27,9 +27,9 @@
       <mat-card-footer>
       </mat-card-footer>
     </mat-card>
- <div>
- &nbsp;
- </div>
+    <div>
+      &nbsp;
+    </div>
 
     <mat-card class="full-width">
       <mat-card-title>Registru Național</mat-card-title>
@@ -55,8 +55,8 @@
   </section>
 
   <mat-card style="text-align: center;">
-      <button mat-raised-button (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
-    </mat-card>
+    <button mat-raised-button (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
+  </mat-card>
 
   <mat-card *ngIf="emptySearchResult">
     <span>C.M.J.: Nu am găsit nici un membru cu datele:
@@ -90,7 +90,6 @@
       </div>
     </mat-card-content>
   </mat-card>
-
 
   <mat-card *ngFor="let medic of membriCMR">
     <mat-card-content>
