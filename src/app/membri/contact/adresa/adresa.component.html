@@ -10,12 +10,14 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <section>
-      <mat-select class="column" placeholder="Tip adresa" formControlName="tip">
-        <mat-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
-          {{ tip_adresa.nume }}
-        </mat-option>
-      </mat-select>
-      <div class="column"></div>
+      <mat-form-field>
+        <mat-select required class="column" placeholder="Tip adresa" formControlName="tip">
+          <mat-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
+            {{ tip_adresa.nume }}
+          </mat-option>
+        </mat-select>
+        <div class="column"></div>
+      </mat-form-field>
     </section>
 
     <section>

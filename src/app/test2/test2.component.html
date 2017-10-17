@@ -1,77 +1,35 @@
-<div class="content">
-  <mat-card>
-    <mat-card-title>
-      <span class="full-width">Date Pesonale</span>
-    </mat-card-title>
-    <mat-card-content>
-      <section>
-        <div class="column">Tara</div>
-        <div class="column"></div>
-        <div class="column">Cnp</div>
-        <div class="column"></div>
-      </section>
-      <hr>
-      <section>
-        <div class="column">Nume</div>
-        <div class="column">Initiala</div>
-        <div class="column"></div>
-        <div class="column">Prenume</div>
-        <div class="column"></div>
-        <div class="column">Nume Anterior</div>
-      </section>
-      <hr>
-      <section>
-        <div class="column">Act Tip</div>
-        <div class="column">Serie</div>
-        <div class="column"></div>
-        <div class="column">Numar</div>
-        <div class="column"></div>
-        <div class="column">Data exp</div>
-      </section>
-      <hr>
-      <section>
-        <div class="column">Facultate Absolvita</div>
-        <div class="column">Promotie</div>
-        <div class="column"></div>
-        <div class="column">Cod Parafa</div>
-      </section>
-      <hr>
-      <section>
-        <div class="column">Act Tip</div>
-        <div class="column">Serie</div>
-        <div class="column"></div>
-        <div class="column">Numar</div>
-        <div class="column"></div>
-        <div class="column">Data exp</div>
-      </section>
-      <hr>
-      <section>
-        <div class="column">Data Jur</div>
-        <div class="column"></div>
-      </section>
-    </mat-card-content>
-  </mat-card>
+<div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource">
 
-  <!-- <mat-card>
-      <mat-card-title>
-        <span class="full-width">Test pt flex</span>
-      </mat-card-title>
-      <mat-card-content>
-          <section>
-              <div class="column">Tip</div>
-              <div class="column">Denumire</div>
-              <div class="column">Grad</div>
-              <div class="column">Start</div>
-              <div class="column">End</div>
-            </section>
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
 
-            <section>
-              <div class="column">Emitent</div>
-              <div class="column">Serie</div>
-              <div class="column">Numar</div>
-              <div class="column">Data</div>
-              <div class="column">Alte date</div>
-            </section>
-      </mat-card-content>
-    </mat-card> -->
-</div>
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="weight">
+        <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="symbol">
+        <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </div>
