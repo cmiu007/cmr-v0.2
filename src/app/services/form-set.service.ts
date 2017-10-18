@@ -193,10 +193,11 @@ export class FormSetService {
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
       'dlp_data_end': ['', [Validators.required, this._validator.checkDate]],
       'status': [null, [this._validator.checkIfNumber]],
-      'id_certificat': [null, [this._validator.checkIfNumber]]
+      'id_certificat': [null, [this._validator.checkIfNumber]],
+      'asigurare': this._fb.array([])
     });
     if (data) {
-      data = this.cleanData(data);
+      // data = this.cleanData(data);
       formGroupEmpty.patchValue(data);
     }
     return formGroupEmpty;
@@ -206,12 +207,14 @@ export class FormSetService {
     const formGroupEmpty = this._fb.group({
       'id_asig': [null, [this._validator.checkIfNumber]],
       'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
-      'id_asigurator': [null, [Validators.required, this._validator.checkIfNumber]],
+      'id_asigurator': [null, [this._validator.checkIfNumber]],
       'id_dlp': [null, [Validators.required, this._validator.checkIfNumber]],
-      'polita_serie': ['', [Validators.required]],
-      'polita_nr': ['', [Validators.required]],
-      'data_start': ['', [Validators.required, this._validator.checkDate]],
-      'data_end': ['', [Validators.required, this._validator.checkDate]]
+      'id_cpp': [null, [Validators.required, this._validator.checkIfNumber]],
+      'status': [null, [Validators.required, this._validator.checkIfNumber]],
+      'polita_serie': ['', []],
+      'polita_nr': ['', []],
+      'data_start': ['', [this._validator.checkDate]],
+      'data_end': ['', [this._validator.checkDate]]
     });
     if (data) {
       data = this.cleanData(data);
@@ -223,7 +226,7 @@ export class FormSetService {
 
 
   titluri(actiune: string, data?: Titlu, form?: FormGroup): FormGroup {
-    const  formGroupEmpty = this._fb.group({
+    const formGroupEmpty = this._fb.group({
       'id_cdu': [null, [this._validator.checkIfNumber]],
       'id_mem': [null, [this._validator.checkIfNumber]],
       'reg_titlu_id': [null, [this._validator.checkIfNumber]],
@@ -301,7 +304,9 @@ export class FormSetService {
   private cleanData(data): any {
     Object.keys(data).forEach(
       key => {
-        if (data[key] === '0000-00-00' || data[key] === 0) {
+        // probleme la status - nu putem avea status 0 plm
+        // if (data[key] === '0000-00-00' || data[key] === 0) {
+        if (data[key] === '0000-00-00') {
           data[key] = '';
         }
       }

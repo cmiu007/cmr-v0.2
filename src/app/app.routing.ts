@@ -33,7 +33,7 @@ const appRoutes: Routes = [
     // tslint:disable-next-line:max-line-length
     {path: ':id/titluri-profesionale', component: TitluriProfesionaleComponent, resolve: {regFac: FacResolve, regTitluri: TitluriResolve} },
     {path: ':id/contact', component: ContactComponent, resolve: {regTara: TaraResolve, regJud: JudetResolve}},
-    {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve }},
+    {path: ':id/avizari', component: AvizariComponent, resolve: {regAsiguratori: AsiguratoriResolve,  regCpp: CppResolve}},
     {path: ':id/certificate', component: CertificateComponent}
   ]},
   {path: 'login', component: LoginComponent},

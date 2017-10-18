@@ -1,14 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Asigurator } from '../../../shared/models/registre.model';
-import { ItemRegCpp } from '../../../shared/interfaces/listacpp.interface';
-import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FormSetService } from '../../../services/form-set.service';
 import { DataCalService } from '../../../services/data-cal.service';
-import { ApiDataService } from '../../../services/api-data.service';
-import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
+import { Asigurator } from '../../../shared/models/registre.model';
+import { Observable } from 'rxjs/Observable';
+import { AsigurariListComponent } from '../asigurari-list/asigurari-list.component';
+import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
+import { MembriService } from '../../../services/membri.service';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
+import { ApiDataService } from '../../../services/api-data.service';
+import { AvizareComponent } from '../../avizari/avizare/avizare.component';
+import { ItemRegCpp } from '../../../shared/interfaces/listacpp.interface';
 
 @Component({
   selector: 'app-asigurare',
@@ -49,13 +54,9 @@ export class AsigurareComponent implements OnInit {
 
   ngOnInit() {
     this.setForm();
-    this.setFormStatus();
     this.setFilterRegistre();
+    this.setFormStatus();
   }
-
-
-////////////////////////////////////////////////
-
 
   private setForm(): void {
     const a = this.avizareForm.get('asigurare') as FormArray;
@@ -63,21 +64,27 @@ export class AsigurareComponent implements OnInit {
   }
 
   setFormStatus(): void {
-    const status = this.avizareForm.get('status').value;
-
-    if (status !== 0) {
-      Object.keys(this.asigurareForm.controls).forEach(
-        key => {
-          this.asigurareForm.get(key).disable();
-        });
+    const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
+    const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
+    if (this._dataCal.isInTheFuture(dataStart)) {
+      this.parentFormStatus = 1;
+    } else {
+      if (this._dataCal.isInTheFuture(dataEnd)) {
+        this.parentFormStatus = 1;
+      } else {
+        if (this._dataCal.isInThePast(dataEnd)) {
+          this.parentFormStatus = 3;
+        }
+      }
     }
-  }
-
-  setFilterRegistre(): void {
-    this.filteredAsiguratori = this.asigurareForm.get('id_asigurator').valueChanges
-      .startWith('null')
-      .map(asigurator => asigurator && typeof asigurator === 'object' ? asigurator.nume : asigurator)
-      .map(nume => nume ? this.filterAsigurator(nume) : this.registruAsiguratori.slice());
+    if (this.asigurareForm.get('id_asig').value) {
+      this.formStatus = 1;
+      if (this.parentFormStatus === 2 || this.parentFormStatus === 3) {
+        this.asigurareForm.disable();
+      }
+    } else {
+      this.setNewForm();
+    }
   }
 
   setNewForm(): void {
@@ -97,6 +104,12 @@ export class AsigurareComponent implements OnInit {
     }
   }
 
+  setFilterRegistre(): void {
+    this.filteredAsiguratori = this.asigurareForm.get('id_asigurator').valueChanges
+      .startWith('null')
+      .map(asigurator => asigurator && typeof asigurator === 'object' ? asigurator.nume : asigurator)
+      .map(nume => nume ? this.filterAsigurator(nume) : this.registruAsiguratori.slice());
+  }
 
   filterAsigurator(nume: string): Asigurator[] {
     return this.registruAsiguratori.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));

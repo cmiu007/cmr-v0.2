@@ -18,13 +18,10 @@
     </mat-autocomplete>
 
     <!-- <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2"> -->
-    <div class="row" style="text-align: center;">
+     <div class="row" *ngIf="this.avizareForm.get('status').value === 0" style="text-align: center;">
       <button type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty">
             {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} asigurare
           </button>
-      <button *ngIf="formStatus === 0" type="button" mat-raised-button (click)="delAsigurare()" color="primary">
-              Sterge Asigurare
-            </button>
     </div>
   </mat-card-content>
 </mat-card>

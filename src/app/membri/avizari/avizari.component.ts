@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-
-import { FormSetService } from '../../services/form-set.service';
-import { Avizare } from '../../shared/interfaces/avizari.interface';
-import { ApiDataService } from '../../services/api-data.service';
-import { ApiData } from '../../shared/interfaces/message.interface';
-import { Subject } from 'rxjs/Subject';
-import { AlertSnackbarService } from '../../services/alert-snackbar.service';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+
+import { ApiDataService } from '../../services/api-data.service';
+import { FormSetService } from '../../services/form-set.service';
+import { ApiData } from '../../shared/interfaces/message.interface';
+import { AlertSnackbarService } from '../../services/alert-snackbar.service';
+
+import { Avizare } from '../../shared/interfaces/avizari.interface';
 import { Certificat } from '../../shared/interfaces/certificate.interface';
 
 @Component({
@@ -83,14 +84,14 @@ export class AvizariComponent implements OnInit {
 
   private sortDlp(): void {
     this.formAvizariData.sort((a: Avizare, b) => {
-      return a.dlp_data_start > b.dlp_data_start ? -1 : 1;
+      return a.dlp_data_start < b.dlp_data_start ? -1 : 1;
     });
   }
 
   private toFormGroup(): FormGroup {
     this.formArrayAvizare = this._fb.array([]);
     const formGroup = this._fb.group({
-      avizari: this.formArrayAvizare
+      avizare: this.formArrayAvizare
     });
     return formGroup;
   }
@@ -98,7 +99,7 @@ export class AvizariComponent implements OnInit {
   private toFormGroupTest(): void {
     this.formAvizariData.forEach((avizareData: Avizare) => {
       const avizareForm = this._formSet.avizare(avizareData);
-      this.formArrayAvizare.push(avizareForm);
+      this.formArrayAvizare.insert(0, avizareForm);
     });
   }
 }

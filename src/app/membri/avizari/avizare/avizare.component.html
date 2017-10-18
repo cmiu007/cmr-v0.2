@@ -1,33 +1,44 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="avizareForm">
-  <mat-expansion-panel [expanded]="formStatus === 0 || formStatus === 1" (click)="onClickAsigurare()">
+  <mat-expansion-panel [expanded]="!isHidden">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{itemName}}
       </mat-panel-title>
       <mat-panel-description>
-          {{itemStatus}}
+        {{itemStatus}}
       </mat-panel-description>
     </mat-expansion-panel-header>
     <section>
-      <mat-form-field class="column"><input required type="text" placeholder="Data start" matInput formControlName="dlp_data_start" (blur)="addDlpDateEnd()"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Data end" matInput formControlName="dlp_data_end"></mat-form-field>
+      <mat-form-field class="column">
+        <input required type="text" placeholder="Data start" matInput formControlName="dlp_data_start" (blur)="addDateEnd()">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Data end" matInput formControlName="dlp_data_end">
+      </mat-form-field>
       <div class="column"></div>
-      <div class="column" *ngIf="formStatus === 0 || formStatus === 2">
-        <button type="submit" mat-raised-button (click)="onClickAvizare()" color="primary" [disabled]="!avizareForm.dirty">
-        {{ formStatus === 0 ? 'Adauga' : 'Modifica' }} avizare</button>
+      <div class="column" *ngIf="avizareFormData.status === null">
+        <button type="submit" mat-raised-button (click)="onClickAvizare('adauga')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
+          Adaugă vizare</button>
       </div>
-      <div class="column" *ngIf="formStatus !== 0">
-          <button type="button" mat-raised-button (click)="printAvizare()" color="primary">Printează</button>
+      <div class="column" *ngIf="avizareFormData.status === 0">
+        <button type="submit" mat-raised-button (click)="onClickAvizare('modifica')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
+          Modifică avizare</button>
       </div>
-      <div class="column" *ngIf="formStatus === 0">
+      <div class="column" *ngIf="avizareFormData.status === 0">
+        <button type="submit" mat-raised-button (click)="onClickAvizare('finalizeaza')" color="warn">
+          Finalizează avizare</button>
+      </div>
+      <div class="column" *ngIf="avizareFormData.status === 1 || avizareFormData.status === 2">
+        <button type="button" mat-raised-button (click)="onClickAvizare('printeaza')" color="primary">Printează</button>
+      </div>
+      <div class="column" *ngIf="avizareFormData.status === null">
         <button type="button" mat-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>
       </div>
     </section>
 
-    <div class="row" *ngIf="formStatus !== 0">
-      <app-asigurari-list [avizareForm]="avizareForm" [formStatus]="formStatus"></app-asigurari-list>
-    </div>
+    <app-asigurari-list [avizareForm]="avizareForm">
+    </app-asigurari-list>
 
   </mat-expansion-panel>
 </form>

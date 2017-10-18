@@ -1,0 +1,95 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { FormSetService } from '../../../services/form-set.service';
+import { FormArray } from '@angular/forms';
+import { Asigurator } from '../../../shared/models/registre.model';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
+import { ItemRegCpp } from '../../../shared/interfaces/listacpp.interface';
+import { ApiDataService } from '../../../services/api-data.service';
+import { ApiData } from '../../../shared/interfaces/message.interface';
+import { Cpp } from '../../../shared/interfaces/cpps.interface';
+
+@Component({
+  selector: 'app-asigurari-list',
+  templateUrl: './asigurari-list.component.html',
+  styleUrls: ['./asigurari-list.component.css']
+})
+export class AsigurariListComponent implements OnInit {
+  public static addActiveSubj: Subject<boolean> = new Subject;
+
+  @Input('avizareForm')
+  public avizareForm;
+
+  addActive = false;
+  registruAsiguratori: Asigurator[];
+  registruCpp: ItemRegCpp[];
+  cppData: Cpp;
+
+  constructor(
+    private _apiData: ApiDataService,
+    private _formSet: FormSetService,
+    private _aRoute: ActivatedRoute
+  ) { }
+
+  ngOnInit() {
+    // this.avizareForm.addControl('asigurare', new FormArray([]));
+    // console.log('Avizare Start: ' + this.avizareStart + ' | Avizare end: ' + this.avizareEnd);
+    // console.log(this.avizareForm);
+    this.addActive = true;
+    this.getMemCpp();
+    this.setRegistre();
+    // this.setForm();
+    AsigurariListComponent.addActiveSubj
+      .subscribe( result => {
+        this.addActive = !this.addActive;
+      });
+  }
+
+  private getMemCpp(): void {
+    this._apiData.apiLista('cpp', this._aRoute.snapshot.params['id'])
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.cppData = response.data;
+      this.sortCpp();
+      this.setForm();
+      // console.log(this.avizareForm);
+    });
+  }
+
+  private sortCpp(): void {
+    // 1. Ordonare dupa data
+    Object(this.cppData).sort((a, b) => {
+      return a.date_start > b.date_start ? -1 : 1;
+    });
+    // 2. ordonare dupa tip_cpp
+    Object(this.cppData).sort((a, b) => {
+      return a.reg_cpp_tip_id < b.reg_cpp_tip_id ? -1 : 1;
+    });
+  }
+
+  private setRegistre(): void {
+    this.registruAsiguratori = this._aRoute.snapshot.data['regAsiguratori'];
+    this.registruCpp = this._aRoute.snapshot.data['regCpp'];
+  }
+
+  private setForm(): void {
+    // verifica daca este asigurare noua sau are deja date
+    // daca este asigurare noua patch values id_mem, id_dlp, id_cpp, status
+    Object(this.cppData).forEach(element => {
+      const newAsigurareForm = this._formSet.asigurare(null);
+      const arrayControl: FormArray = this.avizareForm.get('asigurare');
+      arrayControl.insert(0, newAsigurareForm);
+    });
+    this.addActive = !this.addActive;
+  }
+
+  private addAsigurare(): void {
+    const newAsigurareForm = this._formSet.asigurare(null);
+    const arrayControl: FormArray = this.avizareForm.get('asigurare');
+    arrayControl.insert(0, newAsigurareForm);
+    this.addActive = !this.addActive;
+  }
+
+}
