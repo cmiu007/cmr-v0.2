@@ -20,7 +20,6 @@ export class AsigurariListComponent implements OnInit {
 
   registruAsiguratori: Asigurator[];
   registruCpp: ItemRegCpp[];
-  cppData: Cpp;
 
   constructor(
     private _aRoute: ActivatedRoute

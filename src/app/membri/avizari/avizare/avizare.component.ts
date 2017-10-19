@@ -47,6 +47,11 @@ export class AvizareComponent implements OnInit, OnDestroy {
   itemName: string;
   itemStatus: string;
 
+  // formStatus
+  // 0 - new - in curs de completare
+  // 1 - draft - completare finazilata
+  // 2 - activ
+  // 3 - inactiv
 
   constructor(
     private _detectChanges: IsAddActiveService,
@@ -170,6 +175,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
             return;
           }
           this.cppData = response.data;
+          this.cppData = this.cppData.filter(item => item.reg_cpp_tip_id === 2);
+          this.cppData = this.cppData.filter(item => item.date_end === '0000-00-00');
           this.addCppArray();
           // TODO: creem un array avizari pe baza listei de CPP
           return;

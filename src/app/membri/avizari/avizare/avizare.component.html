@@ -35,10 +35,8 @@
       <div class="column" *ngIf="avizareFormData.status === null">
         <button type="button" mat-raised-button (click)="delAvizare()" color="primary">Sterge avizare</button>
       </div>
+
     </section>
-
-    <app-asigurari-list [avizareForm]="avizareForm">
-    </app-asigurari-list>
-
+    <app-asigurari-list [avizareForm]="avizareForm"></app-asigurari-list>
   </mat-expansion-panel>
 </form>
