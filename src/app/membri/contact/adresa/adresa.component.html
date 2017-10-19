@@ -10,19 +10,29 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <section>
-      <mat-select class="column" placeholder="Tip adresa" formControlName="tip">
-        <mat-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
-          {{ tip_adresa.nume }}
-        </mat-option>
-      </mat-select>
+      <mat-form-field>
+        <mat-select class="column" placeholder="Tip adresa" formControlName="tip">
+          <mat-option *ngFor="let tip_adresa of listaTipAdresa" [value]="tip_adresa.id">
+            {{ tip_adresa.nume }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <div class="column"></div>
     </section>
 
     <section>
-      <mat-form-field class="column"><input required type="text" placeholder="Tara" matInput formControlName="tara_id" [matAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')"></mat-form-field>
-      <mat-form-field class="column"><input required type="text" placeholder="Judet" matInput formControlName="jud_id" [matAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')"></mat-form-field>
-      <mat-form-field class="column"><input required type="text" placeholder="Localitate" matInput formControlName="localit"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Cod Postal" matInput formControlName="cod_post"></mat-form-field>
+      <mat-form-field class="column">
+        <input required type="text" placeholder="Tara" matInput formControlName="tara_id" [matAutocomplete]="taraAuto" (click)="adresaForm.get('tara_id').setValue('')">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input required type="text" placeholder="Judet" matInput formControlName="jud_id" [matAutocomplete]="judetAuto" (click)="adresaForm.get('jud_id').setValue('')">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input required type="text" placeholder="Localitate" matInput formControlName="localit">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Cod Postal" matInput formControlName="cod_post">
+      </mat-form-field>
     </section>
 
     <mat-autocomplete #taraAuto="matAutocomplete" [displayWith]="displayFnTara.bind(this)">
@@ -38,27 +48,43 @@
     </mat-autocomplete>
 
     <section>
-      <mat-form-field class="column"><input type="text" placeholder="Strada" matInput formControlName="strada"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Nr." matInput formControlName="nr"></mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Strada" matInput formControlName="strada">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Nr." matInput formControlName="nr">
+      </mat-form-field>
       <div class="column"></div>
-      <mat-form-field class="column"><input type="text" placeholder="Bl." matInput formControlName="bl"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Sc." matInput formControlName="scara"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Ap." matInput formControlName="ap"></mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Bl." matInput formControlName="bl">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Sc." matInput formControlName="scara">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Ap." matInput formControlName="ap">
+      </mat-form-field>
       <div class="column"></div>
     </section>
 
     <section>
-      <mat-form-field class="column"><input type="text" placeholder="Telefon" matInput formControlName="tel"></mat-form-field>
-      <mat-form-field class="column"><input type="text" placeholder="Email" matInput formControlName="email"></mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Telefon" matInput formControlName="tel">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Email" matInput formControlName="email">
+      </mat-form-field>
       <div class="column"></div>
     </section>
     <section>
-      <mat-form-field class="column"><textarea placeholder="Comentariu" matInput formControlName="obs"></textarea></mat-form-field>
+      <mat-form-field class="column">
+        <textarea placeholder="Comentariu" matInput formControlName="obs"></textarea>
+      </mat-form-field>
     </section>
     <mat-action-row>
       <button type="submit" mat-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
-                         {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }} adresa
-            </button>
+        {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }} adresa
+      </button>
     </mat-action-row>
   </mat-expansion-panel>
 </form>
