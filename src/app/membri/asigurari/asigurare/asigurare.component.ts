@@ -30,7 +30,7 @@ export class AsigurareComponent implements OnInit {
   @Input('registruCpp')
   public registruCpp: ItemRegCpp[];
 
-  public cppData: Cpp[];
+  public cppData: Cpp;
 
   // TODO: de luat cu api
   public registruCppGrad: ItemRegLista[] = [
@@ -85,8 +85,9 @@ export class AsigurareComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCppData();
+    // console.log(this.avizareForm);
     this.setForm();
+    this.getCppData();
     this.setFormStatus();
     // this.setFormTitle();
     this.setFilterRegistre();
@@ -96,15 +97,12 @@ export class AsigurareComponent implements OnInit {
 ////////////////////////////////////////////////
 
   private getCppData(): void {
-    this._apiData.apiLista('cpp', sessionStorage.getItem('currentMemId'))
+    this._apiData.apiGet('cpp', this.asigurareForm.get('id_cpp').value)
     .subscribe((response: ApiData) => {
       if (response.status === 0) {
         return;
       }
       this.cppData = response.data;
-      this.cppData = this.cppData.filter(item => item.reg_cpp_tip_id === 2);
-      this.cppData = this.cppData.filter(item => item.date_end === '0000-00-00');
-      // TODO: creem un array avizari pe baza listei de CPP
       this.setFormTitle();
       return;
     });
@@ -113,6 +111,7 @@ export class AsigurareComponent implements OnInit {
   private setForm(): void {
     const a = this.avizareForm.get('asigurare') as FormArray;
     this.asigurareForm = this._formSet.asigurare(a.at(this.arrayIndex).value);
+    // console.log(this.avizareForm);
   }
 
   private setFormStatus(): void {
@@ -139,28 +138,16 @@ export class AsigurareComponent implements OnInit {
           this.asigurareForm.get(key).disable();
         });
     }
+
   }
 
   private setFormTitle(): void {
-    // Specialitate - Grad - Grup de specialitati
-    const specialitate = this.displayFnCpp(this.cppData[this.arrayIndex].reg_cpp_id);
-    const grad = this.displayFnCppGrad(this.cppData[this.arrayIndex].reg_cpp_tip_id);
-    const grup = this.displayFnCppGrp(this.cppData[this.arrayIndex].reg_cpp_id);
+    const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
+    const grad = this.displayFnCppGrad(this.cppData.reg_cpp_tip_id);
+    const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
     this.itemTitle1 = grup;
     this.itemTitle2 = specialitate + ' - ' +  grad;
   }
-
-  // setNewForm(): void {
-  //   // id mem
-  //   this.asigurareForm.get('id_mem').setValue(
-  //     sessionStorage.getItem('currentMemId')
-  //   );
-  //   // id dlp
-  //   this.asigurareForm.get('id_dlp').setValue(
-  //     this.avizareForm.get('id_dlp').value
-  //   );
-  // }
-
 
   setFilterRegistre(): void {
     this.filteredAsiguratori = this.asigurareForm.get('id_asigurator').valueChanges

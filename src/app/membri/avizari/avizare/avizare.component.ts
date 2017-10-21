@@ -48,6 +48,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
   itemName: string;
   itemStatus: string;
   avizareOld = false;
+  asigurariIncomplete = false;
 
   // formStatus
   // 0 - new - in curs de completare
@@ -106,7 +107,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
       }
     }
 
-
     // set form status pentru asigurare
     this.avizareForm.get('status').setValue(this.avizareFormData.status);
 
@@ -139,6 +139,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+
+
   }
 
   private setFormRO(): void {
@@ -170,8 +172,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
     // are avizare de tip vechi?
     if (this.avizareFormData.inchis === 2) {
-      console.log('hit avizare de tip vechi');
-      console.log(listaAsigurari2);
+      // console.log('hit avizare de tip vechi');
+      // console.log(listaAsigurari2);
       this.avizareOld = true;
       // afiseaza asigurarea direct
       // nu se ia in considerare lista de cpp
@@ -191,11 +193,12 @@ export class AvizareComponent implements OnInit, OnDestroy {
       if (asigurari.length > 1) {
         // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
         // TODO: are eroare ... pt moment bagam in consola
-        console.log('Are mai mult de o avizare pt cpp');
+        console.log('Eroare: Are mai mult de o avizare pt o specialitate');
         return;
       }
 
       if (asigurari.length === 0) {
+        console.log('creez asig noua');
         asigurari[0] = {
           id_mem: +this.avizareForm.get('id_mem').value,
           id_dlp: +this.avizareForm.get('id_dlp').value,
@@ -203,13 +206,16 @@ export class AvizareComponent implements OnInit, OnDestroy {
           // status: +this.avizareForm.get('status').value
           status: 0
         };
+        this.asigurariIncomplete = true;
       }
-
+      console.log(asigurari);
       const newAsigurareForm = this._formSet.asigurare(asigurari[0]);
+      // console.log(this._formSet.asigurare(asigurari[0]));
       const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
       arrayControlNew.insert(0, newAsigurareForm);
-      this.loading = false;
     });
+    console.log(this.avizareForm.value);
+    this.loading = false;
   }
 
   setItemName(): void {
@@ -255,6 +261,9 @@ export class AvizareComponent implements OnInit, OnDestroy {
         break;
 
       case 'finalizeaza':
+        // verifica daca toate asigurarile au status 1
+        // daca una din ele are status 0 return cu mesaj de eroare
+        // console.log(asigurari);
         data.status = 1;
         break;
 

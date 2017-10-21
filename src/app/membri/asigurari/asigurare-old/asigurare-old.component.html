@@ -1,5 +1,5 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-<mat-card class="mat-elevation-z7">
+
   <mat-card-content [formGroup]="asigurareForm">
     <section>
       <mat-form-field class="column"><input type="text" placeholder="Nume Asigurator" matInput formControlName="id_asigurator" [matAutocomplete]="asiguratorAuto"
@@ -27,4 +27,3 @@
             </button>
     </div>
   </mat-card-content>
-</mat-card>

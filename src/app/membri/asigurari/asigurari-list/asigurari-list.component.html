@@ -1,9 +1,16 @@
-<div [formGroup]="avizareForm" style="padding: 7px;">
+<div [formGroup]="avizareForm" *ngIf="!avizareOld" style="padding: 7px;">
   <div formArrayName="asigurare">
     <mat-card *ngFor="let formAvizareData of avizareForm.get('asigurare').value; let i = index" class="mat-elevation-z7" style="padding: 12px; margin-bottom: 10px;">
       <app-asigurare [arrayIndex]="i" [avizareForm]="avizareForm" [registruAsiguratori]="registruAsiguratori" [registruCpp]="registruCpp"></app-asigurare>
     </mat-card>
   </div>
 </div>
+
+<div [formGroup]="avizareForm" *ngIf="avizareOld" style="padding: 7px;">
+  <div formArrayName="asigurare">
+    <mat-card *ngFor="let formAvizareData of avizareForm.get('asigurare').value; let i = index" class="mat-elevation-z7" style="padding: 12px; margin-bottom: 10px;">
+      <app-asigurare-old [arrayIndex]="i" [avizareForm]="avizareForm" [registruAsiguratori]="registruAsiguratori"></app-asigurare-old>
+    </mat-card>
+  </div>
+</div>
 <br>
-{{ avizareOld }}
