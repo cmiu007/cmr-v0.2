@@ -67,6 +67,7 @@ import { TitluProfesionalComponent } from './membri/titluri-profesionale/titlu-p
 import { ListaAsigurari } from './shared/resolvers/listaasigurari.resolver';
 import { ListaCertificate } from './shared/interfaces/certificate.interface';
 import { ListaCpp } from './shared/resolvers/listacpp.resolver';
+import { AsigurareOldComponent } from './membri/asigurari/asigurare-old/asigurare-old.component';
 
 
 @NgModule({
@@ -99,7 +100,8 @@ import { ListaCpp } from './shared/resolvers/listacpp.resolver';
     CertificatVechiComponent,
     TitluriProfesionaleComponent,
     TitluriProfesionaleListaComponent,
-    TitluProfesionalComponent
+    TitluProfesionalComponent,
+    AsigurareOldComponent
   ],
   imports: [
     BrowserModule,
