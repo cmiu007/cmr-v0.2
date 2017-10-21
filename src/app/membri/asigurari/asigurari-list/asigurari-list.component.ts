@@ -15,8 +15,8 @@ export class AsigurariListComponent implements OnInit {
   @Input('avizareForm')
   public avizareForm;
 
-  @Input('formStatus')
-  public formStatus;
+  @Input('avizareOld')
+  public avizareOld: boolean;
 
   registruAsiguratori: Asigurator[];
   registruCpp: ItemRegCpp[];

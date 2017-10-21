@@ -47,6 +47,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
   isHidden = false;
   itemName: string;
   itemStatus: string;
+  avizareOld = false;
 
   // formStatus
   // 0 - new - in curs de completare
@@ -171,6 +172,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     if (this.avizareFormData.inchis === 2) {
       console.log('hit avizare de tip vechi');
       console.log(listaAsigurari2);
+      this.avizareOld = true;
       // afiseaza asigurarea direct
       // nu se ia in considerare lista de cpp
       Object(listaAsigurari2).forEach((element: Asigurare) => {
