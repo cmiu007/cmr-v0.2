@@ -31,9 +31,6 @@ export class AsigurareOldComponent implements OnInit {
   @Input('registruAsiguratori')
   public registruAsiguratori: Asigurator[];
 
-  @Input('registruCpp')
-  public registruCpp: ItemRegCpp[];
-
   filteredAsiguratori: Observable<Asigurator[]>;
 
   asigurareForm: FormGroup;
@@ -125,6 +122,7 @@ export class AsigurareOldComponent implements OnInit {
   delAsigurare(): void {
     const control = <FormArray>this.avizareForm.controls['asigurare'];
     control.removeAt(0);
+    // AsigurariListComponent.addActiveSubj.next();
   }
 
   onClickAsigurare(): void {
