@@ -33,5 +33,4 @@ export class AsigurariListComponent implements OnInit {
     this.registruAsiguratori = this._aRoute.snapshot.data['regAsiguratori'];
     this.registruCpp = this._aRoute.snapshot.data['regCpp'];
   }
-
 }

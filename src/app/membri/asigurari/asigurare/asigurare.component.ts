@@ -123,9 +123,8 @@ export class AsigurareComponent implements OnInit {
     // 1 - are asigurare
     // cel mai bine sa ii faca asigurare din avizare si pe urma sa faca edit aici
     // problema este ca daca ii sterge avizarea raman asigurari orfane
-    console.log(this.asigurareForm.get('status').value);
+    // console.log(this.asigurareForm.get('status').value);
     if  (this.asigurareForm.get('status').value === 1) {
-      console.log('hit');
       this.areAvizare = 'Da';
     }
     if ( this.asigurareForm.get('data_end').value === '') {
@@ -232,7 +231,6 @@ export class AsigurareComponent implements OnInit {
     const asigData = this.asigurareForm.value;
     const idItem = asigData.id_asig;
     delete asigData.id_asig;
-    console.log(this.formStatus);
     if (this.formStatus === null) {
       this._apiData.apiAdauga('asigurare', asigData)
         .subscribe((response: ApiData) => {
@@ -257,11 +255,9 @@ export class AsigurareComponent implements OnInit {
   }
 
   onRaspunsChange(): void {
-    console.log('Radio value is changed, the new value is: ' + this.areAvizare);
     if (this.areAvizare === 'Da') {
       this.asigurareForm.get('status').setValue(1);
     }
-    console.log(this.asigurareForm);
     // update validators pt formular
     // update field status 0 nu are; are
   }

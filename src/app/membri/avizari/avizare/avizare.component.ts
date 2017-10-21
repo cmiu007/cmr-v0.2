@@ -3,8 +3,13 @@
 
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { Avizare } from '../../../shared/interfaces/avizari.interface';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+
 import { Subscription } from 'rxjs/Subscription';
+
+import { environment } from '../../../../environments/environment';
+
+import { Avizare } from '../../../shared/interfaces/avizari.interface';
 import { IsAddActiveService } from '../../../services/is-add-active.service';
 import { FormSetService } from '../../../services/form-set.service';
 import { ApiDataService } from '../../../services/api-data.service';
@@ -13,8 +18,8 @@ import { Asigurare } from '../../../shared/interfaces/asigurari.interface';
 import { Cpp } from '../../../shared/interfaces/cpps.interface';
 import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { AvizariComponent } from '../avizari.component';
-import { environment } from '../../../../environments/environment';
 import { DataCalService } from '../../../services/data-cal.service';
+import { ListaAsigurari } from '../../../shared/resolvers/listaasigurari.resolver';
 
 
 
@@ -34,10 +39,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
   avizareForm: FormGroup;
   avizareFormData: Avizare;
-
-  asigurariFormData: Asigurare[];
-
-  cppData: Cpp[];
 
   genPDFAddress: string;
 
@@ -60,7 +61,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     private _apiData: ApiDataService,
     private _snackBar: AlertSnackbarService,
     private _dataCal: DataCalService,
-
+    private _aRoute: ActivatedRoute
   ) {
     this.genPDFAddress = environment.resUrl;
   }
@@ -68,7 +69,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setForm();
     this.setFormStatus();
-    this.getAsigurariData();
+    // this.getAsigurariData();
+    this.getAsigurariData2();
     this.setItemName();
     this._subscription = this._detectChanges.isAddBtnActive
       .subscribe(isChanged => {
@@ -145,70 +147,67 @@ export class AvizareComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getAsigurariData(): void {
-    this.loadingAsig = true;
-    this._apiData.apiLista('asigurare', sessionStorage.getItem('currentMemId'))
-      .subscribe((response: ApiData) => {
-        if (response.status === 0) {
-          return;
-        }
-        this.asigurariFormData = response.data;
-        this.asigurariFormData = this.asigurariFormData.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
-        if (this.asigurariFormData.length === 0) {
-          this.genAsigurari();
-          return;
-        }
-        Object(this.asigurariFormData).forEach(element => {
-          const newAsigurareForm = this._formSet.asigurare(element);
-          const arrayControl = this.avizareForm.get('asigurare') as FormArray;
-          arrayControl.insert(0, newAsigurareForm);
-        });
-      });
-    this.loading = false;
-  }
+  getAsigurariData2() {
+    let apiData: ApiData = this._aRoute.snapshot.data['listaCpp'];
+    let listaCpp2: Cpp[] = apiData.data;
 
-  private genAsigurari(): void {
-    if (this.avizareFormData.status === 0) {
-      this._apiData.apiLista('cpp', sessionStorage.getItem('currentMemId'))
-        .subscribe((response: ApiData) => {
-          if (response.status === 0) {
-            return;
-          }
-          this.cppData = response.data;
-          this.cppData = this.cppData.filter(item => item.reg_cpp_tip_id === 2);
-          this.cppData = this.cppData.filter(item => item.date_end === '0000-00-00');
-          this.addCppArray();
-          // TODO: creem un array avizari pe baza listei de CPP
-          return;
-        });
-    }
-  }
-
-  private addCppArray(): void {
     // 1. Ordonare dupa data
-    Object(this.cppData).sort((a, b) => {
+    Object(listaCpp2).sort((a, b) => {
       return a.date_start > b.date_start ? -1 : 1;
     });
     // 2. ordonare dupa tip_cpp
-    Object(this.cppData).sort((a, b) => {
+    Object(listaCpp2).sort((a, b) => {
       return a.reg_cpp_tip_id < b.reg_cpp_tip_id ? -1 : 1;
     });
-    Object(this.cppData).forEach((element: Cpp) => {
-      if (element.reg_cpp_tip_id === 2 && element.date_end === '0000-00-00') {
-        const asigurariData: Asigurare = {
+
+    listaCpp2 = listaCpp2.filter(item => item.reg_cpp_tip_id === 2 || item.reg_cpp_tip_id === 1);
+    listaCpp2 = listaCpp2.filter(item => item.date_end === '0000-00-00');
+
+    apiData = this._aRoute.snapshot.data['listaAsigurari'];
+    let listaAsigurari2 = apiData.data;
+    listaAsigurari2 = listaAsigurari2.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
+
+    // are avizare de tip vechi?
+    if (this.avizareFormData.inchis === 2) {
+      console.log('hit avizare de tip vechi');
+      console.log(listaAsigurari2);
+      // afiseaza asigurarea direct
+      // nu se ia in considerare lista de cpp
+      Object(listaAsigurari2).forEach((element: Asigurare) => {
+        element.status = 1;
+        const newAsigurareForm = this._formSet.asigurare(element);
+        const arrayControl = this.avizareForm.get('asigurare') as FormArray;
+        arrayControl.insert(0, newAsigurareForm);
+      });
+      this.loading = false;
+      return;
+    }
+
+    listaCpp2.forEach((cpp: Cpp) => {
+      const asigurari = listaAsigurari2.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
+
+      if (asigurari.length > 1) {
+        // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
+        // TODO: are eroare ... pt moment bagam in consola
+        console.log('Are mai mult de o avizare pt cpp');
+        return;
+      }
+
+      if (asigurari.length === 0) {
+        asigurari[0] = {
           id_mem: +this.avizareForm.get('id_mem').value,
           id_dlp: +this.avizareForm.get('id_dlp').value,
-          id_cpp: +element.id_cpp,
+          id_cpp: +cpp.id_cpp,
           // status: +this.avizareForm.get('status').value
           status: 0
         };
-        const newAsigurareForm = this._formSet.asigurare(asigurariData);
-        // console.log(this.avizare);
-        const arrayControl = this.avizareForm.get('asigurare') as FormArray;
-        arrayControl.insert(0, newAsigurareForm);
       }
+
+      const newAsigurareForm = this._formSet.asigurare(asigurari[0]);
+      const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+      arrayControlNew.insert(0, newAsigurareForm);
+      this.loading = false;
     });
-    this.loading = false;
   }
 
   setItemName(): void {

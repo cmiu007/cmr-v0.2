@@ -64,6 +64,9 @@ import { CertificatVechiComponent } from './membri/certificate/certificat-vechi/
 import { TitluriProfesionaleComponent } from './membri/titluri-profesionale/titluri-profesionale.component';
 import { TitluriProfesionaleListaComponent } from './membri/titluri-profesionale/titluri-profesionale-lista/titluri-profesionale-lista.component';
 import { TitluProfesionalComponent } from './membri/titluri-profesionale/titlu-profesional/titlu-profesional.component';
+import { ListaAsigurari } from './shared/resolvers/listaasigurari.resolver';
+import { ListaCertificate } from './shared/interfaces/certificate.interface';
+import { ListaCpp } from './shared/resolvers/listacpp.resolver';
 
 
 @NgModule({
@@ -131,7 +134,9 @@ import { TitluProfesionalComponent } from './membri/titluri-profesionale/titlu-p
     ApiDataService,
     AlertSnackbarService,
     DialogService,
-    IsAddActiveService
+    IsAddActiveService,
+    ListaAsigurari,
+    ListaCpp
   ],
   bootstrap: [AppComponent]
 })
