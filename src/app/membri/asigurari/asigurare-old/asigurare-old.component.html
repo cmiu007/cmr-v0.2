@@ -1,3 +1,30 @@
-<p>
-  asigurare-old works!
-</p>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<mat-card class="mat-elevation-z7">
+  <mat-card-content [formGroup]="asigurareForm">
+    <section>
+      <mat-form-field class="column"><input type="text" placeholder="Nume Asigurator" matInput formControlName="id_asigurator" [matAutocomplete]="asiguratorAuto"
+          (click)="asigurareForm.get('id_asigurator').setValue('')"></mat-form-field>
+
+      <mat-form-field class="column"><input type="text" placeholder="Serie" matInput formControlName="polita_serie"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Numar" matInput formControlName="polita_nr"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Data start" matInput formControlName="data_start" (blur)="addAsigDateEnd()"></mat-form-field>
+      <mat-form-field class="column"><input type="text" placeholder="Data end" matInput formControlName="data_end"></mat-form-field>
+    </section>
+
+    <mat-autocomplete #asiguratorAuto="matAutocomplete" [displayWith]="displayFnAsigurator.bind(this)">
+      <mat-option *ngFor="let asigurator of filteredAsiguratori | async" [value]="asigurator.id">
+        {{ asigurator.nume }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <!-- <div class="row" style="text-align: center;" *ngIf="parentFormStatus < 2"> -->
+    <div class="row" style="text-align: center;">
+      <button type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty">
+            {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} asigurare
+          </button>
+      <button *ngIf="formStatus === 0" type="button" mat-raised-button (click)="delAsigurare()" color="primary">
+              Sterge Asigurare
+            </button>
+    </div>
+  </mat-card-content>
+</mat-card>
