@@ -49,6 +49,5 @@ export class AvizariListComponent implements OnInit, AfterViewInit, OnDestroy {
     const arrayControl: FormArray = this.formAvizari.get('avizare') as FormArray;
     arrayControl.insert(0, newAvizareForm);
     this._setAddBtn.setStatus(false);
-    console.log(this.formAvizari);
   }
 }

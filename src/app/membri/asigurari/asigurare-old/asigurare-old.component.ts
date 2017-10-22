@@ -62,6 +62,7 @@ export class AsigurareOldComponent implements OnInit {
   }
 
   setFormStatus(): void {
+    this.asigurareForm.disable();
     const dataStart = this._dataCal.strToDate(this.avizareForm.get('dlp_data_start').value);
     const dataEnd = this._dataCal.strToDate(this.avizareForm.get('dlp_data_end').value);
     if (this._dataCal.isInTheFuture(dataStart)) {
@@ -78,7 +79,7 @@ export class AsigurareOldComponent implements OnInit {
     if (this.asigurareForm.get('id_asig').value) {
       this.formStatus = 1;
       if (this.parentFormStatus === 2 || this.parentFormStatus === 3) {
-        this.asigurareForm.disable();
+        // this.asigurareForm.disable();
       }
     } else {
       this.setNewForm();

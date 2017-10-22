@@ -175,7 +175,7 @@ export class AsigurareComponent implements OnInit {
       this.areAvizare = 'Nu';
     }
 
-    if (this.avizareStatus === 1) {
+    if (this.avizareStatus !== 0 ) {
       this.isDisabled = true;
       // this.areAvizare = 'Da';
       Object.keys(this.asigurareForm.controls).forEach(
@@ -259,7 +259,7 @@ export class AsigurareComponent implements OnInit {
     const asigData = this.asigurareForm.value;
     const idItem = asigData.id_asig;
     delete asigData.id_asig;
-    console.log(asigData);
+    // console.log(asigData);
 
     if (this.asigurareStatus === 0) {
       this._apiData.apiAdauga('asigurare', asigData)
