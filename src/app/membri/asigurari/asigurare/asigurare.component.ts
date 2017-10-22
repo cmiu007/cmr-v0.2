@@ -251,7 +251,7 @@ export class AsigurareComponent implements OnInit {
     }
 
     if (this.loading === true) {
-      this._snackBar.showSnackBar('Trimitere date in proges');
+      this._snackBar.showSnackBar('Submiterea datelor catre server este in proges');
       return;
     }
 

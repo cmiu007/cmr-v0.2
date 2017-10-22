@@ -56,67 +56,23 @@ export class TitluriProfesionaleComponent implements OnInit {
       default:
         break;
     }
+    this.loading = false;
 
   }
 
   private getFormData(): void {
-    const memId = +sessionStorage.getItem('currentMemId');
+    const memId = sessionStorage.getItem('currentMemId');
 
-    // this._apiData.apiLista('titluri', memId)
-    //   .subscribe((response: ApiData) => {
-    //     if (response.status === 0) {
-    //       return;
-    //     }
-    //     this.titluriData = response.data;
-    //     this.sortData();
-    //     this.setForm('populate', this.titluriData);
-    //     this.loading = false;
-    //   });
-
-
-    // ========================= //
-    // temp pt teste
-    const temp: Titlu[] = [{
-      'id_cdu': 1,
-      'id_mem': memId,
-      'reg_titlu_id': 1,
-      'reg_facultate_id': null,
-      'status': 0,
-      'data_start': '2017-01-01',
-      'data_end': ''
-    },
-    {
-      'id_cdu': 2,
-      'id_mem': memId,
-      'reg_titlu_id': 2,
-      'reg_facultate_id': null,
-      'status': 0,
-      'data_start': '2017-01-01',
-      'data_end': ''
-    },
-    {
-      'id_cdu': 3,
-      'id_mem': memId,
-      'reg_titlu_id': 9,
-      'reg_facultate_id': 11,
-      'status': 0,
-      'data_start': '2017-01-01',
-      'data_end': ''
-    },
-    {
-      'id_cdu': 3,
-      'id_mem': memId,
-      'reg_titlu_id': 9,
-      'reg_facultate_id': 11,
-      'status': 0,
-      'data_start': '2017-01-01',
-      'data_end': '2018-01-01'
-    }];
-    this.titluriData = temp;
-    this.setForm('populate', this.titluriData);
-    this.loading = false;
-
-    // ============================== //
+    this._apiData.apiLista('titlu', memId)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
+        }
+        this.titluriData = response.data;
+        this.sortData();
+        this.setForm('populate', this.titluriData);
+        this.loading = false;
+      });
     return;
   }
 

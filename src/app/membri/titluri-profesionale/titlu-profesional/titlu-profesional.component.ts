@@ -3,6 +3,10 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { FormSetService } from '../../../services/form-set.service';
 import { ItemRegFac } from '../../../shared/interfaces/fac.interface';
 import { ItemRegLista } from '../../../shared/interfaces/listareg.interface';
+import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
+import { Titlu } from '../../../shared/interfaces/titluri.interface';
+import { ApiDataService } from '../../../services/api-data.service';
+import { ApiData } from '../../../shared/interfaces/message.interface';
 
 
 @Component({
@@ -40,6 +44,8 @@ export class TitluProfesionalComponent implements OnInit {
 
   constructor(
     private _formSet: FormSetService,
+    private _snackBar: AlertSnackbarService,
+    private _apiData: ApiDataService
   ) {
   }
   ngOnInit() {
@@ -51,6 +57,8 @@ export class TitluProfesionalComponent implements OnInit {
   private setForm(): void {
     const data = (<FormArray>this.titluriForm.get('titluri')).at(this.arrayIndex).value;
     this.titluForm = this._formSet.titluri('add', data);
+    this.titluForm.get('id_mem').setValue(sessionStorage.getItem('currentMemId'));
+    console.log(this.titluriForm);
   }
 
   private setFormStatus(): void {
@@ -60,6 +68,9 @@ export class TitluProfesionalComponent implements OnInit {
     //    - input user pt nou
 
     // este un formular nou? nu are data de start
+
+
+
     if (!this.titluForm.get('data_start').value) {
       this.itemTitlu = 'Titlu Profesional Nou';
       this.itemStatus = 'Nou';
@@ -136,6 +147,40 @@ export class TitluProfesionalComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.titluForm);
+    if (this.titluForm.valid === false ) {
+      console.log(this.titluForm);
+      this._snackBar.showSnackBar('Formular Invalid');
+      return;
+    }
+
+    if (this.loading === true) {
+      this._snackBar.showSnackBar('Submiterea datelor catre server este in proges');
+      return;
+    }
+
+    this.loading = true;
+    const titluData: Titlu = this.titluForm.value;
+    const idItem = titluData.id_titlu;
+    delete titluData.id_titlu;
+    console.log(titluData);
+    console.log(this.itemStatus);
+
+    if (this.itemStatus === 'Nou' ) {
+      delete titluData.data_end;
+      titluData.status = 1;
+      this._apiData.apiAdauga('titlu', titluData)
+      .subscribe((response: ApiData) => {
+        if (response.status === 0) {
+          return;
+        }
+        this.loading = false;
+      });
+      // TitluProfesionalComponent;
+      // AvizareComponent._formDataChangedAvizare.next();
+      return;
+    }
+
+
+
   }
 }

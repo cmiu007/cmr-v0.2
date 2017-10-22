@@ -227,10 +227,11 @@ export class FormSetService {
 
   titluri(actiune: string, data?: Titlu, form?: FormGroup): FormGroup {
     const formGroupEmpty = this._fb.group({
-      'id_cdu': [null, [this._validator.checkIfNumber]],
+      'id_titlu': [null, [this._validator.checkIfNumber]],
       'id_mem': [null, [this._validator.checkIfNumber]],
       'reg_titlu_id': [null, [this._validator.checkIfNumber]],
       'reg_facultate_id': [null, [this._validator.checkIfNumber]],
+      'status': [null, [ this._validator.checkIfNumber]],
       'data_start': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
       'data_end': ['', [this._validator.checkDate, this._validator.isInTheFuture]]
     });

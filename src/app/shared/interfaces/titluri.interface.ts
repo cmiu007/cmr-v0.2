@@ -3,7 +3,7 @@ export interface Titluri {
 }
 
 export interface Titlu {
-  'id_cdu': number;
+  'id_titlu': number;
   'id_mem': number;
   'reg_titlu_id': number;
   'reg_facultate_id': number;

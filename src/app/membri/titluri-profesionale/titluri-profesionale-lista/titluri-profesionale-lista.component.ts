@@ -56,6 +56,7 @@ export class TitluriProfesionaleListaComponent implements OnInit, AfterViewInit,
     const arrayControl = this.titluriForm.get('titluri') as FormArray;
     arrayControl.insert(0, newTitluForm);
     this._setAddBtn.setStatus(false);
+    console.log(this.titluriForm);
   }
 
 }
