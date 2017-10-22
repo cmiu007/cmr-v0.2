@@ -1,5 +1,3 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-
 <mat-card-subtitle>
   {{ itemTitle1 }}
 </mat-card-subtitle>
@@ -7,29 +5,29 @@
   <div>
     <span>Medicul este avizat pentru {{ itemTitle2 }} : </span>
     <mat-radio-group class="example-radio-group" [(ngModel)]="areAvizare" [disabled]="isDisabled" (change)="onRaspunsChange()">
-      <mat-radio-button class="example-radio-button" *ngFor="let raspuns of optiuni" [value]="raspuns">{{ raspuns }}</mat-radio-button>
+      <mat-radio-button class="example-radio-button" *ngFor="let raspunsHTML of optiuni" [value]="raspunsHTML" [checked]="raspunsHTML === raspuns">{{ raspunsHTML }}</mat-radio-button>
     </mat-radio-group>
   </div>
   <form [formGroup]="asigurareForm">
-      <section *ngIf="areAvizare === 'Da'">
-          <mat-form-field class="column">
-            <input type="text" placeholder="Nume Asigurator" matInput formControlName="id_asigurator" [matAutocomplete]="asiguratorAuto"
-              (click)="asigurareForm.get('id_asigurator').setValue('')">
-          </mat-form-field>
+    <section *ngIf="areAvizare === 'Da'">
+      <mat-form-field class="column">
+        <input type="text" placeholder="Nume Asigurator" matInput formControlName="id_asigurator" [matAutocomplete]="asiguratorAuto"
+          (click)="asigurareForm.get('id_asigurator').setValue('')">
+      </mat-form-field>
 
-          <mat-form-field class="column">
-            <input type="text" placeholder="Serie" matInput formControlName="polita_serie">
-          </mat-form-field>
-          <mat-form-field class="column">
-            <input type="text" placeholder="Numar" matInput formControlName="polita_nr">
-          </mat-form-field>
-          <mat-form-field class="column">
-            <input type="text" placeholder="Data start" matInput formControlName="data_start" (blur)="addAsigDateEnd()">
-          </mat-form-field>
-          <mat-form-field class="column">
-            <input type="text" placeholder="Data end" matInput formControlName="data_end">
-          </mat-form-field>
-        </section>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Serie" matInput formControlName="polita_serie">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Numar" matInput formControlName="polita_nr">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Data start" matInput formControlName="data_start" (blur)="addAsigDateEnd()">
+      </mat-form-field>
+      <mat-form-field class="column">
+        <input type="text" placeholder="Data end" matInput formControlName="data_end">
+      </mat-form-field>
+    </section>
   </form>
 
   <mat-autocomplete #asiguratorAuto="matAutocomplete" [displayWith]="displayFnAsigurator.bind(this)">
@@ -38,10 +36,14 @@
     </mat-option>
   </mat-autocomplete>
 </mat-card-content>
-<div *ngIf="areAvizare === 'Da'">
-<mat-card-actions *ngIf="formStatus === null || formStatus === 0" style="text-align: center; margin-bottom: 0px;">
-  <button type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty || !asigurareForm.valid">
-    {{ formStatus === null ? 'Adauga' : 'Modifica'}} asigurare
-  </button>
+<mat-card-actions *ngIf="avizareStatus === 0" style="text-align: center; margin-bottom: 0px;">
+  <div>
+    <!-- <button type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty || !asigurareForm.valid"> -->
+    <button *ngIf="asigurareStatus === 0" type="submit" mat-raised-button (click)="onClickAsigurare()" color="warn">
+      Adauga
+    </button>
+    <button *ngIf="asigurareStatus !== 0" type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary">
+      Modifica
+    </button>
+  </div>
 </mat-card-actions>
-</div>

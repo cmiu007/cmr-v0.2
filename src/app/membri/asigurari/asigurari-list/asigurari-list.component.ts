@@ -18,6 +18,8 @@ export class AsigurariListComponent implements OnInit {
   @Input('avizareOld')
   public avizareOld: boolean;
 
+  loading = false;
+
   registruAsiguratori: Asigurator[];
   registruCpp: ItemRegCpp[];
 

@@ -5,7 +5,7 @@ import { Component, OnInit, Input, AfterViewInit, OnDestroy, ChangeDetectorRef }
 import { FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import { environment } from '../../../../environments/environment';
 
@@ -29,7 +29,6 @@ import { ListaAsigurari } from '../../../shared/resolvers/listaasigurari.resolve
   styleUrls: ['./avizare.component.css']
 })
 export class AvizareComponent implements OnInit, OnDestroy {
-  _subscription: Subscription;
 
   @Input('formAvizari')
   public formAvizari: FormGroup;
@@ -39,6 +38,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
   avizareForm: FormGroup;
   avizareFormData: Avizare;
+
+  asigurariList: Asigurare[];
 
   genPDFAddress: string;
 
@@ -72,16 +73,12 @@ export class AvizareComponent implements OnInit, OnDestroy {
     this.setForm();
     this.setFormStatus();
     // this.getAsigurariData();
-    this.getAsigurariData2();
+    this.getAsigurariData();
     this.setItemName();
-    this._subscription = this._detectChanges.isAddBtnActive
-      .subscribe(isChanged => {
-        // reload date asigurari
-      });
   }
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+
   }
 
   private setForm(): void {
@@ -150,8 +147,21 @@ export class AvizareComponent implements OnInit, OnDestroy {
       });
   }
 
-  getAsigurariData2() {
-    let apiData: ApiData = this._aRoute.snapshot.data['listaCpp'];
+  private getAsigurariData(): void {
+    this._apiData.apiLista('asigurare', this.avizareForm.get('id_mem').value)
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      this.asigurariList = response.data;
+      this.setAsigurariData();
+      this.loading = false;
+    });
+  }
+
+  private setAsigurariData(): void {
+    const apiData: ApiData = this._aRoute.snapshot.data['listaCpp'];
+
     let listaCpp2: Cpp[] = apiData.data;
 
     // 1. Ordonare dupa data
@@ -166,8 +176,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     listaCpp2 = listaCpp2.filter(item => item.reg_cpp_tip_id === 2 || item.reg_cpp_tip_id === 1);
     listaCpp2 = listaCpp2.filter(item => item.date_end === '0000-00-00');
 
-    apiData = this._aRoute.snapshot.data['listaAsigurari'];
-    let listaAsigurari2 = apiData.data;
+    let listaAsigurari2 = this.asigurariList;
     listaAsigurari2 = listaAsigurari2.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
 
     // are avizare de tip vechi?
@@ -188,8 +197,11 @@ export class AvizareComponent implements OnInit, OnDestroy {
     }
 
     listaCpp2.forEach((cpp: Cpp) => {
+      // console.log(listaAsigurari2);
+      // console.log(cpp.id_cpp);
       const asigurari = listaAsigurari2.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
-
+      // console.log('asigurari:');
+      // console.log(asigurari);
       if (asigurari.length > 1) {
         // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
         // TODO: are eroare ... pt moment bagam in consola
@@ -198,7 +210,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
       }
 
       if (asigurari.length === 0) {
-        console.log('creez asig noua');
+        // console.log('creez asig noua');
         asigurari[0] = {
           id_mem: +this.avizareForm.get('id_mem').value,
           id_dlp: +this.avizareForm.get('id_dlp').value,
@@ -208,13 +220,13 @@ export class AvizareComponent implements OnInit, OnDestroy {
         };
         this.asigurariIncomplete = true;
       }
-      console.log(asigurari);
+      // console.log(asigurari);
       const newAsigurareForm = this._formSet.asigurare(asigurari[0]);
       // console.log(this._formSet.asigurare(asigurari[0]));
       const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
       arrayControlNew.insert(0, newAsigurareForm);
     });
-    console.log(this.avizareForm.value);
+    // console.log(this.avizareForm.value);
     this.loading = false;
   }
 

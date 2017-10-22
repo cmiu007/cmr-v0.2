@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
@@ -29,7 +29,7 @@ export class AvizariComponent implements OnInit {
     private _formSet: FormSetService,
     private _fb: FormBuilder,
     private _snackBar: AlertSnackbarService,
-    private _route: Router
+    private _route: Router,
   ) { }
 
   ngOnInit() {

@@ -1,5 +1,6 @@
 <div [formGroup]="avizareForm" *ngIf="!avizareOld" style="padding: 7px;">
   <div formArrayName="asigurare">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
     <mat-card *ngFor="let formAvizareData of avizareForm.get('asigurare').value; let i = index" class="mat-elevation-z7" style="padding: 12px; margin-bottom: 10px;">
       <app-asigurare [arrayIndex]="i" [avizareForm]="avizareForm" [registruAsiguratori]="registruAsiguratori" [registruCpp]="registruCpp"></app-asigurare>
     </mat-card>
