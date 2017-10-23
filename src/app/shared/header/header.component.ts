@@ -29,8 +29,8 @@ export class HeaderComponent implements OnInit {
     this.currentMemNume = sessionStorage.getItem('currentMemNume');
     if (this.currentMemNume !== null ) {
       this.hideMemNume = false;
-    } else {
-      this.router.navigate(['/']);
+      // de verificat daca suntem in sectiune mem si daca id din routa corespunde cu id-ul membrului
+      // poate un serviciu?
     }
   }
 

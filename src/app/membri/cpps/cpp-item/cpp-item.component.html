@@ -71,7 +71,7 @@
       </mat-autocomplete>
     </div>
     <mat-action-row *ngIf="formStatus !== 'ro'">
-      <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!cppForm.dirty">
+      <button type="button" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!cppForm.dirty">
         {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }}
       </button>
     </mat-action-row>

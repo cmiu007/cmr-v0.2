@@ -256,6 +256,7 @@ export class AsigurareComponent implements OnInit {
     }
 
     this.loading = true;
+    this.asigurareForm.enable();
     const asigData = this.asigurareForm.value;
     const idItem = asigData.id_asig;
     delete asigData.id_asig;

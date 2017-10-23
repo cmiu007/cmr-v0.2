@@ -9,7 +9,7 @@
     </mat-form-field>
     <div class="column"></div>
     <div class="column" style="text-align: center;">
-      <button type="submit" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
+      <button type="button" mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!contactForm.dirty">
       {{ formStatus === 'new' ? 'Adauga' : 'Modifica'}} </button>
     </div>
   </section>

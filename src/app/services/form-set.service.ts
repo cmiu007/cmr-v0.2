@@ -10,6 +10,7 @@ import { Cpp } from '../shared/interfaces/cpps.interface';
 import { Certificat } from '../shared/interfaces/certificate.interface';
 import { AlertSnackbarService } from './alert-snackbar.service';
 import { Titlu } from '../shared/interfaces/titluri.interface';
+import { Judet } from '../shared/interfaces/judet-date.interface';
 
 @Injectable()
 export class FormSetService {
@@ -231,7 +232,7 @@ export class FormSetService {
       'id_mem': [null, [this._validator.checkIfNumber]],
       'reg_titlu_id': [null, [this._validator.checkIfNumber]],
       'reg_facultate_id': [null, [this._validator.checkIfNumber]],
-      'status': [null, [ this._validator.checkIfNumber]],
+      'status': [null, [this._validator.checkIfNumber]],
       'data_start': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
       'data_end': ['', [this._validator.checkDate, this._validator.isInTheFuture]]
     });
@@ -259,6 +260,30 @@ export class FormSetService {
 
       default:
         this._snackBar.showSnackBar('setFormService titluri: Actiune Invalida');
+        break;
+    }
+  }
+
+  cmj(actiune: string, data?: Judet): FormGroup {
+    const formGroupEmpty = this._fb.group({
+      'id_cmj': [null, [Validators.required, this._validator.checkIfNumber]],
+      'id_reg_jud': [null, [Validators.required, this._validator.checkIfNumber]],
+      'email': ['', [Validators.required]],
+      'telefon': ['', [Validators.required]],
+      'fax': ['', []],
+      'adresa': ['', [Validators.required]],
+      'presedinte': ['', [Validators.required]],
+    });
+    switch (actiune) {
+      case 'init':
+        return formGroupEmpty;
+
+      case 'populate':
+        formGroupEmpty.patchValue(data);
+        return formGroupEmpty;
+
+      default:
+      this._snackBar.showSnackBar('setFormService cmj: Actiune Invalida');
         break;
     }
   }

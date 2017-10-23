@@ -1,0 +1,51 @@
+<app-header></app-header>
+<div class="content">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <mat-card>
+    <mat-card-title class="form-title">
+      <span>Date generale C.M. {{judetNume}}</span>
+    </mat-card-title>
+    <mat-card-content>
+      <div *ngIf="!loading">
+        <form [formGroup]="judetForm">
+
+          <section>
+            <mat-form-field class="column">
+              <input type="text" placeholder="Presedinte" matInput formControlName="presedinte">
+              <mat-hint>Inclusiv titluri</mat-hint>
+            </mat-form-field>
+            <div class="column"></div>
+          </section>
+
+          <section>
+            <mat-form-field class="column">
+              <textarea matInput placeholder="Adresă completa" matInput formControlName="adresa"></textarea>
+              <mat-hint>Stradă / Nr / Localitate / Județ / Cod Poștal </mat-hint>
+            </mat-form-field>
+          </section>
+
+          <section>
+            <mat-form-field class="column">
+              <input type="text" placeholder="email" matInput formControlName="email">
+            </mat-form-field>
+            <mat-form-field class="column">
+              <input type="text" placeholder="telefon" matInput formControlName="telefon">
+            </mat-form-field>
+            <mat-form-field class="column">
+              <input type="text" placeholder="fax" matInput formControlName="fax">
+            </mat-form-field>
+          </section>
+
+          <section>
+              <div class="column" style="text-align: center;">
+                  <button type="button" mat-raised-button (click)="onSubmit()" color="primary" >
+                  {{ formStatus === 0 ? 'Adauga' : 'Modifica'}} </button>
+                </div>
+          </section>
+
+        </form>
+      </div>
+
+    </mat-card-content>
+  </mat-card>

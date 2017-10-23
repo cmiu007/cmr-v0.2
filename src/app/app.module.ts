@@ -68,6 +68,7 @@ import { ListaAsigurari } from './shared/resolvers/listaasigurari.resolver';
 import { ListaCertificate } from './shared/interfaces/certificate.interface';
 import { ListaCpp } from './shared/resolvers/listacpp.resolver';
 import { AsigurareOldComponent } from './membri/asigurari/asigurare-old/asigurare-old.component';
+import { CmjDateComponent } from './cmj/cmj-date/cmj-date.component';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { AsigurareOldComponent } from './membri/asigurari/asigurare-old/asigurar
     TitluriProfesionaleComponent,
     TitluriProfesionaleListaComponent,
     TitluProfesionalComponent,
-    AsigurareOldComponent
+    AsigurareOldComponent,
+    CmjDateComponent
   ],
   imports: [
     BrowserModule,

@@ -70,30 +70,28 @@ export class TitluProfesionalComponent implements OnInit {
     // este un formular nou? nu are data de start
 
 
-
-    if (!this.titluForm.get('data_start').value) {
+    if (this.titluForm.get('status').value === null) {
+      this.itemStatus = 0;
       this.itemTitlu = 'Titlu Profesional Nou';
-      this.itemStatus = 'Nou';
       return;
     }
 
-    if (!this.titluForm.get('data_end').value) {
-      this.itemStatus = 'Activ';
+    if (this.titluForm.get('status').value === 1) {
+      this.itemStatus = 1;
       this.itemSubtitlu = 'incepand cu data: ' + this.titluForm.get('data_start').value.toString();
-      console.log(this.itemSubtitlu);
       this.titluForm.disable();
+      this.titluForm.get('data_start').enable();
       this.titluForm.get('data_end').enable();
     }
 
-    if (this.titluForm.get('data_end').value) {
+    if (this.titluForm.get('status').value === 2) {
+      this.itemStatus = 2;
       this.titluForm.disable();
-      this.itemStatus = 'Inactiv';
       this.itemSubtitlu = 'Inactiv';
     }
 
     const valueTitlu = this.titluForm.get('reg_titlu_id').value;
     const numeTitlu = this.regTitluri.find(item => item.id === valueTitlu).nume;
-    console.log(numeTitlu);
     this.itemTitlu = numeTitlu;
     this.checkTipTitlu();
   }
@@ -146,8 +144,8 @@ export class TitluProfesionalComponent implements OnInit {
     return this.regTitluri.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
   }
 
-  onSubmit() {
-    if (this.titluForm.valid === false ) {
+  onSubmit(actiune): void {
+    if (this.titluForm.valid === false) {
       console.log(this.titluForm);
       this._snackBar.showSnackBar('Formular Invalid');
       return;
@@ -159,28 +157,46 @@ export class TitluProfesionalComponent implements OnInit {
     }
 
     this.loading = true;
+    this.titluForm.enable();
     const titluData: Titlu = this.titluForm.value;
     const idItem = titluData.id_titlu;
     delete titluData.id_titlu;
-    console.log(titluData);
-    console.log(this.itemStatus);
 
-    if (this.itemStatus === 'Nou' ) {
-      delete titluData.data_end;
-      titluData.status = 1;
-      this._apiData.apiAdauga('titlu', titluData)
-      .subscribe((response: ApiData) => {
-        if (response.status === 0) {
-          return;
-        }
-        this.loading = false;
-      });
-      // TitluProfesionalComponent;
-      // AvizareComponent._formDataChangedAvizare.next();
-      return;
+    switch (actiune) {
+      case 'adauga':
+        delete titluData.data_end;
+        titluData.status = 1;
+        this._apiData.apiAdauga('titlu', titluData)
+          .subscribe((response: ApiData) => {
+            if (response.status === 0) {
+              return;
+            }
+            this.loading = false;
+          });
+          // AvizareComponent._formDataChangedAvizare.next();
+        break;
+
+      case 'modifica':
+      delete titluData.id_mem;
+      // delete titluData.reg_facultate_id;
+      // delete titluData.reg_titlu_id;
+      console.log(titluData);
+      console.log(idItem);
+        this._apiData.apiModifica('titlu', idItem, titluData)
+          .subscribe((response: ApiData) => {
+            if (response.status === 0) {
+              return;
+            }
+            this.loading = false;
+            // AvizariComponent._formDataChanged.next();
+          });
+          // AvizareComponent._formDataChangedAvizare.next();
+        break;
+
+      default:
+        break;
     }
-
-
-
+    return;
   }
+
 }

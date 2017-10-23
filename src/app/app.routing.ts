@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DatePersonaleComponent } from './membri/date-personale/date-personale.component';
 import { CppsComponent } from './membri/cpps/cpps.component';
+import { CmjDateComponent } from './cmj/cmj-date/cmj-date.component';
 
 import { TestComponent } from './test/test.component';
 import { Test2Component } from './test2/test2.component';
@@ -39,6 +40,9 @@ const appRoutes: Routes = [
     {path: ':id/avizari', component: AvizariComponent,
       resolve: {regAsiguratori: AsiguratoriResolve,  regCpp: CppResolve, listaCpp: ListaCpp}},
     {path: ':id/certificate', component: CertificateComponent}
+  ]},
+  {path: 'cmj', canActivate: [AuthGuard], children: [
+    {path: 'date', component: CmjDateComponent, resolve: {regJud: JudetResolve} }
   ]},
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},

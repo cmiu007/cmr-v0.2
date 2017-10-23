@@ -182,7 +182,7 @@
     <mat-card style="text-align: center;">
       <mat-card-content>
         <div class="row">
-          <button type="submit" mat-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
+          <button type="button" mat-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
           <!-- TODO: nu merge disable / enable ....  -->
         </div>
       </mat-card-content>

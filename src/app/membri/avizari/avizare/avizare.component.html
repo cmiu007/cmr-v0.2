@@ -18,15 +18,15 @@
       </mat-form-field>
       <div class="column"></div>
       <div class="column" *ngIf="avizareFormData.status === null">
-        <button type="submit" mat-raised-button (click)="onClickAvizare('adauga')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
+        <button type="button" mat-raised-button (click)="onClickAvizare('adauga')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
           Adaugă vizare</button>
       </div>
       <div class="column" *ngIf="avizareFormData.status === 0">
-        <button type="submit" mat-raised-button (click)="onClickAvizare('modifica')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
+        <button type="button" mat-raised-button (click)="onClickAvizare('modifica')" color="primary" [disabled]="!avizareForm.dirty || !avizareForm.valid">
           Modifică avizare</button>
       </div>
       <div class="column" *ngIf="avizareFormData.status === 0">
-        <button type="submit" mat-raised-button (click)="onClickAvizare('finalizeaza')" color="warn" [disabled]="asigurariIncomplete">
+        <button type="button" mat-raised-button (click)="onClickAvizare('finalizeaza')" color="warn" [disabled]="asigurariIncomplete">
           Finalizează avizare</button>
       </div>
       <div class="column" *ngIf="avizareFormData.status === 1 || avizareFormData.status === 2">
