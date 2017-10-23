@@ -9,6 +9,7 @@ import { FormValidatorsService } from '../../services/form-validators.service';
 import { RegLista } from '../../shared/interfaces/listareg.interface';
 import { ActivatedRoute } from '@angular/router';
 import { RegValue } from '../../shared/models/registre.model';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-cmj-date',
@@ -16,6 +17,7 @@ import { RegValue } from '../../shared/models/registre.model';
   styleUrls: ['./cmj-date.component.css']
 })
 export class CmjDateComponent implements OnInit {
+  public static _formJudChanged: Subject<boolean> = new Subject;
 
   loading = true;
   formStatus: number;
@@ -38,7 +40,10 @@ export class CmjDateComponent implements OnInit {
     this.setRegistre();
     this.setHeader();
     this.setForm();
-    this.loading = false;
+    CmjDateComponent._formJudChanged
+      .subscribe(result => {
+        this.setForm();
+      });
   }
 
   private setRegistre(): void {
@@ -69,6 +74,7 @@ export class CmjDateComponent implements OnInit {
           this.judetForm.get('id_cmj').setValidators([]);
           this.judetForm.get('id_cmj').updateValueAndValidity();
           this.formStatus = 0;
+          this.loading = false;
           return;
         }
         this.judetForm = this._formSet.cmj('populate', this.judetDate);
@@ -100,6 +106,7 @@ export class CmjDateComponent implements OnInit {
             return;
           }
           this.loading = false;
+          CmjDateComponent._formJudChanged.next();
           // AvizariComponent._formDataChanged.next();
         });
       return;
@@ -111,6 +118,7 @@ export class CmjDateComponent implements OnInit {
           return;
         }
         this.loading = false;
+        CmjDateComponent._formJudChanged.next();
         // AvizariComponent._formDataChanged.next();
       });
       return;
