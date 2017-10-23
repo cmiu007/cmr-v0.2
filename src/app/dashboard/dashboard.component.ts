@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   loadingCMR = false;
   dialogResult: any;
   registruJudete: Judet[];
+  nuAvemJudet = false;
 
   constructor(private userService: UserService,
     private membriService: MembriService,
@@ -49,6 +50,7 @@ export class DashboardComponent implements OnInit {
     this._title.setTitle(environment.titluAplicatie);
     this.setForm();
     this.resetMedicSelectatDate();
+    this.checkDateCMJ();
   }
 
 
@@ -164,6 +166,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/membri', id, actiune]);
   }
 
+  onClickCMJ() {
+    this.router.navigate(['/cmj/date']);
+  }
+
   onNewMember(): void {
     this.setMedicSelectatDate('');
     this.router.navigate(['/membri/nou']);
@@ -181,5 +187,21 @@ export class DashboardComponent implements OnInit {
     sessionStorage.setItem('currentMemId', id);
     sessionStorage.setItem('currentMemCuim', this.membri.find(item => item.id === id).cuim);
     return;
+  }
+
+  private checkDateCMJ(): void {
+    this._apiData.apiLista('cmj', sessionStorage.getItem('userGroup'))
+    .subscribe((response: ApiData) => {
+      if (response.status === 0) {
+        return;
+      }
+      const listaCMJ = response.data;
+      const judetId = sessionStorage.getItem('userGroup');
+      const judetDate = listaCMJ.filter(item => +item.id_reg_jud === +judetId)[0];
+      if (typeof judetDate === 'undefined') {
+        this.nuAvemJudet = true;
+        return;
+      }
+    });
   }
 }

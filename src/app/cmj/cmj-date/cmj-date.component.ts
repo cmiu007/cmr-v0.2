@@ -64,7 +64,7 @@ export class CmjDateComponent implements OnInit {
         }
         const listaCMJ = response.data;
         this.judetDate = listaCMJ.filter(item => +item.id_reg_jud === +this.judetId)[0];
-        if (typeof this.judetDate.id_cmj === 'undefined') {
+        if (typeof this.judetDate === 'undefined') {
           this.judetForm.get('id_reg_jud').setValue(this.judetId);
           this.judetForm.get('id_cmj').setValidators([]);
           this.judetForm.get('id_cmj').updateValueAndValidity();

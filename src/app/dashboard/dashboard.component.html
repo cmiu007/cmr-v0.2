@@ -2,6 +2,16 @@
 <div class="content">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
   <mat-progress-bar *ngIf="loadingCMR" mode="indeterminate"></mat-progress-bar>
+
+  <mat-card *ngIf="nuAvemJudet" style="text-align: center;">
+    <mat-card-title>
+      Nu exista date despre CMJ!
+    </mat-card-title>
+    <mat-card-content>
+      <button mat-raised-button type="button" (click)="onClickCMJ()" color="warn">Completează date</button>
+    </mat-card-content>
+  </mat-card>
+
   <section>
     <mat-card class="full-width">
       <mat-card-title>Selecție Medici</mat-card-title>
