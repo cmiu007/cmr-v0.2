@@ -62,6 +62,22 @@ export class FormSetService {
     return formGroupEmpty;
   }
 
+
+  fac_recunoastere(data?): FormGroup {
+    const formGroupEmpty = this._fb.group({
+      'id': [null, [this._validator.checkIfNumber]],
+      'id_mem':  [null, [Validators.required, this._validator.checkIfNumber]],
+      'serie': ['', [Validators.required]],
+      'nr': ['', [Validators.required]],
+      'data': ['', [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]]
+    });
+    if (data) {
+      data = this.cleanData(data);
+      formGroupEmpty.patchValue(data);
+    }
+    return formGroupEmpty;
+  }
+
   cpps(actiune: string, data: Cpp, form?: FormGroup): FormGroup {
     switch (actiune) {
       case 'initFormCpps':

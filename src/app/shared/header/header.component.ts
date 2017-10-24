@@ -37,4 +37,10 @@ export class HeaderComponent implements OnInit {
   onClickMem(actiune: string) {
     this.router.navigate(['../' + actiune], { relativeTo: this.activeRoute});
   }
+
+  private onClickHelp(): void {
+    const nativeWindow = window;
+    const url = 'mailto:it@cmr.ro?Subject=Problema%20Registrul%20Medicilor';
+    nativeWindow.open(url);
+  }
 }

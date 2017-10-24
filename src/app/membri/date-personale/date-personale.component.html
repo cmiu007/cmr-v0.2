@@ -8,9 +8,11 @@
 </mat-card>
 
 <div class="content" *ngIf="!loading">
-  <form [formGroup]="formDatePersonale" ngSubmit="onFormSubmit()">
+  <form [formGroup]="formDatePersonale">
     <mat-card *ngIf="formStatus === 0">
-      <mat-card-title class="form-title"><span class="full-width">Administrare (form  status: {{formStatus}})</span></mat-card-title>
+      <mat-card-title class="form-title">
+        <span class="full-width">Administrare (form status: {{formStatus}})</span>
+      </mat-card-title>
       <mat-card-content>
         <mat-form-field>
           <input matInput formControlName="cuim" type="text" placeholder="CUIM">
@@ -110,14 +112,15 @@
     </mat-card>
 
     <mat-card>
-      <mat-card-title class="form-title">
-        <span class="full-width">Facultatea Absolvita</span>
+      <mat-card-title class="form-title" [formGroup]="formDatePersonale">
+        <span class="full-width">Titlu de calificare</span>
       </mat-card-title>
       <mat-card-content>
-
+        <p class="mat-body-1">Diploma de licență pentru medici români sau care au absolvit facultatea in România
+          <br> Diploma de absolvire a facultății pentru medicii care au absolvit facultatea in altă țară</p>
         <section>
           <mat-form-field class="column">
-            <input matInput formControlName="fac_absolv" type="text" placeholder="Facultate Absolvita" [matAutocomplete]="facAuto" (click)="formDatePersonale.get('fac_absolv').setValue('')">
+            <input matInput formControlName="fac_absolv" type="text" placeholder="Facultate" [matAutocomplete]="facAuto" (click)="formDatePersonale.get('fac_absolv').setValue('')">
           </mat-form-field>
           <mat-form-field class="column">
             <input matInput formControlName="fac_promotie" type="text" placeholder="Promotie">
@@ -127,23 +130,15 @@
             <input matInput formControlName="cod_parafa" type="text" placeholder="Cod Parafa">
           </mat-form-field>
         </section>
-
         <mat-autocomplete #facAuto="matAutocomplete" [displayWith]="displayFnFac.bind(this)">
           <mat-option *ngFor="let fac of filtruFac | async" [value]="fac.id">
             {{ fac.nume }}
           </mat-option>
         </mat-autocomplete>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title class="form-title">
-        <span class="full-width">Diploma facultate</span>
-      </mat-card-title>
-      <mat-card-content>
         <section>
-          <mat-form-field class="column"><input matInput formControlName="fac_doc_tip" type="text" placeholder="Tip Act Absolvire" [matAutocomplete]="facDocTip"
-              (click)="formDatePersonale.get('fac_doc_tip').setValue('')"></mat-form-field>
+          <mat-form-field class="column">
+            <input matInput formControlName="fac_doc_tip" type="text" placeholder="Tip Act Absolvire" [matAutocomplete]="facDocTip" (click)="formDatePersonale.get('fac_doc_tip').setValue('')" (blur)="checkTipActAbs()">
+          </mat-form-field>
           <mat-form-field class="column">
             <input matInput formControlName="fac_dipl_serie" type="text" placeholder="Serie">
           </mat-form-field>
@@ -166,9 +161,40 @@
 
       </mat-card-content>
     </mat-card>
+  </form>
 
+  <mat-card>
+    <mat-card-title class="form-title">
+      <span class="full-width">Certificat de recunoaștere al calificării de medic</span>
+    </mat-card-title>
+    <mat-card-content>
+      <p class="mat-body-1">
+        <mat-checkbox [(ngModel)]="showCertRec">Are certificat de recunoastere</mat-checkbox>
+      </p>
+      <div *ngIf="showCertRec">
+        <form [formGroup]="formCertRec" ngSubmit="onFormSubmit()">
+          <section>
+            <mat-form-field class="column">
+              <input matInput formControlName="serie" type="text" placeholder="Serie">
+            </mat-form-field>
+            <mat-form-field class="column">
+              <input matInput formControlName="nr" type="text" placeholder="Numar">
+            </mat-form-field>
+            <div class="column"></div>
+            <mat-form-field class="column">
+              <input matInput formControlName="data" type="text" placeholder="Data">
+            </mat-form-field>
+          </section>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <form [formGroup]="formDatePersonale">
     <mat-card>
-      <mat-card-title class="form-title"><span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span></mat-card-title>
+      <mat-card-title class="form-title">
+        <span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span>
+      </mat-card-title>
       <mat-card-content>
         <section>
           <mat-form-field class="column">
@@ -179,14 +205,18 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card style="text-align: center;">
-      <mat-card-content>
-        <div class="row">
-          <button type="button" mat-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
-          <!-- TODO: nu merge disable / enable ....  -->
-        </div>
-      </mat-card-content>
-    </mat-card>
-
   </form>
+
+
+
+  <mat-card style="text-align: center;">
+    <mat-card-content>
+      <div class="row">
+        <button type="button" mat-raised-button (click)="onSubmit()" color="warn" [disabled]="!formDatePersonale.dirty">{{ formStatus === 2 ? 'Creeaza membru nou' : 'Modifica date membru'}}</button>
+        <!-- TODO: nu merge disable / enable ....  -->
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>

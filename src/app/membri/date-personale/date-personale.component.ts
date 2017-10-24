@@ -32,10 +32,16 @@ export class DatePersonaleComponent implements OnInit {
   // TODO: sa vina din json direct in functie de user e mai sigur
   // TODO: de implementat roluri pt dezvoltarea ulterioara
   formStatus = 1; // case read-only (default), edit, newMember, admin
+
   formDatePersonale: FormGroup;
   formDatePersonaleData;
+
+  formCertRec: FormGroup;
+  formCertRecData;
+
   loading = true;
   reloading = true;
+  showCertRec = false;
 
   registruJudete: ItemRegLista[];
   filtruJudete: Observable<Judet[]>;
@@ -57,10 +63,10 @@ export class DatePersonaleComponent implements OnInit {
 
   // TODO: de adus din api | extindere api
   registruDocFacTip: DocFacTip[] = [
-    { id: 1, nume: 'Diploma Licenta' },
-    { id: 2, nume: 'Adeverinta' },
-    { id: 3, nume: '(UE) Diploma' },
-    { id: 4, nume: 'Confirmare MS' } // TODO: de clarificat la avizari denumirea pt medicii care au absolvit in alte tari
+    { id: 1, nume: 'Diplomă Licență' },
+    { id: 2, nume: 'Adeverință' },
+    { id: 3, nume: '(UE) Diplomă' },
+    { id: 4, nume: '(non UE) Diplomă' } // TODO: de clarificat la avizari denumirea pt medicii care au absolvit in alte tari
   ];
   filtruDocFacTip: Observable<DocFacTip[]>;
 
@@ -106,6 +112,7 @@ export class DatePersonaleComponent implements OnInit {
 
   private setForm(): void {
     this.formDatePersonale = this._formSet.datePersonale(this.formDatePersonaleData);
+    this.formCertRec = this._formSet.fac_recunoastere();
   }
 
   private setFormMode() {
@@ -114,8 +121,8 @@ export class DatePersonaleComponent implements OnInit {
       this.enableAdmin();
       return;
     }
-    if (this.formDatePersonale.get('cetatenie').value === null
-      || this.formDatePersonale.get('cetatenie').value === '') {
+    if (this.formDatePersonale.get('data_juramant').value === null
+      || this.formDatePersonale.get('data_juramant').value === '') {
       this.formStatus = 2;
       this.enableNewMember();
       return;
@@ -232,6 +239,7 @@ export class DatePersonaleComponent implements OnInit {
         });
     }
   }
+
   private isRequired(data) {
     console.log(data);
   }
@@ -241,6 +249,14 @@ export class DatePersonaleComponent implements OnInit {
   }
   private test() {
     console.log(this.formDatePersonale);
+  }
+
+  checkTipActAbs(): void {
+    if ( this.formDatePersonale.get('fac_doc_tip').value === 4) {
+      this.showCertRec = true;
+      return;
+    }
+    this.showCertRec = false;
   }
 
   private setRegistre(): void {
