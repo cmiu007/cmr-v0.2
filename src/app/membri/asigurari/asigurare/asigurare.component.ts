@@ -129,11 +129,33 @@ export class AsigurareComponent implements OnInit {
   }
 
   private setFormTitle(): void {
-    const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
-    const grad = this.displayFnCppGrad(this.cppData.reg_cpp_tip_id);
-    const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-    this.itemTitle1 = grup;
-    this.itemTitle2 = specialitate + ' - ' + grad;
+    console.log(this.avizareForm.get('tip').value);
+    if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 3) {
+      const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
+      let grad = '';
+      if (this.cppData.grad_prof_cpp_id === null) {
+        grad = 'Rezident';
+      } else {
+        grad = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+      }
+      const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+      this.itemTitle1 = grup;
+      this.itemTitle2 = specialitate + ' - ' + grad;
+      return;
+    }
+
+    if (this.avizareForm.get('tip').value === 2) {
+      this.itemTitle1 = 'Specialități MEDICALE';
+      this.itemTitle2 = 'Medic cu competețe limitate';
+      return;
+    }
+
+    if (this.avizareForm.get('tip').value === 4) {
+      console.log('hit med gen');
+      this.itemTitle1 = 'Specialități MEDICALE';
+      this.itemTitle2 = ' Medic de Medicină Generală';
+      return;
+    }
   }
 
   private setAreAvizare(): void {
@@ -158,7 +180,7 @@ export class AsigurareComponent implements OnInit {
     this.asigurareStatus = this.asigurareForm.get('status').value;
     // console.log('asigurareStatus:' + this.asigurareStatus);
     this.avizareStatus = this.avizareForm.get('status').value;
-    console.log('avizareStatus: ' + this.avizareStatus);
+    // console.log('avizareStatus: ' + this.avizareStatus);
 
     // console.log (this.asigurareForm.get('status').value);
     // TODO: de folosit campul status al asigurarii
@@ -296,12 +318,13 @@ export class AsigurareComponent implements OnInit {
       return;
     }
     if (this.areAvizare === 'Nu') {
+
       const asigFormValues = {
         id_mem: this.avizareForm.get('id_mem').value,
-        id_asigurator: 99999,
+        id_asigurator: null,
         status: 2,
-        polita_serie: '-',
-        polita_nr: 0,
+        polita_serie: null,
+        polita_nr: null,
         data_start: this.avizareStart,
         data_end: this.avizareEnd
       };

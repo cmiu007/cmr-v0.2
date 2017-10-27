@@ -20,6 +20,9 @@ export class AvizariListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('formAvizari')
   public formAvizari;
 
+  @Input('certificatCurentContinut')
+  public certificatCurentContinut;
+
   isAddActive = true;
 
   constructor(

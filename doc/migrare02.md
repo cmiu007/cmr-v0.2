@@ -1,6 +1,16 @@
 ## ___mem_dlp___
 
-toate dlp vechi au campul inchis = 2
+___dlp_inchis___ se transforma in ___dlp_tip___
+  Tip DLP:
+  - 1 pt dlp tip A
+  - 2 pt dlp tip B - Medic cu competente limitate
+  - 3 pt dlp tip B - Medic Rezident
+  - 4 pt dlp tip C
+  - 11 pt dlp tip vechi, versiune 1
+
+toate dlp vechi au campul inchis V1 - vechi, versiunea 1
+
+de adaugat continut ca la certificat.
 
 
 ## ___mem___

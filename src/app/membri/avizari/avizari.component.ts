@@ -9,7 +9,7 @@ import { ApiData } from '../../shared/interfaces/message.interface';
 import { AlertSnackbarService } from '../../services/alert-snackbar.service';
 
 import { Avizare } from '../../shared/interfaces/avizari.interface';
-import { Certificat } from '../../shared/interfaces/certificate.interface';
+import { Certificat, CertificatContinut } from '../../shared/interfaces/certificate.interface';
 
 @Component({
   selector: 'app-avizari',
@@ -23,6 +23,7 @@ export class AvizariComponent implements OnInit {
   formAvizari: FormGroup;
   formArrayAvizare: FormArray;
   memId = sessionStorage.getItem('currentMemId');
+  certificatCurentContinut: CertificatContinut;
 
   constructor(
     private _apiData: ApiDataService,
@@ -70,9 +71,10 @@ export class AvizariComponent implements OnInit {
           return;
         }
         let certificatActiv = false;
-        Object(response.data).forEach(element => {
+        Object(response.data).forEach((element) => {
           if (element.status === 2) {
             certificatActiv = true;
+            this.certificatCurentContinut = JSON.parse(element.continut);
           }
         });
         if (certificatActiv === false) {

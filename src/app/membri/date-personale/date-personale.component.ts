@@ -196,6 +196,8 @@ export class DatePersonaleComponent implements OnInit {
 
   private editeazaMembru() {
     this.formDatePersonale.get('jud_id').enable();
+    this.formDatePersonale.get('fac_absolv').enable();
+    this.formDatePersonale.get('fac_promotie').enable();
     this._apiData.apiModifica('date_personale', +sessionStorage.getItem('currentMemId'), this.formDatePersonale.value)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {

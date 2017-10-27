@@ -206,7 +206,7 @@ export class FormSetService {
     const formGroupEmpty = this._fb.group({
       'id_dlp': [null, [this._validator.checkIfNumber]],
       'id_mem': [null, [Validators.required, this._validator.checkIfNumber]], // de schimbat in id_certificat
-      'inchis': [null, [this._validator.checkIfNumber]], // de schimbat denumirea in activ
+      'tip': [null, [this._validator.checkIfNumber]], // de schimbat denumirea in activ
       'dlp_data_start': ['', [Validators.required, this._validator.checkDate]],
       'dlp_data_end': ['', [Validators.required, this._validator.checkDate]],
       'status': [null, [this._validator.checkIfNumber]],
@@ -226,7 +226,7 @@ export class FormSetService {
       'id_mem': [null, [Validators.required, this._validator.checkIfNumber]],
       'id_asigurator': [null, [this._validator.checkIfNumber]],
       'id_dlp': [null, [Validators.required, this._validator.checkIfNumber]],
-      'id_cpp': [null, [Validators.required, this._validator.checkIfNumber]],
+      'id_cpp': [null, [this._validator.checkIfNumber]],
       'status': [null, [Validators.required, this._validator.checkIfNumber]],
       'polita_serie': ['', []],
       'polita_nr': ['', []],
