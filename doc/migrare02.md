@@ -19,6 +19,11 @@ api nu ia inconsiderare tip fac_doc
 
 de completat cu 1 pt toate inregistrarile din baza de date
 
+### status = toti au status 11
+
+retrasi = status 0
+de facut lista valori pt status, apoi update front end
+
 
 ## ___fac_doc_tip din reg_fac_doc_tip___
 
