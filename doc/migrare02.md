@@ -43,3 +43,51 @@ api - end point adauga, get, modifica
 ## ___mem_obs___
 
 api - adauga, get, modifica
+
+
+# Avizari & Asigurari
+
+## Reguli generale
+
+ - fiecare tip de certificat are cate un tip de avizare
+ - tipul de avizare se face in functie de tipul certificatului activ
+ - fiecare avizare are cel putin o asigurare
+
+### Avizare tip A
+ - in tabela mem_dlp: tip = 1
+ - fiecare specialitate are cate o asigurare
+ - daca nu are asigurare se genereaza o asigurare 'nula'
+
+    - in cazul in care o specialitate nu are asigurare: se introduce o asigurare 'nula'
+      - id_mem
+      - ___id_asigurator___ = null
+      - id_dlp
+      - ___id_cpp___ = null
+      - status
+      - ___polita_serie___ = null
+      - ___polita_numar___ = null
+      - data_start
+      - data_end
+
+### Avizare tip B
+  - caz I pentru medici rezidenti sau care au terminat rezidentiatul, la fel ca pt avizarea de tip A
+    - in tabela mem_dlp: tip = 3
+  - caz II pentru medici cu competente limitate (au terminat fac dupa 2005, nu sunt rezidenti, nu au specialitate)
+    - in tabela mem_dlp: tip = 2
+    - in tabela mem_asig
+      -  ___id_cpp___ = null
+
+### Avizare tip C
+- in tabela mem_dlp: tip 4
+- se genereaza o asigurare
+  - in tabela mem_asig ___id_cpp___ = null
+
+* tabela mem_dlp - avizarile 'vechi' vor primi tip 11
+
+
+## Stabilire tip Avizare
+- in functie de tipul certificatului activ
+
+
+
+
