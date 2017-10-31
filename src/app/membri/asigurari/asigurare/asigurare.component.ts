@@ -129,7 +129,7 @@ export class AsigurareComponent implements OnInit {
   }
 
   private setFormTitle(): void {
-    console.log(this.avizareForm.get('tip').value);
+    // console.log(this.avizareForm.get('tip').value);
     if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 3) {
       const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
       let grad = '';

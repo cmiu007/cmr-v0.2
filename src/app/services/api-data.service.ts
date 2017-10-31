@@ -57,6 +57,7 @@ export class ApiDataService {
   apiAdauga(actiune: string, data: any) {
     return this._http.put(this.apiAddress + 'api/adauga', this.setApiAdaugaData(actiune, data))
       .map((response: Response) => {
+        // console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: dataApi, status: status };
@@ -66,7 +67,7 @@ export class ApiDataService {
   apiModifica(actiune: string, id: number, data: any) {
     return this._http.put(this.apiAddress + 'api/modifica', this.setApiModificaData(actiune, id, data))
       .map((response: Response) => {
-        console.log(response);
+        // console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: data, status: status };

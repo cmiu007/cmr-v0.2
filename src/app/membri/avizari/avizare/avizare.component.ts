@@ -205,7 +205,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('avem certificat de tipul: ' + this.certificatCurentContinut.tip_cert);
+    // console.log('avem certificat de tipul: ' + this.certificatCurentContinut.tip_cert);
 
     switch (this.certificatCurentContinut.tip_cert) {
       case 'A':
@@ -246,7 +246,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
         let tipB = '';
         let asigurari: Asigurare[] = [];
         asigurari = this.asigurariList;
-        console.log(asigurari);
+        // console.log(asigurari);
         if (listaCpp2.length === 0) {
           tipB = 'competenteLimitate';
         } else {
@@ -255,7 +255,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
         switch (tipB) {
           case 'competenteLimitate':
-            console.log(asigurari);
+            // console.log(asigurari);
             this.avizareTip = 2;
             // console.log('hit competente limitate');
             if (asigurari.length === 0) {
@@ -279,7 +279,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
           case 'rezident':
             this.avizareTip = 3;
-            console.log('hit rezident');
+            // console.log('hit rezident');
             listaCpp2.forEach((cpp: Cpp) => {
               asigurari = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
               // console.log('asigurari:');

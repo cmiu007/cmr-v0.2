@@ -96,5 +96,5 @@ api - adauga, get, modifica
 - in functie de tipul certificatului activ
 
 
-
+## Date salvate pentru certificat - de adaugat titluri  si certificat recunoastere
 
