@@ -12,7 +12,7 @@ toate dlp vechi au campul inchis V1 - vechi, versiunea 1
 
 de adaugat continut ca la certificat.
 
-
+,aeo,``
 ## ___mem___
 
 api nu ia inconsiderare tip fac_doc
@@ -64,6 +64,8 @@ api - adauga, get, modifica
  - daca nu are asigurare se genereaza o asigurare 'nula'
 
     - in cazul in care o specialitate nu are asigurare: se introduce o asigurare 'nula'
+*de completat* - in tabela mem_asig un nou camp status care face legatura cu reg_tip_avizare
+
       - id_mem
       - ___id_asigurator___ = null
       - id_dlp
