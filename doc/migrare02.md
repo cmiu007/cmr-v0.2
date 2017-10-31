@@ -35,6 +35,8 @@ de facut lista valori pt status, apoi update front end
 la 4 are si confirmare M.S. in tabela separata - important pt completarea certificatului nou
 
 ## ___mem_fac_recunoastere:___
+# hide doc aditional fac in front end pana se rezolva cu api
+
 tabel nou
 
 id
@@ -50,10 +52,10 @@ api - end point adauga, get, modifica
 api - adauga, get, modifica
 
 
+
 # Avizari & Asigurari
 
 ## Reguli generale
-
  - fiecare tip de certificat are cate un tip de avizare
  - tipul de avizare se face in functie de tipul certificatului activ
  - fiecare avizare are cel putin o asigurare
@@ -97,4 +99,3 @@ api - adauga, get, modifica
 
 
 ## Date salvate pentru certificat - de adaugat titluri  si certificat recunoastere
-
