@@ -1,5 +1,79 @@
 <?php
 
+$id = $_REQUEST['id'];
+$cert = $_REQUEST['cert'];
+$url_base = "https://devel-api.cmr.ro/api/";
+$token = "bcf8c11367426e5e9330358abeee8bf4";
+$acum = date("d.m.Y");
+
+function call_api($url, $data_json)
+{
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($data_json)));
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+	curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response  = curl_exec($ch);
+	//print_r($response);
+	$rezultat = json_decode($response,true);
+	curl_close($ch);
+	return $rezultat; 
+}
+
+function datex($data)
+{
+	$s = explode('-',$data);
+	$retur = $s[2].'.'.$s[1].'.'.$s[0];
+	return $retur;
+}
+
+$data = [	'token' => 	$token,
+	'id' =>	$id,
+	'actiune' => 'date_personale',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$medic = call_api($url, $data_json);
+
+$numeMedic = $medic['nume']. ' ' . $medic['prenume'];
+$CUIM = $medic['cuim'];
+
+$data = [	'token' => 	$token,
+	'id' =>	$cert,
+	'actiune' => 'certificat',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$certificat = call_api($url, $data_json);
+
+$NR_CERT = $certificat['id_certificat'];
+$DATA_CERT = datex($certificat['data_start']);
+
+$data = [
+         'jud_id' => $medic['jud_id'],
+];
+
+$data_json = json_encode($data);
+$url = $url_base."jud";
+$rezultat = call_api($url, $data_json);
+$CMJ = $rezultat[0]['nume'];
+
+
+$date_cert = json_decode($certificat['continut'], true);
+
+$data = [	'token' => 	$token,
+			'id' =>	$medic['jud_id'],
+			'actiune' => 'cmj',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$cmj = call_api($url, $data_json);
+
+/*echo "<pre>";
+print_r($date_cert);
+echo "</pre>";
+*/
 require_once('tcpdf/tcpdf.php');
 date_default_timezone_set('Europe/Bucharest');
 
@@ -12,7 +86,7 @@ $pdf->SetProtection(array('modify', 'copy', 'extract', 'fill-forms', 'annot-form
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Colegiul Medicilor din România');
 $pdf->SetTitle('Aviz anual privind exercitarea profesiei de medic');
-$pdf->SetSubject('Avizare pentru: Numele si Prenumele'); // TODO: de inlocuit cu Numele si CUIM
+$pdf->SetSubject('Avizare pentru: '.$numeMedic); // TODO: de inlocuit cu Numele si CUIM
 $pdf->SetKeywords('Lista specialitati si statusul avizarii'); // TODO:
 
 
@@ -103,11 +177,11 @@ $titlu1HTML = '
 <h3>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h3>
 ';
 $titlu2HTML = '
-Colegiul Medicilor <b>TIMIȘOARA</b>
+Colegiul Medicilor <b>'.$CMJ.'</b>
 ';
 $titlu3HTML = '
 <h1>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</h1>
-nr. <b>837726</b> din data de <b>10/01/2017</b>
+nr. <b>'.$NR_CERT.'</b> din data de <b>'.$DATA_CERT.'</b>
 ';
 
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titlu1HTML, 0, 0, $fill, true, 'C', true);
@@ -117,17 +191,17 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $ti
 $pdf->SetFont('freeserif', '', 12);
 $titularHTML = '
 <p>
-Titular: <b>Popescu Ionel</b>
+Titular: <b>'.$numeMedic.'</b>
 </p>
 <p>
 Titluri deținute: <b>Profesor Doctor, Cercetator gradul III</b> 
 </p>
 <p>
-C.N.P./data nașterii: <b>1740428997811</b> Cod unic de identificare (C.U.I.M): <b>1740428997811</b>
+C.N.P./data nașterii: <b>'.$medic['cnp'].'</b> Cod unic de identificare (C.U.I.M): <b>'.$medic['cuim'].'</b>
 </p>
 <p>
-Formarea medicală de bază:  promoția <b>1977</b>, atestată prin titlul de calificare  seria/nr. <b>RR / 2312334</b>
-eliberat de <b>Universitatea de Medicină și Farmacie "Carol Davila" din Bucuresti</b>.
+Formarea medicală de bază:  promoția <b>'.$medic['fac_promotie'].'</b>, atestată prin titlul de calificare  seria/nr. <b>'.$date_cert['dipl_serie'].' / '.$date_cert['dipl_nr'].'</b>
+eliberat de <b>'.$date_cert['facultate'].'</b>.
 <br>
 recunoscut <i>(dacă este cazul)</i> prin certificatul de recunoaștere cu seria/nr. <b>PP / 88377392</b> din <b>21/10/2020</b>
 </p>
@@ -137,82 +211,62 @@ recunoscut <i>(dacă este cazul)</i> prin certificatul de recunoaștere cu seria
 $pdf->SetFillColor(127, 127, 127);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin * 2, 19, $origin + 5, $titularYOrigin, $titularHTML, 0, 0, $fill, true, 'L', true);
 
-// $prezenta = '
-// <p style="font-weight: bold; "><i>
-// Prin prezenta se certifică faptul că titularul are dreptul de a profesa ca medic,<br>
-// în următoarele grupe de specialități:
-// </i></p>
-// ';
-// $pdf->SetFillColor(255, 127, 127);
-// $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $prezentaYOrigin, $prezenta, 0, 0, $fill, true, 'C', true);
-
-// $pdf->SetFont('freeserif', '', 10);
-// $specialitate = '
-// <table border="1" cellpadding="2">
-// <tr>
-// <th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-// </tr>
-// <tr>
-// <th>
-// Specialitate: <b>Cardiologie</b>  grad profesional: <b>Primar</b> tip: <b>cu raspundere limitata</b>
-// <br>
-// Asigurator: <b>ASIROM VIENNA INSURANCE GROUP</b> Polita Seria: <b>MM</b> Nr: <b>000626748</b>
-// <br>
-// Valabilitate aviz: <b>01.01.2018-31.12.2018</b>
-// </th>
-// </tr>
-// </table>
-// ';
-// $pdf->SetFillColor(0, 127, 127);
-// $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $box1YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
 // ---------------------------
 
 $specialitate = '
 <style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
-.tg td{padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
-.tg th{font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;border-top-width:1px;border-bottom-width:1px;}
-.tg .tg-yzt1{background-color:#efefef;vertical-align:top}
-.tg .tg-yw4l{vertical-align:top}
+.tg  {cellpadding:2;}
+.tg td{padding:10px 5px;}
+.tg th{font-weight:normal;padding:10px 5px}
+.tg .tg-yzt1{vertical-align:middle;border-bottom:1pt solid black;background-color:#efefef;}
+.tg .tg-yw4l{vertical-align:middle;border-bottom:1pt solid black;background-color:#efefef;}
 .tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
 .tg .tg-spec{width:80%}
 .tg .tg-grad{width:20%}
-@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
+</style>
 <div class="tg-wrap"><table class="tg">
   <tr>
-    <th class="tg-yzt1 tg-spec">Specialitati</th>
-    <th class="tg-yw4l tg-grad">Grad</th>
-  </tr>
-  <tr>
-    <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
-    <td class="tg-b7b8 tg-grad">Primar</td>
-  </tr>
-  <tr>
-    <td class="tg-yw4zl tg-spec">Neurologie</td>
-    <td class="tg-yw4l tg-grad">Specialist</td>
-  </tr>
-  <tr>
-  <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
-  <td class="tg-b7b8 tg-grad">Primar</td>
-  </tr>
-  <tr>
-  <td class="tg-yw4zl tg-spec">Neurologie</td>
-  <td class="tg-yw4l tg-grad">Specialist</td>
-  </tr>
-</table></div>
-';
+    <th class="tg-yzt1 tg-spec" style="bgcolor:#d3d3d3">Specialități:</th>
+    <th class="tg-yw4l tg-grad">Grad profesional:</th>
+  </tr>';
+  $i=0;
+  foreach($date_cert['specialitati'] as $spec)
+  {
+	if ($i%2 ==0 )
+		$specialitate .= '
+		<tr>
+		  <td class="tg-b7b8 tg-spec">'.$spec['specialitate'].'</td>
+		  <td class="tg-b7b8 tg-grad">'.$spec['gr_prof'].'</td>
+		</tr>';
+	else
+		$specialitate .= '
+		<tr>
+		  <td class="tg-yw4zl tg-spec">'.$spec['specialitate'].'</td>
+		  <td class="tg-yw4l tg-grad">'.$spec['gr_prof'].'</td>
+		</tr>';
+	$i++;
+  }
+  
+  $specialitate .= '</table></div>';
+  
+ // echo $specialitate;
+
 $pdf->SetFillColor(0, 127, 127);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
 
+$super ="";
+foreach($date_cert['superspecialitate'] as $spec)
+{
+	$super .= $spec['specialitate'].'; ';
+}
+
 $competente = '
 <style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
-.tg td{padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;border-top-width:1px;border-bottom-width:1px;}
-.tg th{font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;border-top-width:1px;border-bottom-width:1px;}
-.tg .tg-yzt1{background-color:#efefef;vertical-align:top}
-.tg .tg-yw4l{vertical-align:top}
-.tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+.tg td{padding:10px 5px;}
+.tg th{font-weight:normal;padding:10px 5px;}
+.tg .tg-yzt1{background-color:#efefef;vertical-align:middle;border-bottom:1pt solid black;}
+.tg .tg-yw4l{vertical-align:middle}
+.tg .tg-b7b8{vertical-align:middle;}
 .tg .tg-spec{width:100%}
 @media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
 <div class="tg-wrap"><table class="tg">
@@ -220,7 +274,7 @@ $competente = '
     <th class="tg-yzt1 tg-spec">Studii Complementare:</th>
   </tr>
   <tr>
-    <td class="tg-b7b8 tg-spec">Cardiologie, Cardiologie, Cardiologie, Cardiologie, Cardiologie,</td>
+    <td class="tg-b7b8 tg-spec">'.$super.'</td>
   </tr>
 </table></div>
 ';
@@ -228,10 +282,10 @@ $pdf->SetFillColor(0, 127, 127);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box3YOrigin, $competente, 0, 0, $fill, true, 'L', true);
 
 //----------------------------
-
+$dj = datex($date_cert['data_juramant']);
 // $pdf->SetFont('freeserif', '', 8);
 $footer1 = '
-Data depunerii jurământului: <b>10/12/2017</b>
+Data depunerii jurământului: <b>'.$dj.'</b>
 ';
 $pdf->SetFillColor(255, 255, 0);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
@@ -239,7 +293,7 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $notaY
 $pdf->SetFont('freeserif', '', 10);
 $footer2 = '
 <h2>Președinte,</h2>
-<h2>Popescu Ionel al doilea</h2>
+<h2>'.$cmj['presedinte'].'</h2>
 <p>
 …………………………………………………………
 </p>

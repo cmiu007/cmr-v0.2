@@ -1,5 +1,85 @@
 <?php
 
+$id = $_REQUEST['id'];
+$cert = $_REQUEST['cert'];
+$url_base = "https://devel-api.cmr.ro/api/";
+$token = "bcf8c11367426e5e9330358abeee8bf4";
+$acum = date("d.m.Y");
+
+function call_api($url, $data_json)
+{
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($data_json)));
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+	curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response  = curl_exec($ch);
+	//print_r($response);
+	$rezultat = json_decode($response,true);
+	curl_close($ch);
+	return $rezultat; 
+}
+
+function datex($data)
+{
+	$s = explode('-',$data);
+	$retur = $s[2].'.'.$s[1].'.'.$s[0];
+	return $retur;
+}
+
+$data = [
+	'token' => 	$token,
+	'id' =>	$cert,
+];
+$url = $url_base."getaviz";
+$data_json = json_encode($data);
+$cppuri = call_api($url, $data_json);
+
+//echo "<pre> zz";
+//print_r($cppuri);
+//echo "</pre>";
+
+
+$data = [	'token' => 	$token,
+	'id' =>	$id,
+	'actiune' => 'date_personale',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$medic = call_api($url, $data_json);
+
+$numeMedic = $medic['nume']. ' ' . $medic['prenume'];
+$CUIM = $medic['cuim'];
+
+$data = [	'token' => 	$token,
+	'id' =>	$cert,
+	'actiune' => 'certificat',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$certificat = call_api($url, $data_json);
+
+$NR_CERT = $certificat['id_certificat'];
+$DATA_CERT = datex($certificat['data_start']);
+
+$data = [
+         'jud_id' => $medic['jud_id'],
+];
+
+$data_json = json_encode($data);
+$url = $url_base."jud";
+$rezultat = call_api($url, $data_json);
+$CMJ = $rezultat[0]['nume'];
+
+$data = [	'token' => 	$token,
+			'id' =>	$medic['jud_id'],
+			'actiune' => 'cmj',
+];
+$url = $url_base."get";
+$data_json = json_encode($data);
+$cmj = call_api($url, $data_json);
+
 require_once('tcpdf/tcpdf.php');
 date_default_timezone_set('Europe/Bucharest');
 
@@ -12,7 +92,7 @@ $pdf->SetProtection(array('modify', 'copy', 'extract', 'fill-forms', 'annot-form
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Colegiul Medicilor din România');
 $pdf->SetTitle('Aviz anual privind exercitarea profesiei de medic');
-$pdf->SetSubject('Avizare pentru: Numele si Prenumele'); // TODO: de inlocuit cu Numele si CUIM
+$pdf->SetSubject('Avizare pentru: '.$numeMedic); // TODO: de inlocuit cu Numele si CUIM
 $pdf->SetKeywords('Lista specialitati si statusul avizarii'); // TODO:
 
 
@@ -103,13 +183,13 @@ $titlu1HTML = '
 <h2>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h2>
 ';
 $titlu2HTML = '
-Colegiul Medicilor <span style="font-weight: bold;">TIMIȘOARA</span>
+Colegiul Medicilor <span style="font-weight: bold;">'.$CMJ.'</span>
 <br>
 <h2>A V I Z&nbsp; &nbsp;A N U A L</h2>
 ';
 $titlu3HTML = '
 <h2>privind exercitarea profesiei de medic</h2>
-eliberat in data de <span style="font-weight: bold;">29-09-2017</span>
+eliberat în data de <span style="font-weight: bold;">'.$acum.'</span>
 ';
 
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titlu1HTML, 0, 0, $fill, true, 'C', true);
@@ -119,10 +199,10 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $ti
 $pdf->SetFont('freeserif', '', 12);
 $titularHTML = '
 <p>
-Titular: <span style="font-weight: bold;">Popescu Ionel</span>
+Titular: <span style="font-weight: bold;">'.$numeMedic.'</span>
 </p>
 <p>
-C.U.I.M.: <span style="font-weight: bold;">218213090123</span> Certificat de membru nr <span style="font-weight: bold;">20</span> din data de <span style="font-weight: bold;">13-13-2018</span>
+C.U.I.M.: <span style="font-weight: bold;">'.$CUIM.'</span> Certificat de membru nr <span style="font-weight: bold;">'.$NR_CERT.'</span> din data de <span style="font-weight: bold;">'.$DATA_CERT.'</span>
 </p>
 ';
 $pdf->SetFillColor(127, 127, 127);
@@ -138,7 +218,7 @@ $pdf->SetFillColor(255, 127, 127);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $prezentaYOrigin, $prezenta, 0, 0, $fill, true, 'C', true);
 
 $pdf->SetFont('freeserif', '', 10);
-$specialitate = '
+/*$specialitate = '
 <table border="1" cellpadding="2">
 <tr>
 <th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
@@ -153,71 +233,40 @@ Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
 </th>
 </tr>
 </table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box1YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
-// ---------------------------
-
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
-
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box3YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
-$specialitate = '
-<table border="1" cellpadding="2">
-<tr>
-<th bgcolor="#d3d3d3">SPECIALITĂȚI MEDICALE / CHIRURGICALE / PARACLINICE</th>
-</tr>
-<tr>
-<th>
-Specialitate: <span style="font-weight: bold;">Cardiologie</span>  grad profesional: <span style="font-weight: bold;">Primar</span> tip: <span style="font-weight: bold;">cu raspundere limitata</span>
-<br>
-Asigurator: <span style="font-weight: bold;">ASIROM VIENNA INSURANCE GROUP</span> Polita Seria: <span style="font-weight: bold;">MM</span> Nr: <span style="font-weight: bold;">000626748</span>
-<br>
-Valabilitate aviz: <span style="font-weight: bold;">01.01.2018-31.12.2018</span>
-</th>
-</tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $box4YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-
-//----------------------------
+';*/
+$deltay = 0;
+$Y = $box1YOrigin;
+/*cho "<pre>";
+print_r($cppuri);
+echo "</pre>";
+*/
+foreach($cppuri as $grup)
+{
+	
+	$specialitate = '<table border="1" cellpadding="2">
+	<tr>
+	  <th bgcolor="#d3d3d3">'.$grup['grup'].'</th>
+	</tr>';
+	foreach($grup['data'] as $cpz){
+		$dlp_data_start = datex($cpz['data_start']);
+		$dlp_data_end = datex($cpz['data_end']);
+		$specialitate .= '
+		<tr>
+		<th>
+		  Specialitate: <span style="font-weight: bold;">'.$cpz['nume_cpp'].'</span>  grad profesional: <span style="font-weight: bold;">'.$cpz['nume_gr_prof'].'</span> tip: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
+		<br>
+		  Asigurator: <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span> Polita Seria: <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> Nr: <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span>
+		<br>
+		  Valabilitate aviz: <span style="font-weight: bold;">'.$dlp_data_start.'-'.$dlp_data_end.'</span>
+		</th>
+		</tr>';
+	}
+	$specialitate .= '</table>
+	';
+	$pdf->SetFillColor(0, 127, 127);
+	$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $specialitate, 0, 0, $fill, true, 'L', true);
+	$Y+=25;
+}
 
 $pdf->SetFont('freeserif', '', 8);
 $footer1 = '
@@ -241,7 +290,7 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $nota
 $pdf->SetFont('freeserif', '', 10);
 $footer2 = '
 <h2>Președinte,</h2>
-<h2>Popescu Ionel al doilea</h2>
+<h2>'.$cmj['presedinte'].'</h2>
 <p>
 …………………………………………………………
 </p>
