@@ -133,15 +133,15 @@ $timbruYOrigin = 20;
 $titleXOrigin = $imgOrigin + 38;
 $titleYOrigin = $imgOrigin;
 $title2YOrigin = $titleYOrigin + 7 ;
-$title3YOrigin = $title2YOrigin + 24 ;
-$titularYOrigin = $title3YOrigin + 29;
+$title3YOrigin = $title2YOrigin + 28 ;
+$titularYOrigin = $title3YOrigin + 40;
 $prezentaYOrigin = $titularYOrigin + 18 ;
 $box1YOrigin = $prezentaYOrigin + 14;
 $box2YOrigin = $box1YOrigin + 25;
 $box3YOrigin = $box2YOrigin + 37;
 $box4YOrigin = $box3YOrigin + 25;
-$notaYOrigin = $box4YOrigin + 32;
-$presedinteYOrigin = $notaYOrigin + 32;
+$notaYOrigin = $box4YOrigin + 25;
+$presedinteYOrigin = $notaYOrigin + 25;
 $lsYOrigin = $presedinteYOrigin + 10;
 $lsXOrigin = 170;
 
@@ -174,13 +174,13 @@ $pdf->WriteHTMLCell(20, 10, $timbruXOrigin, $timbruYOrigin, $timbru, 0, 0, $fill
 $pdf->SetFont('freeserif', '', 10);
 
 $titlu1HTML = '
-<h3 style="letter-spacing:4px">COLEGIUL&nbsp; &nbsp;MEDICILOR&nbsp; &nbsp;DIN&nbsp; &nbsp;ROMÂNIA</h3>
+<h3>C O L E G I U L &nbsp; &nbsp;M E D I C I L O R&nbsp; &nbsp; D I N &nbsp; &nbsp;R O M Â N I A</h3>
 ';
 $titlu2HTML = '
-<span style="letter-spacing:2px"> Colegiul Medicilor <b>'.$CMJ.'</b></span>
+Colegiul Medicilor <b>'.$CMJ.'</b>
 ';
 $titlu3HTML = '
-<h1 style="letter-spacing:3px;"><i>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</i></h1>
+<h1>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</h1>
 nr. <b>'.$NR_CERT.'</b> din data de <b>'.$DATA_CERT.'</b>
 ';
 
@@ -309,93 +309,3 @@ L.S.
 $pdf->WriteHTMLCell(20, 10, $lsXOrigin, $lsYOrigin, $ls, 0, 0, $fill, true, 'C', true);
 
 $pdf-> Output('test.pdf', 'I'); // TODO: de inlocuit cu aviz_CUIM
-
-// add new page pt diferente
-$pdf->AddPage();
-$pdf->setPage(2);
-$pdf->SetFont('freeserif', '', 12);
-$certTipB1 = '
-<style>
-.tg td{height:35px; padding:10px 5px;word-break:normal}
-.tg  {margin:10px;}
-.tg .tg-yy4l{width:"3%";vertical-align:center;text-align:left}
-.tg .tg-yw4l{width:"97%";vertical-align:center;text-align:left}
-</style>
-<table class="tg">
-  <tr>
-    <td class="tg-yy4l">O</td>
-    <td class="tg-yw4l">Medic cu competențe limitate</td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">O</td>
-    <td class="tg-yw4l">Medic rezident</td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l"></td>
-    <td class="tg-yw4l">în specialitatea: <strong>Specialitatea specialitatilor</strong></td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">O</td>
-    <td class="tg-yw4l">Rezidențiat finalizat fără examen de confirmare</td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l"></td>
-    <td class="tg-yw4l">în specialitatea: <strong>Specialitatea specialitatilor</strong></td>
-  </tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipB1, 0, 0, $fill, true, 'L', true);
-
-$certTipB2 = '
-<p style="align:center">TITULARUL PREZENTULUI CERTIFICAT NU ARE DREPT DE LIBERĂ PRACTICĂ</p>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box4YOrigin, $certTipB2, 0, 0, $fill, true, 'L', true);
-
-// add new page pt diferente
-$pdf->AddPage();
-$pdf->setPage(3);
-
-$certTipC = '
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#00;margin:10px auto;}
-.tg td{padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#000000;color:#333;background-color:#fff;}
-.tg th{padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#000000;color:#333;background-color:#f0f0f0;}
-.tg .tg-t2ww{fwidth:"80%";font-weight:bold;text-decoration:underline;text-align:left;vertical-align:center}
-.tg .tg-t2cw{fwidth:"20%";font-weight:bold;text-decoration:underline;text-align:right;vertical-align:center}
-.tg .tg-yy4l{width:"3%";vertical-align:center;text-align:left}
-.tg .tg-yw4l{width:"97%";vertical-align:center;text-align:left}
-
-</style>
-<table class="tg">
-  <tr>
-    <th class="tg-t2ww"></th>
-    <th class="tg-t2cw"></th>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">1.</td>
-    <td class="tg-yw4l">MEDIC DE MEDICINĂ GENERALĂ</td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">2.</td>
-    <td class="tg-yw4l"></td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">3.</td>
-    <td class="tg-yw4l"></td>
-  </tr>
-  <tr>
-    <td class="tg-yy4l">4.</td>
-    <td class="tg-yw4l"></td>
-  </tr>
-</table>
-';
-$pdf->SetFillColor(0, 127, 127);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipC, 0, 0, $fill, true, 'L', true);
-
-
-
-
-$pdf-> Output('test.pdf', 'I'); // TODO: de inlocuit cu aviz_CUIM
-
