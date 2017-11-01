@@ -1,7 +1,7 @@
 <?php
 
 $cert = $_REQUEST['cert'];
-$url_base = "https://api.cmr.ro/api/";
+$url_base = "https://devel-api.cmr.ro/api/";
 $token = $_REQUEST['token'];
 $acum = date("d.m.Y");
 
@@ -203,7 +203,7 @@ $titlu1HTML = '
 <h3 style="letter-spacing:4px">COLEGIUL &nbsp;MEDICILOR&nbsp;DIN&nbsp;ROMÂNIA</h3>
 ';
 $titlu2HTML = '
-<span style="letter-spacing:2px;font-size:12"> Colegiul Medicilor <b>'.$CMJ.'</b></span>
+<span style="letter-spacing:2px;font-size:12"> Colegiul Medicilor '.$CMJ.'</span>
 ';
 $titlu3HTML = '
 <h1 style="letter-spacing:3px;"><i>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</i></h1>
@@ -250,7 +250,7 @@ switch ($date_cert['tip_cert'])
 		.tg .tg-yzt1{vertical-align:middle}
 		.tg .tg-yw4l{vertical-align:middle}
 		.tg .tg-b7b8{vertical-align:top}
-		.tg .tg-spec{width:80%}
+		.tg .tg-spec{width:80%;letter-spacing:1px}
 		.tg .tg-grad{width:20%}
 		</style>
 		<div class="tg-wrap"><table class="tg">
@@ -298,7 +298,7 @@ switch ($date_cert['tip_cert'])
 		.tg .tg-yzt1{vertical-align:middle;}
 		.tg .tg-yw4l{vertical-align:middle}
 		.tg .tg-b7b8{vertical-align:middle;}
-    .tg .tg-spec{width:100%}
+    .tg .tg-spec{width:100%;letter-spacing:1px}
     </style>
 		<div class="tg-wrap"><table class="tg">
 		  <tr>
@@ -314,10 +314,9 @@ switch ($date_cert['tip_cert'])
 	break;
 	case "B":
 
-		if (count($date_cert['specialitati']) > 0)
-		{
+		if (count($date_cert['specialitati']) > 0) {
 			$spec = $date_cert['specialitati'][0];
-			if ($spec['data_end'] = '0000-00-00')
+			if ($spec['data_end'] == '0000-00-00') {
 				$certTipB1 = '
 				<style>
 				.tg td{height:35px; padding:10px 5px;word-break:normal}
@@ -347,8 +346,9 @@ switch ($date_cert['tip_cert'])
 					<td class="tg-yw4l">în specialitatea: </td>
 				  </tr>
 				</table>
-				';
-			else
+        ';
+      }
+    else {
 			$certTipB1 = '
 			<style>
 			.tg td{height:35px; padding:10px 5px;word-break:normal}
@@ -379,7 +379,8 @@ switch ($date_cert['tip_cert'])
 			  </tr>
 			</table>
 			';
-		}
+    }
+  }
 		else
 		{
 			$certTipB1 = '
@@ -468,7 +469,7 @@ $footer2 = '
 <p>
 …………………………………………………………
 </p>
-<b>Notă:</b> Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.
+<i><b>Notă:</b> Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.</i>
 ';
 $pdf->SetFillColor(255, 255, 0);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $presedinteYOrigin, $footer2, 0, 0, $fill, true, 'C', true);
