@@ -8,12 +8,15 @@
 
 - la generarea avizarii sa introduca continut - la fel ca la 
 
+- de revazut spatierea
+
 
 # gen certificat
 - numerotare specialitati
 - nu i-a in considerare specialist + rezident cu rezidentiat terminat ... cppTip 7 (nou creat)
 - daca nu are titluri, nu afiseaza randul cu titluri...
 - de pus datele certificatului in setkeywords
+- de revazut spatierea
 
 # ambele gen pdf
 - mecanism pentru printare duplicat - if duplicat watermark vezi pdf gen

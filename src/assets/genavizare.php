@@ -249,7 +249,7 @@ $Y = $box1YOrigin;
       <th bgcolor="#d3d3d3">'.$grup['grup'].'</th>
     </tr>';
     foreach($grup['data'] as $cpz){
-      $nextBoxOffset+=23;
+      $nextBoxOffset+=25;
       $dlp_data_start = datex($cpz['data_start']);
       $dlp_data_end = datex($cpz['data_end']);
       //echo 'Tip asigurare:'.$cpz['tip'];

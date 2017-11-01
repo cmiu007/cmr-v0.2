@@ -114,7 +114,6 @@ export class AsigurareComponent implements OnInit {
     const a = this.avizareForm.get('asigurare') as FormArray;
     this.asigurareForm = this._formSet.asigurare(a.at(this.arrayIndex).value);
     this.avizareStart = this.avizareForm.get('dlp_data_start').value;
-    // console.log('avizare start :' + this.avizareStart);
     this.avizareEnd = this.avizareForm.get('dlp_data_end').value;
     this.asigurareTip = this.asigurareForm.get('tip').value;
     // console.log('avizare end :' + this.avizareStart);
@@ -136,6 +135,7 @@ export class AsigurareComponent implements OnInit {
   }
 
   private setFormTitle(): void {
+    // console.log('Asigurare Component - Asigurare tip :' + this.asigurareTip.toString());
      switch (this.asigurareTip) {
       case 1:
         let grad = '';

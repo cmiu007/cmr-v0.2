@@ -21,6 +21,7 @@ import { AvizariComponent } from '../avizari.component';
 import { DataCalService } from '../../../services/data-cal.service';
 import { ListaAsigurari } from '../../../shared/resolvers/listaasigurari.resolver';
 import { ActIdentTip } from '../../../shared/models/registre.model';
+import { CertSpecialitate } from '../../../shared/interfaces/certificate.interface';
 
 
 
@@ -117,8 +118,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
     // set form status pentru asigurare
     // this.avizareForm.get('status').setValue(this.avizareFormData.status);
-    console.log( this.avizareForm.get('status').value);
-    if ( this.avizareForm.get('status').value ) {
+    // console.log( this.avizareForm.get('status').value);
+    if (this.avizareForm.get('status').value) {
       this.isAvizFinal = true;
     }
 
@@ -198,7 +199,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     const listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
 
     // are avizare de tip vechi?
-    if (this.avizareFormData.tip === 11 ) {
+    if (this.avizareFormData.tip === 11) {
       this.avizareOld = true;
       // afiseaza asigurarea direct
       // nu se ia in considerare lista de cpp
@@ -212,7 +213,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if ( this.isAvizFinal === true ) {
+    if (this.isAvizFinal === true) {
       // afiseaza asigurarea direct
       // nu se ia in considerare lista de cpp
       Object(listaAsigurariDLP).forEach((element: Asigurare) => {
@@ -271,13 +272,14 @@ export class AvizareComponent implements OnInit, OnDestroy {
         return;
 
       case 'B':
+        this.avizareTip = 2;
         let tipB = '';
         let asigurariB: Asigurare[] = [];
         asigurariB = this.asigurariList;
         if (listaSpecialitati.length === 0) {
           tipB = '4'; // competente limitate
         } else {
-          tipB = 'Rezident';
+          tipB = 'rezident';
         }
 
         switch (tipB) {
@@ -301,7 +303,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
             return;
 
           case 'rezident':
-            this.avizareTip = 2;
             listaSpecialitati.forEach((cpp: Cpp) => {
               const asigurariR = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
               if (asigurariR.length > 1) {
@@ -313,21 +314,22 @@ export class AvizareComponent implements OnInit, OnDestroy {
               // 2 tipuri de rezidenti
               let asigTipR = 0;
               if (asigurariR.length === 0) {
-                if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
+                if (cpp.reg_cpp_tip_id === 1) {
                   asigTipR = 2;
+                  console.log('hit tip 2');
                 } else {
-                  if (cpp.reg_cpp_tip_id === 1 && cpp.date_end !== '0000-00-00') {
+                  if (cpp.reg_cpp_tip_id === 2) {
                     asigTipR = 3;
                   }
-                  asigurariR[0] = {
-                    id_mem: +this.avizareForm.get('id_mem').value,
-                    id_dlp: +this.avizareForm.get('id_dlp').value,
-                    id_cpp: +cpp.id_cpp,
-                    // status: +this.avizareForm.get('status').value
-                    status: 0,
-                    tip: asigTipR
-                  };
                 }
+                asigurariR[0] = {
+                  id_mem: +this.avizareForm.get('id_mem').value,
+                  id_dlp: +this.avizareForm.get('id_dlp').value,
+                  id_cpp: +cpp.id_cpp,
+                  // status: +this.avizareForm.get('status').value
+                  status: 0,
+                  tip: asigTipR
+                };
                 this.asigurariIncomplete = true;
               }
               // console.log(asigurari);
@@ -344,6 +346,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
         }
 
       case 'C':
+        this.avizareTip = 3;
         let tipC = '';
         let asigurariC: Asigurare[] = [];
         asigurariC = this.asigurariList;
@@ -392,15 +395,15 @@ export class AvizareComponent implements OnInit, OnDestroy {
                   if (cpp.reg_cpp_tip_id === 1 && cpp.date_end !== '0000-00-00') {
                     asigTipR = 3;
                   }
-                  asigurariR[0] = {
-                    id_mem: +this.avizareForm.get('id_mem').value,
-                    id_dlp: +this.avizareForm.get('id_dlp').value,
-                    id_cpp: +cpp.id_cpp,
-                    // status: +this.avizareForm.get('status').value
-                    status: 0,
-                    tip: asigTipR
-                  };
                 }
+                asigurariR[0] = {
+                  id_mem: +this.avizareForm.get('id_mem').value,
+                  id_dlp: +this.avizareForm.get('id_dlp').value,
+                  id_cpp: +cpp.id_cpp,
+                  // status: +this.avizareForm.get('status').value
+                  status: 0,
+                  tip: asigTipR
+                };
                 this.asigurariIncomplete = true;
               }
               // console.log(asigurari);
@@ -474,6 +477,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
         // daca una din ele are status 0 return cu mesaj de eroare
         // console.log(asigurari);
         data.status = 1;
+        data.tip = this.avizareTip;
+        console.log(data);
         break;
 
       case 'printeaza':
@@ -502,7 +507,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     const nativeWindow = window;
     const certificatId = this.avizareForm.get('id_certificat').value;
     let url = this.genPDFAddress + 'genavizare.php?token=' + sessionStorage.getItem('userToken');
-    url = url + '&aviz=' + this.avizareForm.get('id_dlp').value ;
+    url = url + '&aviz=' + this.avizareForm.get('id_dlp').value;
     nativeWindow.open(url);
   }
 
