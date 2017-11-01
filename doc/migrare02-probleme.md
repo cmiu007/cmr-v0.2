@@ -18,6 +18,8 @@
 - de pus datele certificatului in setkeywords
 - de revazut spatierea
 
+# de revazut de ce nu merge generarea de asigurari pt cpp tip 7 rezident fara examen
+
 # ambele gen pdf
 - mecanism pentru printare duplicat - if duplicat watermark vezi pdf gen
 
