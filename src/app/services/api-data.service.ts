@@ -57,7 +57,7 @@ export class ApiDataService {
   apiAdauga(actiune: string, data: any) {
     return this._http.put(this.apiAddress + 'api/adauga', this.setApiAdaugaData(actiune, data))
       .map((response: Response) => {
-        console.log(response);
+        // console.log(response);
         const dataApi = response.json();
         const status = this.checkApiResponse(dataApi);
         return { data: dataApi, status: status };

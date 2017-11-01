@@ -68,6 +68,7 @@ export class CertificateComponent implements OnInit {
   private setForm(actiune: string, data?: Certificat[], form?: FormGroup): void {
     switch (actiune) {
       case 'init':
+        this.certificateData = [];
         this.certificateForm = this._formSet.certificate('initForm');
         break;
 

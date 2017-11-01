@@ -29,7 +29,7 @@
         <button type="button" mat-raised-button (click)="onClickAvizare('finalizeaza')" color="warn" [disabled]="asigurariIncomplete">
           Finalizează avizare</button>
       </div>
-      <div class="column" *ngIf="avizareFormData.status === 1 || avizareFormData.status === 2">
+      <div class="column" *ngIf="avizareFormData.tip !== 11 && (avizareFormData.status === 1 || avizareFormData.status === 2) ">
         <button type="button" mat-raised-button (click)="onClickAvizare('printeaza')" color="primary">Printează</button>
       </div>
       <div class="column" *ngIf="avizareFormData.status === null">

@@ -28,7 +28,8 @@ export class CppListComponent implements OnInit {
     { id: 3, nume: 'Supraspecializare' },
     { id: 4, nume: 'Competenta' },
     { id: 5, nume: 'Atestat de studii complementare' },
-    { id: 6, nume: 'Abilitate' }
+    { id: 6, nume: 'Abilitate' },
+    { id: 7, nume: 'Rezident fără examen specialist' }
   ];
 
   public registruCppGrad: CppGrad[] = [
