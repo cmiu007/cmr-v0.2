@@ -5,6 +5,7 @@
 ## titlul este certificat
 ## de verificat daca pe avizare apare corect gradul ( la medic cu competente limitate apare grad primar )
 ## asigurare tip 4 (medic care a terminat rezidentiatul) eroare de tip
+## medic tip C cu rezidentiat - nu am facut nimic in frontend
 
 # gen certificat
 ## numerotare specialitati
@@ -22,7 +23,7 @@
 <b>Notice</b>:  Undefined variable: sup in <b>/home/cip/www/cmr/inc/class.MyApi.inc</b> on line <b>2128</b><br />
 {"result":"00","mesaj":"Adaugare certificat cu succes","nr":"9480"}"
 ```
-
+## problema cu rezidentii - cum diferentiem rezidentii care au promovat ex de specialist? au 2 cpp cu acelasi cpp_id se ia in considerare cea cu gradul 2
 
 ## certificatele invalide nu mai trebuie sa aiba buton de print
 

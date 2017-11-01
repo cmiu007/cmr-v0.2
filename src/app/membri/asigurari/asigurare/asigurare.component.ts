@@ -48,11 +48,13 @@ export class AsigurareComponent implements OnInit {
 
   // in DB este registru DLP tip
   public registruAsigurareTip: ItemRegLista[] = [
-    { id: 1, nume: 'Full' },
-    { id: 2, nume: 'Drept de practică SUPRAVEGHEATĂ' },
-    { id: 3, nume: 'COMPETENȚE LIMITATE' },
-    { id: 4, nume: 'Drept de libera practică - Medicina Generala' },
-    { id: 9, nume: 'FĂRĂ drept de practică' }
+    { id: 1, nume: 'Drept de liberă practică (1)' },
+    { id: 2, nume: 'Drept de practică SUPRAVEGHEATĂ (2)' },
+    { id: 3, nume: 'Drept de practică SUPRAVEGHEATĂ (3)' },
+    { id: 4, nume: 'COMPETENȚE LIMITATE' },
+    { id: 5, nume: 'Drept de liberă practică(1) - Medicină Generală' },
+    { id: 6, nume: 'FĂRĂ drept de practică' },
+    { id: 9, nume: 'Avizare veche' }
   ];
 
   public optiuni = [
@@ -79,6 +81,7 @@ export class AsigurareComponent implements OnInit {
   avizareStart: string;
   avizareEnd: string;
   asigurareStatus = 0;
+  asigurareTip: number;
   isDisabled = false;
 
   parentFormStatus: number;
@@ -113,6 +116,7 @@ export class AsigurareComponent implements OnInit {
     this.avizareStart = this.avizareForm.get('dlp_data_start').value;
     // console.log('avizare start :' + this.avizareStart);
     this.avizareEnd = this.avizareForm.get('dlp_data_end').value;
+    this.asigurareTip = this.asigurareForm.get('tip').value;
     // console.log('avizare end :' + this.avizareStart);
     // console.log(this.avizareForm);
   }
@@ -132,36 +136,78 @@ export class AsigurareComponent implements OnInit {
   }
 
   private setFormTitle(): void {
-    // console.log(this.avizareForm.get('tip').value);
-    if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 3) {
-      const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
-      let grad = '';
-      if (this.cppData.grad_prof_cpp_id === null) {
-        grad = 'Rezident';
-        this.avizareForm.get('tip').setValue(3);
-      } else {
+     switch (this.asigurareTip) {
+      case 1:
+        let grad = '';
+        const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
         grad = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
-        this.avizareForm.get('tip').setValue(1);
-      }
-      const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-      this.itemTitle1 = grup;
-      this.itemTitle2 = specialitate + ' - ' + grad;
-      return;
-    }
+        console.log('grad:');
+        console.log(grad);
+        this.itemTitle1 = grup;
+        this.itemTitle2 = specialitate + ' - ' + grad;
+        break;
 
-    if (this.avizareForm.get('tip').value === 2) {
-      this.itemTitle1 = 'Specialități MEDICALE';
-      this.itemTitle2 = 'Medic cu competețe limitate';
-      this.avizareForm.get('tip').setValue(2);
-      return;
-    }
+      case 2:
+        const specialitateRez1 = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grupRez1 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+        grad = 'Rezident';
+        this.itemTitle1 = grupRez1;
+        this.itemTitle2 = specialitateRez1 + ' - ' + grad;
+        break;
 
-    if (this.avizareForm.get('tip').value === 4) {
-      console.log('hit med gen');
-      this.itemTitle1 = 'Specialități MEDICALE';
-      this.itemTitle2 = ' Medic de Medicină Generală';
-      this.avizareForm.get('tip').setValue(4);
-      return;
+      case 3:
+        const specialitateRez2 = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grupRez2 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+        grad = 'Rezident fără examen de specialist';
+        this.itemTitle1 = grupRez2;
+        this.itemTitle2 = specialitateRez2 + ' - ' + grad;
+        break;
+
+      case 4:
+        this.itemTitle1 = 'Specialități MEDICALE';
+        this.itemTitle2 = 'COMPETENȚE LIMITATE';
+        break;
+
+      case 5:
+        this.itemTitle1 = 'Specialități MEDICALE';
+        this.itemTitle2 = 'Medic de Medicină Generală';
+        break;
+
+      case 6:
+        console.log(this.avizareForm);
+        if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 2) {
+          const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
+          let grad6 = '';
+          if (this.cppData.id_cpp === undefined) {
+            this.itemTitle1 = 'Specialități MEDICALE';
+            this.itemTitle2 = 'Medic cu competețe limitate';
+            return;
+          }
+          if (this.cppData.grad_prof_cpp_id === null) {
+            // de adaugat inca un if pt rezident si rezident fara ex spec
+            grad6 = 'Rezident';
+            // this.avizareForm.get('tip').setValue(3);
+          } else {
+            grad6 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+            // this.avizareForm.get('tip').setValue(1);
+          }
+          const grup6 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+          this.itemTitle1 = grup6;
+          this.itemTitle2 = specialitate6 + ' - ' + grad6;
+          return;
+        }
+
+        if (this.avizareForm.get('tip').value === 3) {
+          console.log('hit med gen');
+          this.itemTitle1 = 'Specialități MEDICALE';
+          this.itemTitle2 = ' Medic de Medicină Generală';
+          // this.avizareForm.get('tip').setValue(4);
+          return;
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -204,7 +250,7 @@ export class AsigurareComponent implements OnInit {
       this.areAvizare = 'Nu';
     }
 
-    if (this.avizareStatus !== 0 ) {
+    if (this.avizareStatus !== 0) {
       this.isDisabled = true;
       // this.areAvizare = 'Da';
       Object.keys(this.asigurareForm.controls).forEach(
@@ -272,9 +318,9 @@ export class AsigurareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
-    console.log(this.asigurareForm);
+    // console.log(this.asigurareForm);
     if (this.asigurareForm.valid === false) {
-      console.log(this.asigurareForm);
+      // console.log(this.asigurareForm);
       this._snackBar.showSnackBar('Formular Invalid');
       return;
     }
@@ -300,12 +346,12 @@ export class AsigurareComponent implements OnInit {
           }
           this.loading = false;
         });
-        AvizariComponent._formDataChanged.next();
-        // AvizareComponent._formDataChangedAvizare.next();
-        return;
-      }
+      AvizariComponent._formDataChanged.next();
+      // AvizareComponent._formDataChangedAvizare.next();
+      return;
+    }
 
-      this._apiData.apiModifica('asigurare', idItem, asigData)
+    this._apiData.apiModifica('asigurare', idItem, asigData)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
           return;
@@ -323,8 +369,8 @@ export class AsigurareComponent implements OnInit {
     // update field status 2 nu are; 1 pt are avizare
     if (this.areAvizare === 'Da') {
       this.asigurareForm.get('status').setValue(1);
-      console.log(this.avizareForm.get('tip').value);
-      this.asigurareForm.get('tip').setValue(this.avizareForm.get('tip').value);
+      // console.log(this.avizareForm.get('tip').value);
+      this.asigurareForm.get('tip').setValue(this.asigurareTip);
       return;
     }
     if (this.areAvizare === 'Nu') {
@@ -333,7 +379,7 @@ export class AsigurareComponent implements OnInit {
         id_mem: this.avizareForm.get('id_mem').value,
         id_asigurator: null,
         status: 2,
-        tip: 9,
+        tip: 6,
         polita_serie: null,
         polita_nr: null,
         data_start: this.avizareStart,
