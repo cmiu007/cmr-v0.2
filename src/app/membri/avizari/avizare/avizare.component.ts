@@ -229,7 +229,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
               id_dlp: +this.avizareForm.get('id_dlp').value,
               id_cpp: +cpp.id_cpp,
               // status: +this.avizareForm.get('status').value
-              status: 0
+              status: 0,
+              tip: 1
             };
             this.asigurariIncomplete = true;
           }
@@ -265,7 +266,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
                 id_dlp: +this.avizareForm.get('id_dlp').value,
                 id_cpp: null,
                 // status: +this.avizareForm.get('status').value
-                status: 0
+                status: 0,
+                tip: 2
               };
               this.asigurariIncomplete = true;
             }
@@ -297,7 +299,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
                   id_dlp: +this.avizareForm.get('id_dlp').value,
                   id_cpp: +cpp.id_cpp,
                   // status: +this.avizareForm.get('status').value
-                  status: 0
+                  status: 0,
+                  tip: 3
                 };
                 this.asigurariIncomplete = true;
               }
@@ -334,7 +337,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
             id_dlp: +this.avizareForm.get('id_dlp').value,
             id_cpp: null,
             // status: +this.avizareForm.get('status').value
-            status: 0
+            status: 0,
+            tip: 4
           };
           this.asigurariIncomplete = true;
         }
@@ -434,8 +438,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
   private printAvizare(): void {
     const nativeWindow = window;
     const certificatId = this.avizareForm.get('id_certificat').value;
-    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
-    url = url + '&actiune=spate&id=' + certificatId;
+    let url = this.genPDFAddress + 'genavizare.php?token=' + sessionStorage.getItem('userToken');
+    url = url + '&cert=' + certificatId;
     nativeWindow.open(url);
   }
 

@@ -43,13 +43,16 @@ export class AsigurareComponent implements OnInit {
     { id: 1, nume: 'Specialități MEDICALE' },
     { id: 2, nume: 'Specialități CHIRURGICALE' },
     { id: 3, nume: 'Specialități PARACLINICE' },
-    { id: 4, nume: 'Nu există grup pentru această specialitate' },
+    { id: 9, nume: 'Nu există grup pentru această specialitate' },
   ];
 
-  public registruAvizareTip: ItemRegLista[] = [
+  // in DB este registru DLP tip
+  public registruAsigurareTip: ItemRegLista[] = [
     { id: 1, nume: 'Full' },
-    { id: 2, nume: 'Răspundere limitată' },
-    { id: 9, nume: 'FĂRĂ drept de a practica specialitatea' }
+    { id: 2, nume: 'Drept de practică SUPRAVEGHEATĂ' },
+    { id: 3, nume: 'COMPETENȚE LIMITATE' },
+    { id: 4, nume: 'Drept de libera practică - Medicina Generala' },
+    { id: 9, nume: 'FĂRĂ drept de practică' }
   ];
 
   public optiuni = [
@@ -135,8 +138,10 @@ export class AsigurareComponent implements OnInit {
       let grad = '';
       if (this.cppData.grad_prof_cpp_id === null) {
         grad = 'Rezident';
+        this.avizareForm.get('tip').setValue(3);
       } else {
         grad = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+        this.avizareForm.get('tip').setValue(1);
       }
       const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
       this.itemTitle1 = grup;
@@ -147,6 +152,7 @@ export class AsigurareComponent implements OnInit {
     if (this.avizareForm.get('tip').value === 2) {
       this.itemTitle1 = 'Specialități MEDICALE';
       this.itemTitle2 = 'Medic cu competețe limitate';
+      this.avizareForm.get('tip').setValue(2);
       return;
     }
 
@@ -154,6 +160,7 @@ export class AsigurareComponent implements OnInit {
       console.log('hit med gen');
       this.itemTitle1 = 'Specialități MEDICALE';
       this.itemTitle2 = ' Medic de Medicină Generală';
+      this.avizareForm.get('tip').setValue(4);
       return;
     }
   }
@@ -246,9 +253,9 @@ export class AsigurareComponent implements OnInit {
     }
   }
 
-  displayFnCppTip(id: number): string {
+  displayFnAsigTip(id: number): string {
     if (id) {
-      return this.registruAvizareTip.find(item => item.id === id).nume;
+      return this.registruAsigurareTip.find(item => item.id === id).nume;
     }
   }
 
@@ -265,7 +272,7 @@ export class AsigurareComponent implements OnInit {
   }
 
   onClickAsigurare(): void {
-
+    console.log(this.asigurareForm);
     if (this.asigurareForm.valid === false) {
       console.log(this.asigurareForm);
       this._snackBar.showSnackBar('Formular Invalid');
@@ -285,6 +292,7 @@ export class AsigurareComponent implements OnInit {
     // console.log(asigData);
 
     if (this.asigurareStatus === 0) {
+      console.log(asigData);
       this._apiData.apiAdauga('asigurare', asigData)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {
@@ -315,6 +323,8 @@ export class AsigurareComponent implements OnInit {
     // update field status 2 nu are; 1 pt are avizare
     if (this.areAvizare === 'Da') {
       this.asigurareForm.get('status').setValue(1);
+      console.log(this.avizareForm.get('tip').value);
+      this.asigurareForm.get('tip').setValue(this.avizareForm.get('tip').value);
       return;
     }
     if (this.areAvizare === 'Nu') {
@@ -323,6 +333,7 @@ export class AsigurareComponent implements OnInit {
         id_mem: this.avizareForm.get('id_mem').value,
         id_asigurator: null,
         status: 2,
+        tip: 9,
         polita_serie: null,
         polita_nr: null,
         data_start: this.avizareStart,

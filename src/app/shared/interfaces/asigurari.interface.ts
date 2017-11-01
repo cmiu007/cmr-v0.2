@@ -9,6 +9,7 @@ export interface Asigurare {
   'id_dlp': number;
   'id_cpp': number;
   'status': number;
+  'tip': number;
   'polita_serie'?: string;
   'polita_nr'?: string;
   'data_start'?: string;

@@ -23,10 +23,14 @@ import { TitluriProfesionaleComponent } from './membri/titluri-profesionale/titl
 import { TitluriResolve } from './shared/resolvers/titluri.resolver';
 import { ListaAsigurari } from './shared/resolvers/listaasigurari.resolver';
 import { ListaCpp } from './shared/resolvers/listacpp.resolver';
+import { MentenantaComponent } from './mentenanta/mentenanta.component';
+
 
 
 
 const appRoutes: Routes = [
+  // {path: '', component: MentenantaComponent},
+  // {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], resolve: {regJud: JudetResolve}},
   {path: '', component: DashboardComponent, canActivate: [AuthGuard], resolve: {regJud: JudetResolve}},
   {path: 'reflector', component: ReflectorComponent, canActivate: [AuthGuard]},
   {path: 'membri', canActivate: [AuthGuard], children: [
@@ -45,6 +49,7 @@ const appRoutes: Routes = [
     {path: 'date', component: CmjDateComponent, resolve: {regJud: JudetResolve} }
   ]},
   {path: 'login', component: LoginComponent},
+  {path: 'mentenanta', component: MentenantaComponent},
   {path: 'test', component: TestComponent},
   {path: 'test2', component: Test2Component, resolve: {regCpp: CppResolve}},
   {path: '**', redirectTo: ''}

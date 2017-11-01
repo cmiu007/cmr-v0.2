@@ -1,7 +1,7 @@
 <?php
 
 $cert = $_REQUEST['cert'];
-$url_base = "https://api.cmr.ro/api/";
+$url_base = "https://devel-api.cmr.ro/api/";
 $token = $_REQUEST['token'];
 $acum = date("d.m.Y");
 
@@ -17,7 +17,7 @@ function call_api($url, $data_json)
 	//print_r($response);
 	$rezultat = json_decode($response,true);
 	curl_close($ch);
-	return $rezultat; 
+	return $rezultat;
 }
 
 function datex($data)
@@ -94,10 +94,10 @@ if (count($titluri) > 0 ){
 		//echo "<pre>";
 		//print_r($result);
 		//echo "</pre>";
-		
+
 		$TITLURI .= $result[0]['nume'].', ';
 	}
-	
+
 }
 
 require_once('tcpdf/tcpdf.php');
@@ -111,9 +111,9 @@ $pdf->SetProtection(array('modify', 'copy', 'extract', 'fill-forms', 'annot-form
 
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Colegiul Medicilor din România');
-$pdf->SetTitle('Aviz anual privind exercitarea profesiei de medic');
-$pdf->SetSubject('Avizare pentru: '.$numeMedic.' CUIM: '.$CUIM); // 
-$pdf->SetKeywords('Lista specialitati si statusul avizarii'); // TODO:
+$pdf->SetTitle('Certificat de membru '.$numeMedic);
+$pdf->SetSubject('Certificat de membru al: '.$numeMedic.' CUIM: '.$CUIM); //
+$pdf->SetKeywords(''); // TODO:
 
 
 // no header and footer
@@ -157,7 +157,7 @@ $imgOrigin = $innerLine + 2;
 $timbruXOrigin =  175;
 $timbruYOrigin = 20;
 $titleXOrigin = $imgOrigin + 38;
-$titleYOrigin = $imgOrigin;
+$titleYOrigin = $imgOrigin + 3;
 $title2YOrigin = $titleYOrigin + 7 ;
 $title3YOrigin = $title2YOrigin + 24 ;
 $titularYOrigin = $title3YOrigin + 29;
@@ -200,10 +200,10 @@ $pdf->WriteHTMLCell(20, 10, $timbruXOrigin, $timbruYOrigin, $timbru, 0, 0, $fill
 $pdf->SetFont('freeserif', '', 10);
 
 $titlu1HTML = '
-<h3 style="letter-spacing:4px">COLEGIUL&nbsp; &nbsp;MEDICILOR&nbsp; &nbsp;DIN&nbsp; &nbsp;ROMÂNIA</h3>
+<h3 style="letter-spacing:4px">COLEGIUL &nbsp;MEDICILOR&nbsp;DIN&nbsp;ROMÂNIA</h3>
 ';
 $titlu2HTML = '
-<span style="letter-spacing:2px"> Colegiul Medicilor <b>'.$CMJ.'</b></span>
+<span style="letter-spacing:2px;font-size:12"> Colegiul Medicilor <b>'.$CMJ.'</b></span>
 ';
 $titlu3HTML = '
 <h1 style="letter-spacing:3px;"><i>C E R T I F I C A T&nbsp; &nbsp;D E&nbsp; &nbsp;M E M B R U</i></h1>
@@ -217,19 +217,19 @@ $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $ti
 $pdf->SetFont('freeserif', '', 12);
 $titularHTML = '
 <p>
-Titular: <b>'.$numeMedic.'</b>
+<b><u>Titular:</u></b> <b>'.$numeMedic.'</b>
 </p>
 <p>
-Titluri deținute: <b>'.$TITLURI.'</b> 
+Titluri deținute: <b>'.$TITLURI.'</b>
 </p>
 <p>
 C.N.P./data nașterii: <b>'.$medic['cnp'].'</b> Cod unic de identificare (C.U.I.M): <b>'.$medic['cuim'].'</b>
 </p>
 <p>
-Formarea medicală de bază:  promoția <b>'.$medic['fac_promotie'].'</b>, atestată prin titlul de calificare  seria/nr. <b>'.$date_cert['dipl_serie'].' / '.$date_cert['dipl_nr'].'</b>
+<b>Formarea medicală de bază:</b>  promoția <b>'.$medic['fac_promotie'].'</b>, atestată prin <b>titlul de calificare</b>  seria/nr. <b>'.$date_cert['dipl_serie'].' / '.$date_cert['dipl_nr'].'</b>
 eliberat de <b>'.$date_cert['facultate'].'</b>.
 <br><!--
-recunoscut <i>(dacă este cazul)</i> prin certificatul de recunoaștere cu seria/nr. <b>PP / 88377392</b> din <b>21/10/2020</b> -->
+recunoscut <i>(dacă este cazul)</i> prin <b>certificatul de recunoaștere</b> cu seria/nr. <b>PP / 88377392</b> din <b>21/10/2020</b> -->
 </p>
 
 ';
@@ -247,19 +247,19 @@ switch ($date_cert['tip_cert'])
 		.tg  {cellpadding:2;}
 		.tg td{padding:10px 5px;}
 		.tg th{font-weight:normal;padding:10px 5px}
-		.tg .tg-yzt1{vertical-align:middle;border-bottom:1pt solid black;background-color:#efefef;}
-		.tg .tg-yw4l{vertical-align:middle;border-bottom:1pt solid black;background-color:#efefef;}
-		.tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+		.tg .tg-yzt1{vertical-align:middle}
+		.tg .tg-yw4l{vertical-align:middle}
+		.tg .tg-b7b8{vertical-align:top}
 		.tg .tg-spec{width:80%}
 		.tg .tg-grad{width:20%}
 		</style>
 		<div class="tg-wrap"><table class="tg">
 		  <tr>
-			<th class="tg-yzt1 tg-spec" style="bgcolor:#d3d3d3">Specialități:</th>
-			<th class="tg-yw4l tg-grad">Grad profesional:</th>
+			<th class="tg-yzt1 tg-spec"><b><u>Specialități:</u></b></th>
+			<th class="tg-yw4l tg-grad"><b>Grad profesional:</b></th>
 		  </tr>';
-		  
-		
+
+
 		  $i=0;
 		  foreach($date_cert['specialitati'] as $spec)
 		  {
@@ -277,32 +277,32 @@ switch ($date_cert['tip_cert'])
 				</tr>';
 			$i++;
 		  }
-		  
+
 		  $specialitate .= '</table></div>';
-		  
+
 		 // echo $specialitate;
-		
+
 		$pdf->SetFillColor(0, 127, 127);
 		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $specialitate, 0, 0, $fill, true, 'L', true);
-		
+
 		$super ="";
 		foreach($date_cert['superspecialitate'] as $spec)
 		{
 			$super .= $spec['specialitate'].'; ';
 		}
-		
+
 		$competente = '
 		<style type="text/css">
 		.tg td{padding:10px 5px;}
 		.tg th{font-weight:normal;padding:10px 5px;}
-		.tg .tg-yzt1{background-color:#efefef;vertical-align:middle;border-bottom:1pt solid black;}
+		.tg .tg-yzt1{vertical-align:middle;}
 		.tg .tg-yw4l{vertical-align:middle}
 		.tg .tg-b7b8{vertical-align:middle;}
-		.tg .tg-spec{width:100%}
-		@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;}}</style>
+    .tg .tg-spec{width:100%}
+    </style>
 		<div class="tg-wrap"><table class="tg">
 		  <tr>
-			<th class="tg-yzt1 tg-spec">Studii Complementare:</th>
+			<th class="tg-yzt1 tg-spec"><b><u>Studii Complementare:</u></b></th>
 		  </tr>
 		  <tr>
 			<td class="tg-b7b8 tg-spec">'.$super.'</td>
@@ -313,11 +313,11 @@ switch ($date_cert['tip_cert'])
 		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box3YOrigin, $competente, 0, 0, $fill, true, 'L', true);
 	break;
 	case "B":
-		
+
 		if (count($date_cert['specialitati']) > 0)
 		{
 			$spec = $date_cert['specialitati'][0];
-			if ($spec['data_end'] = '0000-00-00')	
+			if ($spec['data_end'] = '0000-00-00')
 				$certTipB1 = '
 				<style>
 				.tg td{height:35px; padding:10px 5px;word-break:normal}
@@ -348,7 +348,7 @@ switch ($date_cert['tip_cert'])
 				  </tr>
 				</table>
 				';
-			else	
+			else
 			$certTipB1 = '
 			<style>
 			.tg td{height:35px; padding:10px 5px;word-break:normal}
@@ -413,11 +413,11 @@ switch ($date_cert['tip_cert'])
 			</table>
 			';
 		}
-		
-		
+
+
 		$pdf->SetFillColor(0, 127, 127);
 		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipB1, 0, 0, $fill, true, 'L', true);
-		
+
 		$certTipB2 = '
 		<p style="align:center">TITULARUL PREZENTULUI CERTIFICAT NU ARE DREPT DE LIBERĂ PRACTICĂ</p>
 		';
@@ -427,42 +427,30 @@ switch ($date_cert['tip_cert'])
 	case "C":
 		$certTipC = '
 		<style type="text/css">
-		.tg  {border-collapse:collapse;border-spacing:0;border-color:#00;margin:10px auto;}
-		.tg td{padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#000000;color:#333;background-color:#fff;}
-		.tg th{padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#000000;color:#333;background-color:#f0f0f0;}
-		.tg .tg-t2ww{fwidth:"80%";font-weight:bold;text-decoration:underline;text-align:left;vertical-align:center}
-		.tg .tg-t2cw{fwidth:"20%";font-weight:bold;text-decoration:underline;text-align:right;vertical-align:center}
-		.tg .tg-yy4l{width:"3%";vertical-align:center;text-align:left}
-		.tg .tg-yw4l{width:"97%";vertical-align:center;text-align:left}
-		
+      .tg  {cellpadding:2;}
+      .tg td{padding:10px 5px;}
+      .tg th{font-weight:normal;padding:10px 5px}
+      .tg .tg-yzt1{vertical-align:middle}
+      .tg .tg-yw4l{vertical-align:middle}
+      .tg .tg-b7b8{vertical-align:top}
+      .tg .tg-spec{width:80%}
+      .tg .tg-grad{width:20%}
 		</style>
+		<div class="tg-wrap">
 		<table class="tg">
 		  <tr>
 			<th class="tg-t2ww"></th>
-			<th class="tg-t2cw"></th>
 		  </tr>
 		  <tr>
-			<td class="tg-yy4l">1.</td>
-			<td class="tg-yw4l">MEDIC DE MEDICINĂ GENERALĂ</td>
+			<td class="tg-yw4l">1. MEDIC DE MEDICINĂ GENERALĂ</td>
 		  </tr>
-		  <tr>
-			<td class="tg-yy4l">2.</td>
-			<td class="tg-yw4l"></td>
-		  </tr>
-		  <tr>
-			<td class="tg-yy4l">3.</td>
-			<td class="tg-yw4l"></td>
-		  </tr>
-		  <tr>
-			<td class="tg-yy4l">4.</td>
-			<td class="tg-yw4l"></td>
-		  </tr>
-		</table>
+    </table>
+    </div>
 		';
 		$pdf->SetFillColor(0, 127, 127);
 		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipC, 0, 0, $fill, true, 'L', true);
 	break;
-		
+
 }
 //----------------------------
 $dj = datex($date_cert['data_juramant']);
@@ -471,16 +459,16 @@ $footer1 = '
 Data depunerii jurământului: <b>'.$dj.'</b>
 ';
 $pdf->SetFillColor(255, 255, 0);
-$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
+$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 5, $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
 
 $pdf->SetFont('freeserif', '', 10);
 $footer2 = '
-<h2>Președinte,</h2>
-<h2>'.$cmj['presedinte'].'</h2>
+<h3>Președinte,</h3>
+<h3>'.$cmj['presedinte'].'</h3>
 <p>
 …………………………………………………………
 </p>
-Notă: Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.
+<b>Notă:</b> Avizul anual constituie o componentă a certificatului de membru, care trebuie să însoțească pagina principală a acestuia.
 ';
 $pdf->SetFillColor(255, 255, 0);
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5, $presedinteYOrigin, $footer2, 0, 0, $fill, true, 'C', true);

@@ -56,10 +56,10 @@ export class CertificatVechiComponent implements OnInit {
 
   print(pag: number): void {
     const nativeWindow = window;
-    let url = this.genPDFAddress + 'genpdf.php?token=' + sessionStorage.getItem('userToken');
+    let url = this.genPDFAddress + 'gencert.php?token=' + sessionStorage.getItem('userToken');
     if (pag === 1) {
-      url = url + '&actiune=fata';
-      url = url + '&id=' + this.certificatId; // TODO: de gasit ID
+      // url = url + '&actiune=fata';
+      url = url + '&cert=' + this.certificatId; // TODO: de gasit ID
       nativeWindow.open(url);
     } else {
       // url = url + '&actiune=spate';

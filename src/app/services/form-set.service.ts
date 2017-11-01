@@ -228,6 +228,7 @@ export class FormSetService {
       'id_dlp': [null, [Validators.required, this._validator.checkIfNumber]],
       'id_cpp': [null, [this._validator.checkIfNumber]],
       'status': [null, [Validators.required, this._validator.checkIfNumber]],
+      'tip': [null, [Validators.required, this._validator.checkIfNumber]],
       'polita_serie': ['', []],
       'polita_nr': ['', []],
       'data_start': ['', [this._validator.checkDate]],
