@@ -502,7 +502,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
     const nativeWindow = window;
     const certificatId = this.avizareForm.get('id_certificat').value;
     let url = this.genPDFAddress + 'genavizare.php?token=' + sessionStorage.getItem('userToken');
-    url = url + '&cert=' + certificatId;
+    url = url + '&aviz=' + this.avizareForm.get('id_dlp').value ;
     nativeWindow.open(url);
   }
 

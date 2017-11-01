@@ -1,9 +1,9 @@
 <?php
 
 $aviz = $_REQUEST['aviz'];
-$url_base = "https://api.cmr.ro/api/";
+$url_base = "https://devel-api.cmr.ro/api/";
 //$token = $_REQUEST['token'];
-$token = $_REQUEST['token'];
+$token = "bcf8c11367426e5e9330358abeee8bf4";
 $acum = date("d.m.Y");
 
 function call_api($url, $data_json)
@@ -161,7 +161,7 @@ $box2YOrigin = $box1YOrigin + 25;
 $box3YOrigin = $box2YOrigin + 25;
 $box4YOrigin = $box3YOrigin + 25;
 $notaYOrigin = $box4YOrigin + 25;
-$presedinteYOrigin = $notaYOrigin + 60;
+$presedinteYOrigin = $notaYOrigin + 64;
 $lsYOrigin = $presedinteYOrigin + 10;
 $lsXOrigin = 170;
 
@@ -234,22 +234,56 @@ $pdf->SetFont('freeserif', '', 10);
 
 $deltay = 0;
 $Y = $box1YOrigin;
- $deltay = 0;
+/*cho "<pre>";
+print_r($cppuri);
+echo "</pre>";
+*/
+// foreach($cppuri as $grup)
+// {
+
+// 	$specialitate = '<table border="1" cellpadding="2">
+// 	<tr>
+// 	  <th bgcolor="#d3d3d3">'.$grup['grup'].'</th>
+// 	</tr>';
+// 	foreach($grup['data'] as $cpz){
+// 		$dlp_data_start = datex($cpz['data_start']);
+// 		$dlp_data_end = datex($cpz['data_end']);
+// 		$specialitate .= '
+// 		<tr>
+// 		<th>
+//         Specialitate: <span style="font-weight: bold;">'.$cpz['nume_cpp'].'</span>  Grad profesional: <span style="font-weight: bold;">'.$cpz['nume_gr_prof'].'</span>
+//       <br>
+//         Drept de practică: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
+//       <br>
+//         Poliță asigurare: seria <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> nr <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span> încheiată la <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span>
+//       <br>
+// 		    Valabilitate aviz: <span style="font-weight: bold;">'.$dlp_data_start.'-'.$dlp_data_end.'</span>
+// 		</th>
+// 		</tr>';
+// 	}
+// 	$specialitate .= '</table>
+// 	';
+// 	$pdf->SetFillColor(0, 127, 127);
+// 	$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $specialitate, 0, 0, $fill, true, 'L', true);
+// 	$Y+=25;
+// }
+
+switch ($date_cert['tip_cert'])
+{
+  case "A":
+  $deltay = 0;
   $Y = $box1YOrigin;
   /*cho "<pre>";
   print_r($cppuri);
   echo "</pre>";
   */
-
   foreach($cppuri as $grup)
   {
-    $nextBoxOffset=0;
     $specialitate = '<table border="1" cellpadding="2">
     <tr>
       <th bgcolor="#d3d3d3">'.$grup['grup'].'</th>
     </tr>';
     foreach($grup['data'] as $cpz){
-      $nextBoxOffset+=23;
       $dlp_data_start = datex($cpz['data_start']);
       $dlp_data_end = datex($cpz['data_end']);
       //echo 'Tip asigurare:'.$cpz['tip'];
@@ -267,10 +301,9 @@ $Y = $box1YOrigin;
 				  <br>
 					Valabilitate aviz: <span style="font-weight: bold;">'.$dlp_data_start.'-'.$dlp_data_end.'</span>
 				</th>
-        </tr>';
-
+				</tr>';
 		break;
-    case "2":
+		case "2":
 		case "3":
 		case "4":
 		case "5":
@@ -297,21 +330,17 @@ $Y = $box1YOrigin;
 				  <br>
 				</th>
 				</tr>';
+
 		break;
 	  }
 
 	}
 		  $specialitate .= '</table>';
-      $pdf->SetFillColor(0, 127, 127);
-      $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $specialitate, 0, 0, $fill, true, 'L', true);
-      $Y+=$nextBoxOffset;
 	//echo $specialitate;
   }
-
-switch ($date_cert['tip_cert'])
-{
-  case "A":
-    $Y += 5;
+    $pdf->SetFillColor(0, 127, 127);
+    $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $specialitate, 0, 0, $fill, true, 'L', true);
+    $Y+=25;
 		$pdf->SetFont('freeserif', '', 8);
 		$footer1 = '
 		<span style="font-weight: bold; text-decoration: underline;">Nota:</span>
@@ -337,7 +366,7 @@ switch ($date_cert['tip_cert'])
 		';
 		$pdf->SetFillColor(255, 255, 0);
 		$pdf->WriteHTMLCell(
-      $pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $footer1, 0, 0, $fill, true, 'J', true);
+      $pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
 	break;
 	case "B":
 		$pdf->SetFont('freeserif', '', 8);
