@@ -142,8 +142,8 @@ export class AsigurareComponent implements OnInit {
         const specialitate = this.displayFnCpp(this.cppData.reg_cpp_id);
         const grup = this.displayFnCppGrp(this.cppData.reg_cpp_id);
         grad = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
-        console.log('grad:');
-        console.log(grad);
+        // console.log('grad:');
+        // console.log(grad);
         this.itemTitle1 = grup;
         this.itemTitle2 = specialitate + ' - ' + grad;
         break;
@@ -175,7 +175,7 @@ export class AsigurareComponent implements OnInit {
         break;
 
       case 6:
-        console.log(this.avizareForm);
+        // console.log(this.avizareForm);
         if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 2) {
           const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
           let grad6 = '';
@@ -199,7 +199,7 @@ export class AsigurareComponent implements OnInit {
         }
 
         if (this.avizareForm.get('tip').value === 3) {
-          console.log('hit med gen');
+          // console.log('hit med gen');
           this.itemTitle1 = 'Specialități MEDICALE';
           this.itemTitle2 = ' Medic de Medicină Generală';
           // this.avizareForm.get('tip').setValue(4);
@@ -338,7 +338,7 @@ export class AsigurareComponent implements OnInit {
     // console.log(asigData);
 
     if (this.asigurareStatus === 0) {
-      console.log(asigData);
+      // console.log(asigData);
       this._apiData.apiAdauga('asigurare', asigData)
         .subscribe((response: ApiData) => {
           if (response.status === 0) {

@@ -195,8 +195,13 @@ export class AvizareComponent implements OnInit, OnDestroy {
       || item.reg_cpp_tip_id === 2
       || item.reg_cpp_tip_id === 7);
 
+    console.log(listaSpecialitati);
+    listaSpecialitati = listaSpecialitati.filter((cpp: Cpp) => cpp.date_end === '0000-00-00');
     // let listaAsigurariDLP = this.asigurariList;
     const listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
+
+    // stergem toate cpp-urile care au data-end
+    // console.log(listaAsigurariDLP)
 
     // are avizare de tip vechi?
     if (this.avizareFormData.tip === 11) {
