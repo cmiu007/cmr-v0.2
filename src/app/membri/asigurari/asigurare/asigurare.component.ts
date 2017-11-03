@@ -178,7 +178,7 @@ export class AsigurareComponent implements OnInit {
       case 6:
         // console.log(this.avizareForm);
 
-        // daca asig are cpp id 
+        // daca asig are cpp id
 
         if (this.asigurareForm.get('id_dlp').value !== null) {
           switch (this.cppData.reg_cpp_tip_id) {
@@ -200,39 +200,39 @@ export class AsigurareComponent implements OnInit {
 
     }
 
-    if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 2) {
-      const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
-      let grad6 = '';
-      if (this.cppData.id_cpp === undefined) {
-        this.itemTitle1 = 'Specialități MEDICALE';
-        this.itemTitle2 = 'Medic cu competețe limitate';
-        return;
-      }
-      if (this.cppData.grad_prof_cpp_id === null) {
-        // de adaugat inca un if pt rezident si rezident fara ex spec
-        grad6 = 'Rezident';
-        // this.avizareForm.get('tip').setValue(3);
-      } else {
-        grad6 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
-        // this.avizareForm.get('tip').setValue(1);
-      }
-      const grup6 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-      this.itemTitle1 = grup6;
-      this.itemTitle2 = specialitate6 + ' - ' + grad6;
-      return;
-    }
+//     if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 2) {
+//       const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
+//       let grad6 = '';
+//       if (this.cppData.id_cpp === undefined) {
+//         this.itemTitle1 = 'Specialități MEDICALE';
+//         this.itemTitle2 = 'Medic cu competețe limitate';
+//         return;
+//       }
+//       if (this.cppData.grad_prof_cpp_id === null) {
+//         // de adaugat inca un if pt rezident si rezident fara ex spec
+//         grad6 = 'Rezident';
+//         // this.avizareForm.get('tip').setValue(3);
+//       } else {
+//         grad6 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+//         // this.avizareForm.get('tip').setValue(1);
+//       }
+//       const grup6 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+//       this.itemTitle1 = grup6;
+//       this.itemTitle2 = specialitate6 + ' - ' + grad6;
+//       return;
+//     }
 
-    if (this.avizareForm.get('tip').value === 3) {
-      // console.log('hit med gen');
-      this.itemTitle1 = 'Specialități MEDICALE';
-      this.itemTitle2 = ' Medic de Medicină Generală';
-      // this.avizareForm.get('tip').setValue(4);
-      return;
-    }
-    break;
-      default:
-        break;
-}
+//     if (this.avizareForm.get('tip').value === 3) {
+//       // console.log('hit med gen');
+//       this.itemTitle1 = 'Specialități MEDICALE';
+//       this.itemTitle2 = ' Medic de Medicină Generală';
+//       // this.avizareForm.get('tip').setValue(4);
+//       return;
+//     }
+//     break;
+//       default:
+//         break;
+// }
   }
 
   private setAreAvizare(): void {

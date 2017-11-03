@@ -51,3 +51,29 @@
 - cert tip B - medic care a fost rezident fara examen de specialitate (are stop date la rezident) - nu marcheaza corect, il marcheaza ca si rezident.
   - problema cu rezidentii - cum diferentiem rezidentii care au promovat ex de specialist? au 2 cpp cu acelasi cpp_id se ia in considerare cea cu gradul 2
   - de adaugat un nou tip de cpp - ___rezident fara examen specialist___
+
+
+## Teste
+
+jud 140 Bucuresti
+nume membru Certificat ....
+
+- ___Certificat___ de tip A + 1 rez + 1 rez terminat nu apare rezidentiat terminat, apare doar rezident
+
+- ___Certificat___ de tip B - rezidentiat terminat - eroare la generare PDF
+
+- ___Avizare___ de tip B - rezidentiat terminat - eroare la generare PDF
+
+- ___Avizare___ de tip B - competente limitate - gol
+
+- ___Certificat___ tip C - nu apar studiile complementare
+
+- ___Avizare___ tip C - nu apare nimic
+
+- ___Certificat___ tip C - genereaza B, nu C, daca anul promotiei este 2005, pana tip C era pt egal sau mai mic de 2005
+
+- ___Avizare___ tip C + rez + rez terminat - nu afiseaza pt medicina generala
+
+# pt Miu asigurare pt cert tip B - competente limitate nu merge ok asigurarea - la fel ca la cert tip C
+
+# key app - cum ?
