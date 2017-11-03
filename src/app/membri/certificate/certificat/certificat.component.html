@@ -14,19 +14,19 @@
       <mat-form-field class="column"><input type="text" placeholder="Data Stop" matInput formControlName="data_invalidare"></mat-form-field>
       <div class="column"></div>
       <div class="column" *ngIf="itemStatus === 'Nou' || itemStatus === 'In lucru'">
-        <button type="button" mat-raised-button (click)="onClickCert()" color="primary">
+        <button type="submit" mat-raised-button (click)="onClickCert()" color="primary">
         {{ itemStatus === 'Nou' ? 'Adauga' : 'Modifica' }} certificat</button>
       </div>
       <div class="column" *ngIf="itemStatus !== 'Nou' ">
-        <button type="button" mat-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
+        <button type="submit" mat-raised-button (click)="onDetalii()" color="primary" [disabled]="certificatForm.dirty">
         Detalii</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Activ'">
-          <button type="button" mat-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
+          <button type="submit" mat-raised-button (click)="onClickCert()" color="primary" [disabled]="!certificatForm.dirty">
           Invalideaza</button>
       </div>
       <div class="column" *ngIf="itemStatus === 'Nou'">
-        <button type="button" mat-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
+        <button type="submit" mat-raised-button (click)="delCertificat()" color="primary">Sterge draft</button>
       </div>
     </section>
 

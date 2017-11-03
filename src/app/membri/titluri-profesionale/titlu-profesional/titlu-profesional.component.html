@@ -46,16 +46,16 @@
     </mat-autocomplete>
 
     <mat-action-row *ngIf="itemStatus === 0">
-      <button type="button" mat-raised-button (click)="onSubmit('adauga')" color="primary" [disabled]="!titluForm.dirty">
+      <button type="submit" mat-raised-button (click)="onSubmit('adauga')" color="primary" [disabled]="!titluForm.dirty">
         Adaugă</button>
     </mat-action-row>
 
     <mat-action-row *ngIf="itemStatus === 1">
-      <button type="button" mat-raised-button (click)="onSubmit('modifica')" color="primary" [disabled]="!titluForm.dirty">
+      <button type="submit" mat-raised-button (click)="onSubmit('modifica')" color="primary" [disabled]="!titluForm.dirty">
         Modifică
       </button>
       <span>&nbsp;</span>
-      <button type="button" mat-raised-button (click)="onSubmit('modifica')" color="warn" [disabled]="!titluForm.dirty">
+      <button type="submit" mat-raised-button (click)="onSubmit('modifica')" color="warn" [disabled]="!titluForm.dirty">
         Inactivează
       </button>
     </mat-action-row>

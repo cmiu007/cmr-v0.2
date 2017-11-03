@@ -82,7 +82,7 @@
       </mat-form-field>
     </section>
     <mat-action-row>
-      <button type="button" mat-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
+      <button type="submit" mat-raised-button (click)="onClickAdresa()" color="primary" [disabled]="!adresaForm.dirty">
         {{ formStatus === 'new' ? 'Adauga' : 'Modifica' }} adresa
       </button>
     </mat-action-row>

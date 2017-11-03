@@ -8,7 +8,7 @@
       Nu exista date despre CMJ!
     </mat-card-title>
     <mat-card-content>
-      <button mat-raised-button type="button" (click)="onClickCMJ()" color="warn">Completează date</button>
+      <button type="submit" mat-raised-button (click)="onClickCMJ()" color="warn">Completează date</button>
     </mat-card-content>
   </mat-card>
 
@@ -61,7 +61,7 @@
   </section>
 
   <mat-card style="text-align: center;">
-    <button mat-raised-button (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
+    <button type="button" (click)="onNewMember()" color="primary">Adaugă un nou membru</button>
   </mat-card>
 
   <mat-card *ngIf="emptySearchResult">

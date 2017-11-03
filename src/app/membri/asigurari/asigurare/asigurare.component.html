@@ -39,10 +39,10 @@
 <mat-card-actions *ngIf="avizareStatus === 0" style="text-align: center; margin-bottom: 0px;">
   <div>
     <!-- <button type="button" mat-raised-button (click)="onClickAsigurare()" color="primary" [disabled]="!asigurareForm.dirty || !asigurareForm.valid"> -->
-    <button *ngIf="asigurareStatus === 0" type="button" mat-raised-button (click)="onClickAsigurare()" color="warn">
+    <button *ngIf="asigurareStatus === 0" type="submit" mat-raised-button (click)="onClickAsigurare()" color="warn">
       Adauga
     </button>
-    <button *ngIf="asigurareStatus !== 0" type="button" mat-raised-button (click)="onClickAsigurare()" color="primary">
+    <button *ngIf="asigurareStatus !== 0" type="submit" mat-raised-button (click)="onClickAsigurare()" color="primary">
       Modifica
     </button>
   </div>
