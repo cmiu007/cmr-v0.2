@@ -195,13 +195,10 @@ export class AvizareComponent implements OnInit, OnDestroy {
       || item.reg_cpp_tip_id === 2
       || item.reg_cpp_tip_id === 7);
 
-    console.log(listaSpecialitati);
+
     listaSpecialitati = listaSpecialitati.filter((cpp: Cpp) => cpp.date_end === '0000-00-00');
     // let listaAsigurariDLP = this.asigurariList;
     const listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
-
-    // stergem toate cpp-urile care au data-end
-    // console.log(listaAsigurariDLP)
 
     // are avizare de tip vechi?
     if (this.avizareFormData.tip === 11) {
@@ -321,7 +318,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
               if (asigurariR.length === 0) {
                 if (cpp.reg_cpp_tip_id === 1) {
                   asigTipR = 2;
-                  console.log('hit tip 2');
                 } else {
                   if (cpp.reg_cpp_tip_id === 2) {
                     asigTipR = 3;
@@ -337,9 +333,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
                 };
                 this.asigurariIncomplete = true;
               }
-              // console.log(asigurari);
               const newAsigurareForm = this._formSet.asigurare(asigurariR[0]);
-              // console.log(this._formSet.asigurare(asigurari[0]));
               const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
               arrayControlNew.insert(0, newAsigurareForm);
             });
@@ -411,9 +405,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
                 };
                 this.asigurariIncomplete = true;
               }
-              // console.log(asigurari);
               const newAsigurareForm = this._formSet.asigurare(asigurariR[0]);
-              // console.log(this._formSet.asigurare(asigurari[0]));
               const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
               arrayControlNew.insert(0, newAsigurareForm);
             });
@@ -457,7 +449,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
     // - 4 pt dlp tip C
     // - 11 pt dlp tip vechi, versiune 1
     // delete data.inchis;
-    console.log(data);
     data.tip = this.avizareTip;
     delete data.asigurare;
 
@@ -480,10 +471,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
       case 'finalizeaza':
         // verifica daca toate asigurarile au status 1
         // daca una din ele are status 0 return cu mesaj de eroare
-        // console.log(asigurari);
         data.status = 1;
         data.tip = this.avizareTip;
-        console.log(data);
         break;
 
       case 'printeaza':

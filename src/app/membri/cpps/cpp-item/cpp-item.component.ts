@@ -93,6 +93,9 @@ export class CppItemComponent implements OnInit {
   }
 
   private setForm(): void {
+    if (this.cppFormData.act_numar.toString() === '0') {
+      this.cppFormData.act_numar = '';
+    }
     this.cppForm = this._formSet.cpp(this.cppFormData);
     this.cppsForm.controls['cpps'].push(this.cppForm);
   }
