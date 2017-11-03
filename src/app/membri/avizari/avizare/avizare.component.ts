@@ -176,31 +176,8 @@ export class AvizareComponent implements OnInit, OnDestroy {
   }
 
   private setAsigurariData(): void {
-
-    const apiData: ApiData = this._aRoute.snapshot.data['listaCpp'];
-
-    let listaSpecialitati: Cpp[] = apiData.data;
-
-    // 1. Ordonare dupa data
-    Object(listaSpecialitati).sort((a, b) => {
-      return a.date_start > b.date_start ? -1 : 1;
-    });
-    // 2. ordonare dupa tip_cpp
-    Object(listaSpecialitati).sort((a, b) => {
-      return a.reg_cpp_tip_id < b.reg_cpp_tip_id ? -1 : 1;
-    });
-
-    listaSpecialitati = listaSpecialitati.filter(item =>
-      item.reg_cpp_tip_id === 1
-      || item.reg_cpp_tip_id === 2
-      || item.reg_cpp_tip_id === 7);
-
-
-    listaSpecialitati = listaSpecialitati.filter((cpp: Cpp) => cpp.date_end === '0000-00-00');
-    // let listaAsigurariDLP = this.asigurariList;
+    // avizare veche?
     const listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
-
-    // are avizare de tip vechi?
     if (this.avizareFormData.tip === 11) {
       this.avizareOld = true;
       // afiseaza asigurarea direct
@@ -215,6 +192,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // este asigurare completa?
     if (this.isAvizFinal === true) {
       // afiseaza asigurarea direct
       // nu se ia in considerare lista de cpp
@@ -227,15 +205,28 @@ export class AvizareComponent implements OnInit, OnDestroy {
       this.loading = false;
       return;
     }
-    // este avizarea inchisa?
 
+    // filtram si ordonam specialitati si rez1 / rez2
+
+    const listaMemCppR: ApiData = this._aRoute.snapshot.data['listaCpp'];
+    let listaMemCpp = listaMemCppR.data as Cpp[];
+    Object(listaMemCpp).sort((a, b) => {
+      return a.date_start > b.date_start ? -1 : 1;
+    });
+    Object(listaMemCpp).sort((a, b) => {
+      return a.reg_cpp_tip_id < b.reg_cpp_tip_id ? -1 : 1;
+    });
+    listaMemCpp = listaMemCpp.filter((cpp: Cpp) => cpp.date_end === '0000-00-00');
+
+    listaMemCpp = listaMemCpp.filter(item =>
+      item.reg_cpp_tip_id === 1
+      || item.reg_cpp_tip_id === 2
+      || item.reg_cpp_tip_id === 7);
 
     switch (this.certificatCurentContinut.tip_cert) {
-
       case 'A':
-        this.avizareTip = 1;
         let asigurareTip = 0;
-        listaSpecialitati.forEach((cpp: Cpp) => {
+        listaMemCpp.forEach((cpp: Cpp) => {
           const asigurare = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
           if (asigurare.length > 1) {
             // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
@@ -278,7 +269,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
         let tipB = '';
         let asigurariB: Asigurare[] = [];
         asigurariB = this.asigurariList;
-        if (listaSpecialitati.length === 0) {
+        if (listaMemCpp.length === 0) {
           tipB = '4'; // competente limitate
         } else {
           tipB = 'rezident';
@@ -304,8 +295,9 @@ export class AvizareComponent implements OnInit, OnDestroy {
             this.loading = false;
             return;
 
+
           case 'rezident':
-            listaSpecialitati.forEach((cpp: Cpp) => {
+            listaMemCpp.forEach((cpp: Cpp) => {
               const asigurariR = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
               if (asigurariR.length > 1) {
                 // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
@@ -333,88 +325,82 @@ export class AvizareComponent implements OnInit, OnDestroy {
                 };
                 this.asigurariIncomplete = true;
               }
-              const newAsigurareForm = this._formSet.asigurare(asigurariR[0]);
-              const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
-              arrayControlNew.insert(0, newAsigurareForm);
+              const newAsigurareFormB = this._formSet.asigurare(asigurariR[0]);
+              const arrayControlNewB = this.avizareForm.get('asigurare') as FormArray;
+              arrayControlNewB.insert(0, newAsigurareFormB);
             });
             this.loading = false;
             return;
-
-          default:
-            return;
         }
+        return;
 
       case 'C':
-        this.avizareTip = 3;
-        let tipC = '';
-        let asigurariC: Asigurare[] = [];
-        asigurariC = this.asigurariList;
-        if (listaSpecialitati.length === 0) {
-          tipC = 'dlpMG'; // drept de libera practica medicina generala
-        } else {
-          tipC = 'Rezident';
+        const asigurariC = this.asigurariList as Asigurare[];
+        let areAsigTipC = false;
+        // are cel putin o asigurare de tip 5
+        // daca nu are adaugam asig pt dlp MG
+
+        asigurariC.forEach((asigurare: Asigurare) => {
+          if (asigurare.tip === 5) {
+            areAsigTipC = true;
+            const newAsigurareForm = this._formSet.asigurare(asigurare);
+            const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+            arrayControlNew.insert(0, newAsigurareForm);
+          }
+        });
+
+        if (areAsigTipC === false) {
+          asigurariC[0] = {
+            id_mem: +this.avizareForm.get('id_mem').value,
+            id_dlp: +this.avizareForm.get('id_dlp').value,
+            id_cpp: null,
+            // status: +this.avizareForm.get('status').value
+            status: 0,
+            tip: 5
+          };
+          this.asigurariIncomplete = true;
+          const newAsigurareForm = this._formSet.asigurare(asigurariC[0]);
+          const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+          arrayControlNew.insert(0, newAsigurareForm);
         }
 
-        switch (tipC) {
-          case 'dlpMG':
-            this.avizareTip = 3;
-            if (asigurariC.length === 0) {
-              asigurariC[0] = {
-                id_mem: +this.avizareForm.get('id_mem').value,
-                id_dlp: +this.avizareForm.get('id_dlp').value,
-                id_cpp: null,
-                // status: +this.avizareForm.get('status').value
-                status: 0,
-                tip: 5
-              };
-              this.asigurariIncomplete = true;
+        listaMemCpp.forEach((cpp: Cpp) => {
+          const asigurare = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
+          if (asigurare.length > 1) {
+            // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
+            // TODO: are eroare ... pt moment bagam in consola
+            console.log('Eroare: Are mai mult de o avizare pt o specialitate');
+            return;
+          }
+          if (asigurare.length === 0) {
+            // console.log('creez asig noua');
+            // setam tip asigurare
+            if (cpp.reg_cpp_tip_id === 7) {
+              asigurareTip = 3;
+            } else if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
+              asigurareTip = 2;
+            } else {
+              this.asigurariIncomplete = false;
+              return;
             }
-            const newAsigurareFormCL = this._formSet.asigurare(asigurariC[0]);
-            const arrayControlNewCL = this.avizareForm.get('asigurare') as FormArray;
-            arrayControlNewCL.insert(0, newAsigurareFormCL);
-            this.loading = false;
-            return;
+            asigurare[0] = {
+              id_mem: +this.avizareForm.get('id_mem').value,
+              id_dlp: +this.avizareForm.get('id_dlp').value,
+              id_cpp: +cpp.id_cpp,
+              // status: +this.avizareForm.get('status').value
+              status: 0,
+              tip: asigurareTip
+            };
+            this.asigurariIncomplete = true;
+          }
+          const newAsigurareForm = this._formSet.asigurare(asigurare[0]);
+          const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+          arrayControlNew.insert(0, newAsigurareForm);
+        });
+        return;
 
-          case 'rezident':
-            this.avizareTip = 3;
-            listaSpecialitati.forEach((cpp: Cpp) => {
-              const asigurariR = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
-              if (asigurariR.length > 1) {
-                // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
-                // TODO: are eroare ... pt moment bagam in consola
-                console.log('Eroare: Are mai mult de o avizare pt o specialitate');
-                return;
-              }
-              // 2 tipuri de rezidenti
-              let asigTipR = 0;
-              if (asigurariR.length === 0) {
-                if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
-                  asigTipR = 2;
-                } else {
-                  if (cpp.reg_cpp_tip_id === 1 && cpp.date_end !== '0000-00-00') {
-                    asigTipR = 3;
-                  }
-                }
-                asigurariR[0] = {
-                  id_mem: +this.avizareForm.get('id_mem').value,
-                  id_dlp: +this.avizareForm.get('id_dlp').value,
-                  id_cpp: +cpp.id_cpp,
-                  // status: +this.avizareForm.get('status').value
-                  status: 0,
-                  tip: asigTipR
-                };
-                this.asigurariIncomplete = true;
-              }
-              const newAsigurareForm = this._formSet.asigurare(asigurariR[0]);
-              const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
-              arrayControlNew.insert(0, newAsigurareForm);
-            });
-            this.loading = false;
-            return;
-
-          default:
-            return;
-        }
+      default:
+        return;
     }
   }
 
@@ -449,7 +435,23 @@ export class AvizareComponent implements OnInit, OnDestroy {
     // - 4 pt dlp tip C
     // - 11 pt dlp tip vechi, versiune 1
     // delete data.inchis;
-    data.tip = this.avizareTip;
+    switch (this.certificatCurentContinut.tip_cert) {
+      case 'A':
+        data.tip = 1;
+        break;
+
+      case 'B':
+        data.tip = 2;
+        break;
+
+      case 'C':
+        data.tip = 3;
+        break;
+
+      default:
+        return;
+    }
+
     delete data.asigurare;
 
     switch (actiune) {

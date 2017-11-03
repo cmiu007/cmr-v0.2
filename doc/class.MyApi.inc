@@ -2080,6 +2080,8 @@ class MyApi extends Api
                        ];    
             break;
             case "C":
+                    $spec = array();
+                    $sup = array();
                    $query = "select mem_cpp.reg_cpp_tip_id as tip, mem_cpp.date_start, mem_cpp.date_end, reg_cpp.nume_cpp as specialitate, reg_gr_prof.nume_gr_prof as grad
                     from mem_cpp inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
                     left outer join reg_gr_prof on mem_cpp.grad_prof_cpp_id=reg_gr_prof.id_gr_prof
@@ -2160,6 +2162,8 @@ class MyApi extends Api
         }    
         $medic = $stmt->fetch();
         
+        
+        
         $query = 'select distinct reg_cpp_grup.nume_cpp_grup
             from mem_dlp inner join mem_asig on mem_asig.id_dlp=mem_dlp.id_dlp
             inner join reg_asigurator on mem_asig.id_asigurator=reg_asigurator.id_asigurator
@@ -2181,7 +2185,6 @@ class MyApi extends Api
         {
             $ll=print_r($rw, true);
             $this->log->logDebug("ID: ".$id.", Row: ".$ll);
-            
             $query = 'select * from mem_asig inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
                             inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
                             inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp 
