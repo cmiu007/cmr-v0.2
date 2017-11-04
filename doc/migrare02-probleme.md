@@ -62,7 +62,7 @@ nume membru Certificat ....
 
 - ___Certificat___ de tip B - rezidentiat terminat - eroare la generare PDF
 
-- ___Avizare___ de tip B - rezidentiat terminat - eroare la generare PDF
+- ___Avizare___ rezolvat ---de tip B - rezidentiat terminat - eroare la generare PDF---
 
 - ___Avizare___ de tip B - competente limitate - gol
 

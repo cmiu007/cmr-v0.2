@@ -117,7 +117,7 @@ export class AsigurareComponent implements OnInit {
     this.avizareEnd = this.avizareForm.get('dlp_data_end').value;
     this.asigurareTip = this.asigurareForm.get('tip').value;
     // console.log('avizare end :' + this.avizareStart);
-    // console.log(this.asigurareForm);
+    // console.log(this.asigurareForm.value);
   }
 
 
@@ -158,6 +158,8 @@ export class AsigurareComponent implements OnInit {
         break;
 
       case 3:
+        console.log('hit');
+        console.log(this.asigurareForm.value);
         const specialitateRez2 = this.displayFnCpp(this.cppData.reg_cpp_id);
         const grupRez2 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
         grad = 'Rezident fără examen de specialist';
@@ -179,240 +181,227 @@ export class AsigurareComponent implements OnInit {
         // console.log(this.avizareForm);
 
         // daca asig are cpp id
-
+        // console.log('hit case 6');
+        // console.log(this.cppData.reg_cpp_tip_id);
+        // console.log(this.asigurareForm.get('id_dlp').value);
         if (this.asigurareForm.get('id_dlp').value !== null) {
           switch (this.cppData.reg_cpp_tip_id) {
-            case 1:
-
+            case 1: // rezident
+              const specialitateRez62 = this.displayFnCpp(this.cppData.reg_cpp_id);
+              const grupRez62 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+              grad = 'Rezident';
+              this.itemTitle1 = grupRez62;
+              this.itemTitle2 = specialitateRez62 + ' - ' + grad;
               break;
 
-            case 1:
-
+            case 2: // specialist
+              let grad61 = '';
+              // console.log(this.cppData.reg_cpp_id);
+              const specialitate61 = this.displayFnCpp(this.cppData.reg_cpp_id);
+              const grup61 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+              grad61 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+              // console.log('grad:');
+              // console.log(grad);
+              this.itemTitle1 = grup61;
+              this.itemTitle2 = specialitate61 + ' - ' + grad61;
               break;
-            case 1:
 
+            case 7: // rezident finazilat
+              const specialitateRez67 = this.displayFnCpp(this.cppData.reg_cpp_id);
+              const grupRez67 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+              grad = 'Rezidentiat finalizat';
+              this.itemTitle1 = grupRez67;
+              this.itemTitle2 = specialitateRez67 + ' - ' + grad;
               break;
 
             default:
               break;
           }
         }
-
     }
-
-//     if (this.avizareForm.get('tip').value === 1 || this.avizareForm.get('tip').value === 2) {
-//       const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
-//       let grad6 = '';
-//       if (this.cppData.id_cpp === undefined) {
-//         this.itemTitle1 = 'Specialități MEDICALE';
-//         this.itemTitle2 = 'Medic cu competețe limitate';
-//         return;
-//       }
-//       if (this.cppData.grad_prof_cpp_id === null) {
-//         // de adaugat inca un if pt rezident si rezident fara ex spec
-//         grad6 = 'Rezident';
-//         // this.avizareForm.get('tip').setValue(3);
-//       } else {
-//         grad6 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
-//         // this.avizareForm.get('tip').setValue(1);
-//       }
-//       const grup6 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-//       this.itemTitle1 = grup6;
-//       this.itemTitle2 = specialitate6 + ' - ' + grad6;
-//       return;
-//     }
-
-//     if (this.avizareForm.get('tip').value === 3) {
-//       // console.log('hit med gen');
-//       this.itemTitle1 = 'Specialități MEDICALE';
-//       this.itemTitle2 = ' Medic de Medicină Generală';
-//       // this.avizareForm.get('tip').setValue(4);
-//       return;
-//     }
-//     break;
-//       default:
-//         break;
-// }
   }
 
   private setAreAvizare(): void {
-  switch(this.asigurareForm.get('status').value) {
+    // console.log('Are avizare: ');
+    // console.log(this.asigurareForm.get('status').value);
+    // console.log(this.asigurareForm.value);
+    switch (this.asigurareForm.get('status').value) {
       case 0:
-  this.raspuns = null;
-  break;
-
-  case 1:
-  this.raspuns = 'Da';
-  break;
-
-  case 2:
-  this.raspuns = 'Nu';
-  break;
-
-  default:
+        this.raspuns = null;
         break;
-}
+
+      case 1:
+        this.raspuns = 'Da';
+        break;
+
+      case 2:
+        this.raspuns = 'Nu';
+        break;
+
+      default:
+        break;
+    }
   }
 
   private setFormStatus(): void {
-  this.asigurareStatus = this.asigurareForm.get('status').value;
-  // console.log('asigurareStatus:' + this.asigurareStatus);
-  this.avizareStatus = this.avizareForm.get('status').value;
-  // console.log('avizareStatus: ' + this.avizareStatus);
+    this.asigurareStatus = this.asigurareForm.get('status').value;
+    // console.log('asigurareStatus:' + this.asigurareStatus);
+    this.avizareStatus = this.avizareForm.get('status').value;
+    // console.log('avizareStatus: ' + this.avizareStatus);
 
-  // console.log (this.asigurareForm.get('status').value);
-  // TODO: de folosit campul status al asigurarii
-  // 0 - nu are asigurare (default)
-  // 1 - are asigurare
-  // cel mai bine sa ii faca asigurare din avizare si pe urma sa faca edit aici
-  // problema este ca daca ii sterge avizarea raman asigurari orfane
-  // console.log(this.asigurareForm.get('status').value);
-  if(this.asigurareStatus === 1) {
-    this.areAvizare = 'Da';
-  }
+    // console.log (this.asigurareForm.get('status').value);
+    // TODO: de folosit campul status al asigurarii
+    // 0 - nu are asigurare (default)
+    // 1 - are asigurare
+    // cel mai bine sa ii faca asigurare din avizare si pe urma sa faca edit aici
+    // problema este ca daca ii sterge avizarea raman asigurari orfane
+    // console.log(this.asigurareForm.get('status').value);
+    if (this.asigurareStatus === 1) {
+      this.areAvizare = 'Da';
+    }
 
     if (this.asigurareStatus === 2) {
-    this.areAvizare = 'Nu';
-  }
+      this.areAvizare = 'Nu';
+    }
 
     if (this.avizareStatus !== 0) {
-    this.isDisabled = true;
-    // this.areAvizare = 'Da';
-    Object.keys(this.asigurareForm.controls).forEach(
-      key => {
-        this.asigurareForm.get(key).disable();
-      });
-  }
-
-  // de printat emsaj de eroare cu status invalid
-}
-
-
-setFilterRegistre(): void {
-  this.filteredAsiguratori = this.asigurareForm.get('id_asigurator').valueChanges
-    .startWith('null')
-    .map(asigurator => asigurator && typeof asigurator === 'object' ? asigurator.nume : asigurator)
-    .map(nume => nume ? this.filterAsigurator(nume) : this.registruAsiguratori.slice());
-}
-
-
-displayFnAsigurator(option: number): string {
-  if (option) {
-    return this.registruAsiguratori.find(item => item.id === option).nume;
-  }
-}
-
-
-filterAsigurator(nume: string): Asigurator[] {
-  return this.registruAsiguratori.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
-}
-
-
-displayFnCppGrad(id: number): string {
-  if (id) {
-    return this.registruCppGrad.find(item => item.id === id).nume;
-  }
-}
-
-displayFnCppGrp(id_cpp: number): string {
-  if (id_cpp) {
-    let id_cpp_grp = this.registruCpp.find(item => item.id === id_cpp).grp_cpp;
-    if (id_cpp_grp === null) {
-      id_cpp_grp = 4;
+      this.isDisabled = true;
+      // this.areAvizare = 'Da';
+      Object.keys(this.asigurareForm.controls).forEach(
+        key => {
+          this.asigurareForm.get(key).disable();
+        });
     }
-    return this.registruCppGrp.find(item => item.id === id_cpp_grp).nume;
-  }
-}
 
-displayFnAsigTip(id: number): string {
-  if (id) {
-    return this.registruAsigurareTip.find(item => item.id === id).nume;
+    // de printat emsaj de eroare cu status invalid
   }
-}
 
-displayFnCpp(option: number): string {
-  if (option) {
-    return this.registruCpp.find(item => item.id === option).nume;
+
+  setFilterRegistre(): void {
+    this.filteredAsiguratori = this.asigurareForm.get('id_asigurator').valueChanges
+      .startWith('null')
+      .map(asigurator => asigurator && typeof asigurator === 'object' ? asigurator.nume : asigurator)
+      .map(nume => nume ? this.filterAsigurator(nume) : this.registruAsiguratori.slice());
   }
-}
 
-addAsigDateEnd(): void {
-  if(this.asigurareForm.get('data_start').value !== '') {
-    this.asigurareForm.get('data_end').setValue(this._dataCal.addOneYear(this.asigurareForm.get('data_start').value));
+
+  displayFnAsigurator(option: number): string {
+    if (option) {
+      return this.registruAsiguratori.find(item => item.id === option).nume;
+    }
   }
-}
 
-onClickAsigurare(): void {
-  // console.log(this.asigurareForm);
-  if(this.asigurareForm.valid === false) {
+
+  filterAsigurator(nume: string): Asigurator[] {
+    return this.registruAsiguratori.filter(option => new RegExp(`${nume}`, 'gi').test(option.nume));
+  }
+
+
+  displayFnCppGrad(id: number): string {
+    if (id) {
+      return this.registruCppGrad.find(item => item.id === id).nume;
+    }
+  }
+
+  displayFnCppGrp(id_cpp: number): string {
+    if (id_cpp) {
+      let id_cpp_grp = this.registruCpp.find(item => item.id === id_cpp).grp_cpp;
+      if (id_cpp_grp === null) {
+        id_cpp_grp = 4;
+      }
+      return this.registruCppGrp.find(item => item.id === id_cpp_grp).nume;
+    }
+  }
+
+  displayFnAsigTip(id: number): string {
+    if (id) {
+      return this.registruAsigurareTip.find(item => item.id === id).nume;
+    }
+  }
+
+  displayFnCpp(option: number): string {
+    if (option) {
+      return this.registruCpp.find(item => item.id === option).nume;
+    }
+  }
+
+  addAsigDateEnd(): void {
+    if (this.asigurareForm.get('data_start').value !== '') {
+      this.asigurareForm.get('data_end').setValue(this._dataCal.addOneYear(this.asigurareForm.get('data_start').value));
+    }
+  }
+
+  onClickAsigurare(): void {
     // console.log(this.asigurareForm);
-    this._snackBar.showSnackBar('Formular Invalid');
-    return;
-  }
+    if (this.asigurareForm.valid === false) {
+      // console.log(this.asigurareForm);
+      this._snackBar.showSnackBar('Formular Invalid');
+      return;
+    }
 
     if (this.loading === true) {
-    this._snackBar.showSnackBar('Submiterea datelor catre server este in proges');
-    return;
-  }
+      this._snackBar.showSnackBar('Submiterea datelor catre server este in proges');
+      return;
+    }
 
     this.loading = true;
-  this.asigurareForm.enable();
-  const asigData = this.asigurareForm.value;
-  const idItem = asigData.id_asig;
-  delete asigData.id_asig;
-  // console.log(asigData);
+    this.asigurareForm.enable();
+    const asigData = this.asigurareForm.value;
+    const idItem = asigData.id_asig;
+    delete asigData.id_asig;
+    // console.log(asigData);
 
-  if(this.asigurareStatus === 0) {
-    console.log(asigData);
-    this._apiData.apiAdauga('asigurare', asigData)
+    if (this.asigurareStatus === 0) {
+      console.log(asigData);
+      this._apiData.apiAdauga('asigurare', asigData)
+        .subscribe((response: ApiData) => {
+          if (response.status === 0) {
+            return;
+          }
+          this.loading = false;
+        });
+      AvizariComponent._formDataChanged.next();
+      // AvizareComponent._formDataChangedAvizare.next();
+      return;
+    }
+
+    this._apiData.apiModifica('asigurare', idItem, asigData)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
           return;
         }
         this.loading = false;
+        AvizariComponent._formDataChanged.next();
+        // AvizareComponent._formDataChangedAvizare.next();
       });
-    AvizariComponent._formDataChanged.next();
-    // AvizareComponent._formDataChangedAvizare.next();
     return;
   }
 
-    this._apiData.apiModifica('asigurare', idItem, asigData)
-    .subscribe((response: ApiData) => {
-      if (response.status === 0) {
-        return;
-      }
-      this.loading = false;
-      AvizariComponent._formDataChanged.next();
-      // AvizareComponent._formDataChangedAvizare.next();
-    });
-  return;
-}
 
-
-onRaspunsChange(): void {
-  // TODO: update validators pt formular
-  // update field status 2 nu are; 1 pt are avizare
-  if(this.areAvizare === 'Da') {
-    this.asigurareForm.get('status').setValue(1);
-    // console.log(this.avizareForm.get('tip').value);
-    this.asigurareForm.get('tip').setValue(this.asigurareTip);
-    return;
-  }
+  onRaspunsChange(): void {
+    // TODO: update validators pt formular
+    // update field status 2 nu are; 1 pt are avizare
+    if (this.areAvizare === 'Da') {
+      this.asigurareForm.get('status').setValue(1);
+      // console.log(this.avizareForm.get('tip').value);
+      this.asigurareForm.get('tip').setValue(this.asigurareTip);
+      return;
+    }
     if (this.areAvizare === 'Nu') {
 
-    const asigFormValues = {
-      id_mem: this.avizareForm.get('id_mem').value,
-      id_asigurator: null,
-      status: 2,
-      tip: 6,
-      polita_serie: null,
-      polita_nr: null,
-      data_start: this.avizareStart,
-      data_end: this.avizareEnd
-    };
-    this.asigurareForm.patchValue(asigFormValues);
-    this.asigurareForm.get('status').setValue(2);
-    return;
+      const asigFormValues = {
+        id_mem: this.avizareForm.get('id_mem').value,
+        id_asigurator: null,
+        status: 2,
+        tip: 6,
+        polita_serie: null,
+        polita_nr: null,
+        data_start: this.avizareStart,
+        data_end: this.avizareEnd
+      };
+      this.asigurareForm.patchValue(asigFormValues);
+      this.asigurareForm.get('status').setValue(2);
+      return;
+    }
   }
-}
 }

@@ -22,10 +22,10 @@ section:nth-of-type(1) .column:nth-child(5) {
   flex-basis: 15px;
 }
 
-.example-radio-group {
+.radio-group {
   display: inline-flex;
 }
 
-.example-radio-button {
+.radio-button {
   margin: 5px;
 }
