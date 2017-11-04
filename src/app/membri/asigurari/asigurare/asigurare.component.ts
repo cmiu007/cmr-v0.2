@@ -178,12 +178,6 @@ export class AsigurareComponent implements OnInit {
         break;
 
       case 6:
-        // console.log(this.avizareForm);
-
-        // daca asig are cpp id
-        // console.log('hit case 6');
-        // console.log(this.cppData.reg_cpp_tip_id);
-        // console.log(this.asigurareForm.get('id_dlp').value);
         if (this.asigurareForm.get('id_dlp').value !== null) {
           switch (this.cppData.reg_cpp_tip_id) {
             case 1: // rezident
@@ -217,6 +211,17 @@ export class AsigurareComponent implements OnInit {
             default:
               break;
           }
+        }
+
+        if (this.asigurareForm.get('id_dlp').value !== null) {
+          if (this.avizareForm.get('tip') === 3) {
+            this.itemTitle1 = 'Specialități MEDICALE';
+            this.itemTitle2 = 'Medic de Medicină Generală';
+          } else {
+            this.itemTitle1 = 'Specialități MEDICALE';
+            this.itemTitle2 = 'COMPETENȚE LIMITATE';
+          }
+
         }
     }
   }

@@ -62,7 +62,7 @@ nume membru Certificat ....
 
 - ___Certificat___ de tip B - rezidentiat terminat - eroare la generare PDF
 
-- ___Avizare___ rezolvat ---de tip B - rezidentiat terminat - eroare la generare PDF---
+- ~~___Avizare___ de tip B - rezidentiat terminat - eroare la generare PDF~~
 
 - ___Avizare___ de tip B - competente limitate - gol
 
@@ -74,6 +74,8 @@ nume membru Certificat ....
 
 - ___Avizare___ tip C + rez + rez terminat - nu afiseaza pt medicina generala
 
-# pt Miu asigurare pt cert tip B - competente limitate nu merge ok asigurarea - la fel ca la cert tip C
+~~# pt Miu asigurare pt cert tip B - competente limitate nu merge ok asigurarea - la fel ca la cert tip C~~
+
+## pt Miu - de terminat in asigurare component generarea numelui
 
 # key app - cum ?
