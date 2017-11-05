@@ -473,13 +473,43 @@ switch ($date_cert['tip_cert'])
 			$c++;
 			}
 		}
-	$certTipC .='	  
+	$certTipC .='
     </table>
     </div>
 		';
 		//echo $certTipC;
 		$pdf->SetFillColor(0, 127, 127);
-		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipC, 0, 0, $fill, true, 'L', true);
+    $pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipC, 0, 0, $fill, true, 'L', true);
+
+
+    // compenete
+    $super ="";
+		foreach($date_cert['superspecialitate'] as $spec)
+		{
+			$super .= $spec['specialitate'].'; ';
+		}
+
+		$competente = '
+		<style type="text/css">
+		.tg td{padding:10px 5px;}
+		.tg th{font-weight:normal;padding:10px 5px;}
+		.tg .tg-yzt1{vertical-align:middle;}
+		.tg .tg-yw4l{vertical-align:middle}
+		.tg .tg-b7b8{vertical-align:middle;}
+    .tg .tg-spec{width:100%;letter-spacing:1px}
+    </style>
+		<div class="tg-wrap"><table class="tg">
+		  <tr>
+			<th class="tg-yzt1 tg-spec"><b><u>Studii Complementare:</u></b></th>
+		  </tr>
+		  <tr>
+			<td class="tg-b7b8 tg-spec">'.$super.'</td>
+		  </tr>
+		</table></div>
+		';
+		$pdf->SetFillColor(0, 127, 127);
+		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box3YOrigin, $competente, 0, 0, $fill, true, 'L', true);
+
 	break;
 
 }
