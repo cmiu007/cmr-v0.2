@@ -61,6 +61,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
   // - 3 pt dlp tip B - Medic Rezident
   // - 4 pt dlp tip C
   // - 11 pt dlp tip vechi, versiune 1
+  // TODO: de revizuit logica - cred ca trebuie sa plece ca true :)
   asigurariIncomplete = false;
 
   // formStatus
@@ -177,22 +178,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
   private setAsigurariData(): void {
     // avizare veche?
-    let listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
-
-    // exista cazuri in care avem asig tip 6 dar care au id_asigurator
-    // cazul apare cand se trece de la asigurare tip 6 la alt tip
-    // componenta asigurare nu are destule informatii ca sa calculeze tipul
-    // stergem intrarea din lista de asigurari pt a fi reinitializata cu tipul corect
-    listaAsigurariDLP.forEach(function (asigurare: Asigurare, index, object) {
-      if (asigurare.tip === 6 && asigurare.id_asigurator !== null) {
-        // listaAsigurariDLP.splice(index, 1);
-        console.log('error: hit asig tip6 cu id asig');
-        listaAsigurariDLP[index].tip = null;
-        listaAsigurariDLP[index].id_asigurator = null;
-      }
-    });
-    console.log('listaAsigurariDLP : ');
-    console.log(listaAsigurariDLP);
+    const listaAsigurariDLP = this.asigurariList.filter(asigurare => asigurare.id_dlp === this.avizareFormData.id_dlp);
 
     if (this.avizareFormData.tip === 11) {
       this.avizareOld = true;
@@ -250,6 +236,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
             console.log('Eroare: Are mai mult de o avizare pt o specialitate');
             return;
           }
+
           if (cpp.reg_cpp_tip_id === 2) {
             asigurareTip = 1;
           } else if (cpp.reg_cpp_tip_id === 7) {
@@ -257,9 +244,12 @@ export class AvizareComponent implements OnInit, OnDestroy {
           } else if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
             asigurareTip = 2;
           } else {
+            // TODO: ce cauta asta aici ?? :)
+            // are leg cu afisarea in html Finalizeaza avizare
             this.asigurariIncomplete = false;
             return;
           }
+
           if (asigurare.length === 0) {
             // console.log('creez asig noua');
             // setam tip asigurare
@@ -273,7 +263,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
             };
             this.asigurariIncomplete = true;
           }
-          asigurare[0].tip = asigurareTip;
+          // asigurare[0].tip = asigurareTip;
           const newAsigurareForm = this._formSet.asigurare(asigurare[0]);
           const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
           arrayControlNew.insert(0, newAsigurareForm);
@@ -286,21 +276,19 @@ export class AvizareComponent implements OnInit, OnDestroy {
         let tipB = '';
         let asigurariB: Asigurare[] = [];
         asigurariB = listaAsigurariDLP;
-        // console.log('asigurariB :');
-        // console.log(this.asigurariList);
-        // avew 2 tipuri
+        // avem 3 tipuri
         // competente limitate
         // rezidient activ
         // rezident inactiv
 
         if (listaMemCpp.length === 0) {
-          tipB = '4'; // competente limitate
+          tipB = 'competente limitate'; // competente limitate
         } else {
           tipB = 'rezident';
         }
 
         switch (tipB) {
-          case '4':
+          case 'competente limitate':
             if (asigurariB.length === 0) {
               asigurariB[0] = {
                 id_mem: +this.avizareForm.get('id_mem').value,
@@ -312,7 +300,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
               };
               this.asigurariIncomplete = true;
             }
-            asigurariB[0].tip = 4;
+            // asigurariB[0].tip = 4;
             const newAsigurareFormCL = this._formSet.asigurare(asigurariB[0]);
             const arrayControlNewCL = this.avizareForm.get('asigurare') as FormArray;
             arrayControlNewCL.insert(0, newAsigurareFormCL);
@@ -323,8 +311,6 @@ export class AvizareComponent implements OnInit, OnDestroy {
           case 'rezident':
             listaMemCpp.forEach((cpp: Cpp) => {
               const asigurariR = asigurariB.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
-              // console.log('asigurariR :');
-              // console.log(asigurariR);
               if (asigurariR.length > 1) {
                 // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
                 // TODO: are eroare ... pt moment bagam in consola
@@ -332,30 +318,28 @@ export class AvizareComponent implements OnInit, OnDestroy {
                 return;
               }
               // 2 tipuri de rezidenti
+              // cpp_id 1 si cpp_id 7
               let asigTipR = 0;
-              // console.log('hit cert B tip rezident');
-              // console.log('cpp_reg_tip_id:');
-              // console.log(cpp.reg_cpp_tip_id);
               if (cpp.reg_cpp_tip_id === 1) {
                 asigTipR = 2;
               } else {
                 if (cpp.reg_cpp_tip_id === 7) {
                   asigTipR = 3;
                 }
-                if (asigurariR.length === 0) {
-                  asigurariR[0] = {
-                    id_mem: +this.avizareForm.get('id_mem').value,
-                    id_dlp: +this.avizareForm.get('id_dlp').value,
-                    id_cpp: +cpp.id_cpp,
-                    // status: +this.avizareForm.get('status').value
-                    status: 0,
-                    tip: asigTipR
-                  };
-                  this.asigurariIncomplete = true;
-                }
+              }
+              if (asigurariR.length === 0) {
+                asigurariR[0] = {
+                  id_mem: +this.avizareForm.get('id_mem').value,
+                  id_dlp: +this.avizareForm.get('id_dlp').value,
+                  id_cpp: +cpp.id_cpp,
+                  // status: +this.avizareForm.get('status').value
+                  status: 0,
+                  tip: asigTipR
+                };
+                this.asigurariIncomplete = true;
               }
               // console.log(asigurariR[0]);
-              asigurariR[0].tip = asigTipR;
+              // asigurariR[0].tip = asigTipR;
               const newAsigurareFormB = this._formSet.asigurare(asigurariR[0]);
               const arrayControlNewB = this.avizareForm.get('asigurare') as FormArray;
               arrayControlNewB.insert(0, newAsigurareFormB);
@@ -367,28 +351,29 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
       case 'C':
         this.avizareTip = 3;
-        // const asigurariC = this.asigurariList as Asigurare[];
-        const asigurariC = listaAsigurariDLP;
+        let asigurariC = this.asigurariList as Asigurare[];
+        asigurariC = listaAsigurariDLP;
         let areAsigTipC = false;
-        // are cel putin o asigurare de tip 5
+        // are cel putin o asigurare de tip 5 sau 10
         // daca nu are adaugam asig pt dlp MG
 
         asigurariC.forEach((asigurare: Asigurare) => {
-          if (asigurare.tip === 5 ) {
+          if (asigurare.tip === 5 || asigurare.tip === 10) {
             areAsigTipC = true;
             const newAsigurareForm = this._formSet.asigurare(asigurare);
             const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
             arrayControlNew.insert(0, newAsigurareForm);
           }
-          if (asigurare.tip === 6 && asigurare.id_asigurator === null) {
-            areAsigTipC = true;
-            const newAsigurareForm = this._formSet.asigurare(asigurare);
-            const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
-            arrayControlNew.insert(0, newAsigurareForm);
-          }
-        });
 
-        console.log('areAsigTipC :' + areAsigTipC.toString());
+          // nu mai avem nevoie avem asig tip 10
+
+          // if (asigurare.tip === 6 && asigurare.id_asigurator === null) {
+          //   areAsigTipC = true;
+          //   const newAsigurareForm = this._formSet.asigurare(asigurare);
+          //   const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+          //   arrayControlNew.insert(0, newAsigurareForm);
+          // }
+        });
 
         if (areAsigTipC === false) {
           asigurariC[0] = {
@@ -406,40 +391,42 @@ export class AvizareComponent implements OnInit, OnDestroy {
           arrayControlNew.insert(0, newAsigurareForm);
         }
 
-        listaMemCpp.forEach((cpp: Cpp) => {
-          const asigurare = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
-          if (asigurare.length > 1) {
-            // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
-            // TODO: are eroare ... pt moment bagam in consola
-            console.log('Eroare: Are mai mult de o avizare pt o specialitate');
-            return;
-          }
-          if (cpp.reg_cpp_tip_id === 7) {
-            asigurareTip = 3;
-          } else if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
-            asigurareTip = 2;
-          } else {
-            this.asigurariIncomplete = false;
-            return;
-          }
-          if (asigurare.length === 0) {
-            // console.log('creez asig noua');
-            // setam tip asigurare
-            asigurare[0] = {
-              id_mem: +this.avizareForm.get('id_mem').value,
-              id_dlp: +this.avizareForm.get('id_dlp').value,
-              id_cpp: +cpp.id_cpp,
-              // status: +this.avizareForm.get('status').value
-              status: 0,
-              tip: asigurareTip
-            };
-            this.asigurariIncomplete = true;
-          }
-          asigurare[0].tip = asigurareTip;
-          const newAsigurareForm = this._formSet.asigurare(asigurare[0]);
-          const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
-          arrayControlNew.insert(0, newAsigurareForm);
-        });
+        if (listaMemCpp.length !== 0) {
+          listaMemCpp.forEach((cpp: Cpp) => {
+            const asigurare = listaAsigurariDLP.filter((asigurareItem: Asigurare) => asigurareItem.id_cpp === cpp.id_cpp) as Asigurare[];
+            if (asigurare.length > 1) {
+              // this._snackBar.showSnackBar('Eroare la generarea listei de asigurari');
+              // TODO: are eroare ... pt moment bagam in consola
+              console.log('Eroare: Are mai mult de o avizare pt o specialitate');
+              return;
+            }
+            if (cpp.reg_cpp_tip_id === 7) {
+              asigurareTip = 3;
+            } else if (cpp.reg_cpp_tip_id === 1 && cpp.date_end === '0000-00-00') {
+              asigurareTip = 2;
+            } else {
+              this.asigurariIncomplete = false;
+              return;
+            }
+            if (asigurare.length === 0) {
+              // console.log('creez asig noua');
+              // setam tip asigurare
+              asigurare[0] = {
+                id_mem: +this.avizareForm.get('id_mem').value,
+                id_dlp: +this.avizareForm.get('id_dlp').value,
+                id_cpp: +cpp.id_cpp,
+                // status: +this.avizareForm.get('status').value
+                status: 0,
+                tip: asigurareTip
+              };
+              this.asigurariIncomplete = true;
+            }
+            asigurare[0].tip = asigurareTip;
+            const newAsigurareForm = this._formSet.asigurare(asigurare[0]);
+            const arrayControlNew = this.avizareForm.get('asigurare') as FormArray;
+            arrayControlNew.insert(0, newAsigurareForm);
+          });
+        }
         return;
 
       default:
@@ -500,6 +487,7 @@ export class AvizareComponent implements OnInit, OnDestroy {
 
     switch (actiune) {
       case 'adauga':
+        // console.log(this.avizareForm);
         data.status = 0;
         this._apiData.apiAdauga('dlp', data)
           .subscribe((response: ApiData) => {

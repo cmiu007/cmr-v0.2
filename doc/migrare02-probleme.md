@@ -24,24 +24,14 @@
 - mecanism pentru printare duplicat - if duplicat watermark vezi pdf gen
 
 # api gen certificat
-- eroare la generarea certificatului de tip C 
-```html
-<br />
-<b>Notice</b>:  Undefined variable: spec in <b>/home/cip/www/cmr/inc/class.MyApi.inc</b> on line <b>2127</b><br />
-<br />
-<b>Notice</b>:  Undefined variable: sup in <b>/home/cip/www/cmr/inc/class.MyApi.inc</b> on line <b>2128</b><br />
-{"result":"00","mesaj":"Adaugare certificat cu succes","nr":"9480"}"
-```
 
-- certificatele invalide nu mai trebuie sa aiba buton de print
-
-- medic cu specialitate si rezidentiat - de verificat generarea avizarii
+- certificatele invalide  / vechi nu mai trebuie sa aiba buton de print
 
 - cpp poate submite formularul doar cu tipul documentului
 
 - Titluri - se termina in virgula
-
-- invalideaza certificat -> dubleaza certificatul ....
+- De vazut daca sunt in preview-ul certificatului ...
+- de vazut daca sunt salvate in DB
 
 
 # Done
@@ -58,24 +48,37 @@
 jud 140 Bucuresti
 nume membru Certificat ....
 
-- ___Certificat___ de tip A + 1 rez + 1 rez terminat nu apare rezidentiat terminat, apare doar rezident
-
-- ___Certificat___ de tip B - rezidentiat terminat - eroare la generare PDF
-
-- ~~___Avizare___ de tip B - rezidentiat terminat - eroare la generare PDF~~
-
-- ___Avizare___ de tip B - competente limitate - gol
-
-- ___Certificat___ tip C - nu apar studiile complementare
-
-- ___Avizare___ tip C - nu apare nimic
-
+- ___Form Avizare___ tip B rezident - nu se poate adauga avizare
 - ___Certificat___ tip C - genereaza B, nu C, daca anul promotiei este 2005, pana tip C era pt egal sau mai mic de 2005
 
-- ___Avizare___ tip C + rez + rez terminat - nu afiseaza pt medicina generala
+- spatiu gol mare intre tabel si nota pt cert tip C
 
-~~# pt Miu asigurare pt cert tip B - competente limitate nu merge ok asigurarea - la fel ca la cert tip C~~
+# Rezolvat
 
-## pt Miu - de terminat in asigurare component generarea numelui
+
+
+~~## pt Miu asigurare pt cert tip B - competente limitate nu merge ok asigurarea - la fel ca la cert tip C~~
+
+~~## pt Miu - de terminat in asigurare component generarea numelui~~
 
 # key app - cum ?
+
+
+## Recunoastere facultate
+
+```sql
+ALTER TABLE `mem` ADD `fac_rec_serie` TEXT NULL DEFAULT NULL AFTER `fac_doc_tip`, ADD `fac_rec_numar` TEXT NULL DEFAULT NULL AFTER `fac_rec_serie`, ADD `fac_rec_data` DATE NULL DEFAULT NULL AFTER `fac_rec_numar`;
+ALTER TABLE `mem` ADD `fac_rec_emitent` INT(5) NULL DEFAULT NULL AFTER `fac_doc_tip`;
+```
+
+
+## Update tip asigurare
+- Done ~~id db productie:~~ 
+```sql
+ UPDATE `mem_asig` set tip = '20' where tip='9'
+```
+
+- de modificat toate asigurarile cu tip 6 - 10 inregistrari in DB productie 
+```sql
+SELECT * FROM `mem_asig` WHERE `tip` = 6 ORDER BY `id_asig` DESC
+```

@@ -20,6 +20,10 @@ export interface DatePersonale {
   'fac_dipl_nr': string;
   'fac_dipl_data': string;
   'fac_doc_tip': number;
+  'fac_rec_emitent': number;
+  'fac_rec_serie': string;
+  'fac_rec_numar': string;
+  'fac_rec_data': string;
   'updated': string;
   'ro': string;
 }

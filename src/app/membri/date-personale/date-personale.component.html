@@ -162,6 +162,7 @@
       </mat-card-content>
     </mat-card>
   </form>
+
 <!--
   <mat-card>
     <mat-card-title class="form-title">
@@ -172,20 +173,19 @@
         <mat-checkbox [(ngModel)]="showCertRec">Are certificat de recunoastere</mat-checkbox>
       </p>
       <div *ngIf="showCertRec">
-        <form [formGroup]="formCertRec" ngSubmit="onFormSubmit()">
           <section>
+
             <mat-form-field class="column">
-              <input matInput formControlName="serie" type="text" placeholder="Serie">
+              <input matInput formControlName="fac_rec_serie" type="text" placeholder="Serie">
             </mat-form-field>
             <mat-form-field class="column">
-              <input matInput formControlName="nr" type="text" placeholder="Numar">
+              <input matInput formControlName="fac_rec_nr" type="text" placeholder="Numar">
             </mat-form-field>
             <div class="column"></div>
             <mat-form-field class="column">
-              <input matInput formControlName="data" type="text" placeholder="Data">
+              <input matInput formControlName="fac_rec_data" type="text" placeholder="Data">
             </mat-form-field>
           </section>
-        </form>
       </div>
     </mat-card-content>
   </mat-card> -->

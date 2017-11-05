@@ -63,7 +63,20 @@ $rezultat = call_api($url, $data_json);
 $CMJ = $rezultat[0]['nume'];
 
 
-$date_cert = json_decode($certificat['continut'], true);
+$data = [
+         'id' => $id,
+		 'token' => $token,
+];
+
+$data_json = json_encode($data);
+$url = $url_base."get_certificat";
+$date_cert = call_api($url, $data_json);
+
+//echo "<pre>";
+//print_r($date_cert);
+//echo "</pre>";
+
+//$date_cert = json_decode($certificat['continut'], true);
 
 $data = [	'token' => 	$token,
 			'id' =>	$medic['jud_id'],
@@ -316,7 +329,7 @@ switch ($date_cert['tip_cert'])
 
 		if (count($date_cert['specialitati']) > 0) {
 			$spec = $date_cert['specialitati'][0];
-			if ($spec['data_end'] == '0000-00-00') {
+			if ($spec['tip'] == '1') {
 				$certTipB1 = '
 				<style>
 				.tg td{height:35px; padding:10px 5px;word-break:normal}
@@ -440,14 +453,31 @@ switch ($date_cert['tip_cert'])
 		<div class="tg-wrap">
 		<table class="tg">
 		  <tr>
-			<th class="tg-t2ww"></th>
+			<th></th><th></th>
 		  </tr>
 		  <tr>
-			<td class="tg-yw4l">1. MEDIC DE MEDICINĂ GENERALĂ</td>
-		  </tr>
+			<td class="tg-spec">1. MEDIC DE MEDICINĂ GENERALĂ</td><td></td>
+		  </tr>';
+		  $c=2;
+		if (count($date_cert['specialitati']) > 0)
+		{
+			foreach ($date_cert['specialitati'] as $speciali)
+			{
+				$spec = $date_cert['specialitati'][0];
+				if ($speciali['tip'] == '1') {
+					$certTipC .='<tr><td>'.$c.'. '.$speciali['specialitate'].'</td><td>'.$speciali['gr_prof'].'</td></tr>'."\n";
+				}
+			   else {
+					$certTipC .= '<tr><td>'.$c.'. '.$speciali['specialitate'].'</td><td>'.$speciali['gr_prof'].'</td></tr>'."\n";
+				}
+			$c++;
+			}
+		}
+	$certTipC .='	  
     </table>
     </div>
 		';
+		//echo $certTipC;
 		$pdf->SetFillColor(0, 127, 127);
 		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin - 10, 19, $origin + 5, $box2YOrigin, $certTipC, 0, 0, $fill, true, 'L', true);
 	break;

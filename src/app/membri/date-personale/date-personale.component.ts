@@ -69,6 +69,12 @@ export class DatePersonaleComponent implements OnInit {
   ];
   filtruDocFacTip: Observable<DocFacTip[]>;
 
+  facDocRecunoastereEmitent = [
+    { id: 0, nume: 'Nu are document' },
+    { id: 1, nume: 'Ministerul Sanatatii' }
+  ];
+  filtruFacDocRecunoastereEmitent: Observable<DocFacTip[]>;
+
   constructor(
     private _formSet: FormSetService,
     private _formValidators: FormValidatorsService,
@@ -181,6 +187,7 @@ export class DatePersonaleComponent implements OnInit {
   // log submit
   onSubmit() {
     if (this.formDatePersonale.valid === false) {
+      console.log(this.formDatePersonale);
       this._snackBar.showSnackBar('Formular Invalid');
       return;
     }

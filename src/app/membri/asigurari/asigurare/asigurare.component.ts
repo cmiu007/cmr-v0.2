@@ -53,8 +53,12 @@ export class AsigurareComponent implements OnInit {
     { id: 3, nume: 'Drept de practică SUPRAVEGHEATĂ (3)' },
     { id: 4, nume: 'COMPETENȚE LIMITATE' },
     { id: 5, nume: 'Drept de liberă practică(1) - Medicină Generală' },
-    { id: 6, nume: 'FĂRĂ drept de practică' },
-    { id: 9, nume: 'Avizare veche' }
+    { id: 6, nume: 'FĂRĂ drept de liberă practică (1)' },
+    { id: 7, nume: 'FĂRĂ drept de practică SUPRAVEGHEATĂ (2)' },
+    { id: 8, nume: 'FĂRĂ drept de practică SUPRAVEGHEATĂ (3)' },
+    { id: 9, nume: 'FĂRĂ drept de practică COMPETENȚE LIMITATE' },
+    { id: 10, nume: 'FĂRĂ drept de liberă practică(1) - Medicină Generală' },
+    { id: 20, nume: 'Avizare veche' }
   ];
 
   public optiuni = [
@@ -135,8 +139,6 @@ export class AsigurareComponent implements OnInit {
   }
 
   private setFormTitle(): void {
-    // console.log('Asigurare Component - Asigurare tip :' + this.asigurareTip.toString());
-    console.log(this.asigurareTip);
     switch (this.asigurareTip) {
       case 1:
         let grad = '';
@@ -158,8 +160,6 @@ export class AsigurareComponent implements OnInit {
         break;
 
       case 3:
-        console.log('hit');
-        console.log(this.asigurareForm.value);
         const specialitateRez2 = this.displayFnCpp(this.cppData.reg_cpp_id);
         const grupRez2 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
         grad = 'Rezident fără examen de specialist';
@@ -178,51 +178,47 @@ export class AsigurareComponent implements OnInit {
         break;
 
       case 6:
-        if (this.asigurareForm.get('id_dlp').value !== null) {
-          switch (this.cppData.reg_cpp_tip_id) {
-            case 1: // rezident
-              const specialitateRez62 = this.displayFnCpp(this.cppData.reg_cpp_id);
-              const grupRez62 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-              grad = 'Rezident';
-              this.itemTitle1 = grupRez62;
-              this.itemTitle2 = specialitateRez62 + ' - ' + grad;
-              break;
+        let grad6 = '';
+        const specialitate6 = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grup6 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+        grad6 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
+        // console.log('grad:');
+        // console.log(grad);
+        this.itemTitle1 = grup6;
+        this.itemTitle2 = specialitate6 + ' - ' + grad6 + ': ' + this.registruAsigurareTip[5].nume;
+        break;
 
-            case 2: // specialist
-              let grad61 = '';
-              // console.log(this.cppData.reg_cpp_id);
-              const specialitate61 = this.displayFnCpp(this.cppData.reg_cpp_id);
-              const grup61 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-              grad61 = this.displayFnCppGrad(this.cppData.grad_prof_cpp_id);
-              // console.log('grad:');
-              // console.log(grad);
-              this.itemTitle1 = grup61;
-              this.itemTitle2 = specialitate61 + ' - ' + grad61;
-              break;
+      case 7:
+        const specialitateRez7 = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grupRez7 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+        grad = 'Rezident';
+        this.itemTitle1 = grupRez7;
+        this.itemTitle2 = specialitateRez7 + ' - ' + grad + ': ' + this.registruAsigurareTip[6].nume;
+        break;
 
-            case 7: // rezident finazilat
-              const specialitateRez67 = this.displayFnCpp(this.cppData.reg_cpp_id);
-              const grupRez67 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
-              grad = 'Rezidentiat finalizat';
-              this.itemTitle1 = grupRez67;
-              this.itemTitle2 = specialitateRez67 + ' - ' + grad;
-              break;
+      case 8:
+        const specialitateRez8 = this.displayFnCpp(this.cppData.reg_cpp_id);
+        const grupRez8 = this.displayFnCppGrp(this.cppData.reg_cpp_id);
+        grad = 'Rezident fără examen de specialist';
+        this.itemTitle1 = grupRez8;
+        this.itemTitle2 = specialitateRez8 + ' - ' + grad + ': ' + this.registruAsigurareTip[7].nume;
+        break;
 
-            default:
-              break;
-          }
-        }
+      case 9:
+        this.itemTitle1 = 'Specialități MEDICALE';
+        this.itemTitle2 = 'COMPETENȚE LIMITATE: ' + this.registruAsigurareTip[8].nume;
+        break;
 
-        if (this.asigurareForm.get('id_dlp').value !== null) {
-          if (this.avizareForm.get('tip') === 3) {
-            this.itemTitle1 = 'Specialități MEDICALE';
-            this.itemTitle2 = 'Medic de Medicină Generală';
-          } else {
-            this.itemTitle1 = 'Specialități MEDICALE';
-            this.itemTitle2 = 'COMPETENȚE LIMITATE';
-          }
+      case 10:
+        this.itemTitle1 = 'Specialități MEDICALE';
+        this.itemTitle2 = 'Medic de Medicină Generală: ' + this.registruAsigurareTip[9].nume;
+        break;
 
-        }
+      case 20:
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -384,28 +380,39 @@ export class AsigurareComponent implements OnInit {
 
 
   onRaspunsChange(): void {
-    // TODO: update validators pt formular
-    // update field status 2 nu are; 1 pt are avizare
+    // este prima data?
+    // de la neavizat la avizat
+    this.asigurareForm.markAsDirty();
+
+    // TODO: set validators in functie de tip
+
     if (this.areAvizare === 'Da') {
+      if (this.asigurareForm.get('status').value === 0) { // este val initiala si nu fara DLP
+        this.asigurareForm.get('tip').setValue((this.asigurareTip));
+      } else {
+        this.asigurareForm.get('tip').setValue((this.asigurareTip - 5));
+      }
       this.asigurareForm.get('status').setValue(1);
-      // console.log(this.avizareForm.get('tip').value);
-      this.asigurareForm.get('tip').setValue(this.asigurareTip);
       return;
     }
-    if (this.areAvizare === 'Nu') {
 
+    // de la avizat la neavizat
+
+    if (this.areAvizare === 'Nu') {
+      console.log(this.areAvizare);
+      console.log('this.asigurareTip:');
+      console.log(this.asigurareTip);
       const asigFormValues = {
         id_mem: this.avizareForm.get('id_mem').value,
         id_asigurator: null,
         status: 2,
-        tip: 6,
+        tip: (this.asigurareTip + 5),
         polita_serie: null,
         polita_nr: null,
         data_start: this.avizareStart,
         data_end: this.avizareEnd
       };
       this.asigurareForm.patchValue(asigFormValues);
-      this.asigurareForm.get('status').setValue(2);
       return;
     }
   }

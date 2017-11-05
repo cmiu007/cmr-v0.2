@@ -1,7 +1,7 @@
 <?php
 
 $aviz = $_REQUEST['aviz'];
-$url_base = "https://api.cmr.ro/api/";
+$url_base = "https://devel-api.cmr.ro/api/";
 //$token = $_REQUEST['token'];
 $token = $_REQUEST['token'];
 $acum = date("d.m.Y");
@@ -236,19 +236,30 @@ $deltay = 0;
 $Y = $box1YOrigin;
  $deltay = 0;
   $Y = $box1YOrigin;
-  /*cho "<pre>";
-  print_r($cppuri);
-  echo "</pre>";
-  */
+  //echo "<pre>";
+  //print_r($cppuri);
+  //echo "</pre>";
+  
 
-  foreach($cppuri as $grup)
+  foreach($cppuri as $nume_grup => $grup)
   {
+			 /*echo 'Nume grup:' .$nume_grup."<br>";
+				echo "<pre>";
+				print_r($grup);
+    echo "</pre>";*/
+			
     $nextBoxOffset=0;
-    $specialitate = '<table border="1" cellpadding="2">
+    if (sizeof($grup) == 0)
+					continue;
+				$specialitate = '<table border="1" cellpadding="2">
     <tr>
-      <th bgcolor="#d3d3d3">'.$grup['grup'].'</th>
+      <th bgcolor="#d3d3d3">'.$nume_grup.'</th>
     </tr>';
-    foreach($grup['data'] as $cpz){
+    foreach($grup as $cpz){
+					/*echo "<pre>";
+				 print_r($cpz);
+     echo "</pre>";*/
+					
       $nextBoxOffset+=25;
       $dlp_data_start = datex($cpz['data_start']);
       $dlp_data_end = datex($cpz['data_end']);
@@ -263,7 +274,8 @@ $Y = $box1YOrigin;
 				  <br>
 					Drept de practică: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
 				  <br>
-					Poliță asigurare: seria <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> nr <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span> încheiată la <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span>
+					Poliță asigurare: seria <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> nr <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span>
+					încheiată la <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span>
 				  <br>
 					Valabilitate aviz: <span style="font-weight: bold;">'.$dlp_data_start.'-'.$dlp_data_end.'</span>
 				</th>
@@ -281,19 +293,24 @@ $Y = $box1YOrigin;
 				  <br>
 					Drept de practică: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
 				  <br>
-					Poliță asigurare: seria <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> nr <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span> încheiată la <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span>
+					Poliță asigurare: seria <span style="font-weight: bold;">'.$cpz['polita_serie'].'</span> nr <span style="font-weight: bold;">'.$cpz['polita_nr'].'</span>
+					încheiată la <span style="font-weight: bold;">'.$cpz['nume_asigurator'].'</span>
 				  <br>
 					Valabilitate aviz: <span style="font-weight: bold;">'.$dlp_data_start.'-'.$dlp_data_end.'</span>
 				</th>
 				</tr>';
 		break;
 		case "6":
+		case "7":
+		case "8":
+		case "9":
+		case "10":
 				$specialitate .= '
 				<tr>
 				<th>
 					Specialitate: <span style="font-weight: bold;">'.$cpz['nume_cpp'].'</span>
 				  <br>
-					Drept de practică: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
+					Drept de practică: <span style="font-weight: bold;">Fără drept de liberă practică</span>
 				  <br>
 				</th>
 				</tr>';
