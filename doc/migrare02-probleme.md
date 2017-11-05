@@ -33,6 +33,12 @@
 - De vazut daca sunt in preview-ul certificatului ...
 - de vazut daca sunt salvate in DB
 
+- api gen certificat nu salveaza in DB seturile de date noi:
+  - titluri
+  - certificat de recunoastere a diplomei de facultate
+
+# Date personale
+- mecanism de detectie ue - non ue pt enable disable certificat de recunoastere al calificarii
 
 # Done
 - dashboard daca nu are judet, nu afiseaza restul paginii

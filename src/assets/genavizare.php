@@ -239,7 +239,7 @@ $Y = $box1YOrigin;
   //echo "<pre>";
   //print_r($cppuri);
   //echo "</pre>";
-  
+
 
   foreach($cppuri as $nume_grup => $grup)
   {
@@ -247,7 +247,7 @@ $Y = $box1YOrigin;
 				echo "<pre>";
 				print_r($grup);
     echo "</pre>";*/
-			
+
     $nextBoxOffset=0;
     if (sizeof($grup) == 0)
 					continue;
@@ -259,7 +259,7 @@ $Y = $box1YOrigin;
 					/*echo "<pre>";
 				 print_r($cpz);
      echo "</pre>";*/
-					
+
       $nextBoxOffset+=25;
       $dlp_data_start = datex($cpz['data_start']);
       $dlp_data_end = datex($cpz['data_end']);
@@ -289,7 +289,7 @@ $Y = $box1YOrigin;
 				$specialitate .= '
 				<tr>
 				<th>
-					Specialitate: <span style="font-weight: bold;">'.$cpz['nume_cpp'].'</span>
+					<span style="font-weight: bold;">'.$cpz['nume_cpp'].'</span>
 				  <br>
 					Drept de practică: <span style="font-weight: bold;">'.$cpz['nume_tip_avizare'].'</span>
 				  <br>
@@ -355,8 +355,10 @@ switch ($date_cert['tip_cert'])
 		$pdf->SetFillColor(255, 255, 0);
 		$pdf->WriteHTMLCell(
       $pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $footer1, 0, 0, $fill, true, 'J', true);
-	break;
-	case "B":
+  break;
+
+case "B":
+    $Y += 5;
 		$pdf->SetFont('freeserif', '', 8);
 		$footer1 = '
 		<span style="font-weight: bold; text-decoration: underline;">Nota:</span>
@@ -381,10 +383,10 @@ switch ($date_cert['tip_cert'])
 		aprobată prin Legea nr. 103/2012, cu completările ulterioare.
 		';
 		$pdf->SetFillColor(255, 255, 0);
-		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
+		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $footer1, 0, 0, $fill, true, 'J', true);
 	break;
   case "C":
-
+    $Y += 5;
 		$pdf->SetFont('freeserif', '', 8);
 		$footer1 = '
 		<span style="font-weight: bold; text-decoration: underline;">Nota:</span>
@@ -409,7 +411,7 @@ switch ($date_cert['tip_cert'])
 		aprobată prin Legea nr. 103/2012, cu completările ulterioare.
 		';
 		$pdf->SetFillColor(255, 255, 0);
-		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $notaYOrigin, $footer1, 0, 0, $fill, true, 'J', true);
+		$pdf->WriteHTMLCell($pageWidth - $imgOrigin - $origin, 19, $origin + 1.5 , $Y, $footer1, 0, 0, $fill, true, 'J', true);
 	break;
 }
 $pdf->SetFont('freeserif', '', 10);

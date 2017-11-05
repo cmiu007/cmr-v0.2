@@ -52,16 +52,16 @@ export class FormSetService {
       'fac_dipl_nr': [{ value: '', disabled: true }, Validators.required],
       'fac_dipl_data': [{ value: '', disabled: true }, [Validators.required, this._validator.checkDate, this._validator.isInTheFuture]],
       'fac_doc_tip': [{ value: '', disabled: true }, Validators.required],
-      'fac_rec_emitent': [{ value: 0 }, Validators.required],
-      'fac_rec_serie': [{ value: '' }],
-      'fac_rec_numar': [{ value: '' }],
-      'fac_rec_data': [{ value: '' }, this._validator.checkDate],
+      'fac_rec_emitent': [0, [Validators.required]],
+      'fac_rec_serie': [''],
+      'fac_rec_numar': [''],
+      'fac_rec_data': ['', [this._validator.checkDate]],
       'updated': [{ value: '', disabled: true }],
       'ro': [{ value: '', disabled: true }]
     });
     if (data) {
-      console.log(data);
       data = this.cleanData(data);
+      console.log(data);
       formGroupEmpty.patchValue(data);
     }
     return formGroupEmpty;

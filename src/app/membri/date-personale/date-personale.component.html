@@ -116,8 +116,11 @@
         <span class="full-width">Titlu de calificare</span>
       </mat-card-title>
       <mat-card-content>
+
         <p class="mat-body-1">Diploma de licență pentru medici români sau care au absolvit facultatea in România
-          <br> Diploma de absolvire a facultății pentru medicii care au absolvit facultatea in altă țară</p>
+          <br> Diploma de absolvire a facultății pentru medicii care au absolvit facultatea in altă țară, împreuna cu titlul
+          de recunoaștere emis de M.S.</p>
+
         <section>
           <mat-form-field class="column">
             <input matInput formControlName="fac_absolv" type="text" placeholder="Facultate" [matAutocomplete]="facAuto" (click)="formDatePersonale.get('fac_absolv').setValue('')">
@@ -137,7 +140,8 @@
         </mat-autocomplete>
         <section>
           <mat-form-field class="column">
-            <input matInput formControlName="fac_doc_tip" type="text" placeholder="Tip Act Absolvire" [matAutocomplete]="facDocTip" (click)="formDatePersonale.get('fac_doc_tip').setValue('')" (blur)="checkTipActAbs()">
+            <input matInput formControlName="fac_doc_tip" type="text" placeholder="Tip Act Absolvire" [matAutocomplete]="facDocTip" (click)="formDatePersonale.get('fac_doc_tip').setValue('')"
+              (blur)="checkTipActAbs()">
           </mat-form-field>
           <mat-form-field class="column">
             <input matInput formControlName="fac_dipl_serie" type="text" placeholder="Serie">
@@ -161,36 +165,31 @@
 
       </mat-card-content>
     </mat-card>
-  </form>
 
-<!--
-  <mat-card>
-    <mat-card-title class="form-title">
-      <span class="full-width">Certificat de recunoaștere al calificării de medic</span>
-    </mat-card-title>
-    <mat-card-content>
-      <p class="mat-body-1">
-        <mat-checkbox [(ngModel)]="showCertRec">Are certificat de recunoastere</mat-checkbox>
-      </p>
-      <div *ngIf="showCertRec">
+
+    <mat-card>
+      <mat-card-title class="form-title">
+        <span class="full-width">Certificat de recunoaștere al calificării de medic</span>
+      </mat-card-title>
+      <mat-card-content>
+        <mat-checkbox (change)="onClickCertRec()" [checked]="showCertRec">Completează</mat-checkbox>
+        <div *ngIf="showCertRec">
           <section>
-
             <mat-form-field class="column">
               <input matInput formControlName="fac_rec_serie" type="text" placeholder="Serie">
             </mat-form-field>
             <mat-form-field class="column">
-              <input matInput formControlName="fac_rec_nr" type="text" placeholder="Numar">
+              <input matInput formControlName="fac_rec_numar" type="text" placeholder="Numar">
             </mat-form-field>
             <div class="column"></div>
             <mat-form-field class="column">
               <input matInput formControlName="fac_rec_data" type="text" placeholder="Data">
             </mat-form-field>
           </section>
-      </div>
-    </mat-card-content>
-  </mat-card> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-  <form [formGroup]="formDatePersonale">
     <mat-card>
       <mat-card-title class="form-title">
         <span class="full-width">Data Depunerii Juramantului la Sediul CMJ</span>

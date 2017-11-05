@@ -35,8 +35,8 @@ export class DatePersonaleComponent implements OnInit {
   formDatePersonale: FormGroup;
   formDatePersonaleData;
 
-  formCertRec: FormGroup;
-  formCertRecData;
+  // formCertRec: FormGroup;
+  // formCertRecData;
 
   loading = true;
   reloading = true;
@@ -117,7 +117,14 @@ export class DatePersonaleComponent implements OnInit {
 
   private setForm(): void {
     this.formDatePersonale = this._formSet.datePersonale(this.formDatePersonaleData);
-    this.formCertRec = this._formSet.fac_recunoastere();
+    console.log(this.formDatePersonale);
+    if (this.formDatePersonale.get('fac_rec_emitent').value === null || this.formDatePersonale.get('fac_rec_emitent').value === 0) {
+      this.showCertRec = false;
+    } else if (this.formDatePersonale.get('fac_rec_emitent').value === 1) {
+      this.showCertRec = true;
+    }
+
+    // this.formCertRec = this._formSet.fac_recunoastere();
   }
 
   private setFormMode() {
@@ -249,7 +256,24 @@ export class DatePersonaleComponent implements OnInit {
   }
 
   private isRequired(data) {
-    console.log(data);
+    // console.log(data);
+  }
+
+  onClickCertRec() {
+    // toggle status
+    // this.showCertRec = !this.showCertRec;
+    if (this.formDatePersonale.get('fac_rec_emitent').value === 0 || this.formDatePersonale.get('fac_rec_emitent').value === null) {
+      this.formDatePersonale.get('fac_rec_emitent').setValue(1);
+      this.showCertRec = true;
+      return;
+    }
+
+    if (this.formDatePersonale.get('fac_rec_emitent').value === 1) {
+      this.formDatePersonale.get('fac_rec_emitent').setValue(0);
+      this.showCertRec = false;
+      return;
+    }
+
   }
 
   private log() {
@@ -262,9 +286,11 @@ export class DatePersonaleComponent implements OnInit {
   checkTipActAbs(): void {
     if ( this.formDatePersonale.get('fac_doc_tip').value === 4) {
       this.showCertRec = true;
+      this.formDatePersonale.get('fac_rec_emitent').setValue(1);
       return;
     }
     this.showCertRec = false;
+    this.formDatePersonale.get('fac_rec_emitent').setValue(0);
   }
 
   private setRegistre(): void {

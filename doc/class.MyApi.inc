@@ -7,7 +7,7 @@ class MyApi extends Api
     protected $db;
     protected $payload;
     protected $raspuns;
-    
+
     public function __construct($request, $origin, $log, $db) {
         parent::__construct($request);
         $this->log=$log;
@@ -55,7 +55,7 @@ class MyApi extends Api
                     }
                 }
                 else{
-                        //$this->log->logDebug('Tokenul nu este in baza de date'); 
+                        //$this->log->logDebug('Tokenul nu este in baza de date');
                         $this->raspuns=array('result'=>'12', 'mesaj'=>'Token invalid');
                     }
             }
@@ -64,7 +64,7 @@ class MyApi extends Api
             }
         }
     }
-    
+
     protected function logout(){
         $this->log->logDebug("Logout");
         $query = 'delete from token where token = "'.$this->payload['token'].'"';
@@ -79,7 +79,7 @@ class MyApi extends Api
     protected function genCUIM($id){
         return $id+2791463582;
     }
-    
+
     protected function fin_dlp(){
         $this->log->logDebug("Finalizare DLP");
         $this->log->logDebug("DLP: ".$payload['id']);
@@ -91,7 +91,7 @@ class MyApi extends Api
         }
         return(array('result'=>'00', 'mesaj'=>'Inchis cu succes'));
     }
-    
+
     protected function adauga(){
         if ($this->raspuns != "") return $this->raspuns;
         switch($this->payload['actiune']){
@@ -116,13 +116,13 @@ class MyApi extends Api
                     }
                     if ($stmt->rowCount() > 0){ return(array('result' => '20', 'mesaj' => 'CNP-ul introdus mai exista in baza de date')); }
                     $date_pers=array_values($date_personale);
-                    // nu mergea add new medic		    
+                    // nu mergea add new medic
                             /// $query = "insert into mem (cnp, jud_id, data_juramant, cod_parafa, nume, initiala, prenume, nume_ant, cetatenie, act_ident_tip_id, act_ident_serie, act_ident_nr,
                             //act_ident_exp_date,
                     // fac_absolv, fac_promotie, fac_dipl_serie, fac_dipl_nr, fac_dipl_data, fac_dipl_adev) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     $query = "insert into mem (cnp, jud_id, data_juramant, cod_parafa, nume, initiala, prenume, nume_ant, cetatenie, act_ident_tip_id, act_ident_serie, act_ident_nr,
-                    act_ident_exp_date, fac_absolv, fac_promotie, fac_dipl_serie, fac_dipl_nr, fac_dipl_data, fac_doc_tip) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    //$this->log->logDebug("Query adaugare:".$query);
+                    act_ident_exp_date, fac_absolv, fac_promotie, fac_dipl_serie, fac_dipl_nr, fac_dipl_data, fac_doc_tip, fac_rec_emitent, fac_rec_serie, fac_rec_numar, fac_rec_data) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    $this->log->logDebug("Query adaugare:".$query);
                     $stmt = $this->db->prepare($query);
                     try{ $stmt->execute($date_pers); }
                     catch (Exception $e){
@@ -196,14 +196,14 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }   
+                    }
                 $row = $stmt->fetch();
                 $this->log->logDebug("ID medic: ".$id." Judet medic: ".$row['jud_id']."  Judet utilizator: ".$this->cmj);
                 if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
                 {
                     $data = array('result' => '14', 'mesaj' => 'Judetul din date diferit de judetul operatorului');
                     return($data);
-                }   
+                }
                 //foreach ($cppuri as $cpp){
                     $query = "insert into mem_cpp (id_mem, reg_cpp_tip_id, reg_cpp_id, grad_prof_cpp_id, date_start, date_end, emitent, act_serie, act_numar, act_data, act_descriere, obs)
                     values (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -227,7 +227,7 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }    
+                    }
                 //}
                 $result=array('result'=>'00', 'mesaj'=>'Adaugare cpp cu succes');
                 return($result);
@@ -248,14 +248,14 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }   
+                    }
                 $row = $stmt->fetch();
                 $this->log->logDebug("ID medic: ".$id." Judet medic: ".$row['jud_id']."  Judet utilizator: ".$this->cmj);
                 if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
                 {
                     $data = array('result' => '14', 'mesaj' => 'Judetul din date diferit de judetul operatorului');
                     return($data);
-                }   
+                }
                 //foreach ($cppuri as $cpp){
                     $query = "insert into mem_contact (id_mem, email, telefon, dummy) values (?,?,?,?)";
                     $stmt = $this->db->prepare($query);
@@ -278,7 +278,7 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }    
+                    }
                 //}
                 $result=array('result'=>'00', 'mesaj'=>'Adaugare contact cu succes');
                 return($result);
@@ -311,7 +311,7 @@ class MyApi extends Api
                     $this->log->LogError("DB ERROR: ".$e->getMessage());
                     $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                     return ($data);
-                }    
+                }
                 $result=array('result'=>'00', 'mesaj'=>'Adaugare in registrul de locuri de munca cu succes');
                 return($result);
                 $this->log->logDebug("Adaugare contact cu succes");
@@ -331,14 +331,14 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }   
+                    }
                 $row = $stmt->fetch();
                 $this->log->logDebug("ID medic: ".$id." Judet medic: ".$row['jud_id']."  Judet utilizator: ".$this->cmj);
                 if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
                 {
                     $data = array('result' => '14', 'mesaj' => 'Judetul din date diferit de judetul operatorului');
                     return($data);
-                }   
+                }
                 //foreach ($cppuri as $cpp){
                     $query = "insert into mem_loc_munca (id_mem, reg_loc_munca_id, reg_cpp_id, full_time, data_start, data_end) values (?,?,?,?,?,?)";
                     $stmt = $this->db->prepare($query);
@@ -361,7 +361,7 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }    
+                    }
                 //}
                 $result=array('result'=>'00', 'mesaj'=>'Adaugare loc de munca cu succes');
                 return($result);
@@ -382,14 +382,14 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }   
+                    }
                 $row = $stmt->fetch();
                 $this->log->logDebug("ID medic: ".$id." Judet medic: ".$row['jud_id']."  Judet utilizator: ".$this->cmj);
                 if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
                 {
                     $data = array('result' => '14', 'mesaj' => 'Judetul din date diferit de judetul operatorului');
                     return($data);
-		}   
+		}
 		    // original $query = "insert into mem_asig (id_mem, id_asigurator, polita_serie, polita_nr, data_start, data_end, id_dlp) values (?,?,?,?,?,?,?)";
                     $query = "insert into mem_asig (id_mem, id_asigurator, id_dlp, id_cpp, status, tip, polita_serie, polita_nr, data_start, data_end) values (?,?,?,?,?,?,?,?,?,?)";
                     $stmt = $this->db->prepare($query);
@@ -412,7 +412,7 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }    
+                    }
                 $result=array('result'=>'00', 'mesaj'=>'Adaugare asigurare cu succes');
                 return($result);
                 $this->log->logDebug("Adaugare asigurare cu succes");
@@ -432,7 +432,7 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
-                    }   
+                    }
                 $row = $stmt->fetch();
                 $this->log->logDebug("ID medic: ".$id." Judet medic: ".$row['jud_id']."  Judet utilizator: ".$this->cmj);
                 if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
@@ -456,12 +456,12 @@ class MyApi extends Api
                 }
                 $row = $stmt->fetch();
                 $certificat = $row['id_certificat'];
-                
+
                 $cp = array_values($dlp);
                 $cp[5] = $certificat;
                 $ll = print_r($cp, true);
                 $this->log->logDebug("Payload dlp: ".$ll);
-                
+
   	        // $query = "insert into mem_dlp (id_mem, dlp_data_start, dlp_data_end, status, id_certificat) values (?,?,?,?,?)";
 		// de pus inchis cf:
     		// - 1 pt dlp tip A
@@ -471,7 +471,7 @@ class MyApi extends Api
     		// - 11 pt dlp tip vechi, versiune 1
 		$query = "insert into mem_dlp (id_mem, tip, dlp_data_start, dlp_data_end, status, id_certificat) values (?,?,?,?,?,?)";
 		$stmt = $this->db->prepare($query);
-                
+
                 try{
                     $stmt->execute($cp);
                 }
@@ -519,16 +519,16 @@ class MyApi extends Api
                                 $cp[3]=3;
                             break;
                         }
-                        
+
                         $continut=json_encode($cont);
-                        
+
                         $query = "insert into mem_certificat (id_mem, data_start, data_invalidare, reg_cert_id, cod_qr, status, continut) values (?,?,?,?,?,?,?)";
                         //$this->log->logDebug("Query: ".$query);
                         $cp[]=$continut;
                         $stmt = $this->db->prepare($query);
                         $ll = print_r($cp, true);
                         $this->log->logDebug("Date: ".$ll);
-                        
+
                         try{
                             $stmt->execute($cp);
                         }
@@ -569,21 +569,21 @@ class MyApi extends Api
                             $this->log->LogError("DB ERROR: ".$e->getMessage());
                             $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                             return ($data);
-                        }   
+                        }
                     $row = $stmt->fetch();
                     if (($row['jud_id'] != $this->cmj)&&($this->cmj != '160'))
                     {
                         $data = array('result' => '14', 'mesaj' => 'Judetul din date diferit de judetul operatorului');
                         return($data);
                     }
-                    
+
                     $cp = array_values($titlu);
                     $ll = print_r($cp, true);
                     $this->log->logDebug("Payload titlu: ".$ll);
-                    
+
                     $query = "insert into mem_titlu (id_mem, reg_titlu_id, reg_facultate_id, status, data_start) values (?,?,?,?,?)";
                     $stmt = $this->db->prepare($query);
-                    
+
                     try{
                         $stmt->execute($cp);
                     }
@@ -607,7 +607,7 @@ class MyApi extends Api
                     return($result);
                     $this->log->logDebug("Adaugare dlp cu succes");
                 }
-                
+
             break;
             case "cmj":
                 {
@@ -615,9 +615,9 @@ class MyApi extends Api
                 $cp = array_values($cmj);
                 $ll = print_r($cp, true);
                 $this->log->logDebug("Payload dlp: ".$ll);
-                
+
                 $query = "insert into reg_cmj (id_reg_jud, email, telefon, fax, adresa, presedinte) values (?,?,?,?,?,?)";
-                
+
                 $stmt = $this->db->prepare($query);
                 try{
                     $stmt->execute($cp);
@@ -643,16 +643,16 @@ class MyApi extends Api
                 $this->log->logDebug("Adaugare dlp cu succes");
                 }
             break;
-        
+
         }
-        
+
      }
-	
+
 	protected function modifica(){
 		if ($this->raspuns != "") return $this->raspuns;
 		switch($this->payload['actiune']){
 			case "date_personale":
-                {  
+                {
                     //$ll = print_r($this->payload, true);
                     //$this->log->logDebug("Payload: ".$ll);
                     $date_personale = $this->payload['data'];
@@ -676,7 +676,7 @@ class MyApi extends Api
                     $actiune .= $date_vechi;
                     $actiune .= '\nDate modificate: ';
                     $actiune .= $date_noi;
-                    $this->log->LogError("Modificare: ".$actiune);                
+                    $this->log->LogError("Modificare: ".$actiune);
                     $query = "update mem set ";
                     $date = "";
                     /*
@@ -696,7 +696,13 @@ class MyApi extends Api
                     if ($date_personale['fac_dipl_nr'] != ""){ $query .= " fac_dipl_nr = ?,"; $date[] = $date_personale['fac_dipl_nr']; }
                     if ($date_personale['fac_dipl_data'] != ""){ $query .= " fac_dipl_data = ?,"; $date[] = $date_personale['fac_dipl_data']; }
                     if ($date_personale['fac_doc_tip'] !=""){ $query .= " fac_doc_tip = ?,"; $date[] = $date_personale['fac_doc_tip']; }
-                    
+
+
+                    if ($date_personale['fac_rec_emitent'] !=""){ $query .= " fac_rec_emitent = ?,"; $date[] = $date_personale['fac_rec_emitent']; }
+                    if ($date_personale['fac_rec_serie'] !=""){ $query .= " fac_rec_serie = ?,"; $date[] = $date_personale['fac_rec_serie']; }
+                    if ($date_personale['fac_rec_numar'] !=""){ $query .= " fac_rec_numar = ?,"; $date[] = $date_personale['fac_rec_numar']; }
+                    if ($date_personale['fac_rec_data'] !=""){ $query .= " fac_rec_data = ?,"; $date[] = $date_personale['fac_rec_data']; }
+
                     $query .= "initiala =?, prenume=? ";
                     $query .= " where id_mem=?";
                     $stmt = $this->db->prepare($query);
@@ -818,9 +824,9 @@ class MyApi extends Api
                         $this->log->LogError("DB ERROR: ".$e->getMessage());
                         return(array('result' => '01' , 'mesaj' => $e->getMessage()));
                     }
-                    
+
                     $this->log->logDebug("Modificare cu succes");
-                    return(array('result'=>'00', 'mesaj'=>'Modificare cu succes')); 
+                    return(array('result'=>'00', 'mesaj'=>'Modificare cu succes'));
                 }
             break;
             case "contact":
@@ -861,7 +867,7 @@ class MyApi extends Api
                     }
                     $result=array('result'=>'00', 'mesaj'=>'Modificare contact cu succes');
                     $this->log->logDebug("Modificare contact cu succes");
-                    return($result); 
+                    return($result);
                 }
             break;
             case "asigurare":
@@ -880,7 +886,7 @@ class MyApi extends Api
                         $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                         return ($data);
                     }
-                    
+
                     if ($stmt->rowCount() > 0 )
                     {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -924,7 +930,7 @@ class MyApi extends Api
 		    // original:
 		    // $this->log->logDebug("Modificare contact cu succes");
                     $this->log->logDebug("Modificare asigurare cu succes");
-                    return($result); 
+                    return($result);
                 }
             break;
             case "dlp":
@@ -942,14 +948,14 @@ class MyApi extends Api
                     }
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $date_vechi = implode(',',$row);
-                    // warning 
+                    // warning
                     $date_noi = implode(',',$dlp);
                     $actiune = 'Date anterioare: ';
                     $actiune .= $date_vechi;
                     $actiune .= '\nDate modificate: ';
                     $actiune .= $date_noi;
 		    // verificare data_end si daca nu este
-		    //  $query = "update mem_dlp set dlp_data_start=?, dlp_data_end=?, status=? where id_dlp=?"; 
+		    //  $query = "update mem_dlp set dlp_data_start=?, dlp_data_end=?, status=? where id_dlp=?";
                     $query = "update mem_dlp set tip=?, dlp_data_start=?, dlp_data_end=?, status=? where id_dlp=?";
                     $medic=array_shift($dlp);
                     $stmt = $this->db->prepare($query);
@@ -972,7 +978,7 @@ class MyApi extends Api
                     }
                     $result=array('result'=>'00', 'mesaj'=>'Modificare dlp cu succes');
                     $this->log->logDebug("Modificare dlp cu succes");
-                    return($result); 
+                    return($result);
                 }
             break;
             case "certificat":
@@ -1021,13 +1027,13 @@ class MyApi extends Api
                     }
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $date_vechi = implode(',',$row);
-                    // warning 
+                    // warning
                     $date_noi = implode(',',$dlp);
                     $actiune = 'Date anterioare: ';
                     $actiune .= $date_vechi;
                     $actiune .= '\nDate modificate: ';
                     $actiune .= $date_noi;
-                    // verificare data_end si daca nu este 
+                    // verificare data_end si daca nu este
                     $query = "update mem_titlu set data_start=?, data_stop=?, status=? where id_titlu=?";
                     $medic=array_shift($dlp);
                     $stmt = $this->db->prepare($query);
@@ -1050,7 +1056,7 @@ class MyApi extends Api
                     }
                     $result=array('result'=>'00', 'mesaj'=>'Modificare titlu cu succes');
                     $this->log->logDebug("Modificare titlu cu succes");
-                    return($result); 
+                    return($result);
                 }
                 break;
             case "cmj":
@@ -1068,13 +1074,13 @@ class MyApi extends Api
                     }
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $date_vechi = implode(',',$row);
-                    // warning 
+                    // warning
                     $date_noi = implode(',',$cmj);
                     $actiune = 'Date anterioare: ';
                     $actiune .= $date_vechi;
                     $actiune .= '\nDate modificate: ';
                     $actiune .= $date_noi;
-                    // verificare data_end si daca nu este 
+                    // verificare data_end si daca nu este
                     $query = "update reg_cmj set email=?, telefon=?, fax=?, adresa=?, presedinte=? where id_cmj=?";
                     $medic=array_shift($cmj);
                     $stmt = $this->db->prepare($query);
@@ -1097,14 +1103,14 @@ class MyApi extends Api
                     }
                     $result=array('result'=>'00', 'mesaj'=>'Modificare cmj cu succes');
                     $this->log->logDebug("Modificare CMJ cu succes");
-                    return($result); 
+                    return($result);
                 }
             break;
 		}
 	}
-    
 
-	
+
+
     protected function get(){
         if ($this->raspuns != "") return $this->raspuns;
         $actiune=$this->payload['actiune'];
@@ -1185,7 +1191,7 @@ class MyApi extends Api
                         return ($data);
                     }
                     $raspuns = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
+
                     $raspuns["ro"] ='false';
                     return $raspuns;
                 }
@@ -1203,7 +1209,7 @@ class MyApi extends Api
                     return ($data);
                 }
 				$raspuns = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 $raspuns["ro"] ='false';
                 return $raspuns;
             }
@@ -1221,7 +1227,7 @@ class MyApi extends Api
                     return ($data);
                 }
 				$raspuns = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 $raspuns["ro"] ='false';
                 return $raspuns;
             }
@@ -1239,7 +1245,7 @@ class MyApi extends Api
                     return ($data);
                 }
 				$raspuns = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 $raspuns["ro"] ='false';
                 return $raspuns;
             }
@@ -1257,7 +1263,7 @@ class MyApi extends Api
                     return ($data);
                 }
 				$raspuns = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 $raspuns["ro"] ='false';
                 return $raspuns;
             }
@@ -1305,7 +1311,7 @@ class MyApi extends Api
     protected function lista(){
         if ($this->raspuns != "")
             return $this->raspuns;
-        
+
         $actiune=$this->payload['actiune'];
         switch ($actiune)
         {
@@ -1369,8 +1375,8 @@ class MyApi extends Api
 		//									 where jud_id = '".$jud_id."' and (nume like '%".$cautare."%'
 		//									 or prenume like '%".$cautare."%'
 		//									 or cuim like '%".$cautare."%'
-		//									 or cnp like '%".$cautare."%') order by jud_id, nume ";    
-                
+		//									 or cnp like '%".$cautare."%') order by jud_id, nume ";
+
                 try{
                     $stmt = $this->db->query($query);
                 }
@@ -1395,7 +1401,7 @@ class MyApi extends Api
                 //$this->log->logDebug($ll);
                 return $raspuns;
                 }
-            break;            
+            break;
             case "adrese":
             {
                 //$this->log->logDebug("Lista adrese pentru ".$id.":");
@@ -1417,7 +1423,7 @@ class MyApi extends Api
                 //$ll = print_r($raspuns,true);
                 //$this->log->logDebug($ll);
                 return $raspuns;
-                
+
             }
             break;
             case "cpp":
@@ -1532,13 +1538,13 @@ class MyApi extends Api
                 $this->log->logDebug("Lista dlp pentru ".$id.":");
                 $ll = print_r($this->payload, true);
                 $this->log->logDebug("Payload: ".$ll);
-                
+
                 if (isset($this->payload['cert']))
                     $query = "select * from mem_dlp where id_mem ='".$id."' and id_certificat='".$this->payload['cert']."' order by dlp_data_start asc";
                 else
                     $query = "select * from mem_dlp where id_mem ='".$id."' order by dlp_data_start asc";
-                
-                
+
+
                 try{
                     $stmt = $this->db->query($query);
                 }
@@ -1634,12 +1640,12 @@ class MyApi extends Api
             break;
         }
     }
-    
+
     /*****************************
      * Sterge
      *
      * ***************************/
-    
+
     protected function sterge(){
         if ($this->raspuns != "") return $this->raspuns;
         $actiune=$this->payload['actiune'];
@@ -1656,7 +1662,7 @@ class MyApi extends Api
                     $this->log->LogError("DB ERROR: ".$e->getMessage());
                     $data = array('result' => '01' , 'mesaj' => $e->getMessage());
                     return ($data);
-                }   
+                }
                 try{
 					$stmt = $this->db->query("delete from mem_dlp where id_dlp = '".$id."'");
 				}
@@ -1671,9 +1677,9 @@ class MyApi extends Api
             break;
         }
      }
-     
-    
-    
+
+
+
     /**
      *  Get_certificat
      *
@@ -1682,7 +1688,7 @@ class MyApi extends Api
      * pentru confirmarea lor de catre operator.
      *
      */
-    
+
     protected function get_certificat(){
         if ($this->raspuns != "") return $this->raspuns;
         $id=$this->payload['id'];
@@ -1706,8 +1712,12 @@ class MyApi extends Api
                     break;
                 }
         }
-        $query = "select mem.nume, mem.prenume, mem.cuim, mem.cnp, mem.fac_promotie as promotie, mem.fac_dipl_serie, mem.fac_dipl_nr, reg_facultate.nume_facultate as facultate, mem.data_juramant, reg_jud.nume_cmj as judet
-        from mem inner join reg_facultate on mem.fac_absolv = reg_facultate.id_facultate inner join reg_jud on mem.jud_id = reg_jud.id_cmj where mem.id_mem = '".$id."'";
+        $query = "select mem.nume, mem.prenume, mem.cuim, mem.cnp, mem.fac_promotie as promotie, mem.fac_dipl_serie, mem.fac_dipl_nr, reg_facultate.nume_facultate as facultate,
+        mem.data_juramant, reg_jud.nume_cmj as judet, mem_certificat.data_start
+        from mem inner join reg_facultate on mem.fac_absolv = reg_facultate.id_facultate
+        inner join reg_jud on mem.jud_id = reg_jud.id_cmj
+        inner join mem_certificat on mem_certificat.id_mem = mem.id_mem
+        where mem.id_mem = '".$id."'";
         try{
         $stmt = $this->db->query($query);
         }
@@ -1717,10 +1727,10 @@ class MyApi extends Api
             return ($data);
         }
         $medic = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($tip_cert == "")
         {
-            if ($medic['promotie'] < 2005)
+            if ($medic['promotie'] <= 2005)
                 $tip_cert = "C";
             else
                 $tip_cert = "B";
@@ -1730,9 +1740,9 @@ class MyApi extends Api
         $cuim = $medic['cuim'];
         $facultate = $medic['facultate'];
         $promotie = $medic['promotie'];
-        
+
         $this->log->LogError("Tip certificat: ".$tip_cert);
-        $now = date("d-m-Y");
+        $now = $medic['data_start'];
         switch ($tip_cert)
         {
             case "A":
@@ -1759,37 +1769,24 @@ class MyApi extends Api
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $spec[] = $sp;
                            }
-                        if (($rw['tip'] == '1') && ($rw['date_end'] == '0000-00-00'))
+                        if ($rw['tip'] == '1')  // && ($rw['date_end'] == '0000-00-00')
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
                            }
-                            
+                        if ($rw['tip'] == '7')  //  && ($rw['date_end'] == '0000-00-00')
+                            {
+                            $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident terminat',];
+                            $spec[] = $sp;
+                           }
+
                         if (($rw['tip'] == 3) || ($rw['tip'] == 4) || ($rw['tip'] == 5) || ($rw['tip'] == 6))
                            {
                             $su = ['specialitate' => $rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $sup[] = $su;
                            }
-                        
+
                     }
-                    $query = "select reg_asigurator.nume_asigurator as asigurator, mem_asig.polita_serie, mem_asig.polita_nr, mem_asig.data_start, mem_asig.data_end
-                    from mem_asig inner join reg_asigurator on mem_asig.id_asigurator = reg_asigurator.id_asigurator where mem_asig.id_mem = '".$id."'";
-                    try{
-                        $stmt = $this->db->query($query);
-                    }
-                    catch(Exception $e){
-                            $this->log->LogError("DB ERROR: ".$e->getMessage());
-                            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                            return ($data);
-                    }
-                    $asigurare = array();
-                    while($rw = $stmt->fetch())
-                    {
-                        $as = ['asigurator' => $rw['asigurator'], 'polita_serie' => $rw['polita_serie'], 'polita_nr' => $rw['polita_nr'], 'data_start' => $rw['data_start'], 'data_end' => $rw['data_end'],];
-                        $asigurare[] = $as;
-                        
-                    }
-                    
                     $certificat = [
                        "tip_cert" => $tip_cert,
                        "judet" => $medic['judet'],
@@ -1804,10 +1801,8 @@ class MyApi extends Api
                        "data_juramant" => $medic['data_juramant'],
                        "specialitati" => $spec,
                        "superspecialitate" => $sup,
-                       //"asigurare" => $asigurare,
-                       //"cpp" => $cpp,
-                       ];    
-            
+                       ];
+
             break;
             case "B":
                     $query = "select mem_cpp.reg_cpp_tip_id as tip, reg_cpp.nume_cpp as specialitate, mem_cpp.date_start, mem_cpp.date_end
@@ -1827,16 +1822,16 @@ class MyApi extends Api
                         $this->log->logDebug("Rw: ".$ll);
                         if ($rw['tip'] == '1')
                            {
-                            $sp = ['specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
+                            $sp = ['tip' => $rw['tip'], 'specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
                             $spec[] = $sp;
                             }
                         else
                             {
-                            $sp = ['specialitate'=>$rw['specialitate'],];
+                            $sp = ['tip' => $rw['tip'], 'specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
                             $spec[] = $sp;
                             }
                     }
-                
+
                     $certificat = [
                        "tip_cert" => $tip_cert,
                         "judet" => $medic['judet'],
@@ -1851,10 +1846,13 @@ class MyApi extends Api
                        "dipl_nr" => $medic['fac_dipl_nr'],
                        "data_cert" => $now,
                        "specialitati" => $spec,
-                       
-                       ];    
+
+                       ];
             break;
             case "C":
+                    $spec=array();
+                    $sup = array();
+
                    $query = "select mem_cpp.reg_cpp_tip_id as tip, mem_cpp.date_start, mem_cpp.date_end, reg_cpp.nume_cpp as specialitate, reg_gr_prof.nume_gr_prof as grad
                     from mem_cpp inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
                     left outer join reg_gr_prof on mem_cpp.grad_prof_cpp_id=reg_gr_prof.id_gr_prof
@@ -1872,20 +1870,24 @@ class MyApi extends Api
                         $ll=print_r($rw,true);
                         $this->log->logDebug("Rw: ".$ll);
                          $cpp[] = $rw;
-                        if (($rw['tip'] == '1') && ($rw['date_end'] == '0000-00-00'))
+                        if ($rw['tip'] == '1')
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
                            }
-                            
+                        if ($rw['tip'] == '7')
+                            {
+                            $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident terminat',];
+                            $spec[] = $sp;
+                           }
                         if (($rw['tip'] == 3) || ($rw['tip'] == 4) || ($rw['tip'] == 5) || ($rw['tip'] == 6))
                            {
                             $su = ['specialitate' => $rw['specialitate'], 'gr_prof' => "",];
                             $sup[] = $su;
                            }
-                        
+
                     }
-                
+
                     $certificat = [
                        "tip_cert" => $tip_cert,
                         "judet" => $medic['judet'],
@@ -1901,13 +1903,15 @@ class MyApi extends Api
                        "data_cert" => $now,
                        "specialitati" => $spec,
                        "superspecialitate" => $sup,
-                       ];    
+                       ];
             break;
         }
+        $ll = print_r($certificat, true);
+        $this->log->logDebug("Rw: ".$ll);
         return $certificat;
     }
-    
-    
+
+
     protected function get_cert($id){
         if ($this->raspuns != "")
             return $this->raspuns;
@@ -1931,8 +1935,12 @@ class MyApi extends Api
                     break;
                 }
         }
-        $query = "select mem.nume, mem.prenume, mem.cuim, mem.cnp, mem.fac_promotie as promotie, mem.fac_dipl_serie, mem.fac_dipl_nr, reg_facultate.nume_facultate as facultate, mem.data_juramant, reg_jud.nume_cmj as judet
-        from mem inner join reg_facultate on mem.fac_absolv = reg_facultate.id_facultate inner join reg_jud on mem.jud_id = reg_jud.id_cmj where mem.id_mem = '".$id."'";
+        $query = "select mem.nume, mem.prenume, mem.cuim, mem.cnp, mem.fac_promotie as promotie, mem.fac_dipl_serie, mem.fac_dipl_nr, reg_facultate.nume_facultate as facultate,
+        mem.data_juramant, reg_jud.nume_cmj as judet, mem_certificat.data_start
+        from mem inner join reg_facultate on mem.fac_absolv = reg_facultate.id_facultate
+        inner join reg_jud on mem.jud_id = reg_jud.id_cmj
+        inner join mem_certificat on mem_certificat.id_mem = mem.id_mem
+        where mem.id_mem = '".$id."'";
         try{
         $stmt = $this->db->query($query);
         }
@@ -1942,10 +1950,10 @@ class MyApi extends Api
             return ($data);
         }
         $medic = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($tip_cert == "")
         {
-            if ($medic['promotie'] < 2005)
+            if ($medic['promotie'] <= 2005)
                 $tip_cert = "C";
             else
                 $tip_cert = "B";
@@ -1955,9 +1963,9 @@ class MyApi extends Api
         $cuim = $medic['cuim'];
         $facultate = $medic['facultate'];
         $promotie = $medic['promotie'];
-        
+
         $this->log->LogError("Tip certificat: ".$tip_cert);
-        $now = date("d-m-Y");
+        $now = $medic['data_start'];
         switch ($tip_cert)
         {
             case "A":
@@ -1984,37 +1992,24 @@ class MyApi extends Api
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $spec[] = $sp;
                            }
-                        if (($rw['tip'] == '1') && ($rw['date_end'] == '0000-00-00'))
+                        if ($rw['tip'] == '1')  // && ($rw['date_end'] == '0000-00-00')
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
                            }
-                            
+                        if ($rw['tip'] == '7')  //  && ($rw['date_end'] == '0000-00-00')
+                            {
+                            $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident terminat',];
+                            $spec[] = $sp;
+                           }
+
                         if (($rw['tip'] == 3) || ($rw['tip'] == 4) || ($rw['tip'] == 5) || ($rw['tip'] == 6))
                            {
                             $su = ['specialitate' => $rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $sup[] = $su;
                            }
-                        
+
                     }
-                    $query = "select reg_asigurator.nume_asigurator as asigurator, mem_asig.polita_serie, mem_asig.polita_nr, mem_asig.data_start, mem_asig.data_end
-                    from mem_asig inner join reg_asigurator on mem_asig.id_asigurator = reg_asigurator.id_asigurator where mem_asig.id_mem = '".$id."'";
-                    try{
-                        $stmt = $this->db->query($query);
-                    }
-                    catch(Exception $e){
-                            $this->log->LogError("DB ERROR: ".$e->getMessage());
-                            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                            return ($data);
-                    }
-                    $asigurare = array();
-                    while($rw = $stmt->fetch())
-                    {
-                        $as = ['asigurator' => $rw['asigurator'], 'polita_serie' => $rw['polita_serie'], 'polita_nr' => $rw['polita_nr'], 'data_start' => $rw['data_start'], 'data_end' => $rw['data_end'],];
-                        $asigurare[] = $as;
-                        
-                    }
-                    
                     $certificat = [
                        "tip_cert" => $tip_cert,
                        "judet" => $medic['judet'],
@@ -2029,10 +2024,8 @@ class MyApi extends Api
                        "data_juramant" => $medic['data_juramant'],
                        "specialitati" => $spec,
                        "superspecialitate" => $sup,
-                       //"asigurare" => $asigurare,
-                       //"cpp" => $cpp,
-                       ];    
-            
+                       ];
+
             break;
             case "B":
                     $query = "select mem_cpp.reg_cpp_tip_id as tip, reg_cpp.nume_cpp as specialitate, mem_cpp.date_start, mem_cpp.date_end
@@ -2052,16 +2045,16 @@ class MyApi extends Api
                         $this->log->logDebug("Rw: ".$ll);
                         if ($rw['tip'] == '1')
                            {
-                            $sp = ['specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
+                            $sp = ['tip' => $rw['tip'], 'specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
                             $spec[] = $sp;
                             }
                         else
                             {
-                            $sp = ['specialitate'=>$rw['specialitate'],];
+                            $sp = ['tip' => $rw['tip'], 'specialitate'=>$rw['specialitate'], 'data_start' => $rw['date_start'], 'data_end' => $rw['date_end'],];
                             $spec[] = $sp;
                             }
                     }
-                
+
                     $certificat = [
                        "tip_cert" => $tip_cert,
                         "judet" => $medic['judet'],
@@ -2076,12 +2069,13 @@ class MyApi extends Api
                        "dipl_nr" => $medic['fac_dipl_nr'],
                        "data_cert" => $now,
                        "specialitati" => $spec,
-                       
-                       ];    
+
+                       ];
             break;
             case "C":
-                    $spec = array();
+                    $spec=array();
                     $sup = array();
+
                    $query = "select mem_cpp.reg_cpp_tip_id as tip, mem_cpp.date_start, mem_cpp.date_end, reg_cpp.nume_cpp as specialitate, reg_gr_prof.nume_gr_prof as grad
                     from mem_cpp inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
                     left outer join reg_gr_prof on mem_cpp.grad_prof_cpp_id=reg_gr_prof.id_gr_prof
@@ -2099,20 +2093,24 @@ class MyApi extends Api
                         $ll=print_r($rw,true);
                         $this->log->logDebug("Rw: ".$ll);
                          $cpp[] = $rw;
-                        if (($rw['tip'] == '1') && ($rw['date_end'] == '0000-00-00'))
+                        if ($rw['tip'] == '1')
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
                            }
-                            
+                        if ($rw['tip'] == '7')
+                            {
+                            $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident terminat',];
+                            $spec[] = $sp;
+                           }
                         if (($rw['tip'] == 3) || ($rw['tip'] == 4) || ($rw['tip'] == 5) || ($rw['tip'] == 6))
                            {
                             $su = ['specialitate' => $rw['specialitate'], 'gr_prof' => "",];
                             $sup[] = $su;
                            }
-                        
+
                     }
-                
+
                     $certificat = [
                        "tip_cert" => $tip_cert,
                         "judet" => $medic['judet'],
@@ -2128,172 +2126,208 @@ class MyApi extends Api
                        "data_cert" => $now,
                        "specialitati" => $spec,
                        "superspecialitate" => $sup,
-                       ];    
+                       ];
             break;
         }
+        $ll = print_r($certificat, true);
+        $this->log->logDebug("Rw: ".$ll);
         return $certificat;
     }
-    
+
     protected function getaviz(){
         //$this->log->LogDebug("Get avizare.");
         if ($this->raspuns != "") return $this->raspuns;
         //$ll=print_r($this->payload, true);
         //$this->log->logDebug("Row: ".$ll);
-        
+
         $id=$this->payload['id'];
-        $query = "select * from mem_certificat where id_certificat = '".$id."'";
+        $query = "select * from mem_dlp where id_dlp = '".$id."'";
         try{
             $stmt = $this->db->query($query);
-        } 
+        }
         catch(Exception $e){
             $this->log->LogError("DB ERROR: ".$e->getMessage());
             $data = array('result' => '01' , 'mesaj' => $e->getMessage());
             return ($data);
-        }    
+        }
+        $dlp = $stmt->fetch();
+        $query = "select * from mem_certificat where id_certificat = '".$dlp['id_certificat']."'";
+        try{
+            $stmt = $this->db->query($query);
+        }
+        catch(Exception $e){
+            $this->log->LogError("DB ERROR: ".$e->getMessage());
+            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+            return ($data);
+        }
         $certificat = $stmt->fetch();
+
         $query = "select * from mem where id_mem = '".$certificat['id_mem']."'";
         try{
             $stmt = $this->db->query($query);
-        } 
-        catch(Exception $e){
-            $this->log->LogError("DB ERROR: ".$e->getMessage());
-            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-            return ($data);
-        }    
-        $medic = $stmt->fetch();
-        
-        
-        
-        $query = 'select distinct reg_cpp_grup.nume_cpp_grup
-            from mem_dlp inner join mem_asig on mem_asig.id_dlp=mem_dlp.id_dlp
-            inner join reg_asigurator on mem_asig.id_asigurator=reg_asigurator.id_asigurator
-            inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
-            inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
-            inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp 
-            where mem_dlp.id_dlp = "'.$id.'"';
-        try{
-            $stmt = $this->db->query($query);
-        } 
+        }
         catch(Exception $e){
             $this->log->LogError("DB ERROR: ".$e->getMessage());
             $data = array('result' => '01' , 'mesaj' => $e->getMessage());
             return ($data);
         }
-        
-        $grup=array();
-        while ($rw = $stmt->fetch())
-        {
-            $ll=print_r($rw, true);
-            $this->log->logDebug("ID: ".$id.", Row: ".$ll);
-            $query = 'select * from mem_asig inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
-                            inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
-                            inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp 
-            where mem_asig.id_dlp = "'.$id.'" and reg_cpp_grup.nume_cpp_grup = "'.$rw['nume_cpp_grup'].'"';
-            try{
-                $st = $this->db->query($query);
-            } 
-            catch(Exception $e){
-                $this->log->LogError("DB ERROR: ".$e->getMessage());
-                $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                return ($data);
-            }
-            $specialitati=array();
-            while ($rezultat = $st->fetch()){
-                switch ($rezultat['tip']){
-                    case "1":
-                        $q='select mem_asig.tip, mem_asig.data_start, mem_asig.data_end, mem_asig.polita_serie, mem_asig.polita_nr, reg_asigurator.nume_asigurator, mem_cpp.id_cpp, reg_cpp.nume_cpp,
-                         reg_gr_prof.nume_gr_prof, reg_tip_avizare.nume_tip_avizare
-                        from mem_asig inner join reg_asigurator on mem_asig.id_asigurator=reg_asigurator.id_asigurator
-                            inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
-                            inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
-                            inner join reg_gr_prof on reg_gr_prof.id_gr_prof=mem_cpp.grad_prof_cpp_id
-                            inner join reg_tip_avizare on reg_tip_avizare.id_tip_avizare = mem_asig.tip
-                        where mem_asig.id_asig = "'.$rezultat['id_asig'].'"';
-                        try{
-                            $state = $this->db->query($q);
-                        } 
-                        catch(Exception $e){
-                            $this->log->LogError("DB ERROR: ".$e->getMessage());
-                            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                            return ($data);
-                        }
-                        $row = $state->fetch();
-                        $ll=print_r($row, true);
-                        $this->log->logDebug("Row: ".$ll);
-                        $specialitati[]=$row;
-                    break;
-                    case "2":
-                    case "3":
-                    case "4":
-                    case "5":
-                        $q='select mem_asig.tip, mem_asig.data_start, mem_asig.data_end, mem_asig.polita_serie, mem_asig.polita_nr, reg_asigurator.nume_asigurator, mem_cpp.id_cpp, reg_cpp.nume_cpp,
-                        reg_tip_avizare.nume_tip_avizare
-                        from mem_asig inner join reg_asigurator on mem_asig.id_asigurator=reg_asigurator.id_asigurator
-                            inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
-                            inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
-                            inner join reg_tip_avizare on reg_tip_avizare.id_tip_avizare = mem_asig.tip
-                        where mem_asig.id_asig = "'.$rezultat['id_asig'].'"';
-                        try{
-                            $state = $this->db->query($q);
-                        } 
-                        catch(Exception $e){
-                            $this->log->LogError("DB ERROR: ".$e->getMessage());
-                            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                            return ($data);
-                        }
-                        $row = $state->fetch();
-                        $ll=print_r($row, true);
-                        $this->log->logDebug("Row: ".$ll);
-                        $specialitati[]=$row;
-                        
-                        
-                        
-                    break;
-                    case "6":
-                        $q='select mem_asig.tip, mem_cpp.id_cpp, reg_cpp.nume_cpp, reg_tip_avizare.nume_tip_avizare
-                        from mem_asig inner join mem_cpp on mem_cpp.id_cpp=mem_asig.id_cpp
-                            inner join reg_cpp on reg_cpp.id_cpp=mem_cpp.reg_cpp_id
-                            inner join reg_tip_avizare on reg_tip_avizare.id_tip_avizare = mem_asig.tip
-                        where mem_asig.id_asig = "'.$rezultat['id_asig'].'"';
-                        try{
-                            $state = $this->db->query($q);
-                        } 
-                        catch(Exception $e){
-                            $this->log->LogError("DB ERROR: ".$e->getMessage());
-                            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
-                            return ($data);
-                        }
-                        $row = $state->fetch();
-                        $ll=print_r($row, true);
-                        $this->log->logDebug("Row: ".$ll);
-                        $specialitati[]=$row;
-                    
-                    
-                    break;
-                        
-                }
-            }
-            $grup[]=array('grup' => $rw['nume_cpp_grup'], 'data' => $specialitati);
+        $medic = $stmt->fetch();
 
+        $query = "select * from reg_cpp_grup";
+        try{
+            $stmt = $this->db->query($query);
+        }
+        catch(Exception $e){
+            $this->log->LogError("DB ERROR: ".$e->getMessage());
+            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+            return ($data);
+        }
+        $grup = array();
+        while ($gr = $stmt->fetch())
+            $grup[$gr['nume_cpp_grup']]=array();
+
+        $query = 'select * from mem_asig where id_dlp="'.$id.'"';
+        try{
+            $stmt = $this->db->query($query);
+        }
+        catch(Exception $e){
+            $this->log->LogError("DB ERROR: ".$e->getMessage());
+            $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+            return ($data);
+        }
+        while ($asig = $stmt->fetch())
+        {
+            $q='select nume_asigurator from reg_asigurator where id_asigurator = "'.$asig['id_asigurator'].'"';
+                    try{
+                        $st = $this->db->query($q);
+                    }
+                    catch(Exception $e){
+                        $this->log->LogError("DB ERROR: ".$e->getMessage());
+                        $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+                        return ($data);
+                    }
+                    $as=$st->fetch(PDO::FETCH_ASSOC);
+                    $q='select nume_tip_avizare from reg_tip_avizare where id_tip_avizare = "'.$asig['tip'].'"';
+                    try{
+                        $st = $this->db->query($q);
+                    }
+                    catch(Exception $e){
+                        $this->log->LogError("DB ERROR: ".$e->getMessage());
+                        $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+                        return ($data);
+                    }
+                    $ta=$st->fetch(PDO::FETCH_ASSOC);
+            switch($asig['tip'])
+            {
+                case "1":
+
+
+                    $q='select mem_cpp.id_cpp, reg_cpp.nume_cpp, reg_cpp_grup.nume_cpp_grup, reg_gr_prof.nume_gr_prof
+                    from mem_cpp
+                    inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
+                    inner join reg_gr_prof on mem_cpp.grad_prof_cpp_id = id_gr_prof
+                    inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp
+                    where mem_cpp.id_cpp = "'.$asig['id_cpp'].'"';
+                    $this->log->LogDebug('query:'.$q);
+                    try{
+                        $st = $this->db->query($q);
+                    }
+                    catch(Exception $e){
+                        $this->log->LogError("DB ERROR: ".$e->getMessage());
+                        $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+                        return ($data);
+                    }
+                    $cpp=$st->fetch(PDO::FETCH_ASSOC);
+                    $grup[$cpp['nume_cpp_grup']][] = array('tip' => $asig['tip'], 'nume_cpp' => $cpp['nume_cpp'], 'nume_gr_prof' => $cpp['nume_gr_prof'], 'nume_tip_avizare' => $ta['nume_tip_avizare'],
+                                                                           'polita_serie' => $asig['polita_serie'], 'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                                           'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "2":
+                case "3":
+                    $q='select mem_cpp.id_cpp, reg_cpp.nume_cpp, reg_cpp_grup.nume_cpp_grup
+                    from mem_cpp
+                    inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
+                    inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp
+                    where mem_cpp.id_cpp = "'.$asig['id_cpp'].'"';
+                    $this->log->LogDebug('query:'.$q);
+                    try{
+                        $st = $this->db->query($q);
+                    }
+                    catch(Exception $e){
+                        $this->log->LogError("DB ERROR: ".$e->getMessage());
+                        $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+                        return ($data);
+                    }
+                    $cpp=$st->fetch(PDO::FETCH_ASSOC);
+                    $grup[$cpp['nume_cpp_grup']][] = array('tip' => $asig['tip'], 'nume_cpp' => $cpp['nume_cpp'], 'nume_tip_avizare' => $ta['nume_tip_avizare'],
+                                                                           'polita_serie' => $asig['polita_serie'], 'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                                           'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "4":
+                    $grup['Specialități MEDICALE'][] = array('tip' => $asig['tip'], 'nume_cpp' => 'Competențe limitate', 'nume_tip_avizare' => $ta['nume_tip_avizare'],
+                                                                           'polita_serie' => $asig['polita_serie'], 'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                                           'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "5":
+                    $grup['Specialități MEDICALE'][] = array('tip' => $asig['tip'], 'nume_cpp' => 'Medic de medicină Generală', 'nume_tip_avizare' => $ta['nume_tip_avizare'],
+                                                                           'polita_serie' => $asig['polita_serie'], 'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                                           'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "6":
+                case "7":
+                case "8":
+                     $q='select mem_cpp.id_cpp, reg_cpp.nume_cpp, reg_cpp_grup.nume_cpp_grup
+                    from mem_cpp
+                    inner join reg_cpp on mem_cpp.reg_cpp_id=reg_cpp.id_cpp
+                    inner join reg_cpp_grup on reg_cpp.grp_cpp=reg_cpp_grup.id_grup_cpp
+                    where mem_cpp.id_cpp = "'.$asig['id_cpp'].'"';
+                    $this->log->LogDebug('query:'.$q);
+                    try{
+                        $st = $this->db->query($q);
+                    }
+                    catch(Exception $e){
+                        $this->log->LogError("DB ERROR: ".$e->getMessage());
+                        $data = array('result' => '01' , 'mesaj' => $e->getMessage());
+                        return ($data);
+                    }
+                    $cpp=$st->fetch(PDO::FETCH_ASSOC);
+                    $grup[$cpp['nume_cpp_grup']][] = array('tip' => $asig['tip'], 'nume_cpp' => $cpp['nume_cpp'],
+                                                           'polita_serie' => $asig['polita_serie'], 'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                                           'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "9":
+                    $grup['Specialități MEDICALE'][] = array('tip' => $asig['tip'], 'nume_cpp' => 'Competențe limitate', 'polita_serie' => $asig['polita_serie'],
+                                                             'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                             'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "10":
+                    $grup['Specialități MEDICALE'][] = array('tip' => $asig['tip'], 'nume_cpp' => 'Medic de Medicină Generală', 'polita_serie' => $asig['polita_serie'],
+                                                             'polita_nr' => $asig['polita_nr'], 'nume_asigurator' => $as['nume_asigurator'],
+                                                             'data_start' => $asig['data_start'], 'data_end' => $asig['data_end'],);
+                break;
+                case "20":
+                    $a=5;
+                break;
+            }
         }
         $ll=print_r($grup, true);
         $this->log->logDebug("Row: ".$ll);
+
         return $grup;
-    
     }
-    
-    
+
+
      /*************
       *
       * Functia de autentificare
       * primeste: email si parola
       * returneaza: nume utilizator respectiv cmj-ul utilizatorului in caz de succes
       *             eroare in caz de eroare
-      * 
+      *
       */
-     
+
     protected function auth(){
-        
+
         $user = $this->payload['email'];
         $pass = $this->payload['password'];
         $stmt=$this->db->prepare("select user.id, user.nume, user.cmj, reg_jud.cod_cmj as judet from user inner join reg_jud on user.cmj=reg_jud.id_cmj where user.email=? and user.parola=?");
@@ -2301,7 +2335,7 @@ class MyApi extends Api
             $stmt->execute(array($user, $pass));
         }
         catch (PDOException $e)
-        {    
+        {
             $this->log->LogError("DB ERROR: ".$e->getMessage());
             $data = array ('result' => '01' , 'mesaj' => $e->getMessage());
             return $data;
@@ -2365,8 +2399,8 @@ class MyApi extends Api
         $this->log->logDebug("Payload: ".$ll);
         return ($data);
      }
-     
-     
+
+
     protected function act_cpp(){
         try{
         $stmt = $this->db->query("select id_act_cpp as id, nume_act_cpp as nume from reg_act_cpp");
@@ -2385,7 +2419,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function act_id(){
         try{
         $stmt = $this->db->query("select id_actid as id, nume_act_id as nume from reg_act_id");
@@ -2423,7 +2457,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function asigurator(){
         try{
         $stmt = $this->db->query("select id_asigurator as id, nume_asigurator as nume from reg_asigurator");
@@ -2442,7 +2476,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function certificat(){
         try{
         $stmt = $this->db->query("select id_tip_certificat as id, nume_tip_certificat as nume from reg_certificat");
@@ -2461,7 +2495,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function cotizatie(){
         try{
         $stmt = $this->db->query("select id_tip_cotizatie as id, nume_tip_cotizatie as nume from reg_cotizatie");
@@ -2480,7 +2514,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function tip_cpp(){
         try{
         $stmt = $this->db->query("select id_tip_cpp as id, nume_tip_cpp as nume from reg_tip_cpp");
@@ -2499,7 +2533,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function cpp(){
         try{
         $stmt = $this->db->query("select id_cpp as id, grp_cpp, nume_cpp as nume, id_tip_cpp as tip from reg_cpp");
@@ -2535,8 +2569,8 @@ class MyApi extends Api
             $lista[] =$spec;
         }
         return $lista;
-    }    
-    
+    }
+
     protected function titluri(){
         try{
         $stmt = $this->db->query("select id_titlu as id, nume as nume, tip as tip from reg_titluri");
@@ -2555,7 +2589,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function gr_prof(){
         try{
         $stmt = $this->db->query("select id_gr_prof as id, nume_gr_prof as nume from reg_gr_prof");
@@ -2573,7 +2607,7 @@ class MyApi extends Api
             $lista[] =$spec;
         }
         return $lista;
-    }    
+    }
 
     protected function jud(){
         //$this->log->logDebug("Listare judete");
@@ -2581,7 +2615,7 @@ class MyApi extends Api
             $query = "select id_cmj as id, nume_cmj as nume from reg_jud where id_cmj = '".$this->payload['jud_id']."'";
         else
             $query = "select id_cmj as id, nume_cmj as nume from reg_jud";
-        
+
         try{
             $stmt = $this->db->query($query);
         }
@@ -2599,7 +2633,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function loc_munca(){
         try{
         $stmt = $this->db->query("select id_loc_munca as id, denumire as nume from reg_loc_munca");
@@ -2618,7 +2652,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function sanctiune(){
         try{
         $stmt = $this->db->query("select id_sanctiune as id, nume_sanctiune as nume from reg_sanctiune");
@@ -2637,7 +2671,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function status(){
         try{
         $stmt = $this->db->query("select id_status as id, nume_status as nume from reg_status");
@@ -2656,7 +2690,7 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function tara(){
         try{
         $stmt = $this->db->query("select id_tara as id, nume_tara as nume from reg_tara");
@@ -2675,15 +2709,15 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
     protected function titlu(){
         $this->log->logDebug("Listare titluri");
         if (isset($this->payload['titlu_id']))
             $query = "select id_titlu as id, tip, nume from reg_titluri where id_titlu = '".$this->payload['titlu_id']."'";
         else
             $query = "select id_titlu as id, tip, nume from reg_titluri";
-        
-        
+
+
         try{
         $stmt = $this->db->query($query);
         }
@@ -2701,6 +2735,6 @@ class MyApi extends Api
         }
         return $lista;
     }
-    
+
  }
 ?>

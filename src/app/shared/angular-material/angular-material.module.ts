@@ -16,7 +16,8 @@ import {
   MatIconModule,
   MatSelectModule,
   MatTableModule,
-  MatRadioModule
+  MatRadioModule,
+  MatSlideToggleModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -39,7 +40,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     MatSelectModule,
     MatTableModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSlideToggleModule
   ],
   declarations: [],
   exports: [
@@ -59,7 +61,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     MatSelectModule,
     MatTableModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSlideToggleModule
   ]
 })
 export class AngularMaterialModule { }
