@@ -508,8 +508,8 @@ class MyApi extends Api
                     // get date certificat
                         $cont=$this->get_cert($cert['id_mem']);
                     $ll = print_r($cont, true);
-                    $this->log->logDebug("Payload: ".$ll);    
-                    
+                    $this->log->logDebug("Payload: ".$ll);
+
                         switch($cont['tip_cert'])
                         {
                             case "A":
@@ -1772,7 +1772,7 @@ class MyApi extends Api
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $spec[] = $sp;
                            }
-                        if ($rw['tip'] == '1')  // && ($rw['date_end'] == '0000-00-00')
+                        if ($rw['tip'] == '1' && ($rw['date_end'] == '0000-00-00'))
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
@@ -1995,7 +1995,7 @@ class MyApi extends Api
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => $rw['grad'],];
                             $spec[] = $sp;
                            }
-                        if ($rw['tip'] == '1')  // && ($rw['date_end'] == '0000-00-00')
+                        if ($rw['tip'] == '1' && ($rw['date_end'] == '0000-00-00'))
                             {
                             $sp = ['specialitate'=>$rw['specialitate'], 'gr_prof' => 'rezident',];
                             $spec[] = $sp;
