@@ -17,6 +17,7 @@ export class AuthenticationService {
     const test = JSON.stringify({ email: username, password: password });
     return this.http.put( this.apiAddress + 'api/auth', JSON.stringify({ email: username, password: password }))
       .map((response: Response) => {
+        console.log(response);
         this.setLocalStorage(response);
         // de revazut ce intoarcem si de ce intoarcem ceva
         return JSON.parse(response.text());

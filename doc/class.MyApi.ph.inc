@@ -507,9 +507,6 @@ class MyApi extends Api
                     $this->log->logDebug("Payload: ".$ll);
                     // get date certificat
                         $cont=$this->get_cert($cert['id_mem']);
-                    $ll = print_r($cont, true);
-                    $this->log->logDebug("Payload: ".$ll);    
-                    
                         switch($cont['tip_cert'])
                         {
                             case "A":
@@ -1939,9 +1936,10 @@ class MyApi extends Api
                 }
         }
         $query = "select mem.nume, mem.prenume, mem.cuim, mem.cnp, mem.fac_promotie as promotie, mem.fac_dipl_serie, mem.fac_dipl_nr, reg_facultate.nume_facultate as facultate,
-        mem.data_juramant, reg_jud.nume_cmj as judet
+        mem.data_juramant, reg_jud.nume_cmj as judet, mem_certificat.data_start
         from mem inner join reg_facultate on mem.fac_absolv = reg_facultate.id_facultate
         inner join reg_jud on mem.jud_id = reg_jud.id_cmj
+        inner join mem_certificat on mem_certificat.id_mem = mem.id_mem
         where mem.id_mem = '".$id."'";
         try{
         $stmt = $this->db->query($query);
@@ -1967,8 +1965,7 @@ class MyApi extends Api
         $promotie = $medic['promotie'];
 
         $this->log->LogError("Tip certificat: ".$tip_cert);
-        //$now = $medic['data_start'];
-        $now = date("Y-m-d");
+        $now = $medic['data_start'];
         switch ($tip_cert)
         {
             case "A":
