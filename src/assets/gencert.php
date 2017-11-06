@@ -1,7 +1,7 @@
 <?php
 
 $cert = $_REQUEST['cert'];
-$url_base = "https://devel-api.cmr.ro/api/";
+$url_base = "https://api.cmr.ro/api/";
 $token = $_REQUEST['token'];
 $acum = date("d.m.Y");
 

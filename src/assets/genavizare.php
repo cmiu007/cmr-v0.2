@@ -1,7 +1,7 @@
 <?php
 
 $aviz = $_REQUEST['aviz'];
-$url_base = "https://devel-api.cmr.ro/api/";
+$url_base = "https://api.cmr.ro/api/";
 //$token = $_REQUEST['token'];
 $token = $_REQUEST['token'];
 $acum = date("d.m.Y");
@@ -203,7 +203,7 @@ $titlu2HTML = '
 ';
 $titlu3HTML = '
 <h2>privind exercitarea profesiei de medic</h2>
-eliberat în data de <span style="font-weight: bold;">'.$acum.'</span>
+din data de <span style="font-weight: bold;">'.$acum.'</span>
 ';
 
 $pdf->WriteHTMLCell($pageWidth - $imgOrigin - 1.5 - $origin, 38, $imgOrigin, $titleYOrigin, $titlu1HTML, 0, 0, $fill, true, 'C', true);
