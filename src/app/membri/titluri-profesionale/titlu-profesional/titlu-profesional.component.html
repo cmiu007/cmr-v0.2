@@ -1,7 +1,7 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <form [formGroup]="titluForm">
 
-  <mat-expansion-panel [expanded]="itemStatus === 0 || itemStatus === 1">
+  <mat-expansion-panel [expanded]="itemStatus === 0">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span [ngClass]="{'inactive': itemStatus === 2}">{{ itemTitlu }}</span>

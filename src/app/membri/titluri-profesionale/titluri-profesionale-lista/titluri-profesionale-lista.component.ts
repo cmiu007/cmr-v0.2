@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TitluriProfesionaleListaComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  subscription: Subscription;
+  // subscription: Subscription;
   @Input('titluriForm')
   public titluriForm;
 
@@ -32,10 +32,10 @@ export class TitluriProfesionaleListaComponent implements OnInit, AfterViewInit,
 
   ngOnInit() {
     this.setRegistre();
-    this.subscription = this._setAddBtn.isAddBtnActive
-      .subscribe(isActive => {
-        this.isAddActive = isActive;
-      });
+    // this.subscription = this._setAddBtn.isAddBtnActive
+    //   .subscribe(isActive => {
+    //     this.isAddActive = isActive;
+    //   });
   }
 
   ngAfterViewInit() {
@@ -43,7 +43,7 @@ export class TitluriProfesionaleListaComponent implements OnInit, AfterViewInit,
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   private setRegistre(): void {
@@ -56,7 +56,6 @@ export class TitluriProfesionaleListaComponent implements OnInit, AfterViewInit,
     const arrayControl = this.titluriForm.get('titluri') as FormArray;
     arrayControl.insert(0, newTitluForm);
     this._setAddBtn.setStatus(false);
-    console.log(this.titluriForm);
   }
 
 }

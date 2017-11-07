@@ -7,6 +7,7 @@ import { AlertSnackbarService } from '../../../services/alert-snackbar.service';
 import { Titlu } from '../../../shared/interfaces/titluri.interface';
 import { ApiDataService } from '../../../services/api-data.service';
 import { ApiData } from '../../../shared/interfaces/message.interface';
+import { TitluriProfesionaleComponent } from '../titluri-profesionale.component';
 
 
 @Component({
@@ -173,13 +174,11 @@ export class TitluProfesionalComponent implements OnInit {
             }
             this.loading = false;
           });
-          // AvizareComponent._formDataChangedAvizare.next();
+          TitluriProfesionaleComponent._formDataChanged.next();
         break;
 
       case 'modifica':
       delete titluData.id_mem;
-      // delete titluData.reg_facultate_id;
-      // delete titluData.reg_titlu_id;
       console.log(titluData);
       console.log(idItem);
         this._apiData.apiModifica('titlu', idItem, titluData)
@@ -188,9 +187,8 @@ export class TitluProfesionalComponent implements OnInit {
               return;
             }
             this.loading = false;
-            // AvizariComponent._formDataChanged.next();
           });
-          // AvizareComponent._formDataChangedAvizare.next();
+          TitluriProfesionaleComponent._formDataChanged.next();
         break;
 
       default:

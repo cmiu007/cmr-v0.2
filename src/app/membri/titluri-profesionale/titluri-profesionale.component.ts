@@ -62,7 +62,7 @@ export class TitluriProfesionaleComponent implements OnInit {
 
   private getFormData(): void {
     const memId = sessionStorage.getItem('currentMemId');
-
+    this.titluriData = [];
     this._apiData.apiLista('titlu', memId)
       .subscribe((response: ApiData) => {
         if (response.status === 0) {
